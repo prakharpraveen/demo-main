@@ -96,7 +96,6 @@ module.exports = {
 		}
 	},
 	plugins: [
-		new HtmlWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: './index.html',
