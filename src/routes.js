@@ -1,8 +1,20 @@
 import React from 'react';
 import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import Loadable from 'react-loadable';
 import Layout from './layout';
-import Main from 'Pages/main';
-import Ifr from 'Pages/ifr';
+// import Main from 'Pages/main';
+// import Ifr from 'Pages/ifr';
+
+import Loading from 'Components/Loading';
+
+const Main = Loadable({
+	loader: () => import('Pages/main'),
+	loading: Loading
+});
+const Ifr = Loadable({
+	loader: () => import('Pages/ifr'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
