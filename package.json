@@ -7,7 +7,9 @@
 		"dev": "webpack-dev-server --progress --colors --open --config webpack.dev.config.js",
 		"build": "webpack --hot --progress --colors --config webpack.prod.config.js"
 	},
-	"keywords": [ "react" ],
+	"keywords": [
+		"react"
+	],
 	"author": "glud",
 	"license": "ISC",
 	"devDependencies": {
