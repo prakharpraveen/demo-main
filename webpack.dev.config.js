@@ -55,9 +55,13 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js[x]?$/,
-				include: path.resolve(__dirname, 'src'),
-				exclude: /(node_modules)/,
+				exclude: /node_modules/,
 				loader: 'babel-loader'
+			},
+			{
+				test: /\.(css|less)$/,
+				exclude: /node_modules/,
+				loader: 'style-loader!postcss-loader!less-loader'
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif)(\?.+)?$/,
@@ -103,6 +107,6 @@ module.exports = {
 			favicon: './assets/images/favicon.png',
 			cache: true,
 			showErrors: true
-		})
+		}),
 	]
 };

@@ -60,6 +60,11 @@ module.exports = {
 				loader: 'babel-loader'
 			},
 			{
+				test: /\.(css|less)$/,
+				exclude: /node_modules/,
+				loader: 'style-loader!postcss-loader!less-loader'
+			},
+			{
 				test: /\.(png|jpg|jpeg|gif)(\?.+)?$/,
 				exclude: /favicon\.png$/,
 				use: [
@@ -103,6 +108,6 @@ module.exports = {
 			favicon: './assets/images/favicon.png',
 			cache: true,
 			showErrors: true
-		})
+		}),
 	]
 };
