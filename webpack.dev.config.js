@@ -13,7 +13,7 @@ module.exports = {
 	 */
 	mode: 'development',
 	context: path.resolve(__dirname, 'src'),
-	entry: './index.js',
+	entry: './app.js',
 	output: {
 		path: path.join(__dirname, 'dist'),
 		// filename: '[name].[chunkhash:8].js', // 生产环境可以使用
@@ -79,7 +79,7 @@ module.exports = {
      * source-map 开发模式
      * eval 生产模式
      */
-	devtool: 'eval',
+	devtool: 'source-map',
 	// 不要遵循/打包这些模块，而是在运行时从环境中请求他们
 	externals: {
 		react: 'React',
@@ -91,7 +91,7 @@ module.exports = {
 		alias: {
 			Components: path.resolve(__dirname, 'src/components/'),
 			Assets: path.resolve(__dirname, 'src/assets/'),
-			Modules: path.resolve(__dirname, 'src/modules/'),
+			Pages: path.resolve(__dirname, 'src/pages/'),
 			Static: path.resolve(__dirname, 'src/static/')
 		}
 	},
