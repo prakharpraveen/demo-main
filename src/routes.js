@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import Layout from './layout';
+import Layout from './Layout';
 // import Main from 'Pages/main';
 // import Ifr from 'Pages/ifr';
 
