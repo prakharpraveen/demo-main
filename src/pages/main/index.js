@@ -7,7 +7,7 @@ export default class Main extends Component {
 	}
 	render() {
 		return (
-			<div>
+			<div className='main-color'>
 				main page
 				<Link to='/ifr'> to ifr</Link>
 			</div>
