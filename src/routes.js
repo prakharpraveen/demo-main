@@ -15,6 +15,10 @@ const Ifr = Loadable({
 	loader: () => import('Pages/ifr'),
 	loading: Loading
 });
+const NotFound = Loadable({
+	loader: () => import('Pages/404'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -38,7 +42,10 @@ const RouteWithSubRoutes = (route) => (
 const RouteConfig = () => (
 	<Router>
 		<Layout>
-			<Switch>{routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}</Switch>
+			<Switch>
+				{routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+				<Route component={(infor) => <NotFound location={infor.location} />} />
+			</Switch>
 		</Layout>
 	</Router>
 );
