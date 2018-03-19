@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 fs.readdir(__dirname, (err, files) => {
 	// console.log(files);
 });
@@ -17,8 +18,8 @@ module.exports = {
 	entry: './app.js',
 	output: {
 		path: path.join(__dirname, 'dist'),
-		// filename: '[name].[chunkhash:8].js', // 生产环境可以使用
-		filename: '[name].[hash:8].js',
+		filename: '[name].[chunkhash:8].js', // 生产环境可以使用
+		// filename: '[name].[hash:8].js',
 		libraryTarget: 'umd'
 	},
 	devServer: {
@@ -114,8 +115,11 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			// Options similar to the same options in webpackOptions.output
 			// both options are optional
-			filename: '[name].css',
+			filename: '[name].css'
 			// chunkFilename: '[id].css'
 		})
+		// new CleanWebpackPlugin(
+		// 	[ 'dist' ] //匹配删除的文件
+		// )
 	]
 };

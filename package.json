@@ -1,48 +1,51 @@
 {
-	"name": "demo-main",
-	"version": "1.0.0",
-	"description": "demo",
-	"main": "index.js",
-	"scripts": {
-		"dev": "webpack-dev-server --progress --colors --config webpack.dev.config.js",
-		"build": "webpack --progress --colors --config webpack.prod.config.js"
-	},
-	"keywords": [ "react" ],
-	"author": "glud",
-	"license": "ISC",
-	"devDependencies": {
-		"autoprefixer": "^8.1.0",
-		"babel-core": "^6.26.0",
-		"babel-loader": "^7.1.4",
-		"babel-plugin-syntax-dynamic-import": "^6.18.0",
-		"babel-plugin-transform-runtime": "^6.23.0",
-		"babel-preset-env": "^1.6.1",
-		"babel-preset-react": "^6.24.1",
-		"babel-preset-stage-0": "^6.24.1",
-		"css-loader": "^0.28.10",
-		"cssnano": "^3.10.0",
-		"file-loader": "^1.1.11",
-		"html-webpack-plugin": "^3.0.6",
-		"less": "^3.0.1",
-		"less-loader": "^4.1.0",
-		"mini-css-extract-plugin": "^0.2.0",
-		"postcss-loader": "^2.1.1",
-		"react-loadable": "^5.3.1",
-		"style-loader": "^0.20.3",
-		"url-loader": "^1.0.1",
-		"webpack": "^4.1.1",
-		"webpack-cli": "^2.0.12",
-		"webpack-dev-server": "^3.1.1"
-	},
-	"dependencies": {
-		"axios": "^0.18.0",
-		"prop-types": "^15.6.1",
-		"react": "^16.2.0",
-		"react-dom": "^16.2.0",
-		"react-intl-universal": "^1.8.4",
-		"react-redux": "^5.0.7",
-		"react-router-dom": "^4.2.2",
-		"redux": "^3.7.2",
-		"redux-thunk": "^2.2.0"
-	}
+  "name": "demo-main",
+  "version": "1.0.0",
+  "description": "demo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --colors --config webpack.dev.config.js",
+    "build": "webpack --progress --colors --config webpack.prod.config.js"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "glud",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^8.1.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.10",
+    "cssnano": "^3.10.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.0.6",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.2.0",
+    "postcss-loader": "^2.1.1",
+    "react-loadable": "^5.3.1",
+    "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-intl-universal": "^1.8.4",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
 }
