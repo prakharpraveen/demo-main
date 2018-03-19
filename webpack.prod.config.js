@@ -18,7 +18,7 @@ module.exports = {
 	entry: './app.js',
 	output: {
 		path: path.join(__dirname, 'dist'),
-		filename: '[name].[chunkhash:8].js', // 生产环境可以使用
+		filename: '[name].[chunkhash:8].js', // 生产环境可以使用 chunkhash 文件内容 hash 校验
 		// filename: '[name].[hash:8].js',
 		libraryTarget: 'umd'
 	},
