@@ -92,12 +92,19 @@
 └── index.html              // 项目 HTML 模板
 ```
 
-### 项目启动
+### 项目启动 (开发模式)
 ```
+git clone https://github.com/glud123/demo-main.git
+
+cd demo-main
+
+npm i
+
 npm run dev
+
 ```
 
-### 项目打包构建
+### 项目打包构建 (生产模式)
 ```
 npm run build
 ```
