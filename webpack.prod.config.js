@@ -117,9 +117,9 @@ module.exports = {
 			// both options are optional
 			filename: '[name].css'
 			// chunkFilename: '[id].css'
-		})
-		// new CleanWebpackPlugin(
-		// 	[ 'dist' ] //匹配删除的文件
-		// )
+		}),
+		new CleanWebpackPlugin(
+			[ 'dist' ] //匹配删除的文件
+		)
 	]
 };
