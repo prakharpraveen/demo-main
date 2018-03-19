@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './index.less';
-export default class Main extends Component {
+export default class Home extends Component {
 	constructor(props) {
 		super(props);
 	}
 	render() {
 		return (
 			<div className='main-color'>
-				main page
-				<Link to='/ifr'> to ifr</Link>
+				Home page
+				<Link to='/ifr'> to Ifr page</Link>
 			</div>
 		);
 	}

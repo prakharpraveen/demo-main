@@ -7,8 +7,8 @@ import Layout from './Layout';
 
 import Loading from 'Components/Loading';
 
-const Main = Loadable({
-	loader: () => import('Pages/main'),
+const Home = Loadable({
+	loader: () => import('Pages/home'),
 	loading: Loading
 });
 const Ifr = Loadable({
@@ -23,7 +23,7 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: Main
+		component: Home
 	},
 	{
 		path: '/ifr',

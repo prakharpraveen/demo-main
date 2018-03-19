@@ -5,6 +5,6 @@ export default class Ifr extends Component {
 	}
 	render() {
 		console.log(this.props.location);
-		return <div>ifr page</div>;
+		return <div>Ifr page</div>;
 	}
 }

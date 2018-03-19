@@ -9,10 +9,10 @@ export default class Layout extends Component {
 				<div>
 					<ul>
 						<li>
-							<Link to='/'>main</Link>
+							<Link to='/'>Home</Link>
 						</li>
 						<li>
-							<Link to='/ifr'>ifr</Link>
+							<Link to='/ifr'>Ifr</Link>
 						</li>
 					</ul>
 					{this.props.children}
