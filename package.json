@@ -7,7 +7,9 @@
 		"dev": "webpack-dev-server --progress --colors --open --config webpack.dev.config.js",
 		"build": "webpack --hot --progress --colors --config webpack.prod.config.js"
 	},
-	"keywords": [ "react" ],
+	"keywords": [
+		"react"
+	],
 	"author": "glud",
 	"license": "ISC",
 	"devDependencies": {
@@ -21,6 +23,7 @@
 		"babel-preset-stage-0": "^6.24.1",
 		"css-loader": "^0.28.10",
 		"cssnano": "^3.10.0",
+		"file-loader": "^1.1.11",
 		"html-webpack-plugin": "^3.0.6",
 		"less": "^3.0.1",
 		"less-loader": "^4.1.0",
@@ -28,6 +31,7 @@
 		"postcss-loader": "^2.1.1",
 		"react-loadable": "^5.3.1",
 		"style-loader": "^0.20.3",
+		"url-loader": "^1.0.1",
 		"webpack": "^4.1.1",
 		"webpack-cli": "^2.0.12",
 		"webpack-dev-server": "^3.1.1"
