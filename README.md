@@ -14,7 +14,14 @@
 - 其他...
 
 ### 项目技术栈
-```json
+- react 
+- redux
+- less
+- webpack
+- node
+
+### 项目相关依赖
+```javascript
 // 项目基础依赖
 "dependencies": {
     "axios": "^0.18.0",                 // 数据请求     https://github.com/axios/axios
