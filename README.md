@@ -22,13 +22,13 @@
     "react": "^16.2.0",                 
     "react-dom": "^16.2.0",                   
     "react-redux": "^5.0.7",            
-    "react-router-dom": "^4.2.2",       // react router v4 
+    "react-router-dom": "^4.2.2",       // react router v4  https://reacttraining.com/react-router/
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"             //  redux 异步 action 中间件
+    "redux-thunk": "^2.2.0"             //  redux 异步 action 中间件  https://github.com/gaearon/redux-thunk
 }
 // 项目开发依赖
 "devDependencies": {
-    "autoprefixer": "^8.1.0",                           // css 兼容插件
+    "autoprefixer": "^8.1.0",                           // css 兼容插件 
     "babel-core": "^6.26.0",                            // bale 核心包
     "babel-loader": "^7.1.4",                           
     "babel-plugin-syntax-dynamic-import": "^6.18.0",    // 按需加载插件
@@ -42,9 +42,9 @@
     "html-webpack-plugin": "^3.0.6",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "mini-css-extract-plugin": "^0.2.0",                // webpack4 下 extract-text-webpack-plugin 插件编译报错，替代品
+    "mini-css-extract-plugin": "^0.2.0",                // webpack4 下 extract-text-webpack-plugin 插件编译报错，替代品 https://github.com/webpack-contrib/mini-css-extract-plugin
     "postcss-loader": "^2.1.1",                         // css 兼容
-    "react-loadable": "^5.3.1",                         // 懒加载 以组件为中心的代码分割和懒加载
+    "react-loadable": "^5.3.1",                         // 懒加载 以组件为中心的代码分割和懒加载 https://github.com/jamiebuilds/react-loadable
     "style-loader": "^0.20.3",
     "url-loader": "^1.0.1",
     "webpack": "^4.1.1",
