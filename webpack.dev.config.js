@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 fs.readdir(__dirname, (err, files) => {
@@ -24,12 +25,22 @@ module.exports = {
 	devServer: {
 		contentBase: path.join(__dirname, 'dist'),
 		inline: true,
+		hot: true,
+		open: true,
 		port: 3000,
+		lazy: false,
 		historyApiFallback: {
 			rewrites: { from: /./, to: '/404.html' },
 			disableDotRule: true
 		},
-		overlay: true,
+		overlay: {
+			warnings: true,
+			errors: true
+		},
+		watchOptions: {
+			poll: true
+		},
+		clientLogLevel: 'error',
 		// 开启报错提示
 		stats: 'errors-only',
 		proxy: {
@@ -60,9 +71,10 @@ module.exports = {
 				loader: 'babel-loader'
 			},
 			{
-				test: /\.(css|less)$/,
+				test: /\.(css|less)?$/,
 				exclude: /node_modules/,
-				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader' ]
+				use: [ 'style-loader', 'css-loader', 'postcss-loader', 'less-loader' ]
+				// use: [ 'css-loader', 'postcss-loader', 'less-loader' ]
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif)(\?.+)?$/,
@@ -114,6 +126,8 @@ module.exports = {
 			// both options are optional
 			filename: '[name].css'
 			// chunkFilename: '[id].css'
-		})
+		}),
+		new webpack.NamedModulesPlugin(),
+		new webpack.HotModuleReplacementPlugin()
 	]
 };
