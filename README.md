@@ -3,7 +3,7 @@
 ### 演示地址
 
 
-### 项目描述
+### 描述
 服务于 NC 各个模块节点页面，各模块节点挂载在工作台中实现整个节点页面的完整性。
 
 ### 功能描述
@@ -16,14 +16,10 @@
 - 主题切换
 - 其他...
 
-### 项目技术栈
-- react 
-- redux
-- less
-- webpack
-- node
+### 技术栈
+react + redux + webpack + react-router + ES6/7/8
 
-### 项目相关依赖
+### 相关依赖
 ```javascript
 // 项目基础依赖
 "dependencies": {
@@ -92,7 +88,7 @@
 └── index.html              // 项目 HTML 模板
 ```
 
-### 项目启动 (开发模式)
+### 启动 (开发模式)
 ```
 git clone https://github.com/glud123/demo-main.git
 
@@ -104,7 +100,7 @@ npm run dev
 
 ```
 
-### 项目打包构建 (生产模式)
+### 打包构建 (生产模式)
 ```
 npm run build
 ```
