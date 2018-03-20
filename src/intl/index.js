@@ -13,14 +13,14 @@ const SUPPOER_LOCALES = [
 		name: '繁體中文',
 		value: 'zh-TW'
 	},
-	{
-		name: 'français',
-		value: 'fr-FR'
-	},
-	{
-		name: '日本の',
-		value: 'ja-JP'
-	}
+	// {
+	// 	name: 'français',
+	// 	value: 'fr-FR'
+	// },
+	// {
+	// 	name: '日本の',
+	// 	value: 'ja-JP'
+	// }
 ];
 class ChangeLanguage extends Component {
 	constructor(props) {
@@ -29,16 +29,15 @@ class ChangeLanguage extends Component {
 			initDone: false
 		};
 	}
-
 	componentDidMount() {
 		this.loadLocales();
 	}
 	loadLocales = () => {
 		let currentLocale = navigator.language;
-		let  = SUPPOER_LOCALES.find((item)=>{
-			return item.value === currentLocale
+		let flag = SUPPOER_LOCALES.find((item) => {
+			return item.value === currentLocale;
 		});
-		if (!_.find(SUPPOER_LOCALES, { value: currentLocale })) {
+		if (!flag) {
 			currentLocale = 'en-US';
 		}
 		Axios.get(`./${currentLocale}.json`)
@@ -59,7 +58,7 @@ class ChangeLanguage extends Component {
 	};
 	onSelectLocale = (e) => {
 		let lang = e.target.value;
-		location.search = `?lang=${lang}`;
+		console.log(lang);
 	};
 	render() {
 		return (

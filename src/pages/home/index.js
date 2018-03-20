@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { saveFormData, saveImg, clearData } from 'Store/home/action';
 import './index.less';
-export default class Home extends Component {
+class Home extends Component {
+	static propTypes = {
+		formData: PropTypes.object.isRequired,
+		saveFormData: PropTypes.func.isRequired,
+		saveImg: PropTypes.func.isRequired,
+		clearData: PropTypes.func.isRequired
+	};
 	constructor(props) {
 		super(props);
 	}
@@ -14,3 +23,14 @@ export default class Home extends Component {
 		);
 	}
 }
+export default connect(
+	(state) => ({
+		formData: state.formData,
+		proData: state.proData
+	}),
+	{
+		saveFormData,
+		saveImg,
+		clearData
+	}
+)(Home);
