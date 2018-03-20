@@ -22,38 +22,21 @@ const SUPPOER_LOCALES = [
 		value: 'ja-JP'
 	}
 ];
-class App extends Component {
-	state = { initDone: false };
-
+class ChangeLanguage extends Component {
 	constructor(props) {
 		super(props);
-		this.onSelectLocale = this.onSelectLocale.bind(this);
+		this.state = {
+			initDone: false
+		};
 	}
 
 	componentDidMount() {
 		this.loadLocales();
 	}
-
-	render() {
-		return (
-			this.state.initDone && (
-				<div>
-					{this.renderLocaleSelector()}
-					<BasicComponent />
-					<PluralComponent />
-					<HtmlComponent />
-					<DateComponent />
-					<CurrencyComponent />
-					<MessageNotInComponent />
-				</div>
-			)
-		);
-	}
-
-	loadLocales() {
-		let currentLocale = intl.determineLocale({
-			urlLocaleKey: 'lang',
-			cookieLocaleKey: 'lang'
+	loadLocales = () => {
+		let currentLocale = navigator.language;
+		let  = SUPPOER_LOCALES.find((item)=>{
+			return item.value === currentLocale
 		});
 		if (!_.find(SUPPOER_LOCALES, { value: currentLocale })) {
 			currentLocale = 'en-US';
@@ -73,24 +56,25 @@ class App extends Component {
 				// After loading CLDR locale data, start to render
 				this.setState({ initDone: true });
 			});
-	}
-	renderLocaleSelector() {
-		return (
-			<select onChange={this.onSelectLocale} defaultValue=''>
-				<option value='' disabled>
-					Change Language
-				</option>
-				{SUPPOER_LOCALES.map((locale) => (
-					<option key={locale.value} value={locale.value}>
-						{locale.name}
-					</option>
-				))}
-			</select>
-		);
-	}
-
-	onSelectLocale(e) {
+	};
+	onSelectLocale = (e) => {
 		let lang = e.target.value;
 		location.search = `?lang=${lang}`;
+	};
+	render() {
+		return (
+			this.state.initDone && (
+				<select onChange={this.onSelectLocale} defaultValue=''>
+					<option value='' disabled>
+						Change Language
+					</option>
+					{SUPPOER_LOCALES.map((locale) => (
+						<option key={locale.value} value={locale.value}>
+							{locale.name}
+						</option>
+					))}
+				</select>
+			)
+		);
 	}
 }

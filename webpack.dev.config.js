@@ -37,9 +37,6 @@ module.exports = {
 			warnings: true,
 			errors: true
 		},
-		watchOptions: {
-			poll: true
-		},
 		clientLogLevel: 'error',
 		// 开启报错提示
 		stats: 'errors-only',

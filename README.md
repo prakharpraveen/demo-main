@@ -52,6 +52,7 @@ react + redux + webpack + react-router + ES6/7/8
     "postcss-loader": "^2.1.1",                         // css 兼容
     "react-loadable": "^5.3.1",                         // 懒加载 以组件为中心的代码分割和懒加载 https://github.com/jamiebuilds/react-loadable
     "style-loader": "^0.20.3",
+    "react-intl-universal": "^1.8.4",                   // 国际化 
     "url-loader": "^1.0.1",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12",
