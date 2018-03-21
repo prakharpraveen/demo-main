@@ -24,7 +24,7 @@ class Home extends Component {
 	}
 }
 export default connect(
-	(state) => ({
+	(state) => ({ 
 		formData: state.formData,
 		proData: state.proData
 	}),

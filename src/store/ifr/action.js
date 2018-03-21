@@ -1,25 +1,10 @@
-import * as home from './action-type';
+import * as ifr from './action-type';
 
 // 保存表单数据
-export const saveFormData = (value, datatype) => {
+export const saveIfrData = (data) => {
 	return {
-		type: home.SAVEFORMDATA,
-		value,
-		datatype
+		type: ifr.SAVEIFR,
+		data
 	};
 };
 
-// 保存图片地址
-export const saveImg = (path) => {
-	return {
-		type: home.SAVEIMG,
-		path
-	};
-};
-
-// 保存图片地址
-export const clearData = () => {
-	return {
-		type: home.CLEARDATA
-	};
-};

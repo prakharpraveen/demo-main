@@ -1,19 +1,15 @@
-import * as home from './action-type';
+import * as ifr from './action-type';
 
 let defaultState = {
-	orderSum: '', //金额
-	name: '', //姓名
-	phoneNo: '', //手机号
-	imgpath: '' //图片地址
+	ifrName: 'xxx', //窗口名称
+	ifrID: '123', //窗口id
 };
 // 首页表单数据
-export const formData = (state = defaultState, action = {}) => {
+export const ifrData = (state = defaultState, action = {}) => {
 	switch (action.type) {
-		case home.SAVEFORMDATA:
-			return { ...state, ...{ [action.datatype]: action.value } };
-		case home.SAVEIMG:
-			return { ...state, ...{ imgpath: action.path } };
-		case home.CLEARDATA:
+		case ifr.SAVEIFR:
+			return { ...state, ...adcion };
+		case ifr.CLEARDATA:
 			return { ...state, ...defaultState };
 		default:
 			return state;
