@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { initAppData } from 'Store/appStore/action';
 import store from './store';
 import Routes from './routes';
+import 'Static/css/public.less';
 class App extends Component {
 	static propTypes = {
 		initAppData: PropTypes.func.isRequired

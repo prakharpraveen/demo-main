@@ -16,15 +16,23 @@ class Home extends Component {
 	}
 	render() {
 		return (
-			<div className='main-color'>
+			<div className='nc-workbench-home-container'>
 				Home page
 				<Link to='/ifr'> to Ifr page</Link>
+				<div className='home-container-top n-row'>
+					<div className='n-col-6'>1</div>
+					<div className='n-col-6'>2</div>
+				</div>
+				<div className='home-container-bottom'>
+					<div className='n-col-6'>1</div>
+					<div className='n-col-6'>2</div>
+				</div>
 			</div>
 		);
 	}
 }
 export default connect(
-	(state) => ({ 
+	(state) => ({
 		formData: state.formData,
 		proData: state.proData
 	}),

@@ -1,10 +1,13 @@
 import * as home from './action-type';
 
 let defaultState = {
-	orderSum: '', //金额
-	name: '', //姓名
-	phoneNo: '', //手机号
-	imgpath: '' //图片地址
+	type: '', // 类型
+	path: '', // js 相对路径
+	position: '', // 小部件位置
+	module: '', // 模块编码
+	mountId: '', // 小部件挂载id
+	row: '', // 行
+	col:'' // 列
 };
 // 首页表单数据
 export const homeData = (state = defaultState, action = {}) => {
