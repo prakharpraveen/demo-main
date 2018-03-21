@@ -16,16 +16,14 @@ class Home extends Component {
 	}
 	render() {
 		return (
-			<div className='nc-workbench-home-container'>
-				Home page
-				<Link to='/ifr'> to Ifr page</Link>
-				<div className='home-container-top n-row'>
-					<div className='n-6-1 n-r-1'>1</div>
-					<div className='n-6-1 n-r-1'>2</div>
+			<div className="nc-workbench-home-container">
+				<div className="home-container-top n-row">
+					<div className="n-6-1 n-r-1">1</div>
+					<div className="n-6-1 n-r-1">2</div>
 				</div>
-				<div className='home-container-bottom n-row'>
-					<div className='n-3-1 n-r-1'>1</div>
-					<div className='n-3-1 n-r-1'>2</div>
+				<div className="home-container-bottom n-row">
+					<div className="n-3-1 n-r-1">1</div>
+					<div className="n-3-1 n-r-1">2</div>
 				</div>
 			</div>
 		);

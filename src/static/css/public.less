@@ -1,11 +1,17 @@
+body {
+	overflow: hidden;
+}
+#ncc {
+	overflow: hidden;
+}
 @RowWidth: 100%;
 /**
 *  所占列 设置函数
 *  @param {Number} @n 当前列数、
 *  @param {Number} @num 总列数
 */
-.col(@n,@cols){
-    flex: 0 0 (@RowWidth/@cols)*@n;
+.col(@n,@cols) {
+	flex: 0 0 (@RowWidth/@cols)*@n;
 }
 
 .n-row {
@@ -45,15 +51,15 @@
 *  @param {Number} @n 当前列数、
 *  @param {Number} @num 总列数
 */
-.rol(@r){
-    height: @r*23.8125rem;
+.rol(@r) {
+	height: @r*23.8125rem;
 }
-.n-r-1{
-    .rol(1);
+.n-r-1 {
+	.rol(1);
 }
-.n-r-2{
-    .rol(2);
+.n-r-2 {
+	.rol(2);
 }
-.n-r-3{
-    .rol(3);
+.n-r-3 {
+	.rol(3);
 }
