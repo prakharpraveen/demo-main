@@ -7,8 +7,8 @@ let defaultState = {
 // 首页表单数据
 export const ifrData = (state = defaultState, action = {}) => {
 	switch (action.type) {
-		case ifr.SAVEIFR:
-			return { ...state, ...adcion };
+		case ifr.INITIFR:
+			return { ...state, ...adcion.value };
 		case ifr.CLEARDATA:
 			return { ...state, ...defaultState };
 		default:

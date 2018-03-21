@@ -1,10 +1,17 @@
 import * as ifr from './action-type';
 
-// 保存表单数据
-export const saveIfrData = (data) => {
+// 初始化数据
+export const initIfrData = (value) => {
 	return {
-		type: ifr.SAVEIFR,
-		data
+		type: ifr.INITIFR,
+		value
+	};
+};
+
+// 清除数据
+export const clearData = () => {
+	return {
+		type: ifr.CLEARDATA
 	};
 };
 

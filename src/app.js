@@ -8,12 +8,13 @@ import store from './store';
 import Routes from './routes';
 class App extends Component {
 	static propTypes = {
-		initAppData: PropTypes.object.isRequired
+		initAppData: PropTypes.func.isRequired
 	};
 	constructor(props) {
 		super(props);
 	}
 	componentDidMount() {
+		// 模拟数据，应该在此处进行数据请求，返回用户初始信息
 		let data = {
 			lang: 'zh-CN',
 			userInfo: '小明'
