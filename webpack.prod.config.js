@@ -100,7 +100,8 @@ module.exports = {
 			Components: path.resolve(__dirname, 'src/components/'),
 			Assets: path.resolve(__dirname, 'src/assets/'),
 			Pages: path.resolve(__dirname, 'src/pages/'),
-			Static: path.resolve(__dirname, 'src/static/')
+			Static: path.resolve(__dirname, 'src/static/'),
+			Store: path.resolve(__dirname, 'src/store/')
 		}
 	},
 	plugins: [

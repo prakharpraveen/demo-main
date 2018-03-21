@@ -1,1 +1,2 @@
 .layout .menu{margin:0;padding:0;height:60px;display:flex;justify-content:flex-start;align-items:center}.layout .menu li{list-style-type:none;margin-left:10px}
+.n-row{display:flex;flex:1}.n-6-1{flex:0 0 16.66666667%}.n-6-2{flex:0 0 33.33333333%}.n-6-3{flex:0 0 50%}.n-6-4{flex:0 0 66.66666667%}.n-6-5{flex:0 0 83.33333333%}.n-6-6{flex:0 0 100%}.n-3-1{flex:0 0 33.33333333%}.n-3-2{flex:0 0 66.66666667%}.n-3-3{flex:0 0 100%}.n-r-1{height:23.8125rem}.n-r-2{height:47.625rem}.n-r-3{height:71.4375rem}
