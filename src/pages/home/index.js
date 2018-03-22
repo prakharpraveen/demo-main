@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveFormData, saveImg, clearData } from 'Store/home/action';
+import PageLayout from 'Components/PageLayout';
 import './index.less';
 const paths = [
 	{ mountId: 'app2', path: '/prod-dist/component1/index.a7f2386b.js' },
@@ -48,19 +49,21 @@ class Home extends Component {
 	};
 	render() {
 		return (
-			<div className='nc-workbench-home-container'>
-				<div className='n-col'>
-					<div className='title'>应用</div>
-					<div className='n-row'>{this.createWidgetMountPoint(paths)}</div>
-				</div>
-				<div className='n-col'>
-					<div className='title'>监控分析</div>
-					<div className=' n-row'>
-						<div className='n-3-1 n-r-2'>1</div>
-						<div className='n-3-1 n-r-2'>2</div>
+			<PageLayout>
+				<div className='nc-workbench-home-container'>
+					<div className='n-col'>
+						<div className='title'>应用</div>
+						<div className='n-row'>{this.createWidgetMountPoint(paths)}</div>
+					</div>
+					<div className='n-col'>
+						<div className='title'>监控分析</div>
+						<div className=' n-row'>
+							<div className='n-3-1 n-r-2'>1</div>
+							<div className='n-3-1 n-r-2'>2</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			</PageLayout>
 		);
 	}
 }
