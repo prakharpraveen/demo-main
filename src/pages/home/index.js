@@ -41,7 +41,7 @@ class Home extends Component {
 	 * @param {Object} widgets // 小部件类型 
 	 */
 	createWidgetMountPoint = (widgets) => {
-		return widgets.map((item,index) => {
+		return widgets.map((item, index) => {
 			let { mountId } = item;
 			return <div className='n-6-1 n-r-1' id={mountId} />;
 		});

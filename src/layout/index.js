@@ -6,29 +6,21 @@ export default class Layout extends Component {
 	constructor(props) {
 		super(props);
 	}
-	/**
-	 * 在新页签中打开
-	 * @param　{String} url // 目标页面路径
-	 */
-	openInNewTab = (url) => {
-		let win = window.open(`/#/ifr?ifr=${encodeURIComponent(url)}`, '_blank');
-		win.focus();
-	};
 	render() {
 		return (
-			<div className="nc-workbench-layout">
-				<ul className="nc-workbench-menu">
+			<div className='nc-workbench-layout'>
+				<ul className='nc-workbench-menu'>
 					<li>
-						<Link to="/">Home</Link>
+						<Link to='/'>Home</Link>
 					</li>
 					<li>
-						<span onClick={this.openInNewTab.bind(this, 'http://www.china.com.cn/')}>打开新页签</span>
+						<span onClick={openNew.bind(this, 'http://www.china.com.cn/', 'new')}>打开新页签</span>
 					</li>
 					<li>
-						<Link to={`/ifr?ifr=${encodeURIComponent('http://127.0.0.1:5500/dist/index.html#/')}`}>在当前页打开</Link>
+						<span onClick={openNew.bind(this, 'http://127.0.0.1:5500/dist/index.html#/')}>在当前页打开</span>
 					</li>
 				</ul>
-				<div className="nc-workbench-container">{this.props.children}</div>
+				<div className='nc-workbench-container'>{this.props.children}</div>
 			</div>
 		);
 	}
