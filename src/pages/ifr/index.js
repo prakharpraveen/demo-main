@@ -11,27 +11,13 @@ class Ifr extends Component {
 	};
 	constructor(props) {
 		super(props);
-		this.state = {
-			queryUrl: ''
-		};
 	}
-
-	componentWillMount() {
-		let { ifr } = GetQuery(this.props.location.search);
-		this.setState({
-			queryUrl: decodeURIComponent(ifr)
-		});
-	}
-
-	componentDidMount() {
-		console.log('ajax');
-	}
-
 	render() {
 		let { ifrID, ifrName } = this.props.ifrData;
-		let { queryUrl } = this.state;
+		let { ifr } = GetQuery(this.props.location.search);
+		let queryUrl = decodeURIComponent(ifr);
 		console.log(this.props.location);
-		return <iframe id="mainiframe" src={queryUrl} frameborder="0" scrolling="yes" />;
+		return <iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />;
 	}
 }
 export default connect(
