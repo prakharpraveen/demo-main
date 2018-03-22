@@ -17,13 +17,23 @@ class Home extends Component {
 	render() {
 		return (
 			<div className="nc-workbench-home-container">
-				<div className="home-container-top n-row">
-					<div className="n-6-1 n-r-1">1</div>
-					<div className="n-6-1 n-r-1">2</div>
+				<div className="n-col">
+					<div className='title'>
+						应用
+					</div>
+					<div className="n-row">
+						<div className="n-6-1 n-r-1">1</div>
+						<div className="n-6-1 n-r-1">2</div>
+					</div>
 				</div>
-				<div className="home-container-bottom n-row">
-					<div className="n-3-1 n-r-1">1</div>
-					<div className="n-3-1 n-r-1">2</div>
+				<div className="n-col">
+					<div className='title'>
+						监控分析
+					</div>
+					<div className=" n-row">
+						<div className="n-3-1 n-r-2">1</div>
+						<div className="n-3-1 n-r-2">2</div>
+					</div>
 				</div>
 			</div>
 		);
