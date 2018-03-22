@@ -25,7 +25,7 @@ export default class Layout extends Component {
 						<span onClick={this.openInNewTab.bind(this, 'http://www.china.com.cn/')}>打开新页签</span>
 					</li>
 					<li>
-						<Link to={`/ifr?ifr=${encodeURIComponent('http://www.china.com.cn/')}`}>在当前页打开</Link>
+						<Link to={`/ifr?ifr=${encodeURIComponent('http://127.0.0.1:5500/dist/index.html#/')}`}>在当前页打开</Link>
 					</li>
 				</ul>
 				<div className="nc-workbench-container">{this.props.children}</div>
