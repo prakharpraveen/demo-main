@@ -26,7 +26,7 @@ class App extends Component {
 				let win = window.open(`/#/ifr?ifr=${encodeURIComponent(url)}`, '_blank');
 				win.focus();
 			} else {
-				window.location.hash = `#/ifr?ifr=${encodeURIComponent('http://127.0.0.1:5500/dist/index.html#/')}`;
+				window.location.hash = `#/ifr?ifr=${encodeURIComponent(url)}`;
 			}
 		};
 	}

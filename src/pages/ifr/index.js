@@ -8,11 +8,12 @@ class Ifr extends Component {
 		super(props);
 	}
 	render() {
+		console.log(this.props.location);
 		let { ifrID, ifrName } = this.props.ifrData;
 		let { ifr } = GetQuery(this.props.location.search);
 		let queryUrl = decodeURIComponent(ifr);
-		console.log(this.props.location);
-		return <iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />;
+
+		return <iframe id="mainiframe" src={queryUrl} frameborder="0" scrolling="yes" />;
 	}
 }
 Ifr.propTypes = {
@@ -22,7 +23,6 @@ Ifr.propTypes = {
 };
 export default connect(
 	(state) => {
-		console.log(state);
 		return {
 			ifrData: state.ifrData
 		};
