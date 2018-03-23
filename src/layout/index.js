@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import intl from 'react-intl-universal';
+import PropTypes from 'prop-types';
+import IntlCom from './../intl';
 import './index.less';
-
-export default class Layout extends Component {
+console.log(intl.get('hello'));
+class Layout extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -19,10 +23,17 @@ export default class Layout extends Component {
 					<li>
 						<span onClick={openNew.bind(this, 'http://127.0.0.1:5500/dist/index.html#/')}>在当前页打开</span>
 					</li>
+					<li>
+						<IntlCom />
+					</li>
+					<li>{intl.get('hello')}</li>
 				</ul>
-				{console.log(this.props.children)}
 				<div className='nc-workbench-container'>{this.props.children}</div>
 			</div>
 		);
 	}
 }
+Layout.PropTypes = { appData: PropTypes.object.isRequired };
+export default connect((state) => ({
+	appData: state.appData
+}), {})(Layout);

@@ -1,5 +1,8 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import intl from 'react-intl-universal';
-import Axios from 'axios';
+import PropTypes from 'prop-types';
+import { changeIntlData } from 'Store/appStore/action';
 const SUPPOER_LOCALES = [
 	{
 		name: 'English',
@@ -12,7 +15,7 @@ const SUPPOER_LOCALES = [
 	{
 		name: '繁體中文',
 		value: 'zh-TW'
-	},
+	}
 	// {
 	// 	name: 'français',
 	// 	value: 'fr-FR'
@@ -26,25 +29,28 @@ class ChangeLanguage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			initDone: false
+			initDone: false,
+			currentLocale: 'en-US'
 		};
 	}
 	componentDidMount() {
-		this.loadLocales();
+		this.setState(
+			{
+				currentLocale: navigator.language
+			},
+			this.loadLocales
+		);
 	}
 	loadLocales = () => {
-		let currentLocale = navigator.language;
-		let flag = SUPPOER_LOCALES.find((item) => {
-			return item.value === currentLocale;
-		});
-		if (!flag) {
-			currentLocale = 'en-US';
-		}
-		Axios.get(`./${currentLocale}.json`)
+		let { currentLocale } = this.state;
+		axios({
+			method: 'get',
+			url: `http://127.0.0.1:5500/src/prod-dist/intl/${currentLocale}.json`
+		})
 			.then((res) => {
 				console.log('App locale data', res.data);
 				// init method will load CLDR locale data according to currentLocale
-				return intl.init({
+				intl.init({
 					currentLocale,
 					locales: {
 						[currentLocale]: res.data
@@ -53,27 +59,36 @@ class ChangeLanguage extends Component {
 			})
 			.then(() => {
 				// After loading CLDR locale data, start to render
-				this.setState({ initDone: true });
+				this.props.changeIntlData(true);
 			});
+		// axios.get(`/${currentLocale}.json`)
 	};
 	onSelectLocale = (e) => {
 		let lang = e.target.value;
-		console.log(lang);
+		this.setState(
+			{
+				currentLocale: lang
+			},
+			this.loadLocales
+		);
 	};
 	render() {
+		console.log(intl.get('hello'));
 		return (
-			this.state.initDone && (
-				<select onChange={this.onSelectLocale} defaultValue=''>
-					<option value='' disabled>
-						Change Language
+			<select onChange={this.onSelectLocale} defaultValue=''>
+				<option value='' disabled>
+					Change Language
+				</option>
+				{SUPPOER_LOCALES.map((locale) => (
+					<option key={locale.value} value={locale.value}>
+						{locale.name}
 					</option>
-					{SUPPOER_LOCALES.map((locale) => (
-						<option key={locale.value} value={locale.value}>
-							{locale.name}
-						</option>
-					))}
-				</select>
-			)
+				))}
+			</select>
 		);
 	}
 }
+ChangeLanguage.PropTypes = {
+	changeIntlData: PropTypes.bool.isRequired
+};
+export default connect((state) => ({}), { changeIntlData })(ChangeLanguage);

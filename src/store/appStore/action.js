@@ -7,4 +7,10 @@ export const initAppData = (value) => {
 		value
 	};
 };
-
+// 切换语言
+export const changeIntlData = (value) => {
+	return {
+		type: appStore.CHANGELANG,
+		value
+	};
+};

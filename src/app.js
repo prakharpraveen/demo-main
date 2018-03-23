@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
-import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { initAppData } from 'Store/appStore/action';
 import store from './store';
@@ -17,7 +16,7 @@ class App extends Component {
 		super(props);
 	}
 	componentWillMount() {
-	/**
+		/**
 	 * 在新页签中打开
 	 * @param　{String} url // 目标页面路径
 	 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
@@ -38,13 +37,12 @@ class App extends Component {
 			userInfo: '小明'
 		};
 		this.props.initAppData(data);
-		console.log('ajax');
 	}
 	render() {
 		return <Routes />;
 	}
 }
-const AppStore = connect((state) => ({}), {
+const AppStore = connect((state) => ({ ifrData: state.ifrData }), {
 	initAppData
 })(App);
 ReactDOM.render(

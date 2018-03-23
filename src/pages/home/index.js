@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveFormData, saveImg, clearData } from 'Store/home/action';
+import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import PageLayout from 'Components/PageLayout';
 import './index.less';
 const paths = [
@@ -10,12 +10,6 @@ const paths = [
 	{ mountId: 'app3', path: '/prod-dist/component2/index.a7f2386b.js' }
 ];
 class Home extends Component {
-	static propTypes = {
-		formData: PropTypes.object.isRequired,
-		saveFormData: PropTypes.func.isRequired,
-		saveImg: PropTypes.func.isRequired,
-		clearData: PropTypes.func.isRequired
-	};
 	constructor(props) {
 		super(props);
 	}
@@ -67,13 +61,19 @@ class Home extends Component {
 		);
 	}
 }
+Home.PropTypes = {
+	formData: PropTypes.object.isRequired,
+	changeIntlData: PropTypes.func.isRequired,
+	saveImg: PropTypes.func.isRequired,
+	clearData: PropTypes.func.isRequired
+};
 export default connect(
 	(state) => ({
 		formData: state.formData,
 		proData: state.proData
 	}),
 	{
-		saveFormData,
+		changeIntlData,
 		saveImg,
 		clearData
 	}

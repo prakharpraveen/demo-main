@@ -4,11 +4,6 @@ import PropTypes from 'prop-types';
 import { initIfrData, clearData } from 'Store/ifr/action';
 import { GetQuery } from 'Static/js/utils';
 class Ifr extends Component {
-	static propTypes = {
-		ifrData: PropTypes.object.isRequired,
-		initIfrData: PropTypes.func.isRequired,
-		clearData: PropTypes.func.isRequired
-	};
 	constructor(props) {
 		super(props);
 	}
@@ -20,6 +15,11 @@ class Ifr extends Component {
 		return <iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />;
 	}
 }
+Ifr.propTypes = {
+	ifrData: PropTypes.object.isRequired,
+	initIfrData: PropTypes.func.isRequired,
+	clearData: PropTypes.func.isRequired
+};
 export default connect(
 	(state) => {
 		console.log(state);
