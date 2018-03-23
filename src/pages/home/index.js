@@ -58,7 +58,7 @@ class Home extends Component {
 					<div className='n-col'>
 						<div className='title'>监控分析</div>
 						<div className=' n-row'>
-							<div className='widget-container n-3-1 n-r-2'>1</div>
+							<div className='widget-container n-3-1 n-r-1'>1</div>
 							<div className='widget-container n-3-1 n-r-2'>2</div>
 						</div>
 					</div>

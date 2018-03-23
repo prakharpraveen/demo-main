@@ -6,7 +6,11 @@ import './index.less';
  */
 class PageLayout extends Component {
 	render() {
-		return <div className="page-layout">{this.props.children}</div>;
+		return (
+			<div className='page-scroll'>
+				<div className='page-layout'>{this.props.children}</div>
+			</div>
+		);
 	}
 }
 
