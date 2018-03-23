@@ -45,7 +45,7 @@ class ChangeLanguage extends Component {
 		let { currentLocale } = this.state;
 		axios({
 			method: 'get',
-			url: `http://127.0.0.1:5500/src/prod-dist/intl/${currentLocale}.json`
+			url: `/prod-dist/intl/${currentLocale}.json`
 		})
 			.then((res) => {
 				console.log('App locale data', res.data);
