@@ -7,8 +7,10 @@ import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import PageLayout from 'Components/PageLayout';
 import './index.less';
 const paths = [
-	{ mountId: 'app2', path: '/prod-dist/component1/index.a7f2386b.js' },
-	{ mountId: 'app3', path: '/prod-dist/component2/index.a7f2386b.js' }
+	{ apptype: 'wedget', mountid: 'app', row: '2', column: '4', path: '/prod-dist/component1/index.c5bef5d2.js' },
+	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '2', path: '/prod-dist/component1/index.8b9900d6.js' },
+	{ apptype: 'app', mountid: 'app3', row: '1', column: '1', path: '/prod-dist/component2/index.621db434.js' },
+	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component2/index.9ec8102a.js' }
 ];
 /**
  * 工作桌面 首页 页面
@@ -50,8 +52,12 @@ class Home extends Component {
 	 */
 	createWidgetMountPoint = (widgets) => {
 		return widgets.map((item, index) => {
-			let { mountId } = item;
-			return <div className='widget-container n-6-1 n-r-1' id={mountId} />;
+			let { apptype, mountid, row, column } = item;
+			if (apptype === 'app') {
+				return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
+			} else {
+				return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
+			}
 		});
 	};
 	render() {

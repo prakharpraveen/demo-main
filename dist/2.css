@@ -1,2 +1,2 @@
-.page-scroll{height:calc(100vh - 40px);overflow-y:auto}.page-scroll .page-layout{padding:20px 50px 30px}
+.page-scroll{height:calc(100vh - 40px);overflow-y:auto;-webkit-overflow-scrolling:touch}.page-scroll .page-layout{padding:20px 50px 30px}
 .nc-workbench-home-container .title{font-size:1.2rem}.nc-workbench-home-container .widget-container{margin:12px;border:1px solid #f4f4f4;border-radius:4px;background:#fff;overflow:hidden}

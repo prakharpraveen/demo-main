@@ -24,9 +24,6 @@ class Layout extends Component {
 						<span onClick={openNew.bind(this, 'http://www.china.com.cn/', 'new')}>打开新页签</span>
 					</li>
 					<li>
-						<Link to="/ifr?ifr=http%3A%2F%2Fwww.baidu.com%2F">Home</Link>
-					</li>
-					<li>
 						<span onClick={openNew.bind(this, 'http://www.baidu.com/')}>在当前页打开</span>
 					</li>
 					<li>
