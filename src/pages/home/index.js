@@ -52,11 +52,13 @@ class Home extends Component {
 	 */
 	createWidgetMountPoint = (widgets) => {
 		return widgets.map((item, index) => {
-			let { apptype, mountid, row, column } = item;
-			if (apptype === 'app') {
-				return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
-			} else if (apptype === 'wedget') {
-				return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
+			if (item) {
+				let { apptype, mountid, row, column } = item;
+				if (apptype === 'app') {
+					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
+				} else if (apptype === 'wedget') {
+					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
+				}
 			}
 		});
 	};
@@ -71,6 +73,8 @@ class Home extends Component {
 								paths.map((item) => {
 									if (item.apptype === 'app') {
 										return item;
+									} else {
+										return false;
 									}
 								})
 							)}
@@ -84,6 +88,8 @@ class Home extends Component {
 									paths.map((item) => {
 										if (item.apptype === 'wedget') {
 											return item;
+										} else {
+											return false;
 										}
 									})
 								)}
