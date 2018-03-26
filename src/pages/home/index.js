@@ -7,10 +7,10 @@ import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import PageLayout from 'Components/PageLayout';
 import './index.less';
 const paths = [
-	{ apptype: 'wedget', mountid: 'app', row: '2', column: '4', path: '/prod-dist/component1/index.c5bef5d2.js' },
-	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '2', path: '/prod-dist/component2/index.8b9900d6.js' },
+	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
+	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '1', path: '/prod-dist/component2/index.8b9900d6.js' },
 	{ apptype: 'app', mountid: 'app3', row: '1', column: '1', path: '/prod-dist/component3/index.621db434.js' },
-	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component4/index.9ec8102a.js' }
+	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component4/index.d13337cb.js' }
 ];
 /**
  * 工作桌面 首页 页面
