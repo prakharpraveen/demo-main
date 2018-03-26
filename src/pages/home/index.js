@@ -83,17 +83,15 @@ class Home extends Component {
 					<div className='n-col'>
 						<div className='title'>监控分析</div>
 						<div className=' n-row'>
-							<div className='n-row'>
-								{this.createWidgetMountPoint(
-									paths.map((item) => {
-										if (item.apptype === 'wedget') {
-											return item;
-										} else {
-											return false;
-										}
-									})
-								)}
-							</div>
+							{this.createWidgetMountPoint(
+								paths.map((item) => {
+									if (item.apptype === 'wedget') {
+										return item;
+									} else {
+										return false;
+									}
+								})
+							)}
 						</div>
 					</div>
 				</div>
