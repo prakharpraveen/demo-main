@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { initIfrData, clearData } from 'Store/ifr/action';
 import { GetQuery } from 'Static/js/utils';
+/**
+ * 工作桌面各个应用挂载页面 统一通过 iframe 方式进行加载 
+ */
 class Ifr extends Component {
 	constructor(props) {
 		super(props);

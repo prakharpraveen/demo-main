@@ -3,12 +3,17 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
+// 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
 import './index.less';
 const paths = [
 	{ mountId: 'app2', path: '/prod-dist/component1/index.a7f2386b.js' },
 	{ mountId: 'app3', path: '/prod-dist/component2/index.a7f2386b.js' }
 ];
+/**
+ * 工作桌面 首页 页面
+ * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
+ */
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -18,13 +23,20 @@ class Home extends Component {
 		// 将 HTMLCollection 类数组对象转换成真正的数组
 		let scriptsArray = Array.prototype.slice.call(scripts, 0);
 		let bodyDOM = document.getElementsByTagName('body')[0];
-		paths.map((item) => {
-			if (
-				scriptsArray.find((obj) => {
-					return obj.src !== item.path;
-				})
-			) {
-				// 添加小部件 js
+		// 将所有的 script 标签 src 值数组
+		scriptsArray = scriptsArray.map((scriptItem) => {
+			// script 标签上真正书写的 src 字符串
+			return scriptItem.attributes.src.value;
+		});
+		// paths 后台返回的当前用户首页所有小部件相关内容
+		paths.map((item, index) => {
+			let scriptPath = item.path;
+			// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
+			let flag = scriptsArray.find((scriptsSrc) => {
+				return scriptsSrc === scriptPath;
+			});
+			// 如果没有，进行 script 标签创建及加载指定 js 文件
+			if (typeof flag === 'undefined') {
 				let script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = item.path;
@@ -33,6 +45,7 @@ class Home extends Component {
 		});
 	}
 	/**
+	 * 动态创建小部件挂载容器
 	 * @param {Object} widgets // 小部件类型 
 	 */
 	createWidgetMountPoint = (widgets) => {

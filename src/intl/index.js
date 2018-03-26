@@ -25,6 +25,9 @@ const SUPPOER_LOCALES = [
 	// 	value: 'ja-JP'
 	// }
 ];
+/**
+ * 国际化组件
+ */
 class ChangeLanguage extends Component {
 	constructor(props) {
 		super(props);
@@ -73,7 +76,6 @@ class ChangeLanguage extends Component {
 		);
 	};
 	render() {
-		console.log(intl.get('hello'));
 		return (
 			<select onChange={this.onSelectLocale} defaultValue=''>
 				<option value='' disabled>

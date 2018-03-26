@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import IntlCom from './../intl';
 import './index.less';
-console.log(intl.get('hello'));
+/**
+ * 工作桌面整体布局组件
+ */
 class Layout extends Component {
 	constructor(props) {
 		super(props);

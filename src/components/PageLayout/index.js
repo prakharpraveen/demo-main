@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './index.less';
 /**
- * 页面布局组件
+ * 工作桌面中页面布局组件
  */
 class PageLayout extends Component {
 	render() {
