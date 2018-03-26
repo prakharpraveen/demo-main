@@ -43,6 +43,18 @@ class Home extends Component {
 				script.type = 'text/javascript';
 				script.src = item.path;
 				bodyDOM.appendChild(script);
+			} else {
+				for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
+					const element = scripts[scriptIndex];
+					if (element.attributes.src.value === flag) {
+						console.log(element);
+						bodyDOM.removeChild(element);
+						let script = document.createElement('script');
+						script.type = 'text/javascript';
+						script.src = flag;
+						bodyDOM.appendChild(script);
+					}
+				}
 			}
 		});
 	}
