@@ -28,7 +28,9 @@ class Home extends Component {
 		// 将所有的 script 标签 src 值数组
 		scriptsArray = scriptsArray.map((scriptItem) => {
 			// script 标签上真正书写的 src 字符串
-			return scriptItem.attributes.src.value;
+			if (scriptItem.attributes.src) {
+				return scriptItem.attributes.src.value;
+			}
 		});
 		// paths 后台返回的当前用户首页所有小部件相关内容
 		paths.map((item, index) => {
@@ -46,7 +48,7 @@ class Home extends Component {
 			} else {
 				for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
 					const element = scripts[scriptIndex];
-					if (element.attributes.src.value === flag) {
+					if (element.attributes.src && element.attributes.src.value === flag) {
 						console.log(element);
 						bodyDOM.removeChild(element);
 						let script = document.createElement('script');
