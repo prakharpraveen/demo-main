@@ -6,12 +6,12 @@ import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
 import './index.less';
-const paths = [
-	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
-	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '1', path: '/prod-dist/component2/index.8b9900d6.js' },
-	{ apptype: 'app', mountid: 'app3', row: '1', column: '1', path: '/prod-dist/component3/index.621db434.js' },
-	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component4/index.d13337cb.js' }
-];
+// const paths = [
+// 	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
+// 	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '1', path: '/prod-dist/component2/index.8b9900d6.js' },
+// 	{ apptype: 'app', mountid: 'app3', row: '1', column: '1', path: '/prod-dist/component3/index.621db434.js' },
+// 	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component4/index.d13337cb.js' }
+// ];
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -19,8 +19,23 @@ const paths = [
 class Home extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			paths: []
+		};
 	}
 	componentDidMount() {
+		let { paths } = this.state;
+		axios({
+			method: 'get',
+			url: `pageInfo.json`
+		}).then((res) => {
+			if (res) {
+				this.setState({ paths: res.data.data }, this.createScript);
+			}
+		});
+	}
+	createScript = () => {
+		let { paths } = this.state;
 		let scripts = document.getElementsByTagName('script');
 		// 将 HTMLCollection 类数组对象转换成真正的数组
 		let scriptsArray = Array.prototype.slice.call(scripts, 0);
@@ -59,7 +74,7 @@ class Home extends Component {
 				}
 			}
 		});
-	}
+	};
 	/**
 	 * 动态创建小部件挂载容器
 	 * @param {Object} widgets // 小部件类型 
@@ -77,35 +92,38 @@ class Home extends Component {
 		});
 	};
 	render() {
+		let { paths } = this.state;
 		return (
 			<PageLayout>
 				<div className='nc-workbench-home-container'>
 					<div className='n-col'>
 						<div className='title'>应用</div>
 						<div className='n-row'>
-							{this.createWidgetMountPoint(
-								paths.map((item) => {
-									if (item.apptype === 'app') {
-										return item;
-									} else {
-										return false;
-									}
-								})
-							)}
+							{paths.length > 0 &&
+								this.createWidgetMountPoint(
+									paths.map((item) => {
+										if (item.apptype === 'app') {
+											return item;
+										} else {
+											return false;
+										}
+									})
+								)}
 						</div>
 					</div>
 					<div className='n-col'>
 						<div className='title'>监控分析</div>
 						<div className=' n-row'>
-							{this.createWidgetMountPoint(
-								paths.map((item) => {
-									if (item.apptype === 'wedget') {
-										return item;
-									} else {
-										return false;
-									}
-								})
-							)}
+							{paths.length > 0 &&
+								this.createWidgetMountPoint(
+									paths.map((item) => {
+										if (item.apptype === 'wedget') {
+											return item;
+										} else {
+											return false;
+										}
+									})
+								)}
 						</div>
 					</div>
 				</div>
