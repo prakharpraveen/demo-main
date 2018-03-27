@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 fs.readdir(__dirname, (err, files) => {
 	// console.log(files);
 });
@@ -126,6 +127,7 @@ module.exports = {
 			// chunkFilename: '[id].css'
 		}),
 		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		new CopyWebpackPlugin([ { from: __dirname +'/prod-dist', to: './prod-dist' },{ from: __dirname +'/pageInfo.json', to:''} ])
 	]
 };

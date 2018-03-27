@@ -9,7 +9,7 @@
     <script src="//design.yonyoucloud.com/static/react-dom/16.2.0/umd/react-dom.production.min.js"></script>
     <script src="//design.yonyoucloud.com/static/babel-polyfill/7.0.0-beta.3/polyfill.min.js"></script>
     <script src="//design.yonyoucloud.com/static/axios/0.17.1/axios.min.js"></script>
-    <script src="/static/echarts.min.js"></script>
+    <script src="//mdstatic.netlify.com/file/echarts.min.js"></script>
     <title>Document</title>
     <style>
         body {
@@ -17,30 +17,31 @@
             padding: 0;
         }
 
-        .container {
-            display: flex;
-            flex-flow: row wrap;
-        }
-
         .app {
             width: 20%;
             height: 250px;
-            /* float: left; */
             border: rgb(54, 54, 54) 1px solid;
             margin: 5px;
-            flex: 1;
             border-radius: 15px;
         }
 
         #app {
+            width: 40%;
             /* .appHeight*2+margin*2+border-width*2 */
             height: 512px;
+            
+        }
+        #app3 {
+            width: 100%;
+            /* .appHeight*2+margin*2+border-width*2 */
+            height: 512px;
+            
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }'>
         <div id="app" class="app">
 
         </div>
@@ -48,12 +49,27 @@
 
         </div>
         <div id="app3" class="app">
-
+3
         </div>
         <div id="app4" class="app">
-
+4
         </div>
+        <div id="app5" class="app">
+5
+            </div>
+            <div id="app6" class="app">
+6
+                </div>
+                <div id="app7" class="app">
+7
+                    </div>
+                    <div id="app8" class="app">
+8
+                        </div>
+                        <div id="app9" class="app">
+9
+                            </div>
     </div>
-<script type="text/javascript" src="./component1/index.c5bef5d2.js"></script><script type="text/javascript" src="./component2/index.8b9900d6.js"></script><script type="text/javascript" src="./component3/index.621db434.js"></script><script type="text/javascript" src="./component4/index.d13337cb.js"></script></body>
+<script type="text/javascript" src="./component1/index.3ab4826f.js"></script><script type="text/javascript" src="./component2/index.cf716ae6.js"></script><script type="text/javascript" src="./component3/index.9f8b85fe.js"></script></body>
 
 </html>

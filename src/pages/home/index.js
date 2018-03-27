@@ -112,7 +112,7 @@ class Home extends Component {
 						</div>
 					</div>
 					<div className='n-col'>
-						<div className='title'>监控分析</div>
+						<div className='title'>监控分析233</div>
 						<div className=' n-row'>
 							{paths.length > 0 &&
 								this.createWidgetMountPoint(

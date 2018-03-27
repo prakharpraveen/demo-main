@@ -3,6 +3,7 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 fs.readdir(__dirname, (err, files) => {
 	// console.log(files);
 });
@@ -121,6 +122,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(
 			[ 'dist' ] //匹配删除的文件
-		)
+		),
+		new CopyWebpackPlugin([ { from: __dirname +'/prod-dist', to: './prod-dist' },{ from: __dirname +'/pageInfo.json', to:''} ])
 	]
 };
