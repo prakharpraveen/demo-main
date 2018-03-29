@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import GridLayout from 'react-grid-layout';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 import './index.less';
 // const paths = [
 // 	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
@@ -30,7 +33,7 @@ class Home extends Component {
 			url: `pageInfo.json`
 		}).then((res) => {
 			if (res) {
-				this.setState({ paths: res.data.data }, this.createScript);
+				// this.setState({ paths: res.data.data }, this.createScript);
 			}
 		});
 	}
@@ -91,11 +94,8 @@ class Home extends Component {
 			}
 		});
 	};
-	render() {
-		let { paths } = this.state;
-		return (
-			<PageLayout>
-				<div className='nc-workbench-home-container'>
+	/**
+	 * <div className='nc-workbench-home-container'>
 					<div className='n-col'>
 						<div className='title'>应用</div>
 						<div className='n-row'>
@@ -127,6 +127,104 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
+	 */
+	render() {
+		let { paths } = this.state;
+		let layout = [
+			{ i: 'a', x: 0, y: 0, w: 1, h: 2, static: false },
+			{ i: 'b', x: 1, y: 0, w: 1, h: 2, minW: 1, maxW: 4, minH: 2, maxH: 8 },
+			{ i: 'c', x: 2, y: 0, w: 1, h: 2 },
+			{ i: 'd', x: 3, y: 0, w: 1, h: 2, static: false },
+			{ i: 'e', x: 4, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
+			{ i: 'f', x: 5, y: 0, w: 1, h: 2 },
+			{ i: 'g', x: 6, y: 0, w: 1, h: 2, static: false },
+			{ i: 'h', x: 7, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
+			{ i: 'i', x: 8, y: 0, w: 1, h: 2 },
+			{ i: 'j', x: 9, y: 0, w: 1, h: 2, static: false },
+			{ i: 'k', x: 10, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
+			{ i: 'l', x: 11, y: 0, w: 1, h: 2 },
+			{ i: 'm', x: 0, y: 2, w: 1, h: 2, static: false },
+			{ i: 'n', x: 1, y: 2, w: 1, h: 2, minW: 1, maxW: 4 },
+			{ i: 'o', x: 2, y: 2, w: 1, h: 2 }
+		];
+		return (
+			<PageLayout>
+				<GridLayout
+					className='layout'
+					layout={layout}
+					compactType='horizontal'
+					cols={12}
+					width={1200}
+					rowHeight={30}
+					breakpoints={{
+						lg: 1200,
+						md: 996,
+						sm: 768,
+						xs: 480,
+						xxs: 0
+					}}
+					cols={{
+						lg: 12,
+						md: 10,
+						sm: 6,
+						xs: 4,
+						xxs: 2
+					}}
+					onBreakpointChange={(newBreakpoint, newCols) => {
+						console.log(newBreakpoint);
+						console.log(newCols);
+					}}
+					onLayoutChange={(currentLayout, allLayouts) => {
+						console.log(currentLayout);
+						console.log(allLayouts);
+					}}
+				>
+					<div style={{ background: '#ffffff' }} key='a'>
+						a
+					</div>
+					<div style={{ background: '#ffffff' }} key='b'>
+						b
+					</div>
+					<div style={{ background: '#ffffff' }} key='c'>
+						c
+					</div>
+					<div style={{ background: '#ffffff' }} key='d'>
+						d
+					</div>
+					<div style={{ background: '#ffffff' }} key='e'>
+						e
+					</div>
+					<div style={{ background: '#ffffff' }} key='f'>
+						f
+					</div>
+					<div style={{ background: '#ffffff' }} key='g'>
+						g
+					</div>
+					<div style={{ background: '#ffffff' }} key='h'>
+						h
+					</div>
+					<div style={{ background: '#ffffff' }} key='i'>
+						i
+					</div>
+					<div style={{ background: '#ffffff' }} key='j'>
+						j
+					</div>
+					<div style={{ background: '#ffffff' }} key='k'>
+						k
+					</div>
+					<div style={{ background: '#ffffff' }} key='l'>
+						l
+					</div>
+					<div style={{ background: '#ffffff' }} key='m'>
+						m
+					</div>
+					<div style={{ background: '#ffffff' }} key='n'>
+						n
+					</div>
+					<div style={{ background: '#ffffff' }} key='o'>
+						o
+					</div>
+				</GridLayout>
 			</PageLayout>
 		);
 	}
