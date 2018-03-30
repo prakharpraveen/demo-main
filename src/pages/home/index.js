@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import RGL, { WidthProvider } from "react-grid-layout";
+import RGL, { WidthProvider } from 'react-grid-layout';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
@@ -148,7 +148,7 @@ class Home extends Component {
 			{ i: 'o', x: 2, y: 2, w: 1, h: 1 }
 		];
 		return (
-			// <PageLayout>
+			<PageLayout>
 				<GridLayout
 					className='layout'
 					layout={layout}
@@ -172,7 +172,6 @@ class Home extends Component {
 					// 	console.log(allLayouts);
 					// }}
 				>
-
 					{/* {paths.length > 0 &&
 					this.createWidgetMountPoint(
 						paths.map((item) => {
@@ -184,17 +183,15 @@ class Home extends Component {
 						})
 					)} */}
 
-					<div id="app" style={{ background: '#ffffff' }} key='a'>
-					</div>
-					<div id="app2"  style={{ background: '#ffffff' }} key='b'>
-					</div>
-					<div id="app3" style={{ background: '#ffffff' }} key='c'>
+					<div id='app' style={{ background: '#ffffff' }} key='a' />
+					<div id='app2' style={{ background: '#ffffff' }} key='b' />
+					<div id='app3' style={{ background: '#ffffff' }} key='c'>
 						c
 					</div>
 					<div style={{ background: '#ffffff' }} key='d'>
 						d
 					</div>
-					<div  style={{ background: '#ffffff' }} key='e'>
+					<div style={{ background: '#ffffff' }} key='e'>
 						e
 					</div>
 					<div style={{ background: '#ffffff' }} key='f'>
@@ -228,7 +225,7 @@ class Home extends Component {
 						o
 					</div>
 				</GridLayout>
-			// </PageLayout>
+			</PageLayout>
 		);
 	}
 }
