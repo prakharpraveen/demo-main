@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import GridLayout from 'react-grid-layout';
+import RGL, { WidthProvider } from "react-grid-layout";
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 import './index.less';
+
+const GridLayout = WidthProvider(RGL);
 // const paths = [
 // 	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
 // 	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '1', path: '/prod-dist/component2/index.8b9900d6.js' },
@@ -33,7 +33,7 @@ class Home extends Component {
 			url: `pageInfo.json`
 		}).then((res) => {
 			if (res) {
-				// this.setState({ paths: res.data.data }, this.createScript);
+				this.setState({ paths: res.data.data }, this.createScript);
 			}
 		});
 	}
@@ -87,9 +87,9 @@ class Home extends Component {
 			if (item) {
 				let { apptype, mountid, row, column } = item;
 				if (apptype === 'app') {
-					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
+					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} key='a' />;
 				} else if (apptype === 'wedget') {
-					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
+					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} key='a' />;
 				}
 			}
 		});
@@ -131,31 +131,31 @@ class Home extends Component {
 	render() {
 		let { paths } = this.state;
 		let layout = [
-			{ i: 'a', x: 0, y: 0, w: 1, h: 2, static: false },
-			{ i: 'b', x: 1, y: 0, w: 1, h: 2, minW: 1, maxW: 4, minH: 2, maxH: 8 },
+			{ i: 'a', x: 0, y: 0, w: 2, h: 2, static: true },
+			{ i: 'b', x: 1, y: 0, w: 1, h: 1, minW: 1, maxW: 4, minH: 2, maxH: 8 },
 			{ i: 'c', x: 2, y: 0, w: 1, h: 2 },
-			{ i: 'd', x: 3, y: 0, w: 1, h: 2, static: false },
-			{ i: 'e', x: 4, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
-			{ i: 'f', x: 5, y: 0, w: 1, h: 2 },
-			{ i: 'g', x: 6, y: 0, w: 1, h: 2, static: false },
-			{ i: 'h', x: 7, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
-			{ i: 'i', x: 8, y: 0, w: 1, h: 2 },
-			{ i: 'j', x: 9, y: 0, w: 1, h: 2, static: false },
-			{ i: 'k', x: 10, y: 0, w: 1, h: 2, minW: 1, maxW: 4 },
-			{ i: 'l', x: 11, y: 0, w: 1, h: 2 },
-			{ i: 'm', x: 0, y: 2, w: 1, h: 2, static: false },
-			{ i: 'n', x: 1, y: 2, w: 1, h: 2, minW: 1, maxW: 4 },
-			{ i: 'o', x: 2, y: 2, w: 1, h: 2 }
+			{ i: 'd', x: 3, y: 0, w: 2, h: 1, static: false },
+			{ i: 'e', x: 3, y: 1, w: 1, h: 1, minW: 1, maxW: 4 },
+			{ i: 'f', x: 2, y: 1, w: 1, h: 1 },
+			{ i: 'g', x: 5, y: 0, w: 1, h: 1, static: false },
+			{ i: 'h', x: 6, y: 0, w: 1, h: 1, minW: 1, maxW: 4 },
+			{ i: 'i', x: 3, y: 2, w: 1, h: 1 },
+			{ i: 'j', x: 4, y: 2, w: 1, h: 1, static: false },
+			{ i: 'k', x: 0, y: 3, w: 1, h: 1, minW: 1, maxW: 4 },
+			{ i: 'l', x: 1, y: 3, w: 1, h: 1 },
+			{ i: 'm', x: 0, y: 2, w: 1, h: 1, static: false },
+			{ i: 'n', x: 1, y: 2, w: 1, h: 1, minW: 1, maxW: 4 },
+			{ i: 'o', x: 2, y: 2, w: 1, h: 1 }
 		];
 		return (
-			<PageLayout>
+			// <PageLayout>
 				<GridLayout
 					className='layout'
 					layout={layout}
 					compactType='horizontal'
-					cols={12}
+					cols={6}
 					width={1200}
-					rowHeight={30}
+					rowHeight={250}
 					breakpoints={{
 						lg: 1200,
 						md: 996,
@@ -163,35 +163,38 @@ class Home extends Component {
 						xs: 480,
 						xxs: 0
 					}}
-					cols={{
-						lg: 12,
-						md: 10,
-						sm: 6,
-						xs: 4,
-						xxs: 2
-					}}
-					onBreakpointChange={(newBreakpoint, newCols) => {
-						console.log(newBreakpoint);
-						console.log(newCols);
-					}}
-					onLayoutChange={(currentLayout, allLayouts) => {
-						console.log(currentLayout);
-						console.log(allLayouts);
-					}}
+					// onBreakpointChange={(newBreakpoint, newCols) => {
+					// 	console.log(newBreakpoint);
+					// 	console.log(newCols);
+					// }}
+					// onLayoutChange={(currentLayout, allLayouts) => {
+					// 	console.log(currentLayout);
+					// 	console.log(allLayouts);
+					// }}
 				>
-					<div style={{ background: '#ffffff' }} key='a'>
-						a
+
+					{/* {paths.length > 0 &&
+					this.createWidgetMountPoint(
+						paths.map((item) => {
+							if (item.apptype === 'wedget') {
+								return item;
+							} else {
+								return false;
+							}
+						})
+					)} */}
+
+					<div id="app" style={{ background: '#ffffff' }} key='a'>
 					</div>
-					<div style={{ background: '#ffffff' }} key='b'>
-						b
+					<div id="app2"  style={{ background: '#ffffff' }} key='b'>
 					</div>
-					<div style={{ background: '#ffffff' }} key='c'>
+					<div id="app3" style={{ background: '#ffffff' }} key='c'>
 						c
 					</div>
 					<div style={{ background: '#ffffff' }} key='d'>
 						d
 					</div>
-					<div style={{ background: '#ffffff' }} key='e'>
+					<div  style={{ background: '#ffffff' }} key='e'>
 						e
 					</div>
 					<div style={{ background: '#ffffff' }} key='f'>
@@ -225,7 +228,7 @@ class Home extends Component {
 						o
 					</div>
 				</GridLayout>
-			</PageLayout>
+			// </PageLayout>
 		);
 	}
 }

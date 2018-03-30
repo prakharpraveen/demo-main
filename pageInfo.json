@@ -3,16 +3,23 @@
 		{
 			"apptype": "wedget",
 			"mountid": "app",
-			"row": "2",
+			"row": "1",
+			"column": "1",
+			"path": "/prod-dist/platform-widgets/widget/index.65e0f8a4.js"
+		},
+		{
+			"apptype": "wedget",
+			"mountid": "app2",
+			"row": "1",
 			"column": "2",
-			"path": "/prod-dist/component1/index.3ab4826f.js"
+			"path": "/prod-dist/platform-widgets/widget1/index.e5592a3e.js"
 		},
 		{
 			"apptype": "app",
-			"mountid": "app2",
+			"mountid": "app3",
 			"row": "1",
-			"column": "1",
-			"path": "/prod-dist/component2/index.cf716ae6.js"
+			"column": "3",
+			"path": "/prod-dist/platform-widgets/widget2/index.feede34e.js"
 		}
 	]
 }
