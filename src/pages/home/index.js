@@ -2,19 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import RGL, { WidthProvider } from 'react-grid-layout';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
 import './index.less';
 
-const GridLayout = WidthProvider(RGL);
-// const paths = [
-// 	{ apptype: 'wedget', mountid: 'app', row: '2', column: '2', path: '/prod-dist/component1/index.c5bef5d2.js' },
-// 	{ apptype: 'wedget', mountid: 'app2', row: '2', column: '1', path: '/prod-dist/component2/index.8b9900d6.js' },
-// 	{ apptype: 'app', mountid: 'app3', row: '1', column: '1', path: '/prod-dist/component3/index.621db434.js' },
-// 	{ apptype: 'app', mountid: 'app4', row: '1', column: '1', path: '/prod-dist/component4/index.d13337cb.js' }
-// ];
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -87,19 +79,31 @@ class Home extends Component {
 			if (item) {
 				let { apptype, mountid, row, column } = item;
 				if (apptype === 'app') {
-					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} key='a' />;
+					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
 				} else if (apptype === 'wedget') {
-					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} key='a' />;
+					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
 				}
 			}
 		});
 	};
-	/**
-	 * <div className='nc-workbench-home-container'>
+
+	render() {
+		let { paths, layout } = this.state;
+		return (
+			<PageLayout>
+				<div className='nc-workbench-home-container'>
+					<ul className='n-tabs'>
+						<li>
+							<span name='no1'>To 分类一</span>
+						</li>
+						<li>
+							<span name='no2'>To 分类二</span>
+						</li>
+					</ul>
 					<div className='n-col'>
-						<div className='title'>应用</div>
+						<div className='title'>分类一</div>
 						<div className='n-row'>
-							{paths.length > 0 &&
+							{/* {paths.length > 0 &&
 								this.createWidgetMountPoint(
 									paths.map((item) => {
 										if (item.apptype === 'app') {
@@ -108,11 +112,12 @@ class Home extends Component {
 											return false;
 										}
 									})
-								)}
+								)} */}
+							{createItem()}
 						</div>
 					</div>
 					<div className='n-col'>
-						<div className='title'>监控分析233</div>
+						<div className='title'>分类二</div>
 						<div className=' n-row'>
 							{paths.length > 0 &&
 								this.createWidgetMountPoint(
@@ -127,108 +132,23 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
-	 */
-	render() {
-		let { paths } = this.state;
-		let layout = [
-			{ i: 'a', x: 0, y: 0, w: 2, h: 2, static: true },
-			{ i: 'b', x: 1, y: 0, w: 1, h: 1, minW: 1, maxW: 4, minH: 2, maxH: 8 },
-			{ i: 'c', x: 2, y: 0, w: 1, h: 2 },
-			{ i: 'd', x: 3, y: 0, w: 2, h: 1, static: false },
-			{ i: 'e', x: 3, y: 1, w: 1, h: 1, minW: 1, maxW: 4 },
-			{ i: 'f', x: 2, y: 1, w: 1, h: 1 },
-			{ i: 'g', x: 5, y: 0, w: 1, h: 1, static: false },
-			{ i: 'h', x: 6, y: 0, w: 1, h: 1, minW: 1, maxW: 4 },
-			{ i: 'i', x: 3, y: 2, w: 1, h: 1 },
-			{ i: 'j', x: 4, y: 2, w: 1, h: 1, static: false },
-			{ i: 'k', x: 0, y: 3, w: 1, h: 1, minW: 1, maxW: 4 },
-			{ i: 'l', x: 1, y: 3, w: 1, h: 1 },
-			{ i: 'm', x: 0, y: 2, w: 1, h: 1, static: false },
-			{ i: 'n', x: 1, y: 2, w: 1, h: 1, minW: 1, maxW: 4 },
-			{ i: 'o', x: 2, y: 2, w: 1, h: 1 }
-		];
-		return (
-			<PageLayout>
-				<GridLayout
-					className='layout'
-					layout={layout}
-					compactType='horizontal'
-					cols={6}
-					width={1200}
-					rowHeight={250}
-					breakpoints={{
-						lg: 1200,
-						md: 996,
-						sm: 768,
-						xs: 480,
-						xxs: 0
-					}}
-					// onBreakpointChange={(newBreakpoint, newCols) => {
-					// 	console.log(newBreakpoint);
-					// 	console.log(newCols);
-					// }}
-					// onLayoutChange={(currentLayout, allLayouts) => {
-					// 	console.log(currentLayout);
-					// 	console.log(allLayouts);
-					// }}
-				>
-					{/* {paths.length > 0 &&
-					this.createWidgetMountPoint(
-						paths.map((item) => {
-							if (item.apptype === 'wedget') {
-								return item;
-							} else {
-								return false;
-							}
-						})
-					)} */}
-
-					<div id='app' style={{ background: '#ffffff' }} key='a' />
-					<div id='app2' style={{ background: '#ffffff' }} key='b' />
-					<div id='app3' style={{ background: '#ffffff' }} key='c'>
-						c
-					</div>
-					<div style={{ background: '#ffffff' }} key='d'>
-						d
-					</div>
-					<div style={{ background: '#ffffff' }} key='e'>
-						e
-					</div>
-					<div style={{ background: '#ffffff' }} key='f'>
-						f
-					</div>
-					<div style={{ background: '#ffffff' }} key='g'>
-						g
-					</div>
-					<div style={{ background: '#ffffff' }} key='h'>
-						h
-					</div>
-					<div style={{ background: '#ffffff' }} key='i'>
-						i
-					</div>
-					<div style={{ background: '#ffffff' }} key='j'>
-						j
-					</div>
-					<div style={{ background: '#ffffff' }} key='k'>
-						k
-					</div>
-					<div style={{ background: '#ffffff' }} key='l'>
-						l
-					</div>
-					<div style={{ background: '#ffffff' }} key='m'>
-						m
-					</div>
-					<div style={{ background: '#ffffff' }} key='n'>
-						n
-					</div>
-					<div style={{ background: '#ffffff' }} key='o'>
-						o
-					</div>
-				</GridLayout>
 			</PageLayout>
 		);
 	}
 }
+
+const createItem = () => {
+	let itemDoms = [];
+	for (let index = 0; index < 30; index++) {
+		itemDoms.push(
+			<div className={`widget-container n-6-1 n-r-1`}>
+				<span>{index}</span>
+			</div>
+		);
+	}
+	return itemDoms;
+};
+
 Home.PropTypes = {
 	formData: PropTypes.object.isRequired,
 	changeIntlData: PropTypes.func.isRequired,

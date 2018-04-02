@@ -5,6 +5,14 @@ body {
 #ncc {
 	overflow: hidden;
 }
+ul {
+	margin: 0;
+	padding: 0;
+	li {
+		list-style-type: none;
+	}
+}
+
 @RowWidth: 100%;
 /**
 *  所占列 设置函数
@@ -17,6 +25,7 @@ body {
 
 .n-row {
 	display: flex;
+	flex-wrap: wrap;
 	flex: 1;
 }
 .n-col {
