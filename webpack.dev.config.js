@@ -3,10 +3,13 @@ const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 fs.readdir(__dirname, (err, files) => {
 	// console.log(files);
 });
+const port = 3006;
+const host = 'localhost';
 module.exports = {
 	/**
 	 * mode 
@@ -25,10 +28,11 @@ module.exports = {
 	},
 	devServer: {
 		contentBase: path.join(__dirname, 'dist'),
+		port: port, // 端口号
+		host: host, // 主机地址
 		inline: true,
 		hot: true,
-		open: true,
-		port: 3000,
+		open: false,
 		lazy: false,
 		historyApiFallback: {
 			rewrites: { from: /./, to: '/404.html' },
@@ -108,7 +112,7 @@ module.exports = {
 			Assets: path.resolve(__dirname, 'src/assets/'),
 			Pages: path.resolve(__dirname, 'src/pages/'),
 			Static: path.resolve(__dirname, 'src/static/'),
-			Store: path.resolve(__dirname, 'src/store/'),
+			Store: path.resolve(__dirname, 'src/store/')
 		}
 	},
 	plugins: [
@@ -128,6 +132,10 @@ module.exports = {
 		}),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
-		new CopyWebpackPlugin([ { from: __dirname +'/prod-dist', to: './prod-dist' },{ from: __dirname +'/pageInfo.json', to:''} ])
+		new OpenBrowserPlugin({ url: `http://${host}:${port}` }),
+		new CopyWebpackPlugin([
+			{ from: __dirname + '/prod-dist', to: './prod-dist' },
+			{ from: __dirname + '/pageInfo.json', to: '' }
+		])
 	]
 };
