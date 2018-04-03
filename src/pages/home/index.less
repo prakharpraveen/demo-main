@@ -1,19 +1,4 @@
 .nc-workbench-home-container {
-	.n-tabs {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		height: 40px;
-		li {
-			margin-right: 10px;
-			span {
-				cursor: pointer;
-				&:hover {
-					color: #e4a;
-				}
-			}
-		}
-	}
 	.title {
 		font-size: 1.2rem;
 	}
@@ -36,7 +21,22 @@
 		height: 24px;
 	}
 }
-.react-grid-item:not(.react-grid-placeholder) {
-	background: #ccc;
-	border: 1px solid black;
+.n-tabs {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 40px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	li {
+		margin-right: 10px;
+		span {
+			cursor: pointer;
+			&:hover {
+				color: #e4a;
+			}
+		}
+	}
 }

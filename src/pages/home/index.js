@@ -21,11 +21,14 @@ class Home extends Component {
 	componentDidMount() {
 		let { paths } = this.state;
 		axios({
-			method: 'get',
-			url: `pageInfo.json`
+			method: 'post',
+			url: `/nccloud/nccplatform/appregister/query.do`
 		}).then((res) => {
 			if (res) {
-				this.setState({ paths: res.data.data }, this.createScript);
+				let { data, success } = res.data;
+				if (success) {
+					this.setState({ paths: data }, this.createScript);
+				}
 			}
 		});
 	}
@@ -44,27 +47,29 @@ class Home extends Component {
 		});
 		// paths 后台返回的当前用户首页所有小部件相关内容
 		paths.map((item, index) => {
-			let scriptPath = item.path;
-			// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
-			let flag = scriptsArray.find((scriptsSrc) => {
-				return scriptsSrc === scriptPath;
-			});
-			// 如果没有，进行 script 标签创建及加载指定 js 文件
-			if (typeof flag === 'undefined') {
-				let script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = item.path;
-				bodyDOM.appendChild(script);
-			} else {
-				for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
-					const element = scripts[scriptIndex];
-					if (element.attributes.src && element.attributes.src.value === flag) {
-						console.log(element);
-						bodyDOM.removeChild(element);
-						let script = document.createElement('script');
-						script.type = 'text/javascript';
-						script.src = flag;
-						bodyDOM.appendChild(script);
+			let { target_path, apptype } = item;
+			if (apptype === '2') {
+				let scriptPath = target_path;
+				// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
+				let flag = scriptsArray.find((scriptsSrc) => {
+					return scriptsSrc === scriptPath;
+				});
+				// 如果没有，进行 script 标签创建及加载指定 js 文件
+				if (typeof flag === 'undefined') {
+					let script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = target_path;
+					bodyDOM.appendChild(script);
+				} else {
+					for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
+						const element = scripts[scriptIndex];
+						if (element.attributes.src && element.attributes.src.value === flag) {
+							bodyDOM.removeChild(element);
+							let script = document.createElement('script');
+							script.type = 'text/javascript';
+							script.src = flag;
+							bodyDOM.appendChild(script);
+						}
 					}
 				}
 			}
@@ -77,47 +82,58 @@ class Home extends Component {
 	createWidgetMountPoint = (widgets) => {
 		return widgets.map((item, index) => {
 			if (item) {
-				let { apptype, mountid, row, column } = item;
-				if (apptype === 'app') {
-					return <div className={`widget-container n-6-${column} n-r-${row}`} id={mountid} />;
-				} else if (apptype === 'wedget') {
-					return <div className={`widget-container n-3-${column} n-r-${row}`} id={mountid} />;
+				let { apptype, width, height } = item;
+				// 1 为效应用户
+				if (apptype === '1') {
+					return <div className={`widget-container n-6-${width} n-r-${height}`} />;
+					// 2 为小部件
+				} else if (apptype === '2') {
+					return <div className={`widget-container n-3-${width} n-r-${height}`} id={item.mountid} />;
 				}
 			}
 		});
 	};
 
 	render() {
-		let { paths, layout } = this.state;
+		let { paths } = this.state;
 		return (
 			<PageLayout>
 				<div className='nc-workbench-home-container'>
 					<ul className='n-tabs'>
 						<li>
-							<span name='no1'>To 分类一</span>
+							<span
+								name='no1'
+								onClick={() => {
+									scrollToAnchor('no1');
+								}}
+							>
+								To 分类一
+							</span>
 						</li>
 						<li>
-							<span name='no2'>To 分类二</span>
+							<span
+								onClick={() => {
+									scrollToAnchor('no2');
+								}}
+								name='no2'
+							>
+								To 分类二
+							</span>
 						</li>
 					</ul>
 					<div className='n-col'>
-						<div className='title'>分类一</div>
+						<div id='no1' className='title'>
+							分类一
+						</div>
 						<div className='n-row'>
-							{/* {paths.length > 0 &&
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										if (item.apptype === 'app') {
-											return item;
-										} else {
-											return false;
-										}
-									})
-								)} */}
+							{/* {this.createWidgetMountPoint(paths)} */}
 							{createItem()}
 						</div>
 					</div>
 					<div className='n-col'>
-						<div className='title'>分类二</div>
+						<div id='no2' className='title'>
+							分类二
+						</div>
 						<div className=' n-row'>
 							{paths.length > 0 &&
 								this.createWidgetMountPoint(
@@ -147,6 +163,16 @@ const createItem = () => {
 		);
 	}
 	return itemDoms;
+};
+const scrollToAnchor = (anchorName) => {
+	if (anchorName) {
+		let anchorElement = document.getElementById(anchorName);
+		if (anchorElement) {
+			anchorElement.scrollIntoView({
+				behavior: 'smooth'
+			});
+		}
+	}
 };
 
 Home.PropTypes = {

@@ -8,8 +8,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 fs.readdir(__dirname, (err, files) => {
 	// console.log(files);
 });
-const port = 3006;
-const host = 'localhost';
+const port = 3000;
+const host = '127.0.0.1';
 module.exports = {
 	/**
 	 * mode 
@@ -48,7 +48,7 @@ module.exports = {
 		proxy: {
 			'/': {
 				// 代理地址
-				target: 'http://10.11.23.78',
+				target: 'http://10.11.115.25:80',
 				bypass: function(req, res, proxyOptions) {
 					if (req.headers.accept.indexOf('html') !== -1) {
 						// console.log('Skipping proxy for browser request.');
