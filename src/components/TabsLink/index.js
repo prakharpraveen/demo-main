@@ -9,15 +9,15 @@ const tabs = [
 	{
 		anchor: 'no2',
 		text: '分组二'
-	},
-	{
-		anchor: 'no3',
-		text: '分组三'
-	},
-	{
-		anchor: 'no4',
-		text: '分组四'
 	}
+	// {
+	// 	anchor: 'no3',
+	// 	text: '分组三'
+	// },
+	// {
+	// 	anchor: 'no4',
+	// 	text: '分组四'
+	// }
 ];
 class TabsLink extends Component {
 	constructor(props, context) {

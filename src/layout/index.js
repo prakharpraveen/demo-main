@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import intl from 'react-intl-universal';
+import Drawer from 'react-motion-drawer';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import IntlCom from './../intl';
@@ -12,13 +13,27 @@ import './index.less';
 class Layout extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			isOpen: false
+		};
 	}
+	handleDrawerChange = (isOpen) => {
+		this.setState({ isOpen });
+	};
 	render() {
+		let { isOpen } = this.state;
 		return (
 			<div className="nc-workbench-layout">
 				<nav className="nc-workbench-nav nccwb-header">
 					<div className="nav-left n-left n-v-middle">
-						<div className="nc-workbench-hp margin-right-10">
+						<div
+							className="nc-workbench-hp margin-right-10"
+							onClick={() => {
+								this.setState({
+									isOpen: !isOpen
+								});
+							}}
+						>
 							<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo" />
 						</div>
 						<div>集团切换</div>
@@ -48,6 +63,13 @@ class Layout extends Component {
 					</ul> */}
 				</nav>
 				<div className="nc-workbench-container">{this.props.children}</div>
+				<Drawer className="nc-workbench-drawer" open={isOpen} onChange={this.handleDrawerChange}>
+					<div className="drawer-top">
+						<div className="drawer-logo">
+							<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo" />
+						</div>
+					</div>
+				</Drawer>
 			</div>
 		);
 	}
