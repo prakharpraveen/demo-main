@@ -57,9 +57,9 @@ class Home extends Component {
 		});
 		// paths 后台返回的当前用户首页所有小部件相关内容
 		paths.map((item, index) => {
-			let { target_path, apptype } = item;
+			let { path, apptype } = item;
 			if (apptype === '2') {
-				let scriptPath = target_path;
+				let scriptPath = path;
 				// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
 				let flag = scriptsArray.find((scriptsSrc) => {
 					return scriptsSrc === scriptPath;
@@ -68,7 +68,7 @@ class Home extends Component {
 				if (typeof flag === 'undefined') {
 					let script = document.createElement('script');
 					script.type = 'text/javascript';
-					script.src = target_path;
+					script.src = path;
 					bodyDOM.appendChild(script);
 				} else {
 					for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
@@ -85,6 +85,26 @@ class Home extends Component {
 			}
 		});
 	};
+
+	/**
+	 * 动态创建小应用
+	 * @param {Object} appOption // 小部件类型 
+	 */
+	createApp = (appOption, domWidth, domHeight) => {
+		const { img_src, name, mountid, target_path } = appOption;
+		return (
+			<div className="grid-item" id={mountid} style={{ width: domWidth, height: domHeight }}
+				onClick={() => {
+					window.openNew(target_path)
+				}}>
+				<p>{name}</p>
+				<hr />
+				<img src={img_src} alt={name} />
+			</div>
+		);
+	}
+
+
 	/**
 	 * 动态创建小部件挂载容器
 	 * @param {Object} widgets // 小部件类型 
@@ -93,12 +113,12 @@ class Home extends Component {
 		return widgets.map((item, index) => {
 			if (item) {
 				let { apptype, width, height } = item;
-				// 1 为效应用户
+				const domWidth = Number(width) * 170;
+				const domHeight = Number(height) * 170;
 				if (apptype === '1') {
-					return <div className={`grid-item`} />;
-					// 2 为小部件
+					return this.createApp(item, domWidth, domHeight);
 				} else if (apptype === '2') {
-					return <div className={`grid-item`} id={item.mountid} />;
+					return <div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />;
 				}
 			}
 		});
@@ -145,7 +165,8 @@ class Home extends Component {
 							分类二
 						</div>
 						<div class="grid" >
-							{paths.length > 0 &&
+							{
+								paths.length > 0 &&
 								this.createWidgetMountPoint(
 									paths.map((item) => {
 										return item;
