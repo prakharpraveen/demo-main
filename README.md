@@ -1,12 +1,13 @@
-## NC Cloud 工作台
+# NC Cloud 工作台 &middot; ![node version](https://img.shields.io/badge/node-8.10.0-brightgreen.svg) ![npm version](https://img.shields.io/badge/npm-5.6.0-blue.svg)  ![webpack version](https://img.shields.io/badge/webpack-4.1.1-blue.svg)
+## 浏览器兼容
 
-### 演示地址
+## 演示地址
 http://nccloud.netlify.com
 
-### 描述
+## 描述
 服务于 NC 各个模块节点页面，各模块节点挂载在工作台中实现整个节点页面的完整性。
 
-### 功能描述
+## 功能描述
 - 用户登录
 - 用户信息
 - 组织切换
@@ -16,10 +17,10 @@ http://nccloud.netlify.com
 - 主题切换
 - 其他...
 
-### 技术栈
+## 技术栈
 react + redux + webpack + react-router + ES6/7/8
 
-### 相关依赖
+## 相关依赖
 ```javascript
 // 项目基础依赖
 "dependencies": {
@@ -60,7 +61,7 @@ react + redux + webpack + react-router + ES6/7/8
 }
 ```
 
-### 源码目录结构
+## 源码目录结构
 > 文件夹 src
 ```
 ├── assets                  // 项目媒体资源文件夹
@@ -89,7 +90,7 @@ react + redux + webpack + react-router + ES6/7/8
 └── index.html              // 项目 HTML 模板
 ```
 
-### 启动 (开发模式)
+## 启动 (开发模式)
 ```
 git clone https://github.com/glud123/demo-main.git
 
@@ -101,7 +102,13 @@ npm run dev
 
 ```
 
-### 打包构建 (生产模式)
+## 打包构建 (生产模式)
 ```
 npm run build
 ```
+## 开发规范
+> ## 命名规则
+> 局部变量
+> 对象和数组
+> 方法命名
+> 组件之间的通信
