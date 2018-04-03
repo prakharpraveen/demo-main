@@ -5,31 +5,52 @@
 	overflow: hidden;
 	.nc-workbench-nav {
 		width: 100%;
-		padding: 0 50px;
+		padding: 0 15px;
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 100;
 		border-bottom: 1px solid #e4e4e4;
-	}
-	.nc-workbench-menu {
-		margin: 0;
-		height: 40px;
-		width: 100%;
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		li {
-			list-style-type: none;
+		.nc-workbench-hp{
+			background-image: linear-gradient(-180deg,#b4bfc5 3%,#dbe1e4 98%);
 			margin-right: 15px;
-			a {
-				text-decoration: none;
+			background: #bec1c8;
+			border: 1px solid #fff;
+			border-radius: 100px;
+			color: #fff;
+			overflow: hidden;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			img{
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
 			}
-			span {
-				cursor: pointer;
+		}
+		.nc-workbench-menu {
+			margin: 0;
+			height: 40px;
+			width: 100%;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			li {
+				list-style-type: none;
+				margin-right: 15px;
+				a {
+					text-decoration: none;
+				}
+				span {
+					cursor: pointer;
+				}
 			}
 		}
 	}
+	
 	.nc-workbench-container {
 		flex: 1;
 		margin-top: 40px;

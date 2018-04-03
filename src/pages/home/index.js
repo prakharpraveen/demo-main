@@ -19,7 +19,6 @@ class Home extends Component {
 			paths: []
 		};
 	}
-
 	componentDidMount() {
 		let { paths } = this.state;
 		axios({
@@ -30,15 +29,15 @@ class Home extends Component {
 				let { data, success } = res.data;
 				if (success) {
 					this.setState({ paths: data }, this.createScript);
-				}
-				let grid = document.querySelectorAll('.grid');
-				for (let index = 0; index < grid.length; index++) {
-					const element = grid[index];
-					new Masonry(element, {
-						itemSelector: '.grid-item',
-						columnWidth: 170,
-						gutter: 10
-					});
+					let grid = document.querySelectorAll('.grid');
+					for (let index = 0; index < grid.length; index++) {
+						const element = grid[index];
+						new Masonry(element, {
+							itemSelector: '.grid-item',
+							columnWidth: 170,
+							gutter: 10
+						});
+					}
 				}
 			}
 		});
@@ -135,41 +134,44 @@ class Home extends Component {
 		let { paths } = this.state;
 		return (
 			<div className='nc-workbench-home-page'>
-				<ul className='n-tabs'>
-					<li>
-						<span
-							name='no1'
-							onClick={() => {
-								scrollToAnchor('no1');
-							}}
-						>
-							To 分类一
-						</span>
-					</li>
-					<li>
-						<span
-							onClick={() => {
-								scrollToAnchor('no2');
-							}}
-							name='no2'
-						>
-							To 分类二
-						</span>
-					</li>
-				</ul>
 				<PageLayout height='80'>
+					<ul className='n-tabs'>
+						<li>
+							<span
+								name='no1'
+								onClick={() => {
+									scrollToAnchor('no1');
+								}}
+							>
+								To 分类一
+							</span>
+						</li>
+						<li>
+							<span
+								onClick={() => {
+									scrollToAnchor('no2');
+								}}
+								name='no2'
+							>
+								To 分类二
+							</span>
+						</li>
+					</ul>
 					<div className='nc-workbench-home-container'>
 						<div className='n-col'>
 							<div id='no1' className='title'>
 								分类一
 							</div>
 							<div class='grid'>
-								{paths.length > 0 &&
+								{paths.length > 0 ? (
 									this.createWidgetMountPoint(
 										paths.map((item) => {
 											return item;
 										})
-									)}
+									)
+								) : (
+									<div className='grid-item' style={{ width: '170px', height: '170px' }} />
+								)}
 								{createItem()}
 							</div>
 						</div>
@@ -204,8 +206,8 @@ const scrollToAnchor = (anchorName) => {
 	if (anchorName) {
 		let anchorElement = document.getElementById(anchorName);
 		if (anchorElement) {
+			// anchorElement.scrollIntoView(true);
 			anchorElement.scrollIntoView({
-				alignToTop: true,
 				behavior: 'smooth'
 			});
 		}

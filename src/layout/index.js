@@ -17,6 +17,9 @@ class Layout extends Component {
 		return (
 			<div className='nc-workbench-layout'>
 				<nav className='nc-workbench-nav nccwb-header'>
+					<div className='nc-workbench-hp'>
+						<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo"/>
+					</div>
 					<ul className='nc-workbench-menu '>
 						<li>
 							<Link to='/'>Home</Link>
