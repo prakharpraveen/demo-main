@@ -23,21 +23,23 @@ class Home extends Component {
 	componentDidMount() {
 		let { paths } = this.state;
 		axios({
-			method: 'get',
-			url: `pageInfo.json`
+			method: 'POST',
+			url: `/nccloud/platform/appregister/query.do`
 		}).then((res) => {
 			if (res) {
 				let { data, success } = res.data;
 				if (success) {
 					this.setState({ paths: data }, this.createScript);
 				}
-				var grid = document.querySelector('.grid');
-				var msnry = new Masonry(grid, {
-					// options...
-					itemSelector: '.grid-item',
-					columnWidth: 170,
-					gutter: 10
-				});
+				let grid = document.querySelectorAll('.grid');
+				for (let index = 0; index < grid.length; index++) {
+					const element = grid[index];
+					new Masonry(element, {
+						itemSelector: '.grid-item',
+						columnWidth: 170,
+						gutter: 10
+					});
+				}
 			}
 		});
 	}
@@ -93,17 +95,20 @@ class Home extends Component {
 	createApp = (appOption, domWidth, domHeight) => {
 		const { img_src, name, mountid, target_path } = appOption;
 		return (
-			<div className="grid-item" id={mountid} style={{ width: domWidth, height: domHeight }}
+			<div
+				className='grid-item'
+				id={mountid}
+				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
-					window.openNew(target_path)
-				}}>
+					window.openNew(target_path);
+				}}
+			>
 				<p>{name}</p>
 				<hr />
 				<img src={img_src} alt={name} />
 			</div>
 		);
-	}
-
+	};
 
 	/**
 	 * 动态创建小部件挂载容器
@@ -118,7 +123,9 @@ class Home extends Component {
 				if (apptype === '1') {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (apptype === '2') {
-					return <div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />;
+					return (
+						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
+					);
 				}
 			}
 		});
@@ -156,15 +163,6 @@ class Home extends Component {
 							<div id='no1' className='title'>
 								分类一
 							</div>
-							<div className='n-row'>
-								{/* {this.createWidgetMountPoint(paths)} */}
-								{createItem()}
-							</div>
-						</div>
-						<div className='n-col'>
-							<div id='no2' className='title'>
-								分类二
-							</div>
 							<div class='grid'>
 								{paths.length > 0 &&
 									this.createWidgetMountPoint(
@@ -172,6 +170,16 @@ class Home extends Component {
 											return item;
 										})
 									)}
+								{createItem()}
+							</div>
+						</div>
+						<div className='n-col'>
+							<div id='no2' className='title'>
+								分类二
+							</div>
+							<div className='grid'>
+								{/* {this.createWidgetMountPoint(paths)} */}
+								{createItem()}
 							</div>
 						</div>
 					</div>
@@ -185,7 +193,7 @@ const createItem = () => {
 	let itemDoms = [];
 	for (let index = 0; index < 30; index++) {
 		itemDoms.push(
-			<div className={`widget-container n-6-1 n-r-1`}>
+			<div className={`grid-item widget-container `}>
 				<span>{index}</span>
 			</div>
 		);
@@ -197,6 +205,7 @@ const scrollToAnchor = (anchorName) => {
 		let anchorElement = document.getElementById(anchorName);
 		if (anchorElement) {
 			anchorElement.scrollIntoView({
+				alignToTop: true,
 				behavior: 'smooth'
 			});
 		}
