@@ -98,7 +98,7 @@ class Home extends Component {
 		const { img_src, name, mountid, target_path } = appOption;
 		return (
 			<div
-				className="grid-item"
+				className="grid-item app-item"
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
@@ -126,7 +126,11 @@ class Home extends Component {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (apptype === '2') {
 					return (
-						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
+						<div
+							className={`grid-item app-item`}
+							style={{ width: domWidth, height: domHeight }}
+							id={item.mountid}
+						/>
 					);
 				}
 			}
@@ -149,7 +153,13 @@ class Home extends Component {
 									})
 								)
 							) : (
-								<div className="grid-item" style={{ width: `${UNIT}px`, height: `${UNIT}px` }} />
+								<div
+									className="grid-item app-item widget-container"
+									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
+								>
+									<span className="icon">loading</span>
+									<span className="title">loading</span>
+								</div>
 							)}
 							{createItem()}
 						</div>
@@ -171,8 +181,9 @@ const createItem = () => {
 	let itemDoms = [];
 	for (let index = 0; index < 30; index++) {
 		itemDoms.push(
-			<div style={{ width: `${UNIT}px`, height: `${UNIT}px` }} className={`grid-item widget-container `}>
-				<span>{index}</span>
+			<div style={{ width: `${UNIT}px`, height: `${UNIT}px` }} className={`grid-item app-item widget-container `}>
+				<span className="icon">{index}</span>
+				<span className="title">应用{index}</span>
 			</div>
 		);
 	}
