@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
+import Masonry from 'masonry-layout'
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
 import './index.less';
@@ -18,20 +19,29 @@ class Home extends Component {
 			paths: []
 		};
 	}
+
 	componentDidMount() {
 		let { paths } = this.state;
 		axios({
-			method: 'post',
-			url: `/nccloud/nccplatform/appregister/query.do`
+			method: 'get',
+			url: `pageInfo.json`
 		}).then((res) => {
 			if (res) {
 				let { data, success } = res.data;
 				if (success) {
 					this.setState({ paths: data }, this.createScript);
 				}
+				var grid = document.querySelector('.grid');
+				var msnry = new Masonry(grid, {
+					// options...
+					itemSelector: '.grid-item',
+					columnWidth: 170,
+					gutter: 10
+				});
 			}
 		});
 	}
+
 	createScript = () => {
 		let { paths } = this.state;
 		let scripts = document.getElementsByTagName('script');
@@ -85,10 +95,10 @@ class Home extends Component {
 				let { apptype, width, height } = item;
 				// 1 为效应用户
 				if (apptype === '1') {
-					return <div className={`widget-container n-6-${width} n-r-${height}`} />;
+					return <div className={`grid-item`} />;
 					// 2 为小部件
 				} else if (apptype === '2') {
-					return <div className={`widget-container n-3-${width} n-r-${height}`} id={item.mountid} />;
+					return <div className={`grid-item`} id={item.mountid} />;
 				}
 			}
 		});
@@ -134,15 +144,11 @@ class Home extends Component {
 						<div id='no2' className='title'>
 							分类二
 						</div>
-						<div className=' n-row'>
+						<div class="grid" >
 							{paths.length > 0 &&
 								this.createWidgetMountPoint(
 									paths.map((item) => {
-										if (item.apptype === 'wedget') {
-											return item;
-										} else {
-											return false;
-										}
+										return item;
 									})
 								)}
 						</div>
