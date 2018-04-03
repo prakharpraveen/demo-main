@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import Masonry from 'masonry-layout';
+import { Link as TabLink, Element } from 'react-scroll';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
+import TabsLink from 'Components/TabsLink';
 import './index.less';
 
 /**
@@ -95,7 +97,7 @@ class Home extends Component {
 		const { img_src, name, mountid, target_path } = appOption;
 		return (
 			<div
-				className='grid-item'
+				className="grid-item"
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
@@ -133,59 +135,32 @@ class Home extends Component {
 	render() {
 		let { paths } = this.state;
 		return (
-			<div className='nc-workbench-home-page'>
-				<PageLayout height='80'>
-					<ul className='n-tabs'>
-						<li>
-							<span
-								name='no1'
-								onClick={() => {
-									scrollToAnchor('no1');
-								}}
-							>
-								To 分类一
-							</span>
-						</li>
-						<li>
-							<span
-								onClick={() => {
-									scrollToAnchor('no2');
-								}}
-								name='no2'
-							>
-								To 分类二
-							</span>
-						</li>
-					</ul>
-					<div className='nc-workbench-home-container'>
-						<div className='n-col'>
-							<div id='no1' className='title'>
-								分类一
-							</div>
-							<div class='grid'>
-								{paths.length > 0 ? (
-									this.createWidgetMountPoint(
-										paths.map((item) => {
-											return item;
-										})
-									)
-								) : (
-									<div className='grid-item' style={{ width: '170px', height: '170px' }} />
-								)}
-								{createItem()}
-							</div>
+			<div className="nc-workbench-home-page">
+				<TabsLink />
+				<div className="nc-workbench-home-container">
+					<Element name="no1" className="n-col">
+						<div className="element">分类一</div>
+						<div class="grid">
+							{paths.length > 0 ? (
+								this.createWidgetMountPoint(
+									paths.map((item) => {
+										return item;
+									})
+								)
+							) : (
+								<div className="grid-item" style={{ width: '170px', height: '170px' }} />
+							)}
+							{createItem()}
 						</div>
-						<div className='n-col'>
-							<div id='no2' className='title'>
-								分类二
-							</div>
-							<div className='grid'>
-								{/* {this.createWidgetMountPoint(paths)} */}
-								{createItem()}
-							</div>
+					</Element>
+					<Element name="no2" className="n-col">
+						<div className="element">分类二</div>
+						<div className="grid">
+							{/* {this.createWidgetMountPoint(paths)} */}
+							{createItem()}
 						</div>
-					</div>
-				</PageLayout>
+					</Element>
+				</div>
 			</div>
 		);
 	}

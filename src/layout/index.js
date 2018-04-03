@@ -15,12 +15,23 @@ class Layout extends Component {
 	}
 	render() {
 		return (
-			<div className='nc-workbench-layout'>
-				<nav className='nc-workbench-nav nccwb-header'>
-					<div className='nc-workbench-hp'>
-						<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo"/>
+			<div className="nc-workbench-layout">
+				<nav className="nc-workbench-nav nccwb-header">
+					<div className="nav-left n-left n-v-middle">
+						<div className="nc-workbench-hp margin-right-10">
+							<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo" />
+						</div>
+						<div>集团切换</div>
 					</div>
-					<ul className='nc-workbench-menu '>
+					<div className="nav-middle ">
+						<span>首页</span>
+					</div>
+					<div className="nav-right n-right n-v-middle">
+						<span className="margin-right-10">搜索</span>
+						<span className="margin-right-10">应用</span>
+						<span className="margin-right-10">消息</span>
+					</div>
+					{/* <ul className='nc-workbench-menu '>
 						<li>
 							<Link to='/'>Home</Link>
 						</li>
@@ -34,9 +45,9 @@ class Layout extends Component {
 							<IntlCom />
 						</li>
 						<li>{intl.get('hello')}</li>
-					</ul>
+					</ul> */}
 				</nav>
-				<div className='nc-workbench-container'>{this.props.children}</div>
+				<div className="nc-workbench-container">{this.props.children}</div>
 			</div>
 		);
 	}

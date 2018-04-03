@@ -49,6 +49,7 @@
     "react-intl-universal": "^1.8.4",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-scroll": "^1.7.8",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   }
