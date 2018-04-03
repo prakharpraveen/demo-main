@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
-import Masonry from 'masonry-layout'
+import Masonry from 'masonry-layout';
 // 工作桌面单页通用布局
 import PageLayout from 'Components/PageLayout';
 import './index.less';
@@ -107,54 +107,56 @@ class Home extends Component {
 	render() {
 		let { paths } = this.state;
 		return (
-			<PageLayout>
-				<div className='nc-workbench-home-container'>
-					<ul className='n-tabs'>
-						<li>
-							<span
-								name='no1'
-								onClick={() => {
-									scrollToAnchor('no1');
-								}}
-							>
-								To 分类一
-							</span>
-						</li>
-						<li>
-							<span
-								onClick={() => {
-									scrollToAnchor('no2');
-								}}
-								name='no2'
-							>
-								To 分类二
-							</span>
-						</li>
-					</ul>
-					<div className='n-col'>
-						<div id='no1' className='title'>
-							分类一
+			<div className='nc-workbench-home-page'>
+				<ul className='n-tabs'>
+					<li>
+						<span
+							name='no1'
+							onClick={() => {
+								scrollToAnchor('no1');
+							}}
+						>
+							To 分类一
+						</span>
+					</li>
+					<li>
+						<span
+							onClick={() => {
+								scrollToAnchor('no2');
+							}}
+							name='no2'
+						>
+							To 分类二
+						</span>
+					</li>
+				</ul>
+				<PageLayout height='80'>
+					<div className='nc-workbench-home-container'>
+						<div className='n-col'>
+							<div id='no1' className='title'>
+								分类一
+							</div>
+							<div className='n-row'>
+								{/* {this.createWidgetMountPoint(paths)} */}
+								{createItem()}
+							</div>
 						</div>
-						<div className='n-row'>
-							{/* {this.createWidgetMountPoint(paths)} */}
-							{createItem()}
+						<div className='n-col'>
+							<div id='no2' className='title'>
+								分类二
+							</div>
+							<div class='grid'>
+								{paths.length > 0 &&
+									this.createWidgetMountPoint(
+										paths.map((item) => {
+											return item;
+										})
+									)}
+							</div>
 						</div>
 					</div>
-					<div className='n-col'>
-						<div id='no2' className='title'>
-							分类二
-						</div>
-						<div class="grid" >
-							{paths.length > 0 &&
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										return item;
-									})
-								)}
-						</div>
-					</div>
-				</div>
-			</PageLayout>
+				</PageLayout>
+			</div>
 		);
 	}
 }
