@@ -10,6 +10,7 @@ import PageLayout from 'Components/PageLayout';
 import TabsLink from 'Components/TabsLink';
 import './index.less';
 
+const UNIT = 150;
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -119,8 +120,8 @@ class Home extends Component {
 		return widgets.map((item, index) => {
 			if (item) {
 				let { apptype, width, height } = item;
-				const domWidth = Number(width) * 170;
-				const domHeight = Number(height) * 170;
+				const domWidth = Number(width) * UNIT;
+				const domHeight = Number(height) * UNIT;
 				if (apptype === '1') {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (apptype === '2') {
@@ -138,7 +139,7 @@ class Home extends Component {
 			<div className="nc-workbench-home-page">
 				<TabsLink />
 				<div className="nc-workbench-home-container">
-					<Element name="no1" className="n-col padding-left-50 padding-right-50">
+					<Element name="no1" className="n-col padding-left-70 padding-right-60">
 						<div className="title">分类一</div>
 						<div class="grid">
 							{paths.length > 0 ? (
@@ -148,12 +149,12 @@ class Home extends Component {
 									})
 								)
 							) : (
-								<div className="grid-item" style={{ width: '170px', height: '170px' }} />
+								<div className="grid-item" style={{ width: `${UNIT}px`, height: `${UNIT}px` }} />
 							)}
 							{createItem()}
 						</div>
 					</Element>
-					<Element name="no2" className="n-col padding-left-50 padding-right-50">
+					<Element name="no2" className="n-col padding-left-70 padding-right-60">
 						<div className="title">分类二</div>
 						<div className="grid">
 							{/* {this.createWidgetMountPoint(paths)} */}
@@ -170,7 +171,7 @@ const createItem = () => {
 	let itemDoms = [];
 	for (let index = 0; index < 30; index++) {
 		itemDoms.push(
-			<div className={`grid-item widget-container `}>
+			<div style={{ width: `${UNIT}px`, height: `${UNIT}px` }} className={`grid-item widget-container `}>
 				<span>{index}</span>
 			</div>
 		);
