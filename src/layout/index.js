@@ -15,23 +15,25 @@ class Layout extends Component {
 	}
 	render() {
 		return (
-			<div className="nc-workbench-layout">
-				<ul className="nc-workbench-menu nccwb-header">
-					<li>
-						<Link to="/">Home</Link>
-					</li>
-					<li>
-						<span onClick={openNew.bind(this, 'http://www.china.com.cn/', 'new')}>打开新页签</span>
-					</li>
-					<li>
-						<span onClick={openNew.bind(this, 'http://www.baidu.com/')}>在当前页打开</span>
-					</li>
-					<li>
-						<IntlCom />
-					</li>
-					<li>{intl.get('hello')}</li>
-				</ul>
-				<div className="nc-workbench-container">{this.props.children}</div>
+			<div className='nc-workbench-layout'>
+				<nav className='nc-workbench-nav nccwb-header'>
+					<ul className='nc-workbench-menu '>
+						<li>
+							<Link to='/'>Home</Link>
+						</li>
+						<li>
+							<span onClick={openNew.bind(this, 'http://www.china.com.cn/', 'new')}>打开新页签</span>
+						</li>
+						<li>
+							<span onClick={openNew.bind(this, 'http://www.baidu.com/')}>在当前页打开</span>
+						</li>
+						<li>
+							<IntlCom />
+						</li>
+						<li>{intl.get('hello')}</li>
+					</ul>
+				</nav>
+				<div className='nc-workbench-container'>{this.props.children}</div>
 			</div>
 		);
 	}
