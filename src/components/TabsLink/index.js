@@ -4,19 +4,19 @@ import './index.less';
 const tabs = [
 	{
 		anchor: 'no1',
-		text: 'to NO1'
+		text: '分组一'
 	},
 	{
 		anchor: 'no2',
-		text: 'to NO2'
+		text: '分组二'
 	},
 	{
 		anchor: 'no3',
-		text: 'to NO3'
+		text: '分组三'
 	},
 	{
 		anchor: 'no4',
-		text: 'to NO4'
+		text: '分组四'
 	}
 ];
 class TabsLink extends Component {
@@ -28,7 +28,7 @@ class TabsLink extends Component {
 			let { anchor, text } = item;
 			return (
 				<li>
-					<Link activeClass="active" to={anchor} spy={true} smooth={true} duration={500}>
+					<Link activeClass="active" to={anchor} offset={-40} spy={true} smooth={true} duration={500}>
 						{text}
 					</Link>
 				</li>

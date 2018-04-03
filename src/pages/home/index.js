@@ -138,8 +138,8 @@ class Home extends Component {
 			<div className="nc-workbench-home-page">
 				<TabsLink />
 				<div className="nc-workbench-home-container">
-					<Element name="no1" className="n-col">
-						<div className="element">分类一</div>
+					<Element name="no1" className="n-col padding-left-50 padding-right-50">
+						<div className="title">分类一</div>
 						<div class="grid">
 							{paths.length > 0 ? (
 								this.createWidgetMountPoint(
@@ -153,8 +153,8 @@ class Home extends Component {
 							{createItem()}
 						</div>
 					</Element>
-					<Element name="no2" className="n-col">
-						<div className="element">分类二</div>
+					<Element name="no2" className="n-col padding-left-50 padding-right-50">
+						<div className="title">分类二</div>
 						<div className="grid">
 							{/* {this.createWidgetMountPoint(paths)} */}
 							{createItem()}
