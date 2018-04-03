@@ -175,27 +175,8 @@ class Home extends Component {
 							</div>
 						</div>
 					</div>
-<<<<<<< HEAD
 				</PageLayout>
 			</div>
-=======
-					<div className='n-col'>
-						<div id='no2' className='title'>
-							分类二
-						</div>
-						<div class="grid" >
-							{
-								paths.length > 0 &&
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										return item;
-									})
-								)}
-						</div>
-					</div>
-				</div>
-			</PageLayout>
->>>>>>> f084d387657826655dd590dd7f15fd18f6d181f2
 		);
 	}
 }
