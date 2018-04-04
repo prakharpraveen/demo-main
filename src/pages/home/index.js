@@ -90,6 +90,24 @@ class Home extends Component {
 		});
 	};
 
+	appTargetPage(appOption){
+		const {apptype, pk_appregister} = appOption;
+		axios({
+			method: 'POST',
+			url: `nccloud/platform/appregister/openapp.do`,
+			data: JSON.stringify({
+				pk_appregister:pk_appregister
+			})
+		}).then((res) => {
+			if (res) {
+				let { data, success } = res.data;
+				if (success) {
+					window.openNew(data);	
+				}
+			}
+		});
+	}
+
 	/**
 	 * 动态创建小应用
 	 * @param {Object} appOption // 小部件类型 
@@ -102,7 +120,7 @@ class Home extends Component {
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
-					window.openNew(target_path);
+					this.appTargetPage(appOption);
 				}}
 			>
 				<div className='app-item'>
