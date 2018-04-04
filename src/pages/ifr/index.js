@@ -16,7 +16,11 @@ class Ifr extends Component {
 		let { ifr } = GetQuery(this.props.location.search);
 		let queryUrl = decodeURIComponent(ifr);
 
-		return <iframe id="mainiframe" src={queryUrl} frameborder="0" scrolling="yes" />;
+		return (
+			<div className='nc-workbench-iframe'>
+				<iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />
+			</div>
+		);
 	}
 }
 Ifr.propTypes = {
