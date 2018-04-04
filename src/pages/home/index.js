@@ -111,6 +111,8 @@ class Home extends Component {
 	/**
 	 * 动态创建小应用
 	 * @param {Object} appOption // 小部件类型 
+	 * @param {Number} domWidth // 小应用宽度
+	 * @param {Number} domHeight // 小应用高度
 	 */
 	createApp = (appOption, domWidth, domHeight) => {
 		const { img_src, name, mountid, target_path } = appOption;

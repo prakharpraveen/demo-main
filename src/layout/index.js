@@ -23,28 +23,29 @@ class Layout extends Component {
 	render() {
 		let { isOpen } = this.state;
 		return (
-			<div className="nc-workbench-layout">
-				<nav className="nc-workbench-nav nccwb-header">
-					<div className="nav-left n-left n-v-middle">
+			<div className='nc-workbench-layout'>
+				<nav className='nc-workbench-nav nccwb-header'>
+					<div className='nav-left n-left n-v-middle'>
 						<div
-							className="nc-workbench-hp margin-right-10"
+							className='nc-workbench-hp margin-right-10'
 							onClick={() => {
 								this.setState({
 									isOpen: !isOpen
 								});
 							}}
 						>
-							<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo" />
+							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 						</div>
 						<div>集团切换</div>
 					</div>
-					<div className="nav-middle ">
+					<div className='nav-middle '>
+						{/* <Link to='/'>首页</Link> */}
 						<span>首页</span>
 					</div>
-					<div className="nav-right n-right n-v-middle">
-						<span className="margin-right-10">搜索</span>
-						<span className="margin-right-10">应用</span>
-						<span className="margin-right-10">消息</span>
+					<div className='nav-right n-right n-v-middle'>
+						<span className='margin-right-10'>搜索</span>
+						<span className='margin-right-10'>应用</span>
+						<span className='margin-right-10'>消息</span>
 					</div>
 					{/* <ul className='nc-workbench-menu '>
 						<li>
@@ -62,11 +63,11 @@ class Layout extends Component {
 						<li>{intl.get('hello')}</li>
 					</ul> */}
 				</nav>
-				<div className="nc-workbench-container">{this.props.children}</div>
-				<Drawer className="nc-workbench-drawer" open={isOpen} onChange={this.handleDrawerChange}>
-					<div className="drawer-top">
-						<div className="drawer-logo">
-							<img src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg" alt="logo" />
+				<div className='nc-workbench-container'>{this.props.children}</div>
+				<Drawer className='nc-workbench-drawer' open={isOpen} onChange={this.handleDrawerChange}>
+					<div className='drawer-top'>
+						<div className='drawer-logo'>
+							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 						</div>
 					</div>
 				</Drawer>

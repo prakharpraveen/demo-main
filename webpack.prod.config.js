@@ -62,12 +62,7 @@ module.exports = {
 				exclude: /(node_modules)/,
 				loader: 'babel-loader'
 			},
-			{
-				test: /\.(css|less)$/,
-				// exclude: /node_modules/,
-				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader' ]
-				// loader: 'style-loader!postcss-loader!less-loader'
-			},
+
 			{
 				test: /\.(png|jpg|jpeg|gif)(\?.+)?$/,
 				exclude: /favicon\.png$/,
