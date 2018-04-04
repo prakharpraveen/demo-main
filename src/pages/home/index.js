@@ -106,7 +106,7 @@ class Home extends Component {
 				}}
 			>
 				<div className='app-item'>
-					<p>{name}</p>
+					<span className='title'>{name}</span>
 					<div className='app-content'>
 						<img className='icon' src={img_src} alt={name} />
 					</div>
