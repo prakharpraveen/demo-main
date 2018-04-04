@@ -49,7 +49,7 @@ module.exports = {
 				Components: path.resolve(pubPath, 'src/components/'),
 				Assets: path.resolve(pubPath, 'src/assets/'),
 				Pages: path.resolve(pubPath, 'src/pages/'),
-				Static: path.resolve(pubPath, 'src/static/'),
+				Pub: path.resolve(pubPath, 'src/pub/'),
 				Store: path.resolve(pubPath, 'src/store/')
 			}
 		}

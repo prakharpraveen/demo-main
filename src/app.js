@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { initAppData } from 'Store/appStore/action';
 import store from './store';
 import Routes from './routes';
-import 'Static/css/public.less';
+import 'Pub/css/public.less';
 import './theme/theme.css';
 
 class App extends Component {
