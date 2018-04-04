@@ -98,16 +98,19 @@ class Home extends Component {
 		const { img_src, name, mountid, target_path } = appOption;
 		return (
 			<div
-				className="grid-item app-item"
+				className='grid-item'
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
 					window.openNew(target_path);
 				}}
 			>
-				<p>{name}</p>
-				<hr />
-				<img src={img_src} alt={name} />
+				<div className='app-item'>
+					<p>{name}</p>
+					<div className='app-content'>
+						<img className='icon' src={img_src} alt={name} />
+					</div>
+				</div>
 			</div>
 		);
 	};
@@ -126,11 +129,7 @@ class Home extends Component {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (apptype === '2') {
 					return (
-						<div
-							className={`grid-item app-item`}
-							style={{ width: domWidth, height: domHeight }}
-							id={item.mountid}
-						/>
+						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
 					);
 				}
 			}
@@ -140,12 +139,12 @@ class Home extends Component {
 	render() {
 		let { paths } = this.state;
 		return (
-			<div className="nc-workbench-home-page">
+			<div className='nc-workbench-home-page'>
 				<TabsLink />
-				<div className="nc-workbench-home-container">
-					<Element name="no1" className="n-col padding-left-70 padding-right-60">
-						<div className="title">分组一</div>
-						<div class="grid">
+				<div className='nc-workbench-home-container'>
+					<Element name='no1' className='n-col padding-left-70 padding-right-60'>
+						<div className='title'>分组一</div>
+						<div class='grid'>
 							{paths.length > 0 ? (
 								this.createWidgetMountPoint(
 									paths.map((item) => {
@@ -154,19 +153,21 @@ class Home extends Component {
 								)
 							) : (
 								<div
-									className="grid-item app-item widget-container"
+									className='grid-item app-item widget-container'
 									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
 								>
-									<span className="icon">loading</span>
-									<span className="title">loading</span>
+									<div className='app-item'>
+										<span className='icon'>loa</span>
+										<span className='title'>loading</span>
+									</div>
 								</div>
 							)}
 							{createItem()}
 						</div>
 					</Element>
-					<Element name="no2" className="n-col padding-left-70 padding-right-60">
-						<div className="title">分组二</div>
-						<div className="grid">
+					<Element name='no2' className='n-col padding-left-70 padding-right-60'>
+						<div className='title'>分组二</div>
+						<div className='grid'>
 							{/* {this.createWidgetMountPoint(paths)} */}
 							{createItem()}
 						</div>
@@ -181,9 +182,11 @@ const createItem = () => {
 	let itemDoms = [];
 	for (let index = 0; index < 30; index++) {
 		itemDoms.push(
-			<div style={{ width: `${UNIT}px`, height: `${UNIT}px` }} className={`grid-item app-item widget-container `}>
-				<span className="icon">{index}</span>
-				<span className="title">应用{index}</span>
+			<div style={{ width: `${UNIT}px`, height: `${UNIT}px` }} className={`grid-item widget-container `}>
+				<div className='app-item'>
+					<span className='icon'>{index}</span>
+					<span className='title'>应用{index}</span>
+				</div>
 			</div>
 		);
 	}
