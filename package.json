@@ -4,8 +4,8 @@
   "description": "demo",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --progress --colors --config webpack.dev.config.js",
-    "build": "webpack --progress --colors --config webpack.prod.config.js"
+    "dev": "webpack-dev-server --progress --colors --config ./config/dev.js",
+    "build": "webpack --progress --colors --config ./config/build.js"
   },
   "keywords": [
     "react"
