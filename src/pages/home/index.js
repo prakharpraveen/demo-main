@@ -6,7 +6,6 @@ import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import Masonry from 'masonry-layout';
 import { Link as TabLink, Element } from 'react-scroll';
 // 工作桌面单页通用布局
-import PageLayout from 'Components/PageLayout';
 import TabsLink from 'Components/TabsLink';
 import './index.less';
 
