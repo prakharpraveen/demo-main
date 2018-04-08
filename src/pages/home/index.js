@@ -9,7 +9,7 @@ import { Link as TabLink, Element } from 'react-scroll';
 import TabsLink from 'Components/TabsLink';
 import './index.less';
 
-const UNIT = 150;
+const UNIT = 175;
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -36,7 +36,7 @@ class Home extends Component {
 						const element = grid[index];
 						new Masonry(element, {
 							itemSelector: '.grid-item',
-							columnWidth: 170,
+							columnWidth: 177,
 							gutter: 10
 						});
 					}
