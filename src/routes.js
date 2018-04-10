@@ -19,6 +19,14 @@ const NotFound = Loadable({
 	loader: () => import('Pages/404'),
 	loading: Loading
 });
+const Drag = Loadable({
+	loader: () => import('Pages/drag'),
+	loading: Loading
+});
+const Test = Loadable({
+	loader: () => import('Pages/test'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -28,6 +36,18 @@ const routes = [
 	{
 		path: '/ifr',
 		component: Ifr
+	},
+	{
+		path: '/404',
+		component: NotFound
+	},
+	{
+		path: '/drag',
+		component: Drag
+	},
+	{
+		path: '/test',
+		component: Test
 	}
 ];
 const RouteWithSubRoutes = (route) => (
