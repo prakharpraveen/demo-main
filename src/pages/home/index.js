@@ -93,7 +93,7 @@ class Home extends Component {
 		const {apptype, pk_appregister} = appOption;
 		axios({
 			method: 'POST',
-			url: `nccloud/platform/appregister/openapp.do`,
+			url: `/nccloud/platform/appregister/openapp.do`,
 			data: JSON.stringify({
 				pk_appregister:pk_appregister
 			})
