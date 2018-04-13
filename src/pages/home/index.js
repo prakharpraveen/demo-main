@@ -29,7 +29,7 @@ class Home extends Component {
 		}).then((res) => {
 			if (res) {
 				let { data, success } = res.data;
-				if (success) {
+				if (success && data && data.length > 0) {
 					this.setState({ paths: data }, this.createScript);
 					let grid = document.querySelectorAll('.grid');
 					for (let index = 0; index < grid.length; index++) {
@@ -89,19 +89,19 @@ class Home extends Component {
 		});
 	};
 
-	appTargetPage(appOption){
-		const {apptype, pk_appregister} = appOption;
+	appTargetPage(appOption) {
+		const { apptype, pk_appregister } = appOption;
 		axios({
 			method: 'POST',
 			url: `nccloud/platform/appregister/openapp.do`,
 			data: JSON.stringify({
-				pk_appregister:pk_appregister
+				pk_appregister: pk_appregister
 			})
 		}).then((res) => {
 			if (res) {
 				let { data, success } = res.data;
 				if (success) {
-					window.openNew(data);	
+					window.openNew(data);
 				}
 			}
 		});
@@ -181,16 +181,16 @@ class Home extends Component {
 									</div>
 								</div>
 							)}
-							{createItem()}
+							{/* {createItem()} */}
 						</div>
 					</Element>
-					<Element name='no2' className='n-col padding-left-70 padding-right-60'>
+					{/* <Element name='no2' className='n-col padding-left-70 padding-right-60'>
 						<div className='title'>分组二</div>
 						<div className='grid'>
-							{/* {this.createWidgetMountPoint(paths)} */}
+							{this.createWidgetMountPoint(paths)}
 							{createItem()}
 						</div>
-					</Element>
+					</Element> */}
 				</div>
 			</div>
 		);

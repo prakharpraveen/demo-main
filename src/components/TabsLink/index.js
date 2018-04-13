@@ -6,10 +6,10 @@ const tabs = [
 		anchor: 'no1',
 		text: '分组一'
 	},
-	{
-		anchor: 'no2',
-		text: '分组二'
-	}
+	// {
+	// 	anchor: 'no2',
+	// 	text: '分组二'
+	// }
 	// {
 	// 	anchor: 'no3',
 	// 	text: '分组三'
