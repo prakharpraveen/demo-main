@@ -23,7 +23,7 @@ module.exports = {
 	 */
 	mode: 'production',
 	output: {
-		path: path.join(pubPath, 'dist'),
+		path: path.join(pubPath, 'dist/workbench'),
 		filename: '[name].[chunkhash:8].js', // 生产环境可以使用 chunkhash 文件内容 hash 校验
 		libraryTarget: 'umd'
 	},
@@ -43,7 +43,7 @@ module.exports = {
 			// chunkFilename: '[id].css'
 		}),
 		new CleanWebpackPlugin(
-			[ 'dist' ] //匹配删除的文件
+			[ '../dist' ] //匹配删除的文件
 		),
 		new CopyWebpackPlugin([
 			{ from: pubPath + '/prod-dist', to: './prod-dist' },
