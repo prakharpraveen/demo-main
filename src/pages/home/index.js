@@ -89,24 +89,6 @@ class Home extends Component {
 		});
 	};
 
-	appTargetPage(appOption) {
-		const { apptype, pk_appregister } = appOption;
-		axios({
-			method: 'POST',
-			url: `/nccloud/platform/appregister/openapp.do`,
-			data: JSON.stringify({
-				pk_appregister: pk_appregister
-			})
-		}).then((res) => {
-			if (res) {
-				let { data, success } = res.data;
-				if (success) {
-					window.openNew(data);
-				}
-			}
-		});
-	}
-
 	/**
 	 * 动态创建小应用
 	 * @param {Object} appOption // 小部件类型 
@@ -114,14 +96,14 @@ class Home extends Component {
 	 * @param {Number} domHeight // 小应用高度
 	 */
 	createApp = (appOption, domWidth, domHeight) => {
-		const { img_src, name, mountid, target_path } = appOption;
+		const { img_src, name, mountid, target_path, pk_appregister } = appOption;
 		return (
 			<div
 				className='grid-item'
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
-					this.appTargetPage(appOption);
+					window.openNew(pk_appregister);
 				}}
 			>
 				<div className='app-item'>
