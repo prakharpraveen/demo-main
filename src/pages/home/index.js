@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import Masonry from 'masonry-layout';
+import Ajax from 'Pub/js/ajax';
 import { Link as TabLink, Element } from 'react-scroll';
 // 工作桌面单页通用布局
 import TabsLink from 'Components/TabsLink';
@@ -23,22 +24,22 @@ class Home extends Component {
 	}
 	componentDidMount() {
 		let { paths } = this.state;
-		axios({
-			method: 'POST',
-			url: `/nccloud/platform/appregister/query.do`
-		}).then((res) => {
-			if (res) {
-				let { data, success } = res.data;
-				if (success && data && data.length > 0) {
-					this.setState({ paths: data }, this.createScript);
-					let grid = document.querySelectorAll('.grid');
-					for (let index = 0; index < grid.length; index++) {
-						const element = grid[index];
-						new Masonry(element, {
-							itemSelector: '.grid-item',
-							columnWidth: 177,
-							gutter: 10
-						});
+		Ajax({
+			url: `/nccloud/platform/appregister/query.do`,
+			success: (res) => {
+				if (res) {
+					let { data, success } = res.data;
+					if (success && data && data.length > 0) {
+						this.setState({ paths: data }, this.createScript);
+						let grid = document.querySelectorAll('.grid');
+						for (let index = 0; index < grid.length; index++) {
+							const element = grid[index];
+							new Masonry(element, {
+								itemSelector: '.grid-item',
+								columnWidth: 177,
+								gutter: 10
+							});
+						}
 					}
 				}
 			}
