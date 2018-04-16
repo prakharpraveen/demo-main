@@ -5,6 +5,12 @@ import { DragSource, DropTarget } from 'react-dnd'
 import Card from './card.js'
 import _ from 'lodash';
 import { Row, Col ,Icon,Input,Button } from 'antd';
+
+//根据xy值计算所在的格子位置
+// const calGridXY(x,y){
+
+
+// }
 const groupItemSource ={
     beginDrag(props, monitor, component) {
         // console.log(props);
@@ -14,11 +20,15 @@ const groupItemSource ={
             index: props.index,
             type: props.type
 		}
+    },
+    isDragging(props, monitor){
+        // console.log(monitor.getItem())
     }
 }
 
 const groupItemTarget ={
     hover(props, monitor, component){
+        
         // console.log(props);
         // console.log(121321231313131);
         const dragItem = monitor.getItem();
@@ -28,6 +38,8 @@ const groupItemTarget ={
         if(dragItem.type !== props.type){
             return;
         }
+        
+        // console.log("hoverGroup");
         const dragIndex = monitor.getItem().index;
         const hoverIndex = props.index;
 
@@ -56,11 +68,25 @@ const groupItemTarget ={
         monitor.getItem().index = hoverIndex;
     },
     drop(props, monitor, component){
+        //获取结果来判断是否冒泡,有结果时为冒泡
+        if (!_.isNull(monitor.getDropResult())) {
+            return;
+        }
+
         const dragItem = monitor.getItem();
         const dropItem = props;
-        // console.log(dragItem);
-        // console.log(dropItem);
-        props.onDrop(dragItem , dropItem);
+        if (dragItem.type === "group") {
+            console.log("group in dropGroup");
+            props.onDrop(dragItem , dropItem);
+        } else {
+            console.log("card in dropGroup");
+            const {x,y} = monitor.getClientOffset();
+            const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
+            const groupItemX = groupItemBoundingRect.x;
+            const groupItemY = groupItemBoundingRect.y;
+            props.dragCardToGroupItem(dragItem,dropItem,x-groupItemX,y-groupItemY);
+            // console.log(hoverBoundingRect);
+        }
     }
 }
 
@@ -90,27 +116,11 @@ class GroupItem extends Component {
 		let itemDoms = [];
 	   _.forEach(cards,(c)=>{
 		itemDoms.push(
-			<Card  GridX={c.GridX} type={c.type} GridY={c.GridY} w={c.w} h={c.h} id={c.pk_appregister} key={c.pk_appregister} deleteCard={this.props.deleteCard} forbidDrag={this.state.forbidDrag}/>
+			<Card drag233={-1} type={c.type}  gridx={c.gridx}  gridy={c.gridy} w={c.width} h={c.height} id={c.pk_appregister} {...this.props.layout} key={c.pk_appregister} deleteCard={this.props.deleteCard} forbidDrag={this.state.forbidDrag}/>
 		);
 	   });
 	   return itemDoms;
 	}
-    
-    changeGroupItemName(newGroupItemName,groupID){
-        // this.props.changeGroupItemName(newGroupItemName,groupID);
-    }
-
-    // editGroupItemName(groupID){
-    //     this.props.editGroupItemName(groupID);
-    // }
-
-    // deleteGroupItem(groupID){
-    //     this.props.deleteGroupItem(groupID);
-    // }
-
-    // deleteCard(cardID){
-    //     this.props.deleteCard(cardID);
-    // }
 
     editGroupName = (e) =>{
         let _groupName = e.target.value;
@@ -118,11 +128,40 @@ class GroupItem extends Component {
         this.state.groupName = _groupName;
     }
 
+    calCarContainerHeight(cards){
+        // let resultRow = 0;
+        // //行转列，求每列高度和
+        // let rowRes = {};
+        // _.forEach(cards, (c) => {
+        //     if (rowRes[c.gridx]) {
+        //         rowRes[c.gridx] += c.height;
+        //     } else {
+        //         rowRes[c.gridx] = c.height;
+        //     }
+        // });
+        // //求最大高度
+        // _.forEach(rowRes, (r) => {
+        //     resultRow = resultRow > r ? resultRow : r;
+        // })
+        const rowRes  = _.chain(cards).sortBy(["gridx","gridy"]).groupBy("gridx").value();
+        let endHeight = [];
+        _.forEach(rowRes,(r)=>{
+            const temp = r[r.length-1];
+            endHeight.push(temp.gridy+temp.height);
+        });
+        const resultRow = _.max(endHeight);
+        console.log(resultRow);
+        return resultRow*this.props.layout.rowHeight + (resultRow-1)* this.props.layout.margin[1] + 2*this.props.layout.margin[1];
+    }
+    
+
     render() {
-    const {isDragging,connectDragSource,connectDropTarget, groupname, id,cards, isOver, currEditID} = this.props;
+    const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,cards,  currEditID,defaultLayout } = this.props;
     const {changeGroupItemName} = this.props;
+    const containerHeight = this.calCarContainerHeight(cards);
     const opacity = isDragging ? 0 : 1;
     let groupItemTitle;
+    // console.log(containerHeight);
     if(currEditID === id){
         groupItemTitle = (
             <Row className="group-item-title-container-edit">
@@ -154,9 +193,9 @@ class GroupItem extends Component {
     
         return connectDragSource(connectDropTarget(
             <div className="group-item">
-                <div className="group-item-container" style={{background: isOver ? '#000' : '#ccc' }}>
+                <div className="group-item-container" style={{background: isOver ? 'rgb(172, 175, 175)' : '#ccc' }}>
                     {groupItemTitle}
-                    <section style={{ height: 380, opacity: opacity }}>
+                    <section id="card-container" style={{ height: containerHeight>defaultLayout.containerHeight?containerHeight:defaultLayout.containerHeight, opacity: opacity }}>
                         {this.createCards(this.props.cards)}
                     </section>
                 </div>
