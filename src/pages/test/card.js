@@ -91,12 +91,12 @@ class Item extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (!this.props.isOver && nextProps.isOver) {
 			// You can use this as enter handler
-			// console.log("enter");
+			console.log("card enter");
 		}
 
 		if (this.props.isOver && !nextProps.isOver) {
 			// You can use this as leave handler
-			// console.log("leave");
+			console.log("card leave");
 		}
 	}
 	// /** 计算容器的每一个格子多大 */
@@ -143,7 +143,7 @@ class Item extends Component {
 	// console.log(x,y,wPx, hPx,this.props);
 	// console.log(tmpContainer);
 	  return connectDragSource(connectDropTarget(
-		  <div style={{
+		  <div className="card" style={{
 			  width: wPx,
 			  height: hPx,
 			  background: isOver ? '#ccc' : '#fff',
@@ -151,12 +151,12 @@ class Item extends Component {
 			  border: '1px solid #f1f1f1',
 			  'border-radius': '3px',
 			  transform: `translate(${x}px, ${y}px)`,
-			  opacity: this.props.drag233 ===id ? 0 : 1,
+			  opacity: this.props.drag233 === id ? 0 : 1,
 		  }}>
 			  <div style={{ 'padding-left': '10px' }}>{id}</div>
 			  <div></div>
-			  <div style={{ position: 'absolute', height: '35px', width: '100%', padding: '7px 8px', bottom: '0', background: '#f2f2f2' }}>
-				  <Icon type="delete" style={{ fontSize: 19, float: 'right', 'line-height': 21, cursor: 'pointer' }} onClick={() => { this.props.deleteCard(id) }} />
+			  <div className="card-footer">
+				  <Icon type="delete" className="card-delete" onClick={() => { this.props.deleteCard(id) }} />
 			  </div>
 		  </div>
 			

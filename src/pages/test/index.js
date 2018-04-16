@@ -257,13 +257,19 @@ class Test extends Component {
 	deleteGroupItem(groupID) {
 		let { groups } = this.state;
 		let deleteIndex;
-		_.forEach(groups, (g, i) => {
-			if (g.pk_app_group === groupID) {
-				deleteIndex = i;
-				return false;
-			}
+		if (groups.length <= 1) {
+			return;
+		}
+		// _.forEach(groups, (g, i) => {
+		// 	if (g.pk_app_group === groupID) {
+		// 		deleteIndex = i;
+		// 		return false;
+		// 	}
+		// })
+		// groups.splice(deleteIndex, 1);
+		_.remove(groups,(g)=>{
+			return g.pk_app_group === groupID;
 		})
-		groups.splice(deleteIndex, 1);
 		this.setState({ groups: groups });
 	}
 

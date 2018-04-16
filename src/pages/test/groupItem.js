@@ -14,7 +14,6 @@ import { Row, Col ,Icon,Input,Button } from 'antd';
 const groupItemSource ={
     beginDrag(props, monitor, component) {
         // console.log(props);
-        // console.log("asads");
 		return {
 			id: props.id,
             index: props.index,
@@ -111,16 +110,28 @@ class GroupItem extends Component {
             forbidDrag: false,
             groupName:""
 		}
+    }
+    
+    componentWillReceiveProps(nextProps) {
+		if (!this.props.isOver && nextProps.isOver) {
+			// You can use this as enter handler
+			console.log("groupItem enter");
+		}
+
+		if (this.props.isOver && !nextProps.isOver) {
+			// You can use this as leave handler
+			console.log("groupItem leave");
+		}
 	}
-	createCards(cards){
-		let itemDoms = [];
-	   _.forEach(cards,(c)=>{
-		itemDoms.push(
-			<Card drag233={-1} type={c.type}  gridx={c.gridx}  gridy={c.gridy} w={c.width} h={c.height} id={c.pk_appregister} {...this.props.layout} key={c.pk_appregister} deleteCard={this.props.deleteCard} forbidDrag={this.state.forbidDrag}/>
-		);
-	   });
-	   return itemDoms;
-	}
+    createCards(cards) {
+        let itemDoms = [];
+        _.forEach(cards, (c) => {
+            itemDoms.push(
+                <Card drag233={-1} type={c.type} gridx={c.gridx} gridy={c.gridy} w={c.width} h={c.height} id={c.pk_appregister} {...this.props.layout} key={c.pk_appregister} deleteCard={this.props.deleteCard} forbidDrag={this.state.forbidDrag} />
+            );
+        });
+        return itemDoms;
+    }
 
     editGroupName = (e) =>{
         let _groupName = e.target.value;
@@ -128,30 +139,18 @@ class GroupItem extends Component {
         this.state.groupName = _groupName;
     }
 
-    calCarContainerHeight(cards){
-        // let resultRow = 0;
-        // //行转列，求每列高度和
-        // let rowRes = {};
-        // _.forEach(cards, (c) => {
-        //     if (rowRes[c.gridx]) {
-        //         rowRes[c.gridx] += c.height;
-        //     } else {
-        //         rowRes[c.gridx] = c.height;
-        //     }
-        // });
-        // //求最大高度
-        // _.forEach(rowRes, (r) => {
-        //     resultRow = resultRow > r ? resultRow : r;
-        // })
-        const rowRes  = _.chain(cards).sortBy(["gridx","gridy"]).groupBy("gridx").value();
+    calCarContainerHeight(cards) {
+        //行转列并且分组
+        const rowRes = _.chain(cards).sortBy(["gridx", "gridy"]).groupBy("gridx").value();
+        //寻找每列最后item的GridY和height的和
         let endHeight = [];
-        _.forEach(rowRes,(r)=>{
-            const temp = r[r.length-1];
-            endHeight.push(temp.gridy+temp.height);
+        _.forEach(rowRes, (r) => {
+            const temp = r[r.length - 1];
+            endHeight.push(temp.gridy + temp.height);
         });
+        //获得最大的值
         const resultRow = _.max(endHeight);
-        console.log(resultRow);
-        return resultRow*this.props.layout.rowHeight + (resultRow-1)* this.props.layout.margin[1] + 2*this.props.layout.margin[1];
+        return resultRow * this.props.layout.rowHeight + (resultRow - 1) * this.props.layout.margin[1] + 2 * this.props.layout.margin[1];
     }
     
 
