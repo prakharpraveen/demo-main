@@ -28,18 +28,18 @@ class App extends Component {
 				data: {
 					pk_appregister: appID
 				},
-				success: ({ res }) => {
+				success: (res) => {
 					if (res) {
 						let { data, success } = res.data;
 						if (success) {
 							// 成功之后进行页面跳转
 							if (type === 'current') {
 								// 浏览器当前页打开
-								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data['target_path'])}`;
+								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 							} else {
 								// 浏览器新页签打开
 								let win = window.open(
-									`/#/ifr?ifr=${encodeURIComponent(data['target_path'])}`,
+									`/#/ifr?ifr=${encodeURIComponent(data)}`,
 									'_blank'
 								);
 								win.focus();

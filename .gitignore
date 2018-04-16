@@ -63,5 +63,7 @@ typings/
 
 .idea/
 
+dist.zip
+
 package-lock.json
 

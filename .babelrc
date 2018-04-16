@@ -1,7 +1,8 @@
 {
 	"presets": [ "env", "react", "stage-0" ],
-	"plugins": [ "syntax-dynamic-import",
-		 "transform-runtime",
-		["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] // `style: true` 会加载 less 文件
-		 ]
+	"plugins": [
+		"syntax-dynamic-import",
+		"transform-runtime",
+		[ "import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" } ]
+	]
 }
