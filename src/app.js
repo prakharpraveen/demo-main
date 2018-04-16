@@ -39,7 +39,7 @@ class App extends Component {
 							} else {
 								// 浏览器新页签打开
 								let win = window.open(
-									`/#/ifr?ifr=${encodeURIComponent(data)}`,
+									`#/ifr?ifr=${encodeURIComponent(data)}`,
 									'_blank'
 								);
 								win.focus();
