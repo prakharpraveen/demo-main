@@ -97,7 +97,7 @@ class Home extends Component {
 	 * @param {Number} domHeight // 小应用高度
 	 */
 	createApp = (appOption, domWidth, domHeight) => {
-		const { img_src, name, mountid, target_path, pk_appregister } = appOption;
+		const { image_src, name, mountid, target_path, pk_appregister } = appOption;
 		return (
 			<div
 				className='grid-item'
@@ -110,7 +110,7 @@ class Home extends Component {
 				<div className='app-item'>
 					<span className='title'>{name}</span>
 					<div className='app-content'>
-						<img className='icon' src={img_src} alt={name} />
+						<img className='icon' src={image_src} alt={name} />
 					</div>
 				</div>
 			</div>

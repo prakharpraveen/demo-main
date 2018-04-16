@@ -33,16 +33,16 @@ class App extends Component {
 						let { data, success } = res.data;
 						if (success) {
 							// 成功之后进行页面跳转
-							if (type === 'new') {
+							if (type === 'current') {
+								// 浏览器当前页打开
+								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data['target_path'])}`;
+							} else {
 								// 浏览器新页签打开
 								let win = window.open(
 									`/#/ifr?ifr=${encodeURIComponent(data['target_path'])}`,
 									'_blank'
 								);
 								win.focus();
-							} else {
-								// 浏览器当前页打开
-								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data['target_path'])}`;
 							}
 						}
 					}
