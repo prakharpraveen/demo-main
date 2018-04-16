@@ -23,7 +23,7 @@ class App extends Component {
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appID, type) => {
-			let win = window.open('_blank');
+			let win = window.open('','_blank');
 			Ajax({
 				url: `/nccloud/platform/appregister/openapp.do`,
 				data: {
