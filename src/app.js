@@ -23,6 +23,7 @@ class App extends Component {
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appID, type) => {
+			let win = window.open('_blank');
 			Ajax({
 				url: `/nccloud/platform/appregister/openapp.do`,
 				data: {
@@ -38,10 +39,7 @@ class App extends Component {
 								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 							} else {
 								// 浏览器新页签打开
-								let win = window.open(
-									`#/ifr?ifr=${encodeURIComponent(data)}`,
-									'_blank'
-								);
+								win.location = `#/ifr?ifr=${encodeURIComponent(data)}`;
 								win.focus();
 							}
 						}
