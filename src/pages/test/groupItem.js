@@ -6,11 +6,6 @@ import Card from './card.js'
 import _ from 'lodash';
 import { Row, Col ,Icon,Input,Button } from 'antd';
 
-//根据xy值计算所在的格子位置
-// const calGridXY(x,y){
-
-
-// }
 const groupItemSource ={
     beginDrag(props, monitor, component) {
         // console.log(props);
@@ -122,23 +117,38 @@ class GroupItem extends Component {
 			// You can use this as leave handler
 			console.log("groupItem leave");
 		}
-	}
+    }
+    //创建卡片
     createCards(cards) {
         let itemDoms = [];
         _.forEach(cards, (c) => {
             itemDoms.push(
-                <Card drag233={-1} type={c.type} gridx={c.gridx} gridy={c.gridy} w={c.width} h={c.height} id={c.pk_appregister} {...this.props.layout} key={c.pk_appregister} deleteCard={this.props.deleteCard} forbidDrag={this.state.forbidDrag} />
+                <Card drag233={-1} 
+                type={c.apptype}
+                {...c} 
+                gridx={c.gridx} 
+                gridy={c.gridy} 
+                w={c.width}
+                h={c.height} 
+                id={c.pk_appregister}
+                {...this.props.layout}
+                key={c.pk_appregister} 
+                deleteCard={this.props.deleteCard} 
+                forbidDrag={this.state.forbidDrag} 
+                onCheckboxChange={this.props.onCheckboxChange}
+                selectCardIDList = {this.props.selectCardIDList}
+                />
             );
         });
         return itemDoms;
     }
-
-    editGroupName = (e) =>{
+    //获得组名
+    getGroupName = (e) =>{
         let _groupName = e.target.value;
         console.log(_groupName);
         this.state.groupName = _groupName;
     }
-
+    //计算卡片容器的最大高度
     calCarContainerHeight(cards) {
         //行转列并且分组
         const rowRes = _.chain(cards).sortBy(["gridx", "gridy"]).groupBy("gridx").value();
@@ -153,10 +163,31 @@ class GroupItem extends Component {
         return resultRow * this.props.layout.rowHeight + (resultRow - 1) * this.props.layout.margin[1] + 2 * this.props.layout.margin[1];
     }
     
+    //计算容器的每一个格子多大
+    calColWidth() {
+        const { containerWidth, col, containerPadding, margin } = this.props.layout;
 
+        if (margin) {
+            return (containerWidth - containerPadding[0] * 2 -  margin[0] * (col + 1)) / col
+        }
+        return (containerWidth - containerPadding[0] * 2 - 0 * (col + 1)) / col
+    }
+
+	componentDidMount() {
+		let { layout } = this.props;
+		const containerDom = document.querySelector("#card-container");
+		const clientWidth = containerDom.clientWidth;
+		this.props.layout.containerWidth = clientWidth;
+
+		const calWidth = this.calColWidth();
+
+		layout.calWidth = layout.rowHeight = calWidth;
+		layout.containerWidth = clientWidth;
+        this.props.resetContainer(layout);
+    }
+    
     render() {
     const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,cards,  currEditID,defaultLayout } = this.props;
-    const {changeGroupItemName} = this.props;
     const containerHeight = this.calCarContainerHeight(cards);
     const opacity = isDragging ? 0 : 1;
     let groupItemTitle;
@@ -166,7 +197,7 @@ class GroupItem extends Component {
             <Row className="group-item-title-container-edit">
                 <Col span={4}>
                     <div className="group-item-title-left">
-                    <Input  size="small" placeholder="Basic usage" defaultValue = {groupname} onChange={this.editGroupName.bind(this)} />
+                    <Input  size="small" placeholder="占位符" defaultValue = {groupname} onChange={this.getGroupName.bind(this)} />
                     <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={()=>{this.props.changeGroupName(id,this.state.groupName)}} />
                     <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={()=>{this.props.cancelGroupName()}}  />
                     </div>
@@ -181,7 +212,6 @@ class GroupItem extends Component {
             </div>
             </Col>
             <Col span={3} className="group-item-title-right" offset={19}>
-            {/* <div style={{ display: 'inline-table' }}><i onClick={()=>{this.changeGroupItemName.bind(this)(id)}} style={{ 'margin-right': 23 ,cursor: 'pointer'}}>Edit</i></div> */}
             <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={()=>{this.props.editGroupItemName(id)}} /></div>
             <div  className="group-item-title-edit"><Icon type="close-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.deleteGroupItem(id)}} /></div>
             <div className="group-item-title-edit" ><Icon type="plus-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{}}/></div>
