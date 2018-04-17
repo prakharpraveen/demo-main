@@ -104,7 +104,7 @@ class Home extends Component {
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
-					window.openNew(pk_appregister);
+					window.openNew(appOption);
 				}}
 			>
 				<div className='app-item'>

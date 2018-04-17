@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Ajax from 'Pub/js/ajax';
+import { proxyAction } from 'Pub/js/pe';
 import { initAppData } from 'Store/appStore/action';
 import store from './store';
 import Routes from './routes';
@@ -16,36 +17,46 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 	}
+	openNewApp = ({ appOption, type }) => {
+		let win = window.open('', '_blank');
+		let { pk_appregister, name } = appOption;
+		window.peData = {
+			userID: 'xxx',
+			projectCode: 'nccloud',
+			nodeName: name,
+			nodeCode: pk_appregister
+		};
+		Ajax({
+			url: `/nccloud/platform/appregister/openapp.do`,
+			data: {
+				pk_appregister: appID
+			},
+			success: (res) => {
+				if (res) {
+					let { data, success } = res.data;
+					if (success) {
+						// 成功之后进行页面跳转
+						if (type === 'current') {
+							// 浏览器当前页打开
+							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
+						} else {
+							// 浏览器新页签打开
+							win.location = `#/ifr?ifr=${encodeURIComponent(data)}`;
+							win.focus();
+						}
+					}
+				}
+			}
+		});
+	};
 	componentWillMount() {
 		/**
 		 * 在新页签中打开
 		 * @param　{String} appID // 应用 id
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
-		window.openNew = (appID, type) => {
-			let win = window.open('','_blank');
-			Ajax({
-				url: `/nccloud/platform/appregister/openapp.do`,
-				data: {
-					pk_appregister: appID
-				},
-				success: (res) => {
-					if (res) {
-						let { data, success } = res.data;
-						if (success) {
-							// 成功之后进行页面跳转
-							if (type === 'current') {
-								// 浏览器当前页打开
-								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
-							} else {
-								// 浏览器新页签打开
-								win.location = `#/ifr?ifr=${encodeURIComponent(data)}`;
-								win.focus();
-							}
-						}
-					}
-				}
-			});
+		window.openNew = (appOption, type) => {
+			proxyAction(this.openNewApp, { appOption, type }, '打开应用');
 		};
 	}
 	componentDidMount() {
