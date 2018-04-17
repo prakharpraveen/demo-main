@@ -35,7 +35,10 @@ function NCPE() {
 	/*init env,userid,can be init $ncpe['userid']=??,$ncpe['projectcode']=??*/
 	this.userid = 'nctest';
 	this.projectcode = 'nccloud';
+	this.lastAction='';
+	
 	const NLINKURL = 'http://123.103.9.190:17752';
+
 	//const NLINKURL = "http://127.0.0.1:7760/";
 	/* init context*/
 	let context = this;
@@ -52,8 +55,7 @@ function NCPE() {
         *this need to parsed from actionName,or set property seperately.
         *default use actionName,but it should be refined later.
         */
-		let { userID, projectCode, nodeName, nodeCode } = window.peData;
-		this.funName = encodeURI(nodeName, 'UTF-8');
+		this.funName = encodeURI(window.peData.nodeName, 'UTF-8');
 		/*
         *busiAction is the clicked element value .
         */
@@ -64,7 +66,7 @@ function NCPE() {
 		this.cost = () => this.endTs - this.startTs;
 		this.toString = () =>
 			'projectcode:' +
-			projectCode +
+			window.peData.projectCode +
 			';nodename:' +
 			this.funName +
 			';busiaction:' +
@@ -72,11 +74,11 @@ function NCPE() {
 			';costtime:' +
 			this.cost() +
 			';userid:' +
-			userID +
+			window.peData.userID +
 			';opts:' +
 			this.startTs +
 			';nodeCode:' +
-			nodeCode;
+			window.peData.nodeCode;
 	}
 
 	/*
@@ -179,6 +181,7 @@ function NCPE() {
 			return;
 		}
 		currevent[actionName] = new PE_TouchPoint(actionName);
+		this.lastAction=actionName;		
 	};
 	/*
     *the event is handled over

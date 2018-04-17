@@ -47,7 +47,7 @@ class App extends Component {
 	componentWillMount() {
 		/**
 		 * 在新页签中打开
-		 * @param　{String} appID // 应用 id
+		 * @param　{String} appOption // 应用 描述信息
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appOption, type) => {
