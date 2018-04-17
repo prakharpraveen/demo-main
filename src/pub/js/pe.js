@@ -64,7 +64,7 @@ function NCPE() {
 		this.cost = () => this.endTs - this.startTs;
 		this.toString = () =>
 			'projectcode:' +
-			projectcode +
+			projectCode +
 			';nodename:' +
 			this.funName +
 			';busiaction:' +
@@ -220,5 +220,7 @@ function NCPE() {
 		}
 	};
 }
-
+window.addEventListener('beforeunload',function () {
+    $NCPE.commit();
+});
 export default $NCPE;

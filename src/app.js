@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Ajax from 'Pub/js/ajax';
-import { proxyAction } from 'Pub/js/pe';
+import $NCPE from 'Pub/js/pe';
 import { initAppData } from 'Store/appStore/action';
 import store from './store';
 import Routes from './routes';
 import 'Pub/css/public.less';
 import './theme/theme.css';
+const proxyAction = $NCPE.proxyAction;
 
 class App extends Component {
 	static propTypes = {
@@ -19,17 +20,11 @@ class App extends Component {
 	}
 	openNewApp = ({ appOption, type }) => {
 		let win = window.open('', '_blank');
-		let { pk_appregister, name } = appOption;
-		window.peData = {
-			userID: 'xxx',
-			projectCode: 'nccloud',
-			nodeName: name,
-			nodeCode: pk_appregister
-		};
+		let { pk_appregister } = appOption;
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
 			data: {
-				pk_appregister: appID
+				pk_appregister: pk_appregister
 			},
 			success: (res) => {
 				if (res) {
@@ -56,7 +51,14 @@ class App extends Component {
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appOption, type) => {
-			proxyAction(this.openNewApp, { appOption, type }, '打开应用');
+			let { code, name } = appOption;
+			window.peData = {
+				userID: 'xxx',
+				projectCode: 'nccloud',
+				nodeName: name,
+				nodeCode: code
+			};
+			proxyAction(this.openNewApp, this, '打开应用')({ appOption, type });
 		};
 	}
 	componentDidMount() {
