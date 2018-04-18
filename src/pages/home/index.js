@@ -127,9 +127,9 @@ class Home extends Component {
 				let { apptype, width, height } = item;
 				const domWidth = Number(width) * UNIT;
 				const domHeight = Number(height) * UNIT;
-				if (apptype === '1') {
+				if (apptype === 1) {
 					return this.createApp(item, domWidth, domHeight);
-				} else if (apptype === '2') {
+				} else if (apptype === 2) {
 					return (
 						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
 					);
