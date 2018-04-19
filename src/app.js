@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Ajax from 'Pub/js/ajax';
 import $NCPE from 'Pub/js/pe';
 import { initAppData } from 'Store/appStore/action';
+import { GetQuery } from 'Pub/js/utils';
 import store from './store';
 import Routes from './routes';
 import 'Pub/css/public.less';
@@ -19,6 +20,7 @@ class App extends Component {
 		super(props);
 	}
 	openNewApp = ({ appOption, type }) => {
+		let { code, name } = appOption;
 		let win = window.open('', '_blank');
 		let { pk_appregister } = appOption;
 		Ajax({
@@ -33,11 +35,12 @@ class App extends Component {
 						// 成功之后进行页面跳转
 						if (type === 'current') {
 							// 浏览器当前页打开
-							
 							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 						} else {
 							// 浏览器新页签打开
-							win.location = `#/ifr?ifr=${encodeURIComponent(data)}`;
+							win.location = `#/ifr?ifr=${encodeURIComponent(data)}&n=${encodeURIComponent(
+								name
+							)}&c=${encodeURIComponent(code)}`;
 							win.focus();
 						}
 					}
@@ -46,19 +49,29 @@ class App extends Component {
 		});
 	};
 	componentWillMount() {
+		window.peData = {
+			userID: 'xxx',
+			projectCode: 'nccloud'
+		};
+		// 为新页签打开的页面设置全局的peData对象
+		// n nodeName c nodeCode
+		if (this.props.location) {
+			let { n, c } = GetQuery(this.props.location.search);
+			if (n && c) {
+				window.peData.nodeName = decodeURIComponent(n);
+				window.peData.nodeCode = decodeURIComponent(c);
+			}
+		}
+		console.log(window.peData);
 		/**
 		 * 在新页签中打开
-		 * @param　{String} appOption // 应用 描述信息
+		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appOption, type) => {
 			let { code, name } = appOption;
-			window.peData = {
-				userID: 'xxx',
-				projectCode: 'nccloud',
-				nodeName: name,
-				nodeCode: code
-			};
+			window.peData.nodeName = name;
+			window.peData.nodeCode = code;
 			proxyAction(this.openNewApp, this, '打开应用')({ appOption, type });
 		};
 	}
