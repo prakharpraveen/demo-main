@@ -113,7 +113,7 @@ class Home extends Component {
 						{/* <img className='icon' src={image_src} alt={name} /> */}
 						<div
 							className='icon'
-							style={{ background: `url('/assets/images/img1@3x.png') no-repeat 0px 0px`, 'background-size': 'contain' }}
+							style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}
 						/>
 					</div>
 				</div>
