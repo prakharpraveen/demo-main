@@ -9,7 +9,7 @@ import store from './store';
 import Routes from './routes';
 import 'Pub/css/public.less';
 import './theme/theme.css';
-const proxyAction = $NCPE.proxyAction;
+window.proxyAction = $NCPE.proxyAction;
 
 class App extends Component {
 	static propTypes = {
@@ -33,6 +33,7 @@ class App extends Component {
 						// 成功之后进行页面跳转
 						if (type === 'current') {
 							// 浏览器当前页打开
+							
 							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 						} else {
 							// 浏览器新页签打开
