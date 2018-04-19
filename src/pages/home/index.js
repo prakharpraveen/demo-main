@@ -125,11 +125,11 @@ class Home extends Component {
 		return widgets.map((item, index) => {
 			if (item) {
 				let { apptype, width, height } = item;
-				const domWidth = Number(width) * UNIT;
-				const domHeight = Number(height) * UNIT;
-				if (apptype === 1) {
+				const domWidth = Number(width) * UNIT + (Number(width) - 1) * 12;
+				const domHeight = Number(height) * UNIT + (Number(width) - 1) * 12;
+				if (Number(apptype) === 1) {
 					return this.createApp(item, domWidth, domHeight);
-				} else if (apptype === 2) {
+				} else if (Number(apptype) === 2) {
 					return (
 						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
 					);
