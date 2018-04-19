@@ -37,7 +37,7 @@ class App extends Component {
 							// 浏览器当前页打开
 							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 						} else {
-							// 浏览器新页签打开
+							// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
 							win.location = `#/ifr?ifr=${encodeURIComponent(data)}&n=${encodeURIComponent(
 								name
 							)}&c=${encodeURIComponent(code)}`;
@@ -53,16 +53,6 @@ class App extends Component {
 			userID: 'xxx',
 			projectCode: 'nccloud'
 		};
-		// 为新页签打开的页面设置全局的peData对象
-		// n nodeName c nodeCode
-		if (this.props.location) {
-			let { n, c } = GetQuery(this.props.location.search);
-			if (n && c) {
-				window.peData.nodeName = decodeURIComponent(n);
-				window.peData.nodeCode = decodeURIComponent(c);
-			}
-		}
-		console.log(window.peData);
 		/**
 		 * 在新页签中打开
 		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code

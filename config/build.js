@@ -46,11 +46,8 @@ module.exports = {
 			[ '../dist' ],
 			{ allowExternal: true } //匹配删除的文件
 		),
-		new CopyWebpackPlugin(
-			[
-				// { from: pubPath + '/prod-dist', to: './prod-dist' },
-				// { from: pubPath + '/pageInfo.json', to: '' }
-			]
-		)
+		new CopyWebpackPlugin([
+			{ from: pubPath + '/src/assets', to: './assets' }
+		])
 	]
 };

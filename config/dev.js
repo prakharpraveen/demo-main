@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
 let cssLoader = {
@@ -94,6 +95,7 @@ module.exports = {
 			filename: '[name].css'
 			// chunkFilename: '[id].css'
 		}),
+		new CopyWebpackPlugin([ { from: pubPath + '/src/assets', to: './assets' } ]),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new OpenBrowserPlugin({ url: `http://${host}:${port}` })

@@ -110,7 +110,11 @@ class Home extends Component {
 				<div className='app-item'>
 					<span className='title'>{name}</span>
 					<div className='app-content'>
-						<img className='icon' src={image_src} alt={name} />
+						{/* <img className='icon' src={image_src} alt={name} /> */}
+						<div
+							className='icon'
+							style={{ background: `url('/assets/images/img1@3x.png') no-repeat 0px 0px`, 'background-size': 'contain' }}
+						/>
 					</div>
 				</div>
 			</div>
@@ -126,7 +130,7 @@ class Home extends Component {
 			if (item) {
 				let { apptype, width, height } = item;
 				const domWidth = Number(width) * UNIT + (Number(width) - 1) * 12;
-				const domHeight = Number(height) * UNIT + (Number(width) - 1) * 12;
+				const domHeight = Number(height) * UNIT + (Number(height) - 1) * 10;
 				if (Number(apptype) === 1) {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (Number(apptype) === 2) {

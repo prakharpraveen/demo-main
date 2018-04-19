@@ -7,7 +7,7 @@ import './index.less';
  */
 class PageLayout extends Component {
 	render() {
-		let { height = 40 } = this.props;
+		let { height = 48 } = this.props;
 		return (
 			<div
 				className='page-scroll'
