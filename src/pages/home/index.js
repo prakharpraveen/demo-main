@@ -110,7 +110,11 @@ class Home extends Component {
 				<div className='app-item'>
 					<span className='title'>{name}</span>
 					<div className='app-content'>
-						<img className='icon' src={image_src} alt={name} />
+						{/* <img className='icon' src={image_src} alt={name} /> */}
+						<div
+							className='icon'
+							style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}
+						/>
 					</div>
 				</div>
 			</div>
@@ -125,11 +129,11 @@ class Home extends Component {
 		return widgets.map((item, index) => {
 			if (item) {
 				let { apptype, width, height } = item;
-				const domWidth = Number(width) * UNIT;
-				const domHeight = Number(height) * UNIT;
-				if (apptype === '1') {
+				const domWidth = Number(width) * UNIT + (Number(width) - 1) * 12;
+				const domHeight = Number(height) * UNIT + (Number(height) - 1) * 10;
+				if (Number(apptype) === 1) {
 					return this.createApp(item, domWidth, domHeight);
-				} else if (apptype === '2') {
+				} else if (Number(apptype) === 2) {
 					return (
 						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
 					);

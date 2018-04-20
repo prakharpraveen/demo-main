@@ -43,11 +43,11 @@ module.exports = {
 			// chunkFilename: '[id].css'
 		}),
 		new CleanWebpackPlugin(
-			[ 'dist' ] //匹配删除的文件
+			[ '../dist' ],
+			{ allowExternal: true } //匹配删除的文件
 		),
 		new CopyWebpackPlugin([
-			// { from: pubPath + '/prod-dist', to: './prod-dist' },
-			// { from: pubPath + '/pageInfo.json', to: '' }
+			{ from: pubPath + '/src/assets', to: './assets' }
 		])
 	]
 };

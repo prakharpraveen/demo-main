@@ -30,7 +30,18 @@ module.exports = {
 							loader: 'url-loader',
 							options: {
 								limit: 1,
-								name: 'assets/images/[name].[hash:8].[ext]'
+								name: '[name].[ext]'
+							}
+						}
+					]
+				},
+				{
+					test: /\.(eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+					use: [
+						{
+							loader: 'file-loader',
+							options: {
+								name: '[name].[ext]'
 							}
 						}
 					]

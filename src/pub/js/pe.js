@@ -177,11 +177,16 @@ function NCPE() {
     *button is clicked
     */
 	this.startAction = function(actionName) {
+		this.lastAction=window.peData.nodeName+'-'+actionName;
+		if(window.peData.projectCode == null || window.peData.projectCode == 'undefined'){
+			isLog = false;
+			return;
+		}
 		if (actionName == null || actionName == 'undefined') {
 			return;
 		}
 		currevent[actionName] = new PE_TouchPoint(actionName);
-		this.lastAction=actionName;		
+				
 	};
 	/*
     *the event is handled over
@@ -215,6 +220,7 @@ function NCPE() {
     *another way to proxy event handler.
     */
 	this.proxyAction = (func, context, actionName) => (...arg) => {
+		console.log(func);
 		$NCPE.startAction(actionName);
 		try {
 			func.call(context, ...arg);

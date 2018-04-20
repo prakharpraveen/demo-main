@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import Ajax from 'Pub/js/ajax';
 import $NCPE from 'Pub/js/pe';
 import { initAppData } from 'Store/appStore/action';
+import { GetQuery } from 'Pub/js/utils';
 import store from './store';
 import Routes from './routes';
 import 'Pub/css/public.less';
 import './theme/theme.css';
-const proxyAction = $NCPE.proxyAction;
+window.proxyAction = $NCPE.proxyAction;
 
 class App extends Component {
 	static propTypes = {
@@ -19,6 +20,7 @@ class App extends Component {
 		super(props);
 	}
 	openNewApp = ({ appOption, type }) => {
+		let { code, name } = appOption;
 		let win = window.open('', '_blank');
 		let { pk_appregister } = appOption;
 		Ajax({
@@ -35,8 +37,10 @@ class App extends Component {
 							// 浏览器当前页打开
 							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 						} else {
-							// 浏览器新页签打开
-							win.location = `#/ifr?ifr=${encodeURIComponent(data)}`;
+							// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+							win.location = `#/ifr?ifr=${encodeURIComponent(data)}&n=${encodeURIComponent(
+								name
+							)}&c=${encodeURIComponent(code)}`;
 							win.focus();
 						}
 					}
@@ -45,19 +49,19 @@ class App extends Component {
 		});
 	};
 	componentWillMount() {
+		window.peData = {
+			userID: 'xxx',
+			projectCode: 'nccloud'
+		};
 		/**
 		 * 在新页签中打开
-		 * @param　{String} appOption // 应用 描述信息
+		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
 		window.openNew = (appOption, type) => {
 			let { code, name } = appOption;
-			window.peData = {
-				userID: 'xxx',
-				projectCode: 'nccloud',
-				nodeName: name,
-				nodeCode: code
-			};
+			window.peData.nodeName = name;
+			window.peData.nodeCode = code;
 			proxyAction(this.openNewApp, this, '打开应用')({ appOption, type });
 		};
 	}

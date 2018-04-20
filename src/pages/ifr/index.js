@@ -10,8 +10,20 @@ class Ifr extends Component {
 	constructor(props) {
 		super(props);
 	}
+	
+	componentWillMount() {
+		// 为新页签打开的页面设置全局的peData对象
+		//  n 为 nodeName c 为 nodeCode
+		if (this.props.location) {
+			let { n, c } = GetQuery(this.props.location.search);
+			if (n && c) {
+				window.peData.nodeName = decodeURIComponent(n);
+				window.peData.nodeCode = decodeURIComponent(c);
+			}
+		}	
+	}
+	
 	render() {
-		console.log(this.props.location);
 		let { ifrID, ifrName } = this.props.ifrData;
 		let { ifr } = GetQuery(this.props.location.search);
 		let queryUrl = decodeURIComponent(ifr);

@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import intl from 'react-intl-universal';
+import { Select } from 'antd';
 import Drawer from 'react-motion-drawer';
 import PropTypes from 'prop-types';
+import { GetQuery } from 'Pub/js/utils';
 import { withRouter } from 'react-router';
 import IntlCom from './../intl';
 import './index.less';
+const Option = Select.Option;
 /**
  * 工作桌面整体布局组件
  */
@@ -14,14 +17,30 @@ class Layout extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isOpen: false
+			isOpen: false,
+			nodeName: '首页'
 		};
 	}
 	handleDrawerChange = (isOpen) => {
 		this.setState({ isOpen });
 	};
+
+	handleChange = (value) => {
+		console.log(`selected ${value}`);
+	};
+
+	componentWillMount() {
+		let { n } = GetQuery(this.props.location.search);
+		if (n) {
+			let nodeName = decodeURIComponent(n);
+			this.setState({
+				nodeName
+			});
+		}
+	}
+
 	render() {
-		let { isOpen } = this.state;
+		let { isOpen, nodeName } = this.state;
 		return (
 			<div className='nc-workbench-layout'>
 				<nav className='nc-workbench-nav nccwb-header'>
@@ -36,16 +55,27 @@ class Layout extends Component {
 						>
 							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 						</div>
-						<div>集团切换</div>
+						<div>
+							<Select defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
+								<Option value='yonyou'>用友网络科技股份有限公司</Option>
+								<Option value='yyjr'>用友（yonyou）</Option>
+							</Select>
+						</div>
 					</div>
 					<div className='nav-middle '>
 						{/* <Link to='/'>首页</Link> */}
-						<span>首页</span>
+						<span>{nodeName}</span>
 					</div>
 					<div className='nav-right n-right n-v-middle'>
-						<span className='margin-right-10'>搜索</span>
-						<span className='margin-right-10'>应用</span>
-						<span className='margin-right-10'>消息</span>
+						<span className='margin-right-10'>
+							<i class='iconfont icon-sousuo' />
+						</span>
+						<span className='margin-right-10'>
+							<i class='iconfont icon-quanbuyingyong' />
+						</span>
+						<span className='margin-right-10'>
+							<i class='iconfont icon-xiaoxi' />
+						</span>
 					</div>
 					{/* <ul className='nc-workbench-menu '>
 						<li>
