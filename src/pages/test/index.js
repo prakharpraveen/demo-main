@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import _ from 'lodash';
+import Ajax from 'Pub/js/ajax';
 import './index.less';
 // drag && drop
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import Ajax from 'Pub/js/ajax';
+import {collision,layoutCheck} from './collision';
 //自定义组件
 import { checkInContainer } from './correction';
 import Footer from './footer'
@@ -111,6 +112,22 @@ class Test extends Component {
 		// /**防止元素出container */
 		console.log(checkInContainer(GridX, GridY, col, width));
 		return checkInContainer(GridX, GridY, col, width);
+	}
+	//拖拽中卡片在组上移动
+	moveCardInGroupItem(dragItem,hoverItem,x,y){
+		const { GridX, GridY } = this.calGridXY(x, y,dragItem.width);
+		dragItem = {...dragItem,gridx:GridX,gridy:GridY};
+		const newlayout = layoutCheck(hoverItem.cards,dragItem,dragItem.pk_appregister,dragItem.pk_appregister);
+		let {groups} = this.state;
+		let groupIndex;
+		_.forEach(groups,(g, index)=>{
+			if(g.pk_app_group === hoverItem.id){
+				groupIndex = index;
+				return false
+			}
+		});
+		groups[groupIndex].apps = newlayout;
+		this.setState({groups});
 	}
 	//拖拽卡片到组
 	dragCardToGroupItem(dragItem,dropItem,x,y){
@@ -266,6 +283,7 @@ class Test extends Component {
 			changeGroupName={this.changeGroupName.bind(this)}
 			cancelGroupName={this.cancelGroupName.bind(this)}
 			dragCardToGroupItem={this.dragCardToGroupItem.bind(this)}
+			moveCardInGroupItem = {this.moveCardInGroupItem.bind(this)}
 			resetContainer={this.resetContainer.bind(this)}
 			onCheckboxChange = {this.onCheckboxChange.bind(this)}
 		/>

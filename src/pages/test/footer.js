@@ -35,61 +35,56 @@ class Footer extends Component {
 	setModalVisible(modalVisible) {
 		this.setState({ modalVisible });
 	}
+	//移动到的弹出框中，组名选择
 	onChangeRadio(e) {
 		this.setState({ selectedValue: e.target.value });
 	}
 	//移动到的弹出框中，点击确认
 	onOkMoveDialog(modalVisible) {
-		if(this.state.selectedValue === 0){
+		if (this.state.selectedValue === 0) {
 			return;
 		}
-		this.setModalVisible(modalVisible)
-        this.props.onOkMoveDialog(this.state.selectedValue);
+		this.setModalVisible(modalVisible);
+		this.props.onOkMoveDialog(this.state.selectedValue);
 	}
+	//点击保存
 	saveGroupItemAndCard() {
 		this.props.saveGroupItemAndCard();
 	}
-	cancleSave(){
+	cancleSave() {
 		location.reload();
 	}
 	//抽象方法，参数为显示的button文本和方法体，注意方法提前bind
-    getMoveCardButton = (text,fn)=>{
-        let tmpDom;
-            if(this.props.selectCardIDList.length===0){
-                tmpDom =(<Button disabled>
-                     {text}
-                </Button>) 
-            }else{
-                tmpDom=( <Button
-                    onClick={() => {
-                        fn(true);
-                    }}
-                >
-                    {text}
-                </Button>)
-            }
-        return tmpDom;
-    }
+	getMoveCardButton = (text, fn) => {
+		let tmpDom;
+		const selectCardIDList = this.props.selectCardIDList;
+		tmpDom = (
+			<Button
+				disabled={selectCardIDList.length === 0}
+				onClick={() => {
+					fn(true);
+				}}
+			>
+				{text}
+			</Button>
+		);
+		return tmpDom;
+	};
 	render() {
-		const { groups, moveModal,selectCardIDList } = this.props;
+		const { groups, moveModal, selectCardIDList } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<div className='nc-workbench-home-footer'>
 				<div className='footer-container'>
 					<Row>
-						<Col span={1}>
-						{this.getMoveCardButton("删除",this.props.deleteSelectedCardArr)}
-						</Col>
-						<Col span={1}>
-                       {this.getMoveCardButton("移动到",this.setModalVisible.bind(this))}
-						</Col>
-						<Col span={1}  offset={18}>
+						<Col span={1}>{this.getMoveCardButton('删除', this.props.deleteSelectedCardArr)}</Col>
+						<Col span={1}>{this.getMoveCardButton('移动到', this.setModalVisible.bind(this))}</Col>
+						<Col span={1} offset={18}>
 							<Button onClick={this.cancleSave.bind(this)}>取消</Button>
 						</Col>
 						<Col span={1}>
 							<Button onClick={this.saveGroupItemAndCard.bind(this)}>保存</Button>
 						</Col>
-						
 					</Row>
 				</div>
 

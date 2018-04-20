@@ -14,52 +14,48 @@ const groupItemSource ={
             index: props.index,
             type: props.type
 		}
-    },
-    isDragging(props, monitor){
-        // console.log(monitor.getItem())
     }
 }
 
 const groupItemTarget ={
-    hover(props, monitor, component){
-        
-        // console.log(props);
-        // console.log(121321231313131);
+    hover(props, monitor, component) {
         const dragItem = monitor.getItem();
-        // console.log(dragItem);
-        // console.log(props);
+        console.log(dragItem.type, props.type);
+        if (dragItem.type === "group") {//组hover到组
+            const dragIndex = monitor.getItem().index;
+            const hoverIndex = props.index;
 
-        if(dragItem.type !== props.type){
-            return;
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+
+            const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+
+            const clientOffset = monitor.getClientOffset()
+
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return
+            }
+
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return
+            }
+
+            props.moveGroupItem(dragIndex, hoverIndex);
+
+            monitor.getItem().index = hoverIndex;
+        } else {//卡片到组
+            const hoverItem = props;
+            const {x,y} = monitor.getClientOffset();
+            const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
+            const groupItemX = groupItemBoundingRect.x;
+            const groupItemY = groupItemBoundingRect.y;
+            props.moveCardInGroupItem(dragItem, hoverItem, x-groupItemX,y-groupItemY);
         }
-        
-        // console.log("hoverGroup");
-        const dragIndex = monitor.getItem().index;
-        const hoverIndex = props.index;
-
-        if (dragIndex === hoverIndex){
-            return;
-        }
-
-        const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-
-        const clientOffset = monitor.getClientOffset()
-
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-			return
-        }
-        
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-			return
-        }
-        
-        props.moveGroupItem(dragIndex, hoverIndex);
-
-        monitor.getItem().index = hoverIndex;
     },
     drop(props, monitor, component){
         //获取结果来判断是否冒泡,有结果时为冒泡
@@ -123,13 +119,9 @@ class GroupItem extends Component {
         let itemDoms = [];
         _.forEach(cards, (c) => {
             itemDoms.push(
-                <Card drag233={-1} 
+                <Card dragCardID={-1} 
                 type={c.apptype}
                 {...c} 
-                gridx={c.gridx} 
-                gridy={c.gridy} 
-                w={c.width}
-                h={c.height} 
                 id={c.pk_appregister}
                 {...this.props.layout}
                 key={c.pk_appregister} 
@@ -220,20 +212,20 @@ class GroupItem extends Component {
         </Row>);
     }
     
-        return connectDragSource(connectDropTarget(
-            <div className="group-item">
-                <div className="group-item-container" style={{background: isOver ? 'rgb(172, 175, 175)' : '#ccc' }}>
-                    {groupItemTitle}
-                    <section id="card-container" style={{ height: containerHeight>defaultLayout.containerHeight?containerHeight:defaultLayout.containerHeight, opacity: opacity }}>
-                        {this.createCards(this.props.cards)}
-                    </section>
-                </div>
-
-                <div>
-                    <Button className='group-item-add' onClick={()=>{this.props.addGroupItem(id)}}> + 添加分组</Button>
-                </div>
+    return connectDragSource(connectDropTarget(
+        <div className="group-item" style={{ opacity: opacity}}>
+            <div className="group-item-container" style={{background: isOver ? 'rgb(172, 175, 175)' : '#ccc' }}>
+                {groupItemTitle}
+                <section id="card-container" style={{ height: containerHeight>defaultLayout.containerHeight?containerHeight:defaultLayout.containerHeight}}>
+                    {this.createCards(this.props.cards)}
+                </section>
             </div>
-            ))
+
+            <div>
+                <Button className='group-item-add' onClick={()=>{this.props.addGroupItem(id)}}> + 添加分组</Button>
+            </div>
+        </div>
+        ))
     }
 }
 
