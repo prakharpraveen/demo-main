@@ -134,9 +134,10 @@ class Home extends Component {
 				if (Number(apptype) === 1) {
 					return this.createApp(item, domWidth, domHeight);
 				} else if (Number(apptype) === 2) {
-					return (
-						<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
-					);
+					// 目前先不渲染小部件
+					// return (
+					// 	<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
+					// );
 				}
 			}
 		});
