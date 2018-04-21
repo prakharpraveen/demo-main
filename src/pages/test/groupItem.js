@@ -8,19 +8,22 @@ import { Row, Col ,Icon,Input,Button } from 'antd';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
-        // console.log(props);
+        console.log(props);
 		return {
 			id: props.id,
             index: props.index,
             type: props.type
 		}
-    }
+    },
+	canDrag(props, monitor){
+		return props.currEditID === ""?true: false;
+	}
 }
 
 const groupItemTarget ={
     hover(props, monitor, component) {
         const dragItem = monitor.getItem();
-        console.log(dragItem.type, props.type);
+        // console.log(dragItem.type, props.type);
         if (dragItem.type === "group") {//组hover到组
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
@@ -66,15 +69,15 @@ const groupItemTarget ={
         const dragItem = monitor.getItem();
         const dropItem = props;
         if (dragItem.type === "group") {
-            console.log("group in dropGroup");
+            // console.log("group in dropGroup");
             props.onDrop(dragItem , dropItem);
         } else {
             console.log("card in dropGroup");
-            const {x,y} = monitor.getClientOffset();
-            const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
-            const groupItemX = groupItemBoundingRect.x;
-            const groupItemY = groupItemBoundingRect.y;
-            props.dragCardToGroupItem(dragItem,dropItem,x-groupItemX,y-groupItemY);
+            // const {x,y} = monitor.getClientOffset();
+            // const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
+            // const groupItemX = groupItemBoundingRect.x;
+            // const groupItemY = groupItemBoundingRect.y;
+            // props.dropCardToGroupItem(dragItem,dropItem,x-groupItemX,y-groupItemY);
             // console.log(hoverBoundingRect);
         }
     }
@@ -106,12 +109,12 @@ class GroupItem extends Component {
     componentWillReceiveProps(nextProps) {
 		if (!this.props.isOver && nextProps.isOver) {
 			// You can use this as enter handler
-			console.log("groupItem enter");
+			// console.log("groupItem enter");
 		}
 
 		if (this.props.isOver && !nextProps.isOver) {
 			// You can use this as leave handler
-			console.log("groupItem leave");
+			// console.log("groupItem leave");
 		}
     }
     //创建卡片
@@ -137,11 +140,11 @@ class GroupItem extends Component {
     //获得组名
     getGroupName = (e) =>{
         let _groupName = e.target.value;
-        console.log(_groupName);
+        // console.log(_groupName);
         this.state.groupName = _groupName;
     }
     //计算卡片容器的最大高度
-    calCarContainerHeight(cards) {
+    getContainerMaxHeight(cards) {
         //行转列并且分组
         const rowRes = _.chain(cards).sortBy(["gridx", "gridy"]).groupBy("gridx").value();
         //寻找每列最后item的GridY和height的和
@@ -179,8 +182,8 @@ class GroupItem extends Component {
     }
     
     render() {
-    const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,cards,  currEditID,defaultLayout } = this.props;
-    const containerHeight = this.calCarContainerHeight(cards);
+    const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,index,length,cards,  currEditID,defaultLayout } = this.props;
+    const containerHeight = this.getContainerMaxHeight(cards);
     const opacity = isDragging ? 0 : 1;
     let groupItemTitle;
     // console.log(containerHeight);
@@ -206,8 +209,9 @@ class GroupItem extends Component {
             <Col span={3} className="group-item-title-right" offset={19}>
             <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={()=>{this.props.editGroupItemName(id)}} /></div>
             <div  className="group-item-title-edit"><Icon type="close-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.deleteGroupItem(id)}} /></div>
-            <div className="group-item-title-edit" ><Icon type="plus-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{}}/></div>
-            <div  className="group-item-title-edit"><Icon type="ellipsis"  title="占位符"  className="group-item-icon" onClick={()=>{}} /></div>
+            {/* <div className="group-item-title-edit" ><Icon type="plus-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{}}/></div> */}
+            <div  className={index===0?"group-item-title-not-edit":"group-item-title-edit"}><Icon type="up-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.upGroupItem(id)}} /></div>
+            <div  className={index===length-1?"group-item-title-not-edit":"group-item-title-edit"}><Icon type="down-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.downGroupItem(id)}} /></div>
             </Col>
         </Row>);
     }

@@ -6,7 +6,7 @@ import { Card, Icon, Checkbox } from 'antd';
 
 const noteSource = {
 	beginDrag(props, monitor, component) {
-		return {...props} ;
+		return {id: props.id, type: props.type} ;
 	},
 	endDrag(props, monitor, component) {
 		props.dragCardID = -1;
@@ -28,9 +28,9 @@ const noteTarget = {
 		const dragItem = monitor.getItem();
 		const dropItem = props;
 		if (dragItem.type === 'group') {
-			console.log('group in dropCard');
+			// console.log('group in dropCard');
 		} else {
-			console.log('card in dropCard');
+			// console.log('card in dropCard');
 		}
 	}
 };
@@ -57,12 +57,12 @@ class Item extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (!this.props.isOver && nextProps.isOver) {
 			// You can use this as enter handler
-			console.log('card enter');
+			// console.log('card enter');
 		}
 
 		if (this.props.isOver && !nextProps.isOver) {
 			// You can use this as leave handler
-			console.log('card leave');
+			// console.log('card leave');
 		}
 	}
 	/**给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px */
@@ -117,7 +117,8 @@ class Item extends Component {
 						position: 'absolute',
 						border: '1px solid #f1f1f1',
 						'border-radius': '3px',
-						transform: `translate(${x}px, ${y}px)`
+						transform: `translate(${x}px, ${y}px)`,
+						
 					}}
 				>
 					<div style={{ 'padding-left': '10px' }}>{name}</div>

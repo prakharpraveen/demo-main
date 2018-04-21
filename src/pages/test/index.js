@@ -10,11 +10,26 @@ import './index.less';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import {collision,layoutCheck} from './collision';
+//ant
+import { Layout, Menu, Icon,Breadcrumb,Button } from 'antd';
+const { Header, Sider, Footer, Content } = Layout;
 //自定义组件
+import {collision,layoutCheck} from './collision';
+import {compactLayout} from './compact.js';
 import { checkInContainer } from './correction';
-import Footer from './footer'
+import MyFooter from './footer'
 import GroupItem from './groupItem.js';
+
+function getGroupIndexByGroupID(groups, groupID){
+	let groupIndex;
+	_.forEach(groups,(g, index)=>{
+		if(g.pk_app_group === groupID){
+			groupIndex = index;
+			return false;
+		}
+	});
+	return groupIndex;
+}
 
 class Test extends Component {
 	constructor(props) {
@@ -98,61 +113,49 @@ class Test extends Component {
 		}
 		return (containerWidth - containerPadding[0] * 2 - 0 * (col + 1)) / col
 	}
+	//计算container中可以放多少个格子
+	calColNum(){
+		const { containerWidth, col, containerPadding, margin } = this.state.layout;
+	}
 	//通过坐标x，y计算所在的单元格
 	calGridXY(x, y,width) {
 		const { margin, containerWidth, col, rowHeight } = this.state.layout;
 
 		/**坐标转换成格子的时候，无须计算margin */
-		// let GridX = Math.round(x / containerWidth * col)
-		// let GridY = Math.round(y / (rowHeight + (margin ? margin[1] : 0)))
 		//向下取整
 		let GridX = Math.floor(x / containerWidth * col)
 		let GridY = Math.floor(y / (rowHeight + (margin ? margin[1] : 0)))
 
 		// /**防止元素出container */
-		console.log(checkInContainer(GridX, GridY, col, width));
 		return checkInContainer(GridX, GridY, col, width);
 	}
 	//拖拽中卡片在组上移动
 	moveCardInGroupItem(dragItem,hoverItem,x,y){
-		const { GridX, GridY } = this.calGridXY(x, y,dragItem.width);
-		dragItem = {...dragItem,gridx:GridX,gridy:GridY};
-		const newlayout = layoutCheck(hoverItem.cards,dragItem,dragItem.pk_appregister,dragItem.pk_appregister);
 		let {groups} = this.state;
 		let groupIndex;
+		let removeCardArr = [];
 		_.forEach(groups,(g, index)=>{
 			if(g.pk_app_group === hoverItem.id){
 				groupIndex = index;
-				return false
 			}
+			const tmpCard= _.remove(g.apps,(a)=>{
+				return a.pk_appregister === dragItem.id;
+			})
+			removeCardArr = _.concat(removeCardArr,tmpCard);
 		});
-		groups[groupIndex].apps = newlayout;
+		let removeCard = removeCardArr[0]
+		const { GridX, GridY } = this.calGridXY(x, y,removeCard.width);
+		removeCard = {...removeCard,gridx:GridX,gridy:GridY};
+		groups[groupIndex].apps.push(removeCard);
+		const newlayout = layoutCheck(groups[groupIndex].apps,removeCard,removeCard.pk_appregister,removeCard.pk_appregister);
+		
+		const compactedLayout = compactLayout(newlayout,removeCard);
+		groups[groupIndex].apps = compactedLayout;
 		this.setState({groups});
 	}
-	//拖拽卡片到组
-	dragCardToGroupItem(dragItem,dropItem,x,y){
-		const { GridX, GridY } = this.calGridXY(x, y,dragItem.width);
-		let { groups } = this.state;
-
-		let targetGropItemIndex;
-		let dragCard;
-		_.forEach(groups, (g, gIndex) => {
-			if (g.pk_app_group === dropItem.id) {
-				targetGropItemIndex = gIndex;
-			}
-		});
-		_.forEach(groups, (g, gIndex)=>{
-			dragCard = _.remove(g.apps, (c) => {
-				return c.pk_appregister === dragItem.id;
-			})
-			if(dragCard.length !== 0){
-				return false;
-			}
-		});
-		dragCard[0].gridx = GridX;
-		dragCard[0].gridy = GridY;
-		groups[targetGropItemIndex].apps.push(dragCard[0]);
-		this.setState({ groups: groups });
+	//释放卡片到组
+	dropCardToGroupItem(dragItem,dropItem,x,y){
+		
 	}
 	onCheckboxChange(checked, cardID) {
 		let { selectCardIDList } = this.state;
@@ -214,6 +217,30 @@ class Test extends Component {
 		})
 		this.setState({ groups: groups });
 	}
+	//向上移动组
+	upGroupItem(groupID){
+		let { groups } = this.state;
+		const groupIndex = getGroupIndexByGroupID(groups, groupID)
+		if(groupIndex === 0){
+			return;
+		}
+		const preGroup = groups[groupIndex-1]; 
+		groups[groupIndex-1] = groups[groupIndex];
+		groups[groupIndex] = preGroup;
+		this.setState({ groups });
+	}
+	//向下移动组
+	downGroupItem(groupID){
+		let { groups } = this.state;
+		const groupIndex = getGroupIndexByGroupID(groups, groupID)
+		if(groupIndex === groups.length-1){
+			return;
+		}
+		const nextGroup = groups[groupIndex + 1]; 
+		groups[groupIndex+1] = groups[groupIndex];
+		groups[groupIndex] = nextGroup;
+		this.setState({ groups });
+	}
 	//改变组名
 	changeGroupName(groupID, groupName) {
 		let { groups } = this.state;
@@ -268,24 +295,28 @@ class Test extends Component {
         this.setState({ layout: layout })
 	}
 	//创建组
-	createGroupItem(pk_app_group, groupname, type, index, cards) {
-		return <GroupItem key={pk_app_group} id={pk_app_group} groupname={groupname} type={type} index={index} {...this.state}
+	createGroupItem(pk_app_group, groupname, type, index, length, cards) {
+		return <GroupItem key={pk_app_group} id={pk_app_group} groupname={groupname} type={type} index={index} length={length} {...this.state}
 			cards={cards}
 			layout={this.state.layout}
 			defaultLayout = {this.state.defaultLayout}
 			currEditID={this.state.currEditID}
+			
+			resetContainer={this.resetContainer.bind(this)}
+			deleteCard={this.deleteCard.bind(this)}
+			dropCardToGroupItem={this.dropCardToGroupItem.bind(this)}
+			moveCardInGroupItem = {this.moveCardInGroupItem.bind(this)}
+			onCheckboxChange = {this.onCheckboxChange.bind(this)}
+			
 			onDrop={this.onDrop.bind(this)}
 			addGroupItem={this.addGroupItem.bind(this)}
-			deleteGroupItem={this.deleteGroupItem.bind(this)}
-			editGroupItemName={this.editGroupItemName.bind(this)}
 			moveGroupItem={this.moveGroupItem.bind(this)}
-			deleteCard={this.deleteCard.bind(this)}
 			changeGroupName={this.changeGroupName.bind(this)}
 			cancelGroupName={this.cancelGroupName.bind(this)}
-			dragCardToGroupItem={this.dragCardToGroupItem.bind(this)}
-			moveCardInGroupItem = {this.moveCardInGroupItem.bind(this)}
-			resetContainer={this.resetContainer.bind(this)}
-			onCheckboxChange = {this.onCheckboxChange.bind(this)}
+			editGroupItemName={this.editGroupItemName.bind(this)}
+			deleteGroupItem={this.deleteGroupItem.bind(this)}
+			upGroupItem = {this.upGroupItem.bind(this)}
+			downGroupItem = {this.downGroupItem.bind(this)}
 		/>
 	}
 	//初始化组
@@ -293,7 +324,7 @@ class Test extends Component {
 		let itemDoms = [];
 		_.forEach(groups, (g, i) => {
 			itemDoms.push(
-				this.createGroupItem(g.pk_app_group, g.groupname, g.type, i, g.apps)
+				this.createGroupItem(g.pk_app_group, g.groupname, g.type, i, groups.length, g.apps)
 			);
 		});
 		return itemDoms;
@@ -312,7 +343,7 @@ class Test extends Component {
 		});
 		selectCardIDList = [];
 		this.setState({selectCardIDList,groups});
-		console.log(this.state);
+		// console.log(this.state);
 	}
 	//移动到弹出框点击确定之后
 	onOkMoveDialog(targetGroupID){
@@ -372,17 +403,32 @@ class Test extends Component {
 
 	render() {
 		const { groups, apps } = this.state;
+		const contentHeight = 'calc(100vh - 116px)';
 		return (
-			<div className='nc-workbench-home-page'>
-				<div className='nc-workbench-home-container'>
-					{this.initGroupItem(groups)}
-				</div>
-				<Footer {...this.state} 
-				saveGroupItemAndCard={this.saveGroupItemAndCard.bind(this)}
-				onOkMoveDialog = {this.onOkMoveDialog.bind(this)}
-				deleteSelectedCardArr = {this.deleteSelectedCardArr.bind(this)}
+			<Layout>
+				{/* Header占位符 */}
+				<Header style={{ height: '48px' }}></Header>
+				<Breadcrumb style={{ height: '20px' }} separator="|">
+					<Breadcrumb.Item>首页</Breadcrumb.Item>
+					<Breadcrumb.Item><a href="">首页编辑</a></Breadcrumb.Item>
+				</Breadcrumb>
+				<Layout>
+					<Sider width='300' style={{ overflow: 'auto', height: contentHeight }}>
+
+					</Sider>
+					<Content style={{ height: contentHeight }}>
+						<div className='nc-workbench-home-container'>
+							{this.initGroupItem(groups)}
+						</div>
+					</Content>
+				</Layout>
+
+				<MyFooter {...this.state}
+					saveGroupItemAndCard={this.saveGroupItemAndCard.bind(this)}
+					onOkMoveDialog={this.onOkMoveDialog.bind(this)}
+					deleteSelectedCardArr={this.deleteSelectedCardArr.bind(this)}
 				/>
-			</div>
+			</Layout>
 		);
 	}
 }

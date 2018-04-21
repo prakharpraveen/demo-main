@@ -1,3 +1,7 @@
+/**
+ * 碰撞检测
+ * 
+ */
 export const collision = (a, b) => {
 	if (a.gridx === b.gridx && a.gridy === b.gridy && a.width === b.width && a.height === b.height) {
 		return true;
@@ -8,7 +12,24 @@ export const collision = (a, b) => {
 	if (a.gridy >= b.gridy + b.height) return false; //a处于b的下方
 	return true;
 };
-
+/** 
+ * 获取layout中，item第一个碰撞到的物体
+ * @param {any} layout 
+ * @param {any} item 
+ * @returns {item||null} 被碰撞的item或者null
+ */
+export const getFirstCollison = (layout, item)=>{
+	for(let i=0, length = layout.length; i<length ; i++){
+		if(collision(layout[i],item)){
+			return layout[i]
+		}
+	}
+	return null;
+}
+/**
+ * 布局检测，递归检测移动过的item和其他item有没有碰撞，如果有Y坐标下移
+ *  
+ */
 export const layoutCheck = function(){
 	const _layoutCheck = function(layout, layoutItem, cardID, fristItemID){
 
@@ -31,9 +52,9 @@ export const layoutCheck = function(){
 					return newItem;
 				}
 			}
-			// else if( fristItemID === cardID){
-			// 	return layoutItem
-			// }
+			else if( fristItemID === cardID){
+				return {...item, ...layoutItem} 
+			}
 
 			return item;
 		})

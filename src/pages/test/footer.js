@@ -4,7 +4,7 @@ import { Row, Col, Button, Modal, Radio } from 'antd';
 import Ajax from 'Pub/js/ajax';
 const RadioGroup = Radio.Group;
 
-class Footer extends Component {
+class MyFooter extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -102,4 +102,4 @@ class Footer extends Component {
 	}
 }
 
-export default Footer;
+export default MyFooter;
