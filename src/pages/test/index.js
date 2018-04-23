@@ -11,12 +11,13 @@ import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 //ant
-import { Layout, Menu, Icon,Breadcrumb,Button } from 'antd';
-const { Header, Sider, Footer, Content } = Layout;
+import { Layout, Menu, Breadcrumb  } from 'antd';
+const { Header, Content } = Layout;
 //自定义组件
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import { checkInContainer } from './correction';
+import MySider from './sider';
 import MyFooter from './footer'
 import GroupItem from './groupItem.js';
 
@@ -69,7 +70,7 @@ class Test extends Component {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			data: {
-				'cuserid': '1A'
+				'cuserid': '0001Z5100000000396E0'
 			},
 			success: (res) => {
 				if (res) {
@@ -386,7 +387,7 @@ class Test extends Component {
 			tmpData.push(tmp);
 		})
 		const saveData = {
-			'cuserid': '1A',
+			'cuserid': '0001Z5100000000396E0',
 			'data': tmpData
 		} 
 		Ajax({
@@ -413,9 +414,7 @@ class Test extends Component {
 					<Breadcrumb.Item><a href="">首页编辑</a></Breadcrumb.Item>
 				</Breadcrumb>
 				<Layout>
-					<Sider width='300' style={{ overflow: 'auto', height: contentHeight }}>
-
-					</Sider>
+					<MySider contentHeight={contentHeight}/>
 					<Content style={{ height: contentHeight }}>
 						<div className='nc-workbench-home-container'>
 							{this.initGroupItem(groups)}

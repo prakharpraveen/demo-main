@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
-import { Card, Icon, Checkbox } from 'antd';
+import { Icon, Checkbox } from 'antd';
 
 const noteSource = {
 	beginDrag(props, monitor, component) {

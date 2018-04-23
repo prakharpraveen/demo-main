@@ -1,4 +1,7 @@
-
+.nc-workbench-home-sider{
+	background: #fff;
+	overflow: auto;
+}
 .nc-workbench-home-container {
 	background: #e6e9e9;
 	padding: 50px 23px 48px;
@@ -10,41 +13,31 @@
 		position: relative;
 
 		.group-item-container {
-			padding: 10px 20px 0 20px;
+			padding: 10px 0 0 20px;
 			.group-item-icon {
 				font-size: 20px;
 			}
-			.group-item-title-container-edit {
-				.group-item-title-left {
+			.group-item-title-container-no-edit{
+				display: flex;
+				justify-content: space-between;
+				i{
+			        cursor: pointer;
+				}
+				.title-left{
 					display: flex;
 					align-items: center;
-					i {
-						margin-left: 5px;
-						cursor: pointer;
+					i{
+						margin-left: 7px;
 					}
 				}
-			}
-			.group-item-title-container-no-edit {
-				.group-item-title-left {
-					i {
-						margin-left: 23px;
+				.title-right{
+					display: flex;
+					.group-item-title-edit{
+						margin-right: 23px;
 					}
-				}
-				.group-item-title-right {
-					.group-item-title-edit {
-						display: inline-table;
-						i {
-							margin-left: 23px;
-							cursor: pointer;
-						}
-					}
-					.group-item-title-not-edit {
-						display: inline-table;
+					.group-item-title-not-edit{
 						color: #e6e9e9;
-						i {
-							margin-left: 23px;
-							cursor: not-allowed;
-						}
+						margin-right: 23px;
 					}
 				}
 			}
@@ -52,6 +45,8 @@
 				.card {
 					transition: all .2s ease-out;
 					.card-footer {
+						display: flex;
+						justify-content: space-between;
 						position: absolute;
 						height: 35px;
 						width: 100%;
@@ -60,7 +55,6 @@
 						background: #f2f2f2;
 						.card-delete {
 							font-size: 19px;
-							float: right;
 							line-height: 21px;
 							cursor: pointer;
 						}
@@ -77,16 +71,26 @@
 }
 .nc-workbench-home-footer {
 	width: 100%;
+	height: 48px;
 	position: fixed;
 	bottom: 0;
-	.footer-container {
-		width: 100%;
-		height: 48px;
-		padding: 10px 0;
-		padding-left: 75px;
-		position: relative;
-		background: rgba(43, 55, 66, .6);
+	background: rgba(43, 55, 66, .6);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	button{
+		width: 78px;
+		margin: 0 8px;
 	}
+	.footer-left{
+		display: flex;
+		margin-left: 100px; 
+	}
+	.footer-right{
+		display: flex;
+		margin-right: 100px;
+	}
+	
 }
 /* 使用 css 技巧来动态设置的对话框位置 */
 .vertical-center-modal {

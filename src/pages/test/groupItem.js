@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
 import Card from './card.js'
 import _ from 'lodash';
-import { Row, Col ,Icon,Input,Button } from 'antd';
+import {Icon,Input,Button } from 'antd';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -186,34 +186,30 @@ class GroupItem extends Component {
     const containerHeight = this.getContainerMaxHeight(cards);
     const opacity = isDragging ? 0 : 1;
     let groupItemTitle;
-    // console.log(containerHeight);
     if(currEditID === id){
         groupItemTitle = (
-            <Row className="group-item-title-container-edit">
-                <Col span={4}>
-                    <div className="group-item-title-left">
-                    <Input  size="small" placeholder="占位符" defaultValue = {groupname} onChange={this.getGroupName.bind(this)} />
-                    <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={()=>{this.props.changeGroupName(id,this.state.groupName)}} />
-                    <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={()=>{this.props.cancelGroupName()}}  />
-                    </div>
-                    
-                </Col>
-            </Row>
+            <div className="group-item-title-container-no-edit">
+                <div class="title-left">
+                    <Input size="small" placeholder="占位符" defaultValue={groupname} onChange={this.getGroupName.bind(this)} />
+                    <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.changeGroupName(id, this.state.groupName) }} />
+                    <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.cancelGroupName() }} />
+                </div>
+            </div>
         );
     }else{
-        groupItemTitle = (<Row className="group-item-title-container-no-edit">
-            <Col span={2} className="group-item-title-left">
-            <div><span>{groupname}</span>
+        groupItemTitle = (
+            <div className="group-item-title-container-no-edit" >
+                <div class="title-left">
+                    <span>{groupname}</span>
+                </div>
+                <div class="title-right">
+                    <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={() => { this.props.editGroupItemName(id) }} /></div>
+                    <div className={index === 0 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="up-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.upGroupItem(id) }} /></div>
+                    <div className={index === length - 1 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="down-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.downGroupItem(id) }} /></div>
+                    <div className="group-item-title-edit"><Icon type="close-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.deleteGroupItem(id) }} /></div>
+                </div>
             </div>
-            </Col>
-            <Col span={3} className="group-item-title-right" offset={19}>
-            <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={()=>{this.props.editGroupItemName(id)}} /></div>
-            <div  className="group-item-title-edit"><Icon type="close-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.deleteGroupItem(id)}} /></div>
-            {/* <div className="group-item-title-edit" ><Icon type="plus-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{}}/></div> */}
-            <div  className={index===0?"group-item-title-not-edit":"group-item-title-edit"}><Icon type="up-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.upGroupItem(id)}} /></div>
-            <div  className={index===length-1?"group-item-title-not-edit":"group-item-title-edit"}><Icon type="down-square-o"  title="占位符"  className="group-item-icon" onClick={()=>{this.props.downGroupItem(id)}} /></div>
-            </Col>
-        </Row>);
+        );
     }
     
     return connectDragSource(connectDropTarget(

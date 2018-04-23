@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Row, Col, Button, Modal, Radio } from 'antd';
+import { Button, Modal, Radio } from 'antd';
 import Ajax from 'Pub/js/ajax';
 const RadioGroup = Radio.Group;
 
@@ -75,25 +75,26 @@ class MyFooter extends Component {
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<div className='nc-workbench-home-footer'>
-				<div className='footer-container'>
-					<Row>
-						<Col span={1}>{this.getMoveCardButton('删除', this.props.deleteSelectedCardArr)}</Col>
-						<Col span={1}>{this.getMoveCardButton('移动到', this.setModalVisible.bind(this))}</Col>
-						<Col span={1} offset={18}>
-							<Button onClick={this.cancleSave.bind(this)}>取消</Button>
-						</Col>
-						<Col span={1}>
-							<Button onClick={this.saveGroupItemAndCard.bind(this)}>保存</Button>
-						</Col>
-					</Row>
+				<div className="footer-left">
+					{this.getMoveCardButton('删除', this.props.deleteSelectedCardArr)}
+					{this.getMoveCardButton('移动', this.setModalVisible.bind(this))}
 				</div>
-
+				<div className="footer-right">
+					<Button className="right-button" type="primary" onClick={this.saveGroupItemAndCard.bind(this)}>保存</Button>
+					<Button className="right-button" onClick={this.cancleSave.bind(this)}>取消</Button>
+				</div>
 				<Modal
 					title='移动到'
 					wrapClassName='vertical-center-modal'
 					visible={this.state.modalVisible}
 					onOk={() => this.onOkMoveDialog(false)}
 					onCancel={() => this.setModalVisible(false)}
+					footer={[
+						<Button key="submit" type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
+						<Button key="back" onClick={() => this.setModalVisible(false)}>
+						  取消
+						</Button>,
+					  ]}
 				>
 					{groupNameRadioGroup}
 				</Modal>
