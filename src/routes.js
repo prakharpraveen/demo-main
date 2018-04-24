@@ -27,6 +27,10 @@ const Test = Loadable({
 	loader: () => import('Pages/test'),
 	loading: Loading
 });
+const AppRegister = Loadable({
+	loader: () => import('Pages/AppRegister'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -48,7 +52,12 @@ const routes = [
 	{
 		path: '/test',
 		component: Test
-	}
+	},
+	{
+		path: '/ar',
+		exact: true,
+		component: AppRegister
+	},
 ];
 const RouteWithSubRoutes = (route) => (
 	<Route

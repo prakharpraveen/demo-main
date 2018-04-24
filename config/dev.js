@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -95,11 +95,8 @@ module.exports = {
 			cache: true,
 			showErrors: true
 		}),
-		new MiniCssExtractPlugin({
-			// Options similar to the same options in webpackOptions.output
-			// both options are optional
-			filename: '[name].css'
-			// chunkFilename: '[id].css'
+		new ExtractTextPlugin({
+			filename: '[name].[chunkhash:8].css'
 		}),
 		new LodashModuleReplacementPlugin({
 			collections: true,

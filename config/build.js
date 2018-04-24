@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -10,7 +10,7 @@ let { configInfo, pubPath } = BaseData;
 let cssLoader = {
 	test: /\.(css|less)$/,
 	// exclude: /node_modules/,
-	use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader',{ loader: 'less-loader', options: { javascriptEnabled: true } } ]
+	use: [ 'css-loader', 'postcss-loader',{ loader: 'less-loader', options: { javascriptEnabled: true } } ]
 	// loader: 'style-loader!postcss-loader!less-loader'
 };
 configInfo.module.rules.push(cssLoader);
@@ -37,11 +37,8 @@ module.exports = {
 			cache: true,
 			showErrors: true
 		}),
-		new MiniCssExtractPlugin({
-			// Options similar to the same options in webpackOptions.output
-			// both options are optional
+		new ExtractTextPlugin({
 			filename: '[name].[chunkhash:8].css'
-			// chunkFilename: '[id].css'
 		}),
 		new LodashModuleReplacementPlugin({
 			collections: true,

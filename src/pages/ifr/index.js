@@ -28,7 +28,7 @@ class Ifr extends Component {
 		let { ifr, ar } = GetQuery(this.props.location.search);
 		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}`;
 		return (
-			<div className='nc-workbench-iframe'>
+			<div className='nc-workbench-page'>
 				<iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />
 			</div>
 		);
