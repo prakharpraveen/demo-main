@@ -5,6 +5,9 @@ import { setAppData } from 'Store/AppRegister/action';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { Tabs, Button, Table, Input, Popconfirm } from 'antd';
+import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
 const TabPane = Tabs.TabPane;
 const BTNS = [
 	{
@@ -20,6 +23,87 @@ const EditableCell = ({ editable, value, onChange }) => (
 		)}
 	</div>
 );
+function dragDirection(dragIndex, hoverIndex, initialClientOffset, clientOffset, sourceClientOffset) {
+	const hoverMiddleY = (initialClientOffset.y - sourceClientOffset.y) / 2;
+	const hoverClientY = clientOffset.y - sourceClientOffset.y;
+	if (dragIndex < hoverIndex && hoverClientY > hoverMiddleY) {
+		return 'downward';
+	}
+	if (dragIndex > hoverIndex && hoverClientY < hoverMiddleY) {
+		return 'upward';
+	}
+}
+let BodyRow = (props) => {
+	const {
+		isOver,
+		connectDragSource,
+		connectDropTarget,
+		moveRow,
+		dragRow,
+		clientOffset,
+		sourceClientOffset,
+		initialClientOffset,
+		...restProps
+	} = props;
+	const style = { ...restProps.style, cursor: 'move' };
+
+	let className = restProps.className;
+	if (isOver && initialClientOffset) {
+		const direction = dragDirection(
+			dragRow.index,
+			restProps.index,
+			initialClientOffset,
+			clientOffset,
+			sourceClientOffset
+		);
+		if (direction === 'downward') {
+			className += ' drop-over-downward';
+		}
+		if (direction === 'upward') {
+			className += ' drop-over-upward';
+		}
+	}
+
+	return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
+};
+const rowTarget = {
+	drop(props, monitor) {
+		const dragIndex = monitor.getItem().index;
+		const hoverIndex = props.index;
+
+		// Don't replace items with themselves
+		if (dragIndex === hoverIndex) {
+			return;
+		}
+		// Time to actually perform the action
+		props.moveRow(dragIndex, hoverIndex);
+		// Note: we're mutating the monitor item here!
+		// Generally it's better to avoid mutations,
+		// but it's good here for the sake of performance
+		// to avoid expensive index searches.
+		monitor.getItem().index = hoverIndex;
+	}
+};
+const rowSource = {
+	beginDrag(props) {
+		return {
+			index: props.index
+		};
+	}
+};
+BodyRow = DropTarget('row', rowTarget, (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver(),
+	sourceClientOffset: monitor.getSourceClientOffset()
+}))(
+	DragSource('row', rowSource, (connect, monitor) => ({
+		connectDragSource: connect.dragSource(),
+		dragRow: monitor.getItem(),
+		clientOffset: monitor.getClientOffset(),
+		initialClientOffset: monitor.getInitialClientOffset()
+	}))(BodyRow)
+);
+
 class FromeTable extends Component {
 	constructor(props) {
 		super(props);
@@ -108,6 +192,30 @@ class FromeTable extends Component {
 		};
 		this.cacheData;
 	}
+	components = {
+		body: {
+			row: BodyRow
+		}
+	};
+	moveRow = (dragIndex, hoverIndex) => {
+		let { appButtonVOs } = this.props.appData;
+		const dragRow = appButtonVOs[dragIndex];
+		let sortData = update(this.props.appData, {
+			appButtonVOs: {
+				$splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
+			}
+		});
+		sortData.appButtonVOs.map((item, index) => (item.btnorder = index));
+		Ajax({
+			url: `/nccloud/platform/appregister/orderbuttons.do`,
+			data: sortData.appButtonVOs,
+			success: ({ data }) => {
+				if (data.success && data.data) {
+					this.props.setAppData(sortData);
+				}
+			}
+		});
+	};
 	renderColumns(text, record, column) {
 		record = _.cloneDeep(record);
 		return (
@@ -127,6 +235,8 @@ class FromeTable extends Component {
 		}
 	}
 	edit(record) {
+		console.log(record);
+
 		let newData = this.getNewData();
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
@@ -161,9 +271,6 @@ class FromeTable extends Component {
 						} else {
 							_.remove(newData, (item) => record.pk_param === item.pk_param);
 						}
-
-						console.log(newData);
-
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
 					}
@@ -314,9 +421,14 @@ class FromeTable extends Component {
 					bordered
 					pagination={false}
 					rowKey='num'
+					components={this.components}
 					dataSource={appButtonVOs.map((item, index) => {
 						item.num = index + 1;
 						return item;
+					})}
+					onRow={(record, index) => ({
+						index,
+						moveRow: this.moveRow
 					})}
 					columns={columns1}
 					scroll={{ y: 300 }}
@@ -370,6 +482,7 @@ FromeTable.PropTypes = {
 	setAppData: PropTypes.object.isRequired,
 	nodeData: PropTypes.object.isRequired
 };
+let DragFromeTable = DragDropContext(HTML5Backend)(FromeTable);
 export default connect(
 	(state) => {
 		return {
@@ -380,4 +493,4 @@ export default connect(
 		};
 	},
 	{ setAppData }
-)(FromeTable);
+)(DragFromeTable);
