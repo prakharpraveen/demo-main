@@ -100,6 +100,13 @@ class Layout extends Component {
 							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 						</div>
 					</div>
+					<div className='drawer-buttom'>
+						<ul>
+							<li>
+								<Link to='/ar'>添加应用</Link>
+							</li>
+						</ul>
+					</div>
 				</Drawer>
 			</div>
 		);
