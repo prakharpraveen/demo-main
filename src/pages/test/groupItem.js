@@ -102,7 +102,7 @@ class GroupItem extends Component {
 		super(props)
 		this.state = {
             forbidDrag: false,
-            groupName:""
+            groupName:props.groupname
 		}
     }
     
@@ -190,7 +190,7 @@ class GroupItem extends Component {
         groupItemTitle = (
             <div className="group-item-title-container-no-edit">
                 <div class="title-left">
-                    <Input size="small" placeholder="占位符" defaultValue={groupname} onChange={this.getGroupName.bind(this)} />
+                    <Input size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={() => { this.props.changeGroupName(id, this.state.groupName) }} onChange={this.getGroupName.bind(this)} />
                     <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.changeGroupName(id, this.state.groupName) }} />
                     <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.cancelGroupName() }} />
                 </div>
