@@ -1,19 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
-let cssLoader = {
-	test: /\.(css|less)$/,
-	// exclude: /node_modules/,
-	use: [ 'css-loader', 'postcss-loader',{ loader: 'less-loader', options: { javascriptEnabled: true } } ]
-	// loader: 'style-loader!postcss-loader!less-loader'
-};
-configInfo.module.rules.push(cssLoader);
 module.exports = {
 	...configInfo,
 	/**
@@ -37,8 +30,11 @@ module.exports = {
 			cache: true,
 			showErrors: true
 		}),
-		new ExtractTextPlugin({
-			filename: '[name].[chunkhash:8].css'
+		new MiniCssExtractPlugin({
+			// Options similar to the same options in webpackOptions.output
+			// both options are optional
+			filename: '[name].[chunkhash:8].css',
+			chunkFilename: '[id].[chunkhash:8].css'
 		}),
 		new LodashModuleReplacementPlugin({
 			collections: true,
@@ -48,8 +44,6 @@ module.exports = {
 			[ '../dist' ],
 			{ allowExternal: true } //匹配删除的文件
 		),
-		new CopyWebpackPlugin([
-			{ from: pubPath + '/src/assets', to: './assets' }
-		])
+		new CopyWebpackPlugin([ { from: pubPath + '/src/assets', to: './assets' } ])
 	]
 };

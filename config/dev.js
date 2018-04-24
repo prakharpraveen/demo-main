@@ -1,24 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
-let cssLoader = {
-	test: /\.(css|less)?$/,
-	// exclude: /node_modules/,
-	use: [
-		'style-loader',
-		'css-loader',
-		'postcss-loader',
-		{ loader: 'less-loader', options: { javascriptEnabled: true } }
-	]
-	// use: [ 'css-loader', 'postcss-loader', 'less-loader' ]
-};
-configInfo.module.rules.push(cssLoader);
 const port = '3000';
 const host = '127.0.0.1';
 module.exports = {
@@ -95,8 +83,11 @@ module.exports = {
 			cache: true,
 			showErrors: true
 		}),
-		new ExtractTextPlugin({
-			filename: '[name].[chunkhash:8].css'
+		new MiniCssExtractPlugin({
+			// Options similar to the same options in webpackOptions.output
+			// both options are optional
+			filename: '[name].[hash].css',
+			chunkFilename: '[id].[hash].css'
 		}),
 		new LodashModuleReplacementPlugin({
 			collections: true,

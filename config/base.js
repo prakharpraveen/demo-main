@@ -1,4 +1,6 @@
 const path = require('path');
+const devMode = process.env.NODE_ENV !== 'production';
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 /**
  * webpack 基础配置
  */
@@ -21,6 +23,17 @@ module.exports = {
 					test: /\.js[x]?$/,
 					exclude: /node_modules/,
 					loader: 'babel-loader'
+				},
+				{
+					test: /\.(css|less)$/,
+					// exclude: /node_modules/,
+					use: [
+						devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+						'css-loader',
+						'postcss-loader',
+						{ loader: 'less-loader', options: { javascriptEnabled: true } }
+					]
+					// loader: 'style-loader!postcss-loader!less-loader'
 				},
 				{
 					test: /\.(png|jpg|jpeg|gif)(\?.+)?$/,
