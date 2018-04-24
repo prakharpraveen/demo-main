@@ -384,13 +384,13 @@ class FromeTable extends Component {
 	createBtns = () => {
 		return BTNS.map((item, index) => {
 			item = this.setBtnsShow(item);
-			if (item.isShow) {
+			// if (item.isShow) {
 				return (
 					<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
 						{item.name}
 					</Button>
 				);
-			}
+			// }
 		});
 	};
 	/**
@@ -412,9 +412,9 @@ class FromeTable extends Component {
 	createTabPane = () => {
 		let { appButtonVOs = [], appParamVOs = [] } = this.props.appData;
 		let columns1 = _.cloneDeep(this.columnsBtn);
-		if (this.props.billStatus.isEdit) {
+		// if (this.props.billStatus.isEdit) {
 			columns1.push(this.operationCol);
-		}
+		// }
 		let tabsArray = [
 			<TabPane tab='按钮注册' key='1'>
 				<Table
@@ -438,9 +438,9 @@ class FromeTable extends Component {
 		];
 		if (this.props.appType === 2) {
 			let columns2 = _.cloneDeep(this.columnsPar);
-			if (this.props.billStatus.isEdit) {
+			// if (this.props.billStatus.isEdit) {
 				columns2.push(this.operationCol);
-			}
+			// }
 			tabsArray.push(
 				<TabPane tab='参数注册' key='2'>
 					<Table
