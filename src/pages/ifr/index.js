@@ -10,7 +10,7 @@ class Ifr extends Component {
 	constructor(props) {
 		super(props);
 	}
-	
+
 	componentWillMount() {
 		// 为新页签打开的页面设置全局的peData对象
 		//  n 为 nodeName c 为 nodeCode
@@ -20,14 +20,13 @@ class Ifr extends Component {
 				window.peData.nodeName = decodeURIComponent(n);
 				window.peData.nodeCode = decodeURIComponent(c);
 			}
-		}	
+		}
 	}
-	
+
 	render() {
 		let { ifrID, ifrName } = this.props.ifrData;
-		let { ifr } = GetQuery(this.props.location.search);
-		let queryUrl = decodeURIComponent(ifr);
-
+		let { ifr, ar } = GetQuery(this.props.location.search);
+		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}`;
 		return (
 			<div className='nc-workbench-iframe'>
 				<iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />

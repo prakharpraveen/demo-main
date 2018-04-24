@@ -38,9 +38,9 @@ class App extends Component {
 							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
 						} else {
 							// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-							win.location = `#/ifr?ifr=${encodeURIComponent(data)}&n=${encodeURIComponent(
-								name
-							)}&c=${encodeURIComponent(code)}`;
+							win.location = `#/ifr?ifr=${encodeURIComponent(
+								data
+							)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
 							win.focus();
 						}
 					}
