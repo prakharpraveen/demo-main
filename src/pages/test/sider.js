@@ -4,7 +4,6 @@ import { Layout, Cascader, Input, Button, Icon, Checkbox, List } from 'antd';
 const { Sider } = Layout;
 const Search = Input.Search;
 const CheckboxGroup = Checkbox.Group;
-const ListItem = List.Item;
 
 import Ajax from 'Pub/js/ajax';
 
