@@ -9,7 +9,7 @@ let { configInfo, pubPath } = BaseData;
 let cssLoader = {
 	test: /\.(css|less)?$/,
 	// exclude: /node_modules/,
-	use: [ 'style-loader', 'css-loader', 'postcss-loader', 'less-loader' ]
+	use: [ 'style-loader', 'css-loader', 'postcss-loader', { loader: 'less-loader', options: { javascriptEnabled: true } } ]
 	// use: [ 'css-loader', 'postcss-loader', 'less-loader' ]
 };
 configInfo.module.rules.push(cssLoader);
