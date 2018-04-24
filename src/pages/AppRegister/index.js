@@ -417,31 +417,33 @@ class AppRegister extends Component {
 
 	render() {
 		return (
-			<Layout className='nc-workbench-iframe'>
-				<Header>
-					{Btns.map((item, index) => {
-						item = this.setBtnsShow(item);
-						return this.creatBtn(item);
-					})}
-				</Header>
-				<Layout height={'100%'}>
-					<Sider
-						width={320}
-						height={'100%'}
-						style={{
-							background: '#fff',
-							width: '500px',
-							'min-height': 'calc(100vh - 64px)',
-							height: `${this.state.siderHeight}px`,
-							overflowY: 'auto',
-							padding: '20px'
-						}}
-					>
-						<SearchTree />
-					</Sider>
-					<Content style={{ padding: '20px', minHeight: 280 }}>{this.switchFrom()}</Content>
+			<div className='nc-workbench-page'>
+				<Layout>
+					<Header>
+						{Btns.map((item, index) => {
+							item = this.setBtnsShow(item);
+							return this.creatBtn(item);
+						})}
+					</Header>
+					<Layout height={'100%'}>
+						<Sider
+							width={320}
+							height={'100%'}
+							style={{
+								background: '#fff',
+								width: '500px',
+								'min-height': 'calc(100vh - 64px - 48px)',
+								height: `${this.state.siderHeight}px`,
+								overflowY: 'auto',
+								padding: '20px'
+							}}
+						>
+							<SearchTree />
+						</Sider>
+						<Content style={{ padding: '20px', minHeight: 280 }}>{this.switchFrom()}</Content>
+					</Layout>
 				</Layout>
-			</Layout>
+			</div>
 		);
 	}
 }

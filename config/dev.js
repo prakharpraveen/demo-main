@@ -46,7 +46,8 @@ module.exports = {
 		proxy: {
 			'/': {
 				// 代理地址
-				target: 'http://172.20.4.84:6565',
+				// target: 'http://172.20.4.84:6565',
+				target: 'http://10.11.115.25:80/',
 				bypass: function(req, res, proxyOptions) {
 					if (req.headers.accept.indexOf('html') !== -1) {
 						// console.log('Skipping proxy for browser request.');
@@ -54,16 +55,16 @@ module.exports = {
 					}
 				}
 			},
-			'/test': {
-				// 代理地址
-				target: 'http://10.11.115.164:80',
-				bypass: function(req, res, proxyOptions) {
-					if (req.headers.accept.indexOf('html') !== -1) {
-						// console.log('Skipping proxy for browser request.');
-						return '/index.html';
-					}
-				}
-			}
+			// '/test': {
+			// 	// 代理地址
+			// 	target: 'http://10.11.115.164:80',
+			// 	bypass: function(req, res, proxyOptions) {
+			// 		if (req.headers.accept.indexOf('html') !== -1) {
+			// 			// console.log('Skipping proxy for browser request.');
+			// 			return '/index.html';
+			// 		}
+			// 	}
+			// }
 		}
 	},
 

@@ -25,8 +25,8 @@ class Ifr extends Component {
 
 	render() {
 		let { ifrID, ifrName } = this.props.ifrData;
-		let { ifr, ar } = GetQuery(this.props.location.search);
-		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}`;
+		let { ifr, ar, c } = GetQuery(this.props.location.search);
+		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}&c=${c}`;
 		return (
 			<div className='nc-workbench-page'>
 				<iframe id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />
