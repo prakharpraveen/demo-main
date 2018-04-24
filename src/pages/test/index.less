@@ -1,6 +1,53 @@
-.nc-workbench-home-sider{
+.nc-workbench-home-sider {
 	background: #fff;
 	overflow: auto;
+	.sider-content {
+		margin:10px 5px 15px;
+		padding: 10px 8px 0;
+		border: 1px solid rgba(204, 204, 204, 1);
+		.sider-search{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.switch-search{
+				margin-right: 0;
+				font-size: 20px;
+				cursor: pointer;
+			}
+		}
+		.add-item{
+			margin-top: 10px;
+			display: flex;
+			justify-content: space-between;
+			.add{
+				cursor: pointer;
+			}
+		}
+		.sider-result {
+			.result-group-list {
+				.result-header{
+					border-bottom: 1px solid #E9E9E9;
+				}
+				.result-app-list {
+					width: 100%;
+					display: flex;
+					flex-wrap: wrap;
+					.app-col {
+						width: 50%;
+						.list-item {
+							padding-left: 4px;
+							margin-bottom: 16px;
+							.list-item-content {
+								height: 130px;
+
+								border: 1px solid rgba(204, 204, 204, 1);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 .nc-workbench-home-container {
 	background: #e6e9e9;
@@ -17,25 +64,25 @@
 			.group-item-icon {
 				font-size: 20px;
 			}
-			.group-item-title-container-no-edit{
+			.group-item-title-container-no-edit {
 				display: flex;
 				justify-content: space-between;
-				i{
-			        cursor: pointer;
+				i {
+					cursor: pointer;
 				}
-				.title-left{
+				.title-left {
 					display: flex;
 					align-items: center;
-					i{
+					i {
 						margin-left: 7px;
 					}
 				}
-				.title-right{
+				.title-right {
 					display: flex;
-					.group-item-title-edit{
+					.group-item-title-edit {
 						margin-right: 23px;
 					}
-					.group-item-title-not-edit{
+					.group-item-title-not-edit {
 						color: #e6e9e9;
 						margin-right: 23px;
 					}
@@ -78,19 +125,18 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	button{
+	button {
 		width: 78px;
 		margin: 0 8px;
 	}
-	.footer-left{
+	.footer-left {
 		display: flex;
-		margin-left: 100px; 
+		margin-left: 100px;
 	}
-	.footer-right{
+	.footer-right {
 		display: flex;
 		margin-right: 100px;
 	}
-	
 }
 /* 使用 css 技巧来动态设置的对话框位置 */
 .vertical-center-modal {

@@ -7,11 +7,10 @@ import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
 // drag && drop
-import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 //ant
-import { Layout, Menu, Breadcrumb  } from 'antd';
+import { Layout  } from 'antd';
 const { Header, Content } = Layout;
 //自定义组件
 import {collision,layoutCheck} from './collision';
@@ -79,7 +78,6 @@ class Test extends Component {
 						_.forEach(data, (d) => {
 							d.type = "group";
 						})
-						this.state.groups = data;
 						this.setState({ groups: data })
 					}
 				}
@@ -409,10 +407,9 @@ class Test extends Component {
 			<Layout>
 				{/* Header占位符 */}
 				<Header style={{ height: '48px' }}></Header>
-				<Breadcrumb style={{ height: '20px' }} separator="|">
-					<Breadcrumb.Item>首页</Breadcrumb.Item>
-					<Breadcrumb.Item><a href="">首页编辑</a></Breadcrumb.Item>
-				</Breadcrumb>
+				<div className="bread-crumb" style={{height:'20px'}}>
+				面包屑
+				</div>
 				<Layout>
 					<MySider contentHeight={contentHeight}/>
 					<Content style={{ height: contentHeight }}>
@@ -443,17 +440,4 @@ export default DragDropContext(HTML5Backend)(connect(
 		clearData
 	}
 )(Test))
-
-	// componentDidMount() {
-	// 	let { layout } = this.state;
-	// 	const containerDom = document.querySelector("#card-container");
-	// 	const clientWidth = containerDom.clientWidth;
-	// 	this.state.layout.containerWidth = clientWidth;
-
-	// 	const calWidth = this.calColWidth();
-
-	// 	layout.calWidth = layout.rowHeight = calWidth;
-	// 	layout.containerWidth = clientWidth;
-	// 	this.setState({ layout: layout })
-    // }
 	
