@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
 let cssLoader = {
@@ -41,6 +42,10 @@ module.exports = {
 			// both options are optional
 			filename: '[name].[chunkhash:8].css'
 			// chunkFilename: '[id].css'
+		}),
+		new LodashModuleReplacementPlugin({
+			collections: true,
+			paths: true
 		}),
 		new CleanWebpackPlugin(
 			[ '../dist' ],

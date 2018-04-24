@@ -4,12 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
 let cssLoader = {
 	test: /\.(css|less)?$/,
 	// exclude: /node_modules/,
-	use: [ 'style-loader', 'css-loader', 'postcss-loader', { loader: 'less-loader', options: { javascriptEnabled: true } } ]
+	use: [
+		'style-loader',
+		'css-loader',
+		'postcss-loader',
+		{ loader: 'less-loader', options: { javascriptEnabled: true } }
+	]
 	// use: [ 'css-loader', 'postcss-loader', 'less-loader' ]
 };
 configInfo.module.rules.push(cssLoader);
@@ -94,6 +100,10 @@ module.exports = {
 			// both options are optional
 			filename: '[name].css'
 			// chunkFilename: '[id].css'
+		}),
+		new LodashModuleReplacementPlugin({
+			collections: true,
+			paths: true
 		}),
 		new CopyWebpackPlugin([ { from: pubPath + '/src/assets', to: './assets' } ]),
 		new webpack.NamedModulesPlugin(),
