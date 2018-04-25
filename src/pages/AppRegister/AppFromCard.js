@@ -99,6 +99,7 @@ class AppFromCard extends Component {
 					type: 'search',
 					code: 'querymdids',
 					required: false,
+					placeholder: '请输入元数据名称过滤',
 					options: []
 				},
 				{
@@ -291,10 +292,12 @@ class AppFromCard extends Component {
 					<FormItem label={lable} hasFeedback>
 						{getFieldDecorator(code, {
 							initialValue: nodeData[code],
-							rules: [ { required: true, message: `请选择${lable}` } ]
+							rules: [
+								{ required: true, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
+							]
 						})(
 							<Select
-								placeholder={`请选择${lable}`}
+								placeholder={itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}`}
 								mode='combobox'
 								defaultActiveFirstOption={false}
 								showArrow={false}

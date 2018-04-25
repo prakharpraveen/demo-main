@@ -431,7 +431,6 @@ class FromeTable extends Component {
 						moveRow: this.moveRow
 					})}
 					columns={columns1}
-					scroll={{ y: 300 }}
 					size='middle'
 				/>
 			</TabPane>
@@ -452,7 +451,6 @@ class FromeTable extends Component {
 							return item;
 						})}
 						columns={columns2}
-						scroll={{ y: 300 }}
 						size='middle'
 					/>
 				</TabPane>
