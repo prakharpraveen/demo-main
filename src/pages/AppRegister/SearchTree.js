@@ -29,7 +29,7 @@ class SearchTree extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			expandedKeys: ['0'],
+			expandedKeys: [ '0' ],
 			selectedKeys: [],
 			treeDataArray: [],
 			treeData: [],
@@ -74,7 +74,7 @@ class SearchTree extends Component {
 	 */
 	delTreeData = (nodeData) => {
 		console.log(nodeData);
-		
+
 		let { treeDataArray, selectedKeys } = this.state;
 		selectedKeys = [];
 		treeDataArray = treeDataArray.filter((item) => item.moduleid !== nodeData.moduleid);
@@ -116,6 +116,8 @@ class SearchTree extends Component {
 					treeObj[key] = element.map((item, index) => {
 						if (treeObj[item.moduleid]) {
 							item.children = treeObj[item.moduleid];
+						} else if (treeObj[item.systypecode]) {
+							item.children = treeObj[item.systypecode];
 						}
 						return item;
 					});
@@ -186,12 +188,12 @@ class SearchTree extends Component {
 					},
 					success: ({ data }) => {
 						if (data.success && data.data) {
-							if(selectedNodeData.parentcode.length > 4){
+							if (selectedNodeData.parentcode.length > 4) {
 								this.props.setOpType('app');
-							}else{
+							} else {
 								this.props.setOpType('classify');
 							}
-							
+
 							let { appRegisterVO, appButtonVOs, appParamVOs } = data.data;
 							this.props.setAppData({ appButtonVOs, appParamVOs });
 							this.props.setNodeData(appRegisterVO);

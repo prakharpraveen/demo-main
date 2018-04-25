@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setNodeData, setBillStatus, setOpType, setAppData } from 'Store/AppRegister/action';
+import { setNodeData, setBillStatus, setOpType, setAppData, setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import SearchTree from './SearchTree';
 import ModuleFromCard from './ModuleFromCard';
@@ -54,6 +54,9 @@ class AppRegister extends Component {
 			case '增加模块':
 				this.actionType = 1;
 				this.nodeData = this.props.nodeData;
+				if (!this.props.parentData) {
+					this.props.setParentData(this.nodeData.moduleid);
+				}
 				this.optype = this.props.optype;
 				let moduleData = {
 					systypecode: '',
@@ -76,8 +79,13 @@ class AppRegister extends Component {
 			case '增加应用分类':
 				this.actionType = 2;
 				this.nodeData = this.props.nodeData;
+				if (this.props.parentData === this.nodeData.parentcode) {
+					this.props.setParentData(this.nodeData.moduleid);
+				}
 				this.optype = this.props.optype;
 				let classData = {
+					apptype: 0,
+					isenable: true,
 					code: '',
 					name: '',
 					app_desc: '',
@@ -93,6 +101,9 @@ class AppRegister extends Component {
 			case '增加应用':
 				this.actionType = 3;
 				this.nodeData = this.props.nodeData;
+				if (this.props.parentData === this.nodeData.parent_id) {
+					this.props.setParentData(this.nodeData.code);
+				}
 				this.optype = this.props.optype;
 				let appData = {
 					code: '',
@@ -125,7 +136,7 @@ class AppRegister extends Component {
 			case '保存':
 				let fromData = this.props.getFromData();
 				console.log(fromData);
-				
+
 				if (!fromData) {
 					return;
 				}
@@ -170,11 +181,12 @@ class AppRegister extends Component {
 						} else {
 							url = `/nccloud/platform/appregister/editapp.do`;
 						}
-						if (this.optype === 'classify') {
-							fromData.parent_id = this.nodeData.moduleid;
-						} else {
-							fromData.parent_id = this.props.parentData;
-						}
+						fromData.parent_id = this.props.parentData;
+						// if (this.optype === 'classify') {
+						// 	fromData.parent_id = this.nodeData.moduleid;
+						// } else {
+						// 	fromData.parent_id = this.props.parentData;
+						// }
 						reqData = { ...this.props.nodeData, ...fromData };
 						break;
 					default:
@@ -183,6 +195,7 @@ class AppRegister extends Component {
 				Ajax({
 					url: url,
 					data: reqData,
+					alert: true,
 					success: ({ data }) => {
 						if (data.success && data.data) {
 							if (isNew) {
@@ -274,6 +287,7 @@ class AppRegister extends Component {
 					success: ({ data }) => {
 						if (data.success && data.data) {
 							this.props.delTreeData(nodeData);
+							this.props.setOpType(null);
 						}
 					}
 				});
@@ -465,7 +479,8 @@ AppRegister.PropTypes = {
 	getFromData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired
+	updateTreeData: PropTypes.func.isRequired,
+	setParentData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => ({
@@ -482,6 +497,7 @@ export default connect(
 		setNodeData,
 		setBillStatus,
 		setOpType,
-		setAppData
+		setAppData,
+		setParentData
 	}
 )(AppRegister);
