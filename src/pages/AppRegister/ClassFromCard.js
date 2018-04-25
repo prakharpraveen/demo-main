@@ -103,8 +103,14 @@ class ClassFromCard extends Component {
 		}
 	};
 	getFromData = () => {
-		const { getFieldsValue } = this.props.form;
-		return getFieldsValue();
+		const { getFieldsValue, validateFields } = this.props.form;
+		validateFields((err, values) => {
+			if (!err) {
+				return getFieldsValue();
+			} else {
+				return;
+			}
+		});
 	};
 
 	componentWillMount() {

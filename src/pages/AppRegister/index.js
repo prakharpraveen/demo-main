@@ -124,6 +124,11 @@ class AppRegister extends Component {
 				break;
 			case '保存':
 				let fromData = this.props.getFromData();
+				console.log(fromData);
+				if (!fromData) {
+					return;
+				}
+
 				let isNew = this.props.billStatus.isNew;
 				let reqData;
 				/**

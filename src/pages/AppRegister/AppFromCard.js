@@ -232,7 +232,7 @@ class AppFromCard extends Component {
 	 */
 	handleSearch = (searchValue) => {
 		this.props.form.setFieldsValue({
-			querymdids: searchValue,
+			querymdids: searchValue
 		});
 		fetch(searchValue, (options) => {
 			let { DOMDATA } = this.state;
@@ -323,8 +323,14 @@ class AppFromCard extends Component {
 		}
 	};
 	getFromData = () => {
-		const { getFieldsValue } = this.props.form;
-		return getFieldsValue();
+		const { getFieldsValue, validateFields } = this.props.form;
+		validateFields((err, values) => {
+			if (!err) {
+				return getFieldsValue();
+			} else {
+				return;
+			}
+		});
 	};
 	componentWillMount() {
 		this.props.getFromDataFunc(this.getFromData);
