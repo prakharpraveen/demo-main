@@ -196,7 +196,7 @@ class AppFromCard extends Component {
 	getOptionsData = (code) => {
 		let { DOMDATA } = this.state;
 		Ajax({
-			url: `nccloud/platform/appregister/queryorgtype.do`,
+			url: `/nccloud/platform/appregister/queryorgtype.do`,
 			success: ({ data }) => {
 				if (data.success && data.data) {
 					let options = data.data.rows;
