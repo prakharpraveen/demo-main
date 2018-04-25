@@ -272,14 +272,14 @@ class AppFromCard extends Component {
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
 		const { isEdit } = this.props.billStatus;
-		let { lable, type, code } = itemInfo;
+		let { lable, type, code,required } = itemInfo;
 		switch (type) {
 			case 'select':
 				return isEdit ? (
 					<FormItem label={lable} hasFeedback>
 						{getFieldDecorator(code, {
 							initialValue: nodeData[code],
-							rules: [ { required: true, message: `请选择${lable}` } ]
+							rules: [ { required: required, message: `请选择${lable}` } ]
 						})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
 					</FormItem>
 				) : (
@@ -293,7 +293,7 @@ class AppFromCard extends Component {
 						{getFieldDecorator(code, {
 							initialValue: nodeData[code],
 							rules: [
-								{ required: true, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
+								{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
 							]
 						})(
 							<Select
@@ -329,7 +329,7 @@ class AppFromCard extends Component {
 							initialValue: nodeData[code],
 							rules: [
 								{
-									required: true,
+									required: required,
 									message: `请输入${lable}`
 								}
 							]
