@@ -2,7 +2,7 @@
 ## 浏览器兼容
 
 ## 演示地址
-http://nccloud.netlify.com
+http://nccloud.netlify.com/workbench/
 
 ## 描述
 服务于 NC 各个模块节点页面，各模块节点挂载在工作台中实现整个节点页面的完整性。
