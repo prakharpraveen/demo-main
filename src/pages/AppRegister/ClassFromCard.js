@@ -9,17 +9,20 @@ const DOMDATA = [
 	{
 		lable: '应用编码',
 		type: 'input',
-		code: 'code'
+		code: 'code',
+		required: true
 	},
 	{
 		lable: '应用名称',
 		type: 'input',
-		code: 'name'
+		code: 'name',
+		required: true
 	},
 	{
 		lable: '应用描述',
 		type: 'input',
 		code: 'app_desc',
+		required: false,
 		md: 24,
 		lg: 24,
 		xl: 12
@@ -28,6 +31,7 @@ const DOMDATA = [
 		lable: '帮助文件名',
 		type: 'input',
 		code: 'help_name',
+		required: false,
 		md: 24,
 		lg: 24,
 		xl: 12
@@ -53,16 +57,16 @@ class ClassFromCard extends Component {
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
 		const { isEdit } = this.props.billStatus;
-		let { lable, type, code } = itemInfo;
+		let { lable, type, code, required } = itemInfo;
 		switch (type) {
 			case 'select':
 				return isEdit ? (
 					<FormItem label={lable} hasFeedback>
 						{getFieldDecorator(code, {
 							initialValue: nodeData[code],
-							rules: [ { required: true, message: 'Please select your country!' } ]
+							rules: [ { required: required, message: `请选择${lable}` } ]
 						})(
-							<Select placeholder='Please select a country'>
+							<Select placeholder={`请选择${lable}`}>
 								<Option value='0'>全局</Option>
 								<Option value='1'>集团</Option>
 							</Select>
@@ -89,11 +93,11 @@ class ClassFromCard extends Component {
 							initialValue: nodeData[code],
 							rules: [
 								{
-									required: true,
-									message: 'Input something!'
+									required: required,
+									message: `请输入${lable}`
 								}
 							]
-						})(<Input placeholder='placeholder' />)}
+						})(<Input placeholder={`请输入${lable}`} />)}
 					</FormItem>
 				) : (
 					<FormItem label={lable}>

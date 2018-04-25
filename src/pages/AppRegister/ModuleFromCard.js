@@ -14,27 +14,32 @@ class ModuleFromCard extends Component {
 				{
 					lable: '模块编码',
 					type: 'input',
-					code: 'systypecode'
+					code: 'systypecode',
+					required: true
 				},
 				{
 					lable: '模块号',
 					type: 'input',
-					code: 'moduleid'
+					code: 'moduleid',
+					required: true
 				},
 				{
 					lable: '模块名称',
 					type: 'input',
-					code: 'systypename'
+					code: 'systypename',
+					required: true
 				},
 				{
 					lable: '对应模块号',
 					type: 'input',
-					code: 'devmodule'
+					code: 'devmodule',
+					required: false
 				},
 				{
 					lable: '应用范围',
 					type: 'select',
 					code: 'appscope',
+					required: false,
 					options: [
 						{
 							value: 0,
@@ -50,22 +55,26 @@ class ModuleFromCard extends Component {
 					lable: '组织类型',
 					type: 'select',
 					code: 'orgtypecode',
+					required: false,
 					options: []
 				},
 				{
 					lable: '多语字段',
 					type: 'input',
-					code: 'resid'
+					code: 'resid',
+					required: false
 				},
 				{
 					lable: '是否支持开关帐设置',
 					type: 'checkbox',
-					code: 'supportcloseaccbook'
+					code: 'supportcloseaccbook',
+					required: false
 				},
 				{
 					lable: '是否发送会计平台',
 					type: 'checkbox',
-					code: 'isaccount'
+					code: 'isaccount',
+					required: false
 				}
 			]
 		};
@@ -140,14 +149,14 @@ class ModuleFromCard extends Component {
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
 		const { isEdit } = this.props.billStatus;
-		let { lable, type, code } = itemInfo;
+		let { lable, type, code, required } = itemInfo;
 		switch (type) {
 			case 'select':
 				return isEdit ? (
 					<FormItem label={lable} hasFeedback>
 						{getFieldDecorator(code, {
 							initialValue: nodeData[code],
-							rules: [ { required: true, message: `请选择${lable}` } ]
+							rules: [ { required: required, message: `请选择${lable}` } ]
 						})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
 					</FormItem>
 				) : (
@@ -171,11 +180,11 @@ class ModuleFromCard extends Component {
 							initialValue: nodeData[code],
 							rules: [
 								{
-									required: true,
-									message: 'Input something!'
+									required: required,
+									message: `请输入${lable}`
 								}
 							]
-						})(<Input placeholder='placeholder' />)}
+						})(<Input placeholder={`请输入${lable}`} />)}
 					</FormItem>
 				) : (
 					<FormItem label={lable}>

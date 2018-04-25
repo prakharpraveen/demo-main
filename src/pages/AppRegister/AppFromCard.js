@@ -42,23 +42,27 @@ class AppFromCard extends Component {
 				{
 					lable: '应用编码',
 					type: 'input',
-					code: 'code'
+					code: 'code',
+					required: true
 				},
 				{
 					lable: '应用名称',
 					type: 'input',
-					code: 'name'
+					code: 'name',
+					required: true
 				},
 				{
 					lable: '组织类型',
 					type: 'select',
 					code: 'orgtypecode',
+					required: true,
 					options: []
 				},
 				{
 					lable: '功能点类型',
 					type: 'select',
 					code: 'funtype',
+					required: true,
 					options: [
 						{
 							value: 0,
@@ -81,43 +85,33 @@ class AppFromCard extends Component {
 				{
 					lable: '应用描述',
 					type: 'input',
-					code: 'app_desc'
+					code: 'app_desc',
+					required: false
 				},
 				{
 					lable: '帮助文件名',
 					type: 'input',
-					code: 'help_name'
+					code: 'help_name',
+					required: false
 				},
 				{
 					lable: '关联元数据ID',
 					type: 'search',
 					code: 'querymdids',
+					required: false,
 					options: []
-				},
-				{
-					lable: '是否启用',
-					type: 'checkbox',
-					code: 'isenable'
-				},
-				{
-					lable: '是否CA用户可用',
-					type: 'checkbox',
-					code: 'iscauserusable'
-				},
-				{
-					lable: '是否加载占用',
-					type: 'checkbox',
-					code: 'uselicense_load'
 				},
 				{
 					lable: '所属集团',
 					type: 'input',
-					code: 'pk_group'
+					code: 'pk_group',
+					required: false
 				},
 				{
 					lable: '应用类型',
 					type: 'select',
 					code: 'apptype',
+					required: false,
 					options: [
 						{
 							value: 1,
@@ -129,20 +123,42 @@ class AppFromCard extends Component {
 						}
 					]
 				},
+
 				{
 					lable: '应用宽',
 					type: 'input',
-					code: 'width'
+					code: 'width',
+					required: true
 				},
 				{
 					lable: '应用高',
 					type: 'input',
-					code: 'height'
+					code: 'height',
+					required: true
+				},
+				{
+					lable: '是否启用',
+					type: 'checkbox',
+					code: 'isenable',
+					required: false
+				},
+				{
+					lable: '是否CA用户可用',
+					type: 'checkbox',
+					code: 'iscauserusable',
+					required: false
+				},
+				{
+					lable: '是否加载占用',
+					type: 'checkbox',
+					code: 'uselicense_load',
+					required: false
 				},
 				{
 					lable: '目标跳转路径',
 					type: 'input',
 					code: 'target_path',
+					required: true,
 					md: 24,
 					lg: 24,
 					xl: 24
@@ -151,6 +167,7 @@ class AppFromCard extends Component {
 					lable: '图标路径',
 					type: 'input',
 					code: 'image_src',
+					required: true,
 					md: 24,
 					lg: 24,
 					xl: 24
@@ -310,10 +327,10 @@ class AppFromCard extends Component {
 							rules: [
 								{
 									required: true,
-									message: 'Input something!'
+									message: `请输入${lable}`
 								}
 							]
-						})(<Input placeholder='placeholder' />)}
+						})(<Input placeholder={`请输入${lable}`} />)}
 					</FormItem>
 				) : (
 					<FormItem label={lable}>

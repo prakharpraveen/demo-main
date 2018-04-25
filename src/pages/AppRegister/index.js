@@ -62,8 +62,8 @@ class AppRegister extends Component {
 					systypecode: '',
 					moduleid: '',
 					systypename: '',
-					orgtypecode: '',
-					appscope: '',
+					orgtypecode: undefined,
+					appscope: undefined,
 					isaccount: false,
 					supportcloseaccbook: false,
 					resid: '',
@@ -108,8 +108,8 @@ class AppRegister extends Component {
 				let appData = {
 					code: '',
 					name: '',
-					orgtypecode: '',
-					funtype: '',
+					orgtypecode: undefined,
+					funtype: undefined,
 					app_desc: '',
 					help_name: '',
 					isenable: false,
@@ -119,7 +119,7 @@ class AppRegister extends Component {
 					width: 1,
 					height: 1,
 					target_path: '',
-					apptype: '',
+					apptype: 1,
 					image_src: ''
 				};
 				this.props.setAppData({
