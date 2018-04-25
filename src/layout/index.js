@@ -101,11 +101,11 @@ class Layout extends Component {
 						</div>
 					</div>
 					<div className='drawer-buttom'>
-						<ul>
+						{/* <ul>
 							<li>
 								<Link to='/ar'>添加应用</Link>
 							</li>
-						</ul>
+						</ul> */}
 					</div>
 				</Drawer>
 			</div>

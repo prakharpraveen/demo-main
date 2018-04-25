@@ -32,16 +32,23 @@ class App extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success) {
-						// 成功之后进行页面跳转
-						if (type === 'current') {
-							// 浏览器当前页打开
-							window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
-						} else {
-							// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-							win.location = `#/ifr?ifr=${encodeURIComponent(
-								data
-							)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
-							win.focus();
+						switch (type) {
+							case 'current':
+								// 浏览器当前页打开
+								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
+								break;
+							case 'own':
+								// 浏览器当前页打开
+								win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+								win.focus();
+								break;
+							default:
+								// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+								win.location = `#/ifr?ifr=${encodeURIComponent(
+									data
+								)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+								win.focus();
+								break;
 						}
 					}
 				}

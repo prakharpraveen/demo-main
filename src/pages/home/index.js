@@ -95,8 +95,9 @@ class Home extends Component {
 	 * @param {Object} appOption // 小部件类型 
 	 * @param {Number} domWidth // 小应用宽度
 	 * @param {Number} domHeight // 小应用高度
+	 * @param {Boolean} isOwn //是否为系统预置应用 默认为 false 非系统预置应用
 	 */
-	createApp = (appOption, domWidth, domHeight) => {
+	createApp = (appOption, domWidth, domHeight, isOwn = false) => {
 		const { image_src, name, mountid, target_path, pk_appregister } = appOption;
 		return (
 			<div
@@ -104,7 +105,7 @@ class Home extends Component {
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
-					window.openNew(appOption);
+					window.openNew(appOption, isOwn ? 'own' : undefined);
 				}}
 			>
 				<div className='app-item'>
@@ -131,13 +132,21 @@ class Home extends Component {
 				let { apptype, width, height } = item;
 				const domWidth = Number(width) * UNIT + (Number(width) - 1) * 12;
 				const domHeight = Number(height) * UNIT + (Number(height) - 1) * 10;
-				if (Number(apptype) === 1) {
-					return this.createApp(item, domWidth, domHeight);
-				} else if (Number(apptype) === 2) {
-					// 目前先不渲染小部件
-					// return (
-					// 	<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
-					// );
+				switch (Number(apptype)) {
+					case 1:
+						return this.createApp(item, domWidth, domHeight);
+						break;
+					case 2:
+						// 目前先不渲染小部件
+						// return (
+						// 	<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
+						// );
+						break;
+					case 3:
+						return this.createApp(item, domWidth, domHeight, true);
+						break;
+					default:
+						break;
 				}
 			}
 		});
