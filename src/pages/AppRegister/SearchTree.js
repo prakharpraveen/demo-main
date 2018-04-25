@@ -29,7 +29,7 @@ class SearchTree extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			expandedKeys: [],
+			expandedKeys: ['0'],
 			selectedKeys: [],
 			treeDataArray: [],
 			treeData: [],

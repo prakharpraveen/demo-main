@@ -324,13 +324,13 @@ class AppFromCard extends Component {
 	};
 	getFromData = () => {
 		const { getFieldsValue, validateFields } = this.props.form;
+		let flag = false;
 		validateFields((err, values) => {
 			if (!err) {
-				return getFieldsValue();
-			} else {
-				return;
+				flag = true;
 			}
 		});
+		return flag ? getFieldsValue() : null;
 	};
 	componentWillMount() {
 		this.props.getFromDataFunc(this.getFromData);

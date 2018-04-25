@@ -125,6 +125,7 @@ class AppRegister extends Component {
 			case '保存':
 				let fromData = this.props.getFromData();
 				console.log(fromData);
+				
 				if (!fromData) {
 					return;
 				}
