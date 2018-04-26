@@ -12,6 +12,7 @@ import {
 	delTreeData
 } from 'Store/AppRegister/action';
 import { Tree, Input } from 'antd';
+import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import Item from 'antd/lib/list/Item';
 const TreeNode = Tree.TreeNode;
@@ -112,10 +113,11 @@ class SearchTree extends Component {
 					treeObj[key] = element.map((item, index) => {
 						if (treeObj[item.moduleid]) {
 							item.children = treeObj[item.moduleid];
+							return item;
 						} else if (treeObj[item.systypecode]) {
 							item.children = treeObj[item.systypecode];
+							return item;
 						}
-						return item;
 					});
 				}
 			}

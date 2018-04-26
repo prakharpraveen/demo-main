@@ -10,6 +10,7 @@ import ModuleFromCard from './ModuleFromCard';
 import ClassFromCard from './ClassFromCard';
 import AppFromCard from './AppFromCard';
 import PageLayout from 'Components/PageLayout';
+import Notice from 'Components/Notice';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
 /**
@@ -208,8 +209,9 @@ class AppRegister extends Component {
 					url: url,
 					data: reqData,
 					alert: true,
-					success: ({ data }) => {
+					success: ({data}) => {
 						if (data.success && data.data) {
+							Notice({ status: 'success' });
 							if (isNew) {
 								if (this.props.optype === 'classify' || this.props.optype === 'app') {
 									let treeData = {
@@ -241,6 +243,9 @@ class AppRegister extends Component {
 								isEdit: false,
 								isNew: false
 							});
+						} else {
+							console.log(res);
+							Notice({ status: 'error', msg: res.error.message });
 						}
 					}
 				});
@@ -298,8 +303,11 @@ class AppRegister extends Component {
 					data: data,
 					success: ({ data }) => {
 						if (data.success && data.data) {
+							Notice({ status: 'success', msg: data.data.true });
 							this.props.delTreeData(nodeData);
 							this.props.setOpType(null);
+						} else {
+							Notice({ status: 'error', msg: data.data.true });
 						}
 					}
 				});
