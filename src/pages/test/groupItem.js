@@ -57,7 +57,13 @@ const groupItemTarget ={
             const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
             const groupItemX = groupItemBoundingRect.x;
             const groupItemY = groupItemBoundingRect.y;
-            props.moveCardInGroupItem(dragItem, hoverItem, x-groupItemX,y-groupItemY);
+            let tmpDragItem = dragItem;
+            if(dragItem.isNewCard === true){
+                let tmp = _.cloneDeep(dragItem);
+                tmp.id = `${tmp.id}_${hoverItem.id}`;
+                tmpDragItem = tmp;
+            }
+            props.moveCardInGroupItem(tmpDragItem, hoverItem, x-groupItemX,y-groupItemY);
         }
     },
     drop(props, monitor, component){
@@ -109,12 +115,12 @@ class GroupItem extends Component {
     componentWillReceiveProps(nextProps) {
 		if (!this.props.isOver && nextProps.isOver) {
 			// You can use this as enter handler
-			// console.log("groupItem enter");
+			console.log("groupItem enter");
 		}
 
 		if (this.props.isOver && !nextProps.isOver) {
 			// You can use this as leave handler
-			// console.log("groupItem leave");
+			console.log("groupItem leave");
 		}
     }
     //创建卡片

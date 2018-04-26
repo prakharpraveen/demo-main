@@ -129,28 +129,42 @@ class Test extends Component {
 		return checkInContainer(GridX, GridY, col, width);
 	}
 	//拖拽中卡片在组上移动
-	moveCardInGroupItem(dragItem,hoverItem,x,y){
-		let {groups} = this.state;
+	moveCardInGroupItem(dragItem, hoverItem, x, y) {
+		let { groups } = this.state;
 		let groupIndex;
 		let removeCardArr = [];
-		_.forEach(groups,(g, index)=>{
-			if(g.pk_app_group === hoverItem.id){
+		const tmpCard = {};
+
+		_.forEach(groups, (g, index) => {
+			if (g.pk_app_group === hoverItem.id) {
 				groupIndex = index;
 			}
-			const tmpCard= _.remove(g.apps,(a)=>{
+			const tmpCard = _.remove(g.apps, (a) => {
 				return a.pk_appregister === dragItem.id;
 			})
-			removeCardArr = _.concat(removeCardArr,tmpCard);
+			removeCardArr = _.concat(removeCardArr, tmpCard);
 		});
-		let removeCard = removeCardArr[0]
-		const { GridX, GridY } = this.calGridXY(x, y,removeCard.width);
-		removeCard = {...removeCard,gridx:GridX,gridy:GridY};
+
+		let removeCard;
+		if(removeCardArr.length === 0){
+			removeCard = {
+				pk_appregister: dragItem.id,
+				height: 2,
+				width: 2,
+				name: dragItem.id
+			};
+		}else{
+			removeCard = removeCardArr[0];
+		}
+		 
+		const { GridX, GridY } = this.calGridXY(x, y, removeCard.width);
+		removeCard = { ...removeCard, gridx: GridX, gridy: GridY };
 		groups[groupIndex].apps.push(removeCard);
-		const newlayout = layoutCheck(groups[groupIndex].apps,removeCard,removeCard.pk_appregister,removeCard.pk_appregister);
-		
-		const compactedLayout = compactLayout(newlayout,removeCard);
+		const newlayout = layoutCheck(groups[groupIndex].apps, removeCard, removeCard.pk_appregister, removeCard.pk_appregister);
+
+		const compactedLayout = compactLayout(newlayout, removeCard);
 		groups[groupIndex].apps = compactedLayout;
-		this.setState({groups});
+		this.setState({ groups });
 	}
 	//释放卡片到组
 	dropCardToGroupItem(dragItem,dropItem,x,y){

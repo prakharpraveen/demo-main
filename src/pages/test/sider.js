@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Layout, Cascader, Input, Icon, Checkbox, List, Button } from 'antd';
+import SiderCard from './siderCard.js'
 const { Sider } = Layout;
 const Search = Input.Search;
 const CheckboxGroup = Checkbox.Group;
@@ -118,13 +119,16 @@ class MySider extends Component {
                                 return (
                                     <div className='app-col'>
                                         <div className='list-item'>
-                                            <div className='list-item-content'>{child.label}</div>
+                                            {/* <div className='list-item-content'>{child.label}</div> */}
+                                            <SiderCard id={child.value} key={child.value}
+                                                name = {child.label} type={'newcard'}
+                                                >
+                                            </SiderCard>
                                         </div>
                                     </div>
                                 )
                             })
                         }
-
                     </div>
                 </div>
             )
@@ -141,19 +145,6 @@ class MySider extends Component {
 				style={{ height: contentHeight }}
 			>
 				<div className='sider-content'>
-					{/* <Search
-						placeholder='请输入应用名称'
-						onSearch={(value) => console.log(value)}
-						style={{ width: 222 }}
-					/>
-						<Cascader
-							style={{ width: 222 }}
-							options={this.state.domainArr}
-							onChange={onChange}
-							placeholder='领域-模块'
-						/>
-                         */}
-
 					{this.getSearchDom()}
 					<div className='add-item'>
 						<span />
