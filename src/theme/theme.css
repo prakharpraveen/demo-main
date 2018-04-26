@@ -51,3 +51,6 @@
 #ncc .ant-checkbox-checked:after{
 	border: 1px solid #4e5e68;
 }
+#ncc .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner:after{
+	border-color: #fff;
+}

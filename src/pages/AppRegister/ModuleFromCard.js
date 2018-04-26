@@ -119,7 +119,6 @@ class ModuleFromCard extends Component {
 						}
 						return item;
 					});
-					console.log(DOMDATA);
 					this.setState({ DOMDATA });
 				}
 			}

@@ -310,7 +310,7 @@ class AppFromCard extends Component {
 					</FormItem>
 				) : (
 					<FormItem label={lable}>
-						<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
+						<span className='ant-form-text'>{nodeData[code]}</span>
 					</FormItem>
 				);
 			case 'checkbox':
