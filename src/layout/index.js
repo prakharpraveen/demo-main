@@ -7,7 +7,9 @@ import Drawer from 'react-motion-drawer';
 import PropTypes from 'prop-types';
 import { GetQuery } from 'Pub/js/utils';
 import { withRouter } from 'react-router';
+import { changeDrawer } from 'Store/appStore/action';
 import IntlCom from './../intl';
+import SideDrawer from './SideDrawer';
 import './index.less';
 const Option = Select.Option;
 /**
@@ -17,13 +19,9 @@ class Layout extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isOpen: false,
 			nodeName: '首页'
 		};
 	}
-	handleDrawerChange = (isOpen) => {
-		this.setState({ isOpen });
-	};
 
 	handleChange = (value) => {
 		console.log(`selected ${value}`);
@@ -40,7 +38,8 @@ class Layout extends Component {
 	}
 
 	render() {
-		let { isOpen, nodeName } = this.state;
+		let { nodeName } = this.state;
+		let { isOpen } = this.props;
 		return (
 			<div className='nc-workbench-layout'>
 				<nav className='nc-workbench-nav nccwb-header' style={{ 'z-index': '999' }}>
@@ -48,9 +47,7 @@ class Layout extends Component {
 						<div
 							className='nc-workbench-hp margin-right-10'
 							onClick={() => {
-								this.setState({
-									isOpen: !isOpen
-								});
+								this.props.changeDrawer(!isOpen);
 							}}
 						>
 							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
@@ -94,30 +91,22 @@ class Layout extends Component {
 					</ul> */}
 				</nav>
 				<div className='nc-workbench-container'>{this.props.children}</div>
-				<Drawer className='nc-workbench-drawer' open={isOpen} onChange={this.handleDrawerChange}>
-					<div className='drawer-top'>
-						<div className='drawer-logo'>
-							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
-						</div>
-					</div>
-					<div className='drawer-buttom'>
-						{/* <ul>
-							<li>
-								<Link to='/ar'>添加应用</Link>
-							</li>
-						</ul> */}
-					</div>
-				</Drawer>
+				<SideDrawer />
 			</div>
 		);
 	}
 }
-Layout.PropTypes = { appData: PropTypes.object.isRequired };
+Layout.PropTypes = {
+	appData: PropTypes.object.isRequired,
+	isOpen: PropTypes.bool.isRequired,
+	changeDrawer: PropTypes.func.isRequired
+};
 export default withRouter(
 	connect(
 		(state) => ({
-			appData: state.appData
+			appData: state.appData,
+			isOpen: state.appData.isOpen
 		}),
-		{}
+		{ changeDrawer }
 	)(Layout)
 );

@@ -14,3 +14,10 @@ export const changeIntlData = (value) => {
 		value
 	};
 };
+// 个人信息栏是否展开
+export const changeDrawer = (value) => {
+	return {
+		type: appStore.DRAWEROPEN,
+		value
+	};
+};
