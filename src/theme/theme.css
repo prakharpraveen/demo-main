@@ -1,3 +1,37 @@
 .nccwb-header {
 	background-color: #ffffff;
 }
+#ncc .ant-btn{
+	color: #474D54;
+    background-color: rgba(9, 44, 66, 0.08);
+    border-color: rgba(9, 44, 66, 0.08);
+}
+#ncc .ant-btn.active, #ncc .ant-btn:active, #ncc .ant-btn:focus, #ncc .ant-btn:hover{
+	color: #E14C46;
+    background-color: rgba(225, 76, 70, 0.1);
+    border-color: rgba(225, 76, 70, 0.1);
+}
+#ncc .ant-btn-primary {
+	color: #ffffff;
+	background-color: #e14c46;
+	border-color: #e14c46;
+}
+#ncc .ant-btn-primary:focus,
+#ncc .ant-btn-primary:hover {
+	color: #ffffff;
+	background-color: #d23d37;
+	border-color: #d23d37;
+}
+#ncc .ant-btn-primary.active,
+#ncc .ant-btn-primary:active {
+	color: #ffffff;
+	background-color: #b2332e;
+	border-color: #b2332e;
+}
+#ncc .ant-tree li .ant-tree-node-content-wrapper:hover {
+	background-color: #fcedec;
+}
+#ncc .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+	background-color: #f4f5f7;
+	color: #e14c46;
+}

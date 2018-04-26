@@ -17,25 +17,31 @@ const { Header, Footer, Sider, Content } = Layout;
  */
 const Btns = [
 	{
-		name: '增加模块'
+		name: '增加模块',
+		type: 'primary'
 	},
 	{
-		name: '增加应用分类'
+		name: '增加应用分类',
+		type: 'primary'
 	},
 	{
-		name: '增加应用'
+		name: '增加应用',
+		type: 'primary'
 	},
 	{
-		name: '保存'
+		name: '保存',
+		type: 'primary'
 	},
 	{
 		name: '取消'
 	},
 	{
-		name: '删除'
+		name: '删除',
+		type: 'primary'
 	},
 	{
-		name: '修改'
+		name: '修改',
+		type: 'primary'
 	}
 ];
 class AppRegister extends Component {
@@ -320,10 +326,10 @@ class AppRegister extends Component {
 		}
 	};
 	creatBtn = (btnObj) => {
-		let { name, isShow } = btnObj;
+		let { name, isShow, type } = btnObj;
 		if (isShow) {
 			return (
-				<Button className='margin-right-10' type='primary' onClick={this.handleClick.bind(this, name)}>
+				<Button className='margin-right-10' type={type} onClick={this.handleClick.bind(this, name)}>
 					{name}
 				</Button>
 			);
