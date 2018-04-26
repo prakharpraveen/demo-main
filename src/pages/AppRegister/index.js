@@ -330,7 +330,7 @@ class AppRegister extends Component {
 		let { name, isShow, type } = btnObj;
 		if (isShow) {
 			return (
-				<Button className='margin-right-10' type={type} onClick={this.handleClick.bind(this, name)}>
+				<Button className='margin-left-10' type={type} onClick={this.handleClick.bind(this, name)}>
 					{name}
 				</Button>
 			);
