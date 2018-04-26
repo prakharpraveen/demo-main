@@ -112,7 +112,7 @@ class AppRegister extends Component {
 					funtype: undefined,
 					app_desc: '',
 					help_name: '',
-					isenable: false,
+					isenable: true,
 					iscauserusable: false,
 					uselicense_load: true,
 					pk_group: '',
@@ -437,7 +437,7 @@ class AppRegister extends Component {
 
 	render() {
 		return (
-			<div className='nc-workbench-page'>
+			<div className='nc-workbench-page nc-workbench-appRegister'>
 				<Layout>
 					<Header>
 						{Btns.map((item, index) => {

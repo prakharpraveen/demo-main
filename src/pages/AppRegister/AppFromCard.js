@@ -156,7 +156,7 @@ class AppFromCard extends Component {
 					required: false
 				},
 				{
-					lable: '目标跳转路径',
+					lable: '跳转路径',
 					type: 'input',
 					code: 'target_path',
 					required: true,
