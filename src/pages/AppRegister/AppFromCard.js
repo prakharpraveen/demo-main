@@ -97,7 +97,7 @@ class AppFromCard extends Component {
 				{
 					lable: '关联元数据ID',
 					type: 'search',
-					code: 'querymdids',
+					code: 'mdid',
 					required: false,
 					placeholder: '请输入元数据名称过滤',
 					options: []
@@ -250,7 +250,7 @@ class AppFromCard extends Component {
 	 */
 	handleSearch = (searchValue) => {
 		this.props.form.setFieldsValue({
-			querymdids: searchValue
+			mdid: searchValue
 		});
 		fetch(searchValue, (options) => {
 			let { DOMDATA } = this.state;
@@ -261,7 +261,7 @@ class AppFromCard extends Component {
 				};
 			});
 			DOMDATA.map((item, index) => {
-				if (item.code === 'querymdids') {
+				if (item.code === 'mdid') {
 					item.options = options;
 				}
 				return item;

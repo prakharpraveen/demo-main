@@ -108,9 +108,14 @@ class AppRegister extends Component {
 			case '增加应用':
 				this.actionType = 3;
 				this.nodeData = this.props.nodeData;
-				if (this.props.parentData === this.nodeData.parent_id) {
+				if (this.nodeData.apptype) {
+					this.props.setParentData(this.nodeData.parent_id);
+				} else {
+					// if (this.props.parentData === this.nodeData.parent_id) {
 					this.props.setParentData(this.nodeData.code);
+					// }
 				}
+
 				this.optype = this.props.optype;
 				let appData = {
 					code: '',

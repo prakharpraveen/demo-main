@@ -129,11 +129,15 @@ class Home extends Component {
 	createWidgetMountPoint = (widgets) => {
 		return widgets.map((item, index) => {
 			if (item) {
-				let { apptype, width, height } = item;
+				let { apptype, width, height, name } = item;
 				const domWidth = Number(width) * UNIT + (Number(width) - 1) * 12;
 				const domHeight = Number(height) * UNIT + (Number(height) - 1) * 10;
 				switch (Number(apptype)) {
 					case 1:
+						// 系统预置的应用打开需要特殊处理
+						if (name === '应用注册') {
+							return this.createApp(item, domWidth, domHeight, true);
+						}
 						return this.createApp(item, domWidth, domHeight);
 						break;
 					case 2:
@@ -142,9 +146,9 @@ class Home extends Component {
 						// 	<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
 						// );
 						break;
-					case 3:
-						return this.createApp(item, domWidth, domHeight, true);
-						break;
+					// case 3:
+					// return this.createApp(item, domWidth, domHeight, true);
+					// break;
 					default:
 						break;
 				}

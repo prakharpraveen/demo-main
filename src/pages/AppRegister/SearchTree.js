@@ -73,13 +73,9 @@ class SearchTree extends Component {
 	 * @param {Object} nodeData
 	 */
 	delTreeData = (nodeData) => {
-		console.log(nodeData);
-
 		let { treeDataArray, selectedKeys } = this.state;
 		selectedKeys = [];
 		treeDataArray = treeDataArray.filter((item) => item.moduleid !== nodeData.moduleid);
-		console.log(treeDataArray);
-
 		this.setState({ treeDataArray, selectedKeys }, this.restoreTreeData);
 	};
 	/**
