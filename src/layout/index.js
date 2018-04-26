@@ -43,7 +43,7 @@ class Layout extends Component {
 		let { isOpen, nodeName } = this.state;
 		return (
 			<div className='nc-workbench-layout'>
-				<nav className='nc-workbench-nav nccwb-header'>
+				<nav className='nc-workbench-nav nccwb-header' style={{ 'z-index': '999' }}>
 					<div className='nav-left n-left n-v-middle'>
 						<div
 							className='nc-workbench-hp margin-right-10'

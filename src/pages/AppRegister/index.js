@@ -447,7 +447,7 @@ class AppRegister extends Component {
 					</Header>
 					<Layout height={'100%'}>
 						<Sider
-							width={320}
+							width={280}
 							height={'100%'}
 							style={{
 								background: '#fff',
