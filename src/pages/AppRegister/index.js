@@ -9,6 +9,7 @@ import SearchTree from './SearchTree';
 import ModuleFromCard from './ModuleFromCard';
 import ClassFromCard from './ClassFromCard';
 import AppFromCard from './AppFromCard';
+import PageLayout from 'Components/PageLayout';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
 /**
@@ -443,7 +444,7 @@ class AppRegister extends Component {
 
 	render() {
 		return (
-			<div className='nc-workbench-page nc-workbench-appRegister'>
+			<PageLayout className='nc-workbench-appRegister'>
 				<Layout>
 					<Header>
 						{Btns.map((item, index) => {
@@ -469,7 +470,7 @@ class AppRegister extends Component {
 						<Content style={{ padding: '20px', minHeight: 280 }}>{this.switchFrom()}</Content>
 					</Layout>
 				</Layout>
-			</div>
+			</PageLayout>
 		);
 	}
 }

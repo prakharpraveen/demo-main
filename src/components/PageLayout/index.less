@@ -1,6 +1,25 @@
-.page-scroll {
-	margin-top: 40px;
-}
-.page-layout {
-	padding: 20px 50px 30px 50px;
+#ncc .nc-workbench-layout {
+	.nc-workbench-page {
+		margin-top: 48px;
+		height: calc(100vh - 53px);
+		padding: 10px 0 0;
+		.nc-workbench-ownpage {
+			min-width: 900px;
+		}
+	}
+	@media screen and (min-width: 1280px) {
+		.nc-workbench-page {
+			padding: 10px 90px 0;
+		}
+	}
+	@media screen and (min-width: 1440px) {
+		.nc-workbench-page {
+			padding: 10px 120px 0;
+		}
+	}
+	@media screen and (min-width: 1600px) {
+		.nc-workbench-page {
+			padding: 10px 125px 0;
+		}
+	}
 }

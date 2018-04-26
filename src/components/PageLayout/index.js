@@ -7,15 +7,9 @@ import './index.less';
  */
 class PageLayout extends Component {
 	render() {
-		let { height = 48 } = this.props;
 		return (
-			<div
-				className='page-scroll'
-				style={{
-					height: `calc(100vh - ${height}px)`
-				}}
-			>
-				<div className='page-layout'>{this.props.children}</div>
+			<div className='nc-workbench-page'>
+				<div className={`nc-workbench-ownpage ${this.props.className}`}>{this.props.children}</div>
 			</div>
 		);
 	}
