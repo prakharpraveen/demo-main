@@ -3,8 +3,6 @@ import _ from 'lodash';
 import { Layout, Cascader, Input, Icon, Checkbox, List, Button } from 'antd';
 import SiderCard from './siderCard.js'
 const { Sider } = Layout;
-const Search = Input.Search;
-const CheckboxGroup = Checkbox.Group;
 
 import Ajax from 'Pub/js/ajax';
 
@@ -56,7 +54,14 @@ class MySider extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
-					console.log(data);
+                    console.log(data);
+                    _.forEach(data,(d)=>{
+                        d.checkedAll = false;
+                        d.indeterminate = false;
+                        _.forEach(d.children,(c)=>{
+                            c.checked = false;
+                        });
+                    });
 					this.setState({ selectGroupArr: data });
 				}
 			}
@@ -105,13 +110,43 @@ class MySider extends Component {
 			);
 		}
 		return itemDom;
-	}
+    }
+
+    onCheckAllChange = (e ,index ) => {
+        const checked = e.target.checked;
+        let {selectGroupArr} = this.state;
+        let selectGroup = selectGroupArr[index];
+
+        selectGroup.checkedAll = e.target.checked;
+        _.forEach(selectGroup.children,(c)=>{
+            c.checked = checked;
+        });
+        this.setState({selectGroupArr});
+      }
+      onChangeChecked = (e, groupIndex,index)=>{
+        const checked = e.target.checked;
+        let {selectGroupArr} = this.state;
+        let selectGroup = selectGroupArr[groupIndex];
+        let child = selectGroup.children[index];
+        child.checked = checked;
+
+        let checkCount = 0;
+        _.forEach(selectGroup.children,(c)=>{
+            if(c.checked){
+                checkCount ++;
+            }
+        });
+
+        selectGroup.checkedAll = checkCount===selectGroup.children.length;
+        selectGroup.indeterminate = !!checkCount && checkCount<selectGroup.children.length;
+        this.setState(selectGroupArr);
+      }
 	getResultDom() {
         return this.state.selectGroupArr.map((item, index) => {
             return (
                 <div className='result-group-list'>
                     <h4 className='result-header'>
-                        <Checkbox>{item.label}</Checkbox>
+                        <Checkbox checked={item.checkedAll} indeterminate={item.indeterminate} onChange={(e)=>{this.onCheckAllChange(e,index)}}>{item.label}</Checkbox>
                     </h4>
                     <div className='result-app-list'>
                         {
@@ -119,9 +154,14 @@ class MySider extends Component {
                                 return (
                                     <div className='app-col'>
                                         <div className='list-item'>
-                                            {/* <div className='list-item-content'>{child.label}</div> */}
-                                            <SiderCard id={child.value} key={child.value}
-                                                name = {child.label} type={'newcard'}
+                                            <SiderCard id={child.value} 
+                                            key={child.value}
+                                            index={i}
+                                            parentIndex = {index}
+                                                name = {child.label} 
+                                                type={'new'} 
+                                                checked = {child.checked}
+                                                onChangeChecked = {this.onChangeChecked}
                                                 >
                                             </SiderCard>
                                         </div>

@@ -362,19 +362,36 @@ class Test extends Component {
 	onOkMoveDialog(targetGroupID){
 		let {groups,selectCardIDList} = this.state;
 		let moveCardArr = [];
-		let targetGroupIndex;
+		let targetGroupIndex = -1;
+		let souceGroupIndexArr = [];
 		_.forEach(groups,(g,i)=>{
 			if(g.pk_app_group === targetGroupID){
 				targetGroupIndex = i;
 			}
 			const tmpArr = _.remove(g.apps,(a)=>{
+				if(targetGroupIndex !==i  && souceGroupIndexArr.indexOf(i) === -1 && selectCardIDList.indexOf(a.pk_appregister)!== -1 ){
+					souceGroupIndexArr.push(i);
+				}
 				return _.indexOf(selectCardIDList,a.pk_appregister) !== -1
 			})
 			moveCardArr = _.concat(moveCardArr,tmpArr);
 		});
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps,moveCardArr);
 		selectCardIDList = [];
-		this.setState({groups:groups,selectCardIDList:selectCardIDList});
+
+		souceGroupIndexArr.push(targetGroupIndex);
+		//循环所有改变的组，进行重新布局
+		_.forEach(souceGroupIndexArr,(i)=>{
+			if(groups[i].apps.length === 0){
+				return;
+			}
+			const removeCard = groups[i].apps[0];
+			const newlayout = layoutCheck(groups[i].apps, removeCard, removeCard.pk_appregister, removeCard.pk_appregister);
+			
+			const compactedLayout = compactLayout(newlayout);
+			groups[i].apps = compactedLayout;
+		});
+		this.setState({groups,selectCardIDList});
 	}
 	//保存
 	saveGroupItemAndCard() {

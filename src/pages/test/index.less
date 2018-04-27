@@ -2,39 +2,38 @@
 	background: #fff;
 	overflow: auto;
 	.sider-content {
-		margin:10px 5px 15px;
+		margin: 10px 5px 15px;
 		padding: 10px 8px 0;
 		border: 1px solid rgba(204, 204, 204, 1);
-		.sider-search{
+		.sider-search {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.search-input-icon{
+			.search-input-icon {
 				cursor: pointer;
 			}
-			.switch-search{
+			.switch-search {
 				padding: 0 11px;
 				margin-right: 0;
 				font-size: 20px;
 				cursor: pointer;
 			}
-			.switch-search-cancel{
+			.switch-search-cancel {
 				cursor: pointer;
 			}
 		}
-		.add-item{
+		.add-item {
 			margin-top: 10px;
 			display: flex;
 			justify-content: space-between;
-			.add{
+			.add {
 				cursor: pointer;
 			}
 		}
 		.sider-result {
 			.result-group-list {
-				border-bottom: 1px solid #E9E9E9;
-				.result-header{
-					
+				border-bottom: 1px solid #e9e9e9;
+				.result-header {
 				}
 				.result-app-list {
 					width: 100%;
@@ -46,9 +45,17 @@
 							padding-left: 5px;
 							margin-bottom: 8px;
 							.list-item-content {
-								height: 130px;
-
+								padding: 3px 4px;
 								border: 1px solid rgba(204, 204, 204, 1);
+								.title {
+									display: flex;
+									justify-content: space-between;
+								}
+								.img{
+									height: 120px;
+									background-size: contain;
+									border-top:solid 1px #ccc;
+								}
 							}
 						}
 					}
@@ -129,7 +136,8 @@
 	height: 48px;
 	position: fixed;
 	bottom: 0;
-	background: rgba(43, 55, 66, .6);
+	border: solid 1px #ccc;
+	// background: rgba(43, 55, 66, .6);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

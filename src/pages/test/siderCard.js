@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
-import { Icon, Checkbox } from 'antd';
+import { Checkbox } from 'antd';
+import image_src from '../../assets/images/img1.png';
 
 const noteSource = {
 	beginDrag(props, monitor, component) {
-		return {id: props.id, isNewCard: true} ;
+		return { id: props.id, isNewCard: true };
 	}
 };
 
@@ -24,18 +25,18 @@ class Item extends Component {
 
 	render() {
 		const { connectDragSource } = this.props;
-		const { id, name } = this.props;
+        const { id,index, name, checked, parentIndex } = this.props;
 		return connectDragSource(
-				<div className='list-item-content' >
-					<div style={{ 'padding-left': '10px' }}>{name}</div>
-					<div />
-					<div className='card-footer'>
-						<Checkbox
-						/>
-					</div>
+			<div className='list-item-content' >
+				<div className='title'>
+					<span>{name}</span>
+                    <Checkbox checked={checked}  onChange={(e)=>{this.props.onChangeChecked(e,parentIndex,index)}}/>
 				</div>
+                <div className="img" style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}>
+                </div>
+			</div>
 		);
 	}
 }
 
-export default (DragSource('item', noteSource, collectSource)(Item));
+export default DragSource('item', noteSource, collectSource)(Item);

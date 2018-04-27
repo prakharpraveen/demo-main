@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
 import Card from './card.js'
 import _ from 'lodash';
-import {Icon,Input,Button } from 'antd';
+import {Icon,Input,Button,Checkbox } from 'antd';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -206,6 +206,7 @@ class GroupItem extends Component {
         groupItemTitle = (
             <div className="group-item-title-container-no-edit" >
                 <div class="title-left">
+                {/* <Checkbox checked={}></Checkbox> */}
                     <span>{groupname}</span>
                 </div>
                 <div class="title-right">

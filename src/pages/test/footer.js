@@ -13,24 +13,25 @@ class MyFooter extends Component {
 		};
 	}
 	getGroupItemNameRadio(groups) {
-		let itemDoms = [];
-		_.forEach(groups, (g, i) => {
-			itemDoms.push(
-				<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
-					{g.groupname}
-				</Radio>
-			);
-		});
-		const resultDom = (
+		if (!groups) return;
+		return (
 			<RadioGroup
 				className='modal-radio-group'
 				value={this.state.selectedValue}
 				onChange={this.onChangeRadio.bind(this)}
 			>
-				{itemDoms}
+				{
+					groups.map((g, i) => {
+						return (
+							<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
+								{g.groupname}
+							</Radio>
+						)
+
+					})
+				}
 			</RadioGroup>
 		);
-		return resultDom;
 	}
 	setModalVisible(modalVisible) {
 		this.setState({ modalVisible });
