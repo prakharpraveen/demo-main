@@ -51,10 +51,10 @@
 									display: flex;
 									justify-content: space-between;
 								}
-								.img{
+								.img {
 									height: 120px;
 									background-size: contain;
-									border-top:solid 1px #ccc;
+									border-top: solid 1px #ccc;
 								}
 							}
 						}
@@ -104,7 +104,15 @@
 				}
 			}
 			#card-container {
+				.card-shadow {
+					background: rgba(43, 55, 66, .3);
+					position: absolute;
+					border-radius: 3px;
+				}
 				.card {
+					position: absolute;
+					border: 1px solid #f1f1f1;
+					border-radius: 3px;
 					transition: all .2s ease-out;
 					.card-footer {
 						display: flex;

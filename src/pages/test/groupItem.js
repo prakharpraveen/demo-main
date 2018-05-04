@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
 import { DragSource, DropTarget } from 'react-dnd'
 import Card from './card.js'
 import _ from 'lodash';
 import {Icon,Input,Button,Checkbox } from 'antd';
+import {collision,layoutCheck} from './collision';
+import {compactLayout} from './compact.js';
+import { updateShadowCard, updateGroupList } from 'Store/test/action';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
-        console.log(props);
 		return {
 			id: props.id,
             index: props.index,
@@ -23,7 +26,7 @@ const groupItemSource ={
 const groupItemTarget ={
     hover(props, monitor, component) {
         const dragItem = monitor.getItem();
-        // console.log(dragItem.type, props.type);
+
         if (dragItem.type === "group") {//组hover到组
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
@@ -51,40 +54,28 @@ const groupItemTarget ={
             props.moveGroupItem(dragIndex, hoverIndex);
 
             monitor.getItem().index = hoverIndex;
+
         } else {//卡片到组
             const hoverItem = props;
             const {x,y} = monitor.getClientOffset();
             const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
             const groupItemX = groupItemBoundingRect.x;
             const groupItemY = groupItemBoundingRect.y;
-            let tmpDragItem = dragItem;
-            if(dragItem.isNewCard === true){
-                let tmp = _.cloneDeep(dragItem);
-                tmp.id = `${tmp.id}_${hoverItem.id}`;
-                tmpDragItem = tmp;
-            }
-            props.moveCardInGroupItem(tmpDragItem, hoverItem, x-groupItemX,y-groupItemY);
+            props.moveCardInGroupItem(dragItem, hoverItem, x-groupItemX,y-groupItemY);
         }
     },
     drop(props, monitor, component){
         //获取结果来判断是否冒泡,有结果时为冒泡
-        if (!_.isNull(monitor.getDropResult())) {
-            return;
-        }
-
+        // if (!_.isNull(monitor.getDropResult())) {
+        //     return;
+        // }
         const dragItem = monitor.getItem();
         const dropItem = props;
         if (dragItem.type === "group") {
-            // console.log("group in dropGroup");
+            console.log("group in dropGroup");
             props.onDrop(dragItem , dropItem);
         } else {
             console.log("card in dropGroup");
-            // const {x,y} = monitor.getClientOffset();
-            // const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
-            // const groupItemX = groupItemBoundingRect.x;
-            // const groupItemY = groupItemBoundingRect.y;
-            // props.dropCardToGroupItem(dragItem,dropItem,x-groupItemX,y-groupItemY);
-            // console.log(hoverBoundingRect);
         }
     }
 }
@@ -113,14 +104,17 @@ class GroupItem extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
+        if(!this.props.shadowCard.pk_appregister){
+            return;
+        }
 		if (!this.props.isOver && nextProps.isOver) {
-			// You can use this as enter handler
-			console.log("groupItem enter");
+            // You can use this as enter handler
+            // console.log("groupItem enter");
 		}
 
 		if (this.props.isOver && !nextProps.isOver) {
-			// You can use this as leave handler
-			console.log("groupItem leave");
+            // You can use this as leave handler
+			// console.log("groupItem leave");
 		}
     }
     //创建卡片
@@ -236,4 +230,15 @@ class GroupItem extends Component {
     }
 }
 
-export default DropTarget('item',groupItemTarget,collectTarget)(DragSource('item',groupItemSource,collectSource)(GroupItem));
+const dragDropItem = DropTarget('item',groupItemTarget,collectTarget)(DragSource('item',groupItemSource,collectSource)(GroupItem));
+
+export default (connect(
+	(state) => ({
+        groups: state.templateDragData.groups,
+        shadowCard: state.templateDragData.shadowCard
+	}),
+	{
+        updateShadowCard,
+        updateGroupList
+	}
+)(dragDropItem))

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
@@ -10,7 +8,7 @@ import './index.less';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 //ant
-import { Layout  } from 'antd';
+import { Layout } from 'antd';
 const { Header, Content } = Layout;
 //自定义组件
 import {collision,layoutCheck} from './collision';
@@ -19,6 +17,7 @@ import { checkInContainer } from './correction';
 import MySider from './sider';
 import MyFooter from './footer'
 import GroupItem from './groupItem.js';
+import { updateShadowCard, updateGroupList } from 'Store/test/action';
 
 function getGroupIndexByGroupID(groups, groupID){
 	let groupIndex;
@@ -35,6 +34,8 @@ class Test extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			groups:[],
+			shadowCard:{},
 			selectCardIDList:[],
 			moveModal:{
 				selectedValue:1
@@ -78,6 +79,7 @@ class Test extends Component {
 						_.forEach(data, (d) => {
 							d.type = "group";
 						})
+						this.props.updateGroupList(data);
 						this.setState({ groups: data })
 					}
 				}
@@ -130,42 +132,87 @@ class Test extends Component {
 	}
 	//拖拽中卡片在组上移动
 	moveCardInGroupItem(dragItem, hoverItem, x, y) {
-		let { groups } = this.state;
+		let groups = this.props.groups;
+		let shadowCard = this.props.shadowCard;
 		let groupIndex;
-		let removeCardArr = [];
-		const tmpCard = {};
-
+		
 		_.forEach(groups, (g, index) => {
 			if (g.pk_app_group === hoverItem.id) {
 				groupIndex = index;
 			}
-			const tmpCard = _.remove(g.apps, (a) => {
-				return a.pk_appregister === dragItem.id;
+			_.remove(g.apps, (a) => {
+				return a.isShadow === true;
 			})
-			removeCardArr = _.concat(removeCardArr, tmpCard);
 		});
-
-		let removeCard;
-		if(removeCardArr.length === 0){
-			removeCard = {
-				pk_appregister: dragItem.id,
-				height: 2,
-				width: 2,
-				name: dragItem.id
-			};
-		}else{
-			removeCard = removeCardArr[0];
+		//先判断组内有没有相同的appID
+		
+		//再判断拖拽卡片为siderCard并且pk_appregister不包含当前组id
+		if(shadowCard.pk_appregister.indexOf('_') !== -1 && shadowCard.pk_appregister.indexOf(groups[groupIndex].pk_app_group) === -1){
+			shadowCard.pk_appregister = `${shadowCard.siderCardID}_${groups[groupIndex].pk_app_group}`
+			console.log(shadowCard.pk_appregister)
 		}
-		 
-		const { GridX, GridY } = this.calGridXY(x, y, removeCard.width);
-		removeCard = { ...removeCard, gridx: GridX, gridy: GridY };
-		groups[groupIndex].apps.push(removeCard);
-		const newlayout = layoutCheck(groups[groupIndex].apps, removeCard, removeCard.pk_appregister, removeCard.pk_appregister);
 
-		const compactedLayout = compactLayout(newlayout, removeCard);
+		groups[groupIndex].apps.push(shadowCard);
+
+
+		const { GridX, GridY } = this.calGridXY(x, y, shadowCard.width);
+		shadowCard = { ...shadowCard, gridx: GridX, gridy: GridY };
+		
+		const newlayout = layoutCheck(groups[groupIndex].apps, shadowCard, shadowCard.pk_appregister, shadowCard.pk_appregister);
+		
+		const compactedLayout = compactLayout(newlayout, shadowCard);
 		groups[groupIndex].apps = compactedLayout;
-		this.setState({ groups });
+		
+		this.props.updateShadowCard(shadowCard);
+		this.props.updateGroupList(groups);
 	}
+
+
+	// moveCardInGroupItem(dragItem, hoverItem, x, y) {
+	// 	let { groups } = this.state;
+	// 	let groupIndex;
+	// 	let removeCardArr = [];
+	// 	const tmpCard = {};
+
+	// 	_.forEach(groups, (g, index) => {
+	// 		if (g.pk_app_group === hoverItem.id) {
+	// 			groupIndex = index;
+	// 		}
+	// 		const tmpCard = _.remove(g.apps, (a) => {
+	// 			return a.pk_appregister === dragItem.id;
+	// 		})
+	// 		removeCardArr = _.concat(removeCardArr, tmpCard);
+	// 	});
+
+	// 	let removeCard;
+	// 	if(removeCardArr.length === 0){
+	// 		removeCard = {
+	// 			pk_appregister: dragItem.id,
+	// 			height: 2,
+	// 			width: 2,
+	// 			specID:"123456",
+	// 			name: dragItem.id
+	// 		};
+	// 	}else{
+	// 		removeCard = removeCardArr[0];
+	// 	}
+
+	// 	_.forEach(groups, (g, index) => {
+	// 		_.remove(g.apps, (a) => {
+	// 			return a.specID === "123456";
+	// 		})
+	// 	});
+		 
+	// 	const { GridX, GridY } = this.calGridXY(x, y, removeCard.width);
+	// 	removeCard = { ...removeCard, gridx: GridX, gridy: GridY };
+	// 	groups[groupIndex].apps.push(removeCard);
+	// 	const newlayout = layoutCheck(groups[groupIndex].apps, removeCard, removeCard.pk_appregister, removeCard.pk_appregister);
+
+	// 	const compactedLayout = compactLayout(newlayout, removeCard);
+	// 	groups[groupIndex].apps = compactedLayout;
+	// 	this.setState({ groups });
+	// }
+
 	//释放卡片到组
 	dropCardToGroupItem(dragItem,dropItem,x,y){
 		
@@ -460,15 +507,16 @@ class Test extends Component {
 	}
 }
 
-export default DragDropContext(HTML5Backend)(connect(
+const draDrop = DragDropContext(HTML5Backend)(Test);
+
+export default (connect(
 	(state) => ({
-		formData: state.formData,
-		proData: state.proData
+		groups: state.templateDragData.groups,
+        shadowCard: state.templateDragData.shadowCard
 	}),
 	{
-		changeIntlData,
-		saveImg,
-		clearData
+		updateShadowCard,
+		updateGroupList
 	}
-)(Test))
+)(draDrop))
 	

@@ -155,7 +155,9 @@ class MySider extends Component {
                                     <div className='app-col'>
                                         <div className='list-item'>
                                             <SiderCard id={child.value} 
-                                            key={child.value}
+											key={child.value}
+											width={child.width}
+											height={child.height}
                                             index={i}
                                             parentIndex = {index}
                                                 name = {child.label} 

@@ -1,0 +1,4 @@
+// 更新
+export const UPDATESHADOWCARD = 'UPDATESHADOWCARD';
+//更新GroupList数据
+export const UPDATEGROUPLIST = 'UPDATEGROUPLIST';

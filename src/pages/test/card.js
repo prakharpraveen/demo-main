@@ -3,16 +3,25 @@ import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
-
+import { connect } from 'react-redux';
+import { updateShadowCard, updateGroupList } from 'Store/test/action';
+import * as utilService from './utilService';
+import _ from 'lodash';
 const noteSource = {
 	beginDrag(props, monitor, component) {
+		console.log(props.groups)
+		const dragCard = utilService.getCardByCardID(props.groups, props.id);
+		props.updateShadowCard({  ...dragCard, isShadow: true, })
 		return {id: props.id, type: props.type} ;
 	},
 	endDrag(props, monitor, component) {
-		props.dragCardID = -1;
+		// props.dragCardID = -1;
+		let groups = props.groups;
+		utilService.setIsShadowForCards(groups, false);
+		props.updateShadowCard({})
 	},
 	isDragging(props, monitor) {
-		return props.dragCardID = monitor.getItem().id;
+		// return props.dragCardID = monitor.getItem().id;
 	}
 };
 
@@ -63,6 +72,7 @@ class Item extends Component {
 		if (this.props.isOver && !nextProps.isOver) {
 			// You can use this as leave handler
 			// console.log('card leave');
+
 		}
 	}
 	/**给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px */
@@ -99,29 +109,41 @@ class Item extends Component {
 
 	render() {
 		const { connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
-		const { id, name, gridx, gridy, width, height } = this.props;
+		const { id, name, gridx, gridy, width, height, isShadow } = this.props;
 		const { deleteCard } = this.props;
 		const { x, y } = this.calGridItemPosition(gridx, gridy);
 		const { wPx, hPx } = this.calWHtoPx(width, height);
-		if (isDragging && this.props.dragCardID === id) {
-			return null;
-		}
-		return connectDragSource(
-			connectDropTarget(
+		let cardDom;
+
+		// if (isDragging && this.props.dragCardID === id) {
+		// 	return null;
+		// }
+
+		if(isShadow){
+			cardDom = (	<div
+					className='card-shadow'
+					style={{
+						width: wPx,
+						height: hPx,
+						transform: `translate(${x}px, ${y}px)`,
+						
+					}}
+				>
+				</div>
+			)
+		}else{
+			cardDom = (
 				<div
 					className='card'
 					style={{
 						width: wPx,
 						height: hPx,
-						background: isOver ? '#ccc' : '#fff',
-						position: 'absolute',
-						border: '1px solid #f1f1f1',
-						'border-radius': '3px',
+						background: '#fff',
 						transform: `translate(${x}px, ${y}px)`,
 						
 					}}
 				>
-					<div style={{ 'padding-left': '10px' }}>{name}</div>
+					<div style={{ 'padding-left': '10px' }}>{id}</div>
 					<div />
 					<div className='card-footer'>
 						<Checkbox
@@ -140,8 +162,22 @@ class Item extends Component {
 					</div>
 				</div>
 			)
+		}
+		return connectDragSource(
+			connectDropTarget(
+				cardDom
+			)
 		);
 	}
 }
 
-export default DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
+const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
+
+export default (connect(
+	(state) => ({
+		groups: state.templateDragData.groups
+	}),
+	{
+		updateShadowCard
+	}
+)(dragDropItem))
