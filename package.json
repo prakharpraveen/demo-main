@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors --config ./config/dev.js",
-    "build": "webpack --progress --colors --config ./config/build.js"
+    "build": "set export NODE_ENV = production && webpack --progress --colors --config ./config/build.js"
   },
   "keywords": [
     "react"
