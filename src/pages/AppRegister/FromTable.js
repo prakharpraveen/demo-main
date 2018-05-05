@@ -386,9 +386,12 @@ class FromeTable extends Component {
 			item = this.setBtnsShow(item);
 			// if (item.isShow) {
 				return (
-					<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
-						{item.name}
-					</Button>
+					<div>
+						<span style={{color:'#e14c46'}}>提示：按钮顺序可以通过拖拽进行排序！</span>
+						<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
+							{item.name}
+						</Button>
+					</div>
 				);
 			// }
 		});

@@ -94,10 +94,10 @@ class ChooseImageForForm extends Component {
         });
     }
     render() {
-        let {listData} = this.state;
+        let {listData,value} = this.state;
         return (
             <div className='choose-imgae'>
-                <div className='choose-btn' onClick={this.showModal}>
+                <div className='choose-btn' style={value.length>0?{ background: `url(${value}) no-repeat 0px 0px`, 'background-size': 'contain' }:null} onClick={this.showModal}>
                     <i className='iconfont icon-tianjiayingyong font-size-80'></i>
                 </div>
                 {/* <Button type="primary" onClick={this.showModal}>Open</Button> */}
