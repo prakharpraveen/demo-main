@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Modal, Button} from 'antd';
 import './index.less';
-class ChooseImage extends Component {
+class ChooseImageForForm extends Component {
     constructor(props) {
         super(props);
         this.state={
@@ -10,6 +10,7 @@ class ChooseImage extends Component {
             listData:[],
             value:''
         }
+        this.value='';
     }
     showModal = () => {
         this.setState({
@@ -23,20 +24,20 @@ class ChooseImage extends Component {
         },this.triggerChange(value));
     };
     handleCancel = (e) => {
+        let {listData,value} = this.state;
+        value = this.value;
+        listData = this.updateListData(listData,value);
         this.setState({
             visible: false,
+            value,
+            listData
         });
     };
     handleSelect = (item) => {
+        console.log(item);
         let {listData,value} = this.state;
-        listData = listData.map((i,index)=>{
-            i.selected = false;
-            if(i.value === item.value){
-                i.selected = true;
-            }
-            return i;
-        });
         value = item.value;
+        listData = this.updateListData(listData,value);
         this.setState({
             listData,
             value
@@ -52,6 +53,10 @@ class ChooseImage extends Component {
             )
         });
     }
+    /**
+     * 与 antd form 表单传递数据的方法
+     * @param {String} changeValue  改变的 value 值
+     */
     triggerChange = (changedValue) => {
         // Should provide an event to pass value to Form.
         const onChange = this.props.onChange;
@@ -59,24 +64,34 @@ class ChooseImage extends Component {
             onChange(changedValue);
         }
     }
-    componentWillReceiveProps(nextProps) {
-        // Should be a controlled component.
-        if ('value' in nextProps) {
-            const value = nextProps.value;
-            this.setState({value});
-        }
-    }
-    componentWillMount(){
-        let {data,value} = this.props;
-        let listData = data.map((item,index)=>{
+    /**
+     * 更新图标列表数据
+     * @param {Array} listData 旧的图标列表数据
+     * @param {String} value 选中的图标value值
+     */
+    updateListData = (listData,value)=>{
+        return listData = listData.map((item,index)=>{
             item.selected = false;
             if(item.value === value){
                 item.selected = true;
             }
             return item;
         });
+    }
+    // componentWillReceiveProps(nextProps) {
+    //     // Should be a controlled component.
+    //     if ('value' in nextProps) {
+    //         const value = nextProps.value;
+    //         this.setState({value});
+    //     }
+    // }
+    componentWillMount(){
+        let {data,value} = this.props;
+        this.value = value;
+        let listData = this.updateListData(data,value);
         this.setState({
-            listData
+            listData,
+            value
         });
     }
     render() {
@@ -88,7 +103,7 @@ class ChooseImage extends Component {
                 </div>
                 {/* <Button type="primary" onClick={this.showModal}>Open</Button> */}
                 <Modal
-                    title="Basic Modal"
+                    title={this.props.title}
                     mask = {false}
                     visible={this.state.visible}
                     onOk={this.handleOk}
@@ -102,4 +117,4 @@ class ChooseImage extends Component {
         );
     }
 }
-export default ChooseImage;
+export default ChooseImageForForm;

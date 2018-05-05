@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import _ from 'lodash';
 import { updateTreeData, setNodeData, setAppData, getFromDataFunc } from 'Store/AppRegister/action';
-import ChooseImage from 'Components/ChooseImage';
+import ChooseImageForForm from 'Components/ChooseImageForForm';
 import Ajax from 'Pub/js/ajax';
 import FromTable from './FromTable';
 const FormItem = Form.Item;
@@ -356,7 +356,7 @@ class AppFromCard extends Component {
 								rules: [
 									{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
 								],
-							})(<ChooseImage data={imgs}></ChooseImage>)}
+							})(<ChooseImageForForm data={imgs} title={'图标选择'}/>)}
 						</FormItem>
 				) : (
 					<FormItem label={lable}>
