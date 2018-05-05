@@ -34,7 +34,6 @@ class ChooseImageForForm extends Component {
         });
     };
     handleSelect = (item) => {
-        console.log(item);
         let {listData,value} = this.state;
         value = item.value;
         listData = this.updateListData(listData,value);
