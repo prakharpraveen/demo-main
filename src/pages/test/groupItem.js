@@ -8,7 +8,8 @@ import _ from 'lodash';
 import {Icon,Input,Button,Checkbox } from 'antd';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
-import { updateShadowCard, updateGroupList } from 'Store/test/action';
+import * as utilService from './utilService';
+import { updateShadowCard, updateGroupList,updateCurrEditID } from 'Store/test/action';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -27,6 +28,7 @@ const groupItemTarget ={
     hover(props, monitor, component) {
         const dragItem = monitor.getItem();
 
+        console.log(props);
         if (dragItem.type === "group") {//组hover到组
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
@@ -65,6 +67,8 @@ const groupItemTarget ={
         }
     },
     drop(props, monitor, component){
+        
+        console.log(props);
         //获取结果来判断是否冒泡,有结果时为冒泡
         // if (!_.isNull(monitor.getDropResult())) {
         //     return;
@@ -75,6 +79,7 @@ const groupItemTarget ={
             console.log("group in dropGroup");
             props.onDrop(dragItem , dropItem);
         } else {
+            console.log(dragItem);
             console.log("card in dropGroup");
         }
     }
@@ -118,7 +123,7 @@ class GroupItem extends Component {
 		}
     }
     //创建卡片
-    createCards(cards) {
+    createCards(cards, groupID) {
         let itemDoms = [];
         _.forEach(cards, (c) => {
             itemDoms.push(
@@ -126,23 +131,102 @@ class GroupItem extends Component {
                 type={c.apptype}
                 {...c} 
                 id={c.pk_appregister}
+                groupID = {groupID}
                 {...this.props.layout}
-                key={c.pk_appregister} 
-                deleteCard={this.props.deleteCard} 
+                key={c.pk_appregister}
                 forbidDrag={this.state.forbidDrag} 
-                onCheckboxChange={this.props.onCheckboxChange}
                 selectCardIDList = {this.props.selectCardIDList}
                 />
             );
         });
         return itemDoms;
     }
+    //向上移动组
+	upGroupItem(groupID){
+        let { groups } = this.props;
+        groups = _.cloneDeep(groups);
+		const groupIndex = utilService.getGroupIndexByGroupID(groups, groupID)
+		if(groupIndex === 0){
+			return;
+		}
+		const preGroup = groups[groupIndex-1]; 
+		groups[groupIndex-1] = groups[groupIndex];
+		groups[groupIndex] = preGroup;
+		this.props.updateGroupList(groups);
+    }
+	//向下移动组
+	downGroupItem(groupID){
+        let { groups } = this.props;
+        groups = _.cloneDeep(groups);
+		const groupIndex = utilService.getGroupIndexByGroupID(groups, groupID)
+		if(groupIndex === groups.length-1){
+			return;
+		}
+		const nextGroup = groups[groupIndex + 1]; 
+		groups[groupIndex+1] = groups[groupIndex];
+		groups[groupIndex] = nextGroup;
+		this.props.updateGroupList(groups);
+	}
+    //
+    //删除组
+	deleteGroupItem = (groupID)=>{
+        let { groups } = this.props;
+		groups = _.cloneDeep(groups);
+		if (groups.length <= 1) {
+			return;
+		}
+		_.remove(groups,(g)=>{
+			return g.pk_app_group === groupID;
+		})
+		this.props.updateGroupList(groups);
+    }
+    //添加组
+	addGroupItem(groupID) {
+        let { groups } = this.props;
+        groups = _.cloneDeep(groups);
+		let insertIndex;
+		_.forEach(groups, (g, i) => {
+			if (g.pk_app_group === groupID) {
+				insertIndex = i;
+				return false;
+			}
+		})
+		const tmpItem = {
+			pk_app_group: "newGroupItem" + new Date().getTime(),
+			groupname: `分组(${utilService.getAddedGroupItemCount(groups) + 1})`,
+			type: "group",
+			apps: []
+		}
+		groups.splice(insertIndex + 1, 0, tmpItem);
+		this.props.updateGroupList(groups);
+	}
     //获得组名
     getGroupName = (e) =>{
         let _groupName = e.target.value;
         // console.log(_groupName);
-        this.state.groupName = _groupName;
+        this.setState({groupName: _groupName});
     }
+    //组名进入编辑状态
+	editGroupItemName(groupID) {
+		this.props.updateCurrEditID(groupID);
+	}
+    //改变组名
+	changeGroupName(groupID, groupname) {
+        let { groups } = this.props;
+        groups = _.cloneDeep(groups);
+		_.forEach(groups, (g, i) => {
+			if (g.pk_app_group === groupID) {
+				g.groupname = groupname;
+				return false;
+			}
+		});
+		this.props.updateGroupList(groups);
+		this.props.updateCurrEditID("");
+    }
+	//取消编辑组名
+	cancelGroupName() {
+		this.props.updateCurrEditID("");
+	}
     //计算卡片容器的最大高度
     getContainerMaxHeight(cards) {
         //行转列并且分组
@@ -169,7 +253,8 @@ class GroupItem extends Component {
     }
 
 	componentDidMount() {
-		let { layout } = this.props;
+        let { layout } = this.props;
+        layout = _.cloneDeep(layout);
 		const containerDom = document.querySelector("#card-container");
 		const clientWidth = containerDom.clientWidth;
 		this.props.layout.containerWidth = clientWidth;
@@ -190,9 +275,9 @@ class GroupItem extends Component {
         groupItemTitle = (
             <div className="group-item-title-container-no-edit">
                 <div class="title-left">
-                    <Input size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={() => { this.props.changeGroupName(id, this.state.groupName) }} onChange={this.getGroupName.bind(this)} />
-                    <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.changeGroupName(id, this.state.groupName) }} />
-                    <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={() => { this.props.cancelGroupName() }} />
+                    <Input size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={() => { this.changeGroupName(id, this.state.groupName) }} onChange={this.getGroupName.bind(this)} />
+                    <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={() => { this.changeGroupName(id, this.state.groupName) }} />
+                    <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={() => { this.cancelGroupName() }} />
                 </div>
             </div>
         );
@@ -204,10 +289,10 @@ class GroupItem extends Component {
                     <span>{groupname}</span>
                 </div>
                 <div class="title-right">
-                    <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={() => { this.props.editGroupItemName(id) }} /></div>
-                    <div className={index === 0 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="up-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.upGroupItem(id) }} /></div>
-                    <div className={index === length - 1 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="down-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.downGroupItem(id) }} /></div>
-                    <div className="group-item-title-edit"><Icon type="close-square-o" title="占位符" className="group-item-icon" onClick={() => { this.props.deleteGroupItem(id) }} /></div>
+                    <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={() => { this.editGroupItemName(id) }} /></div>
+                    <div className={index === 0 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="up-square-o" title="占位符" className="group-item-icon" onClick={() => { this.upGroupItem(id) }} /></div>
+                    <div className={index === length - 1 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="down-square-o" title="占位符" className="group-item-icon" onClick={() => { this.downGroupItem(id) }} /></div>
+                    <div className="group-item-title-edit"><Icon type="close-square-o" title="占位符" className="group-item-icon" onClick={() => { this.deleteGroupItem(id) }} /></div>
                 </div>
             </div>
         );
@@ -218,12 +303,12 @@ class GroupItem extends Component {
             <div className="group-item-container" style={{background: isOver ? 'rgb(172, 175, 175)' : '#ccc' }}>
                 {groupItemTitle}
                 <section id="card-container" style={{ height: containerHeight>defaultLayout.containerHeight?containerHeight:defaultLayout.containerHeight}}>
-                    {this.createCards(this.props.cards)}
+                    {this.createCards(cards, id)}
                 </section>
             </div>
 
             <div>
-                <Button className='group-item-add' onClick={()=>{this.props.addGroupItem(id)}}> + 添加分组</Button>
+                <Button className='group-item-add' onClick={()=>{this.addGroupItem(id)}}> + 添加分组</Button>
             </div>
         </div>
         ))
@@ -235,10 +320,14 @@ const dragDropItem = DropTarget('item',groupItemTarget,collectTarget)(DragSource
 export default (connect(
 	(state) => ({
         groups: state.templateDragData.groups,
-        shadowCard: state.templateDragData.shadowCard
+        shadowCard: state.templateDragData.shadowCard,
+        layout: state.templateDragData.layout,
+        defaultLayout: state.templateDragData.defaultLayout,
+        currEditID: state.templateDragData.currEditID
 	}),
 	{
         updateShadowCard,
-        updateGroupList
+        updateGroupList,
+        updateCurrEditID
 	}
 )(dragDropItem))

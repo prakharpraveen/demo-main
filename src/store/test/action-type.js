@@ -2,3 +2,9 @@
 export const UPDATESHADOWCARD = 'UPDATESHADOWCARD';
 //更新GroupList数据
 export const UPDATEGROUPLIST = 'UPDATEGROUPLIST';
+//更新GroupList数据
+export const UPDATESELECTCARDIDLIST = 'UPDATESELECTCARDIDLIST';
+//更新GroupList数据
+export const UPDATECURREDITID = 'UPDATECURREDITID';
+//更新GroupList数据
+export const UPDATELAYOUT = 'UPDATELAYOUT';

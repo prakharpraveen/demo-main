@@ -11,14 +11,14 @@ const noteSource = {
 	beginDrag(props, monitor, component) {
 		console.log(props);
 		const dragCard = {
-			pk_appregister: `${props.id}_`,
+			pk_appregister: props.id,
 			siderCardID: props.id,
 			width: props.width,
 			height: props.height,
 			name: props.id,
 		};
 		props.updateShadowCard({  ...dragCard,"isShadow": true, })
-		return { id: props.id, isNewCard: true };
+		return { id: dragCard.pk_appregister,};
 	},
 	endDrag(props, monitor, component) {
 

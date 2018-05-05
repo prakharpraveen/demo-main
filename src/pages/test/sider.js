@@ -50,6 +50,7 @@ class MySider extends Component {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			data: {
 				own_module: ownModuleID
+				// search_content:'采购'
 			},
 			success: (res) => {
 				const { data, success } = res.data;
