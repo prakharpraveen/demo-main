@@ -9,15 +9,6 @@ import * as utilService from './utilService';
 import _ from 'lodash';
 const noteSource = {
 	beginDrag(props, monitor, component) {
-		
-		// let dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID,  props.id);
-		// dragCard.isShadow = true;
-		// groups[sourceGroupIndex].apps.push(shadowCard);
-		// props.updateShadowCard(dragCard)
-		// props.updateGroupList(groups)
-
-
-		// let groups =  _.cloneDeep(props.groups) ;
 		const dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID,  props.id);
 		dragCard.isShadow = true;
 		props.updateShadowCard(dragCard);
@@ -26,8 +17,10 @@ const noteSource = {
 	endDrag(props, monitor, component) {
 		// props.dragCardID = -1;
 		let groups = props.groups;
+		groups = _.cloneDeep(groups);
 		utilService.setIsShadowForCards(groups, false);
-		props.updateShadowCard({})
+		props.updateGroupList(groups);
+		props.updateShadowCard({});
 	},
 	isDragging(props, monitor) {
 		// return props.dragCardID = monitor.getItem().id;
@@ -71,7 +64,14 @@ class Item extends Component {
 	constructor(props) {
 		super(props);
 	}
-
+	//依靠前后props中shadowCard状态（前为空对象，后为有对象，）来判断是否为beginDrag状态，来阻止dom刷新，从而使dragLayer不会变化
+	shouldComponentUpdate(nextProps, nextState) {
+		if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
+			return false;
+		}
+		return true;
+	}
+	//依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
 	componentWillReceiveProps(nextProps) {
 		if (!this.props.isOver && nextProps.isOver) {
 			// You can use this as enter handler
@@ -97,7 +97,7 @@ class Item extends Component {
 		this.props.updateGroupList(groups);
 		this.props.updateSelectCardIDList(selectCardIDList);
 	}
-	/**给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px */
+	//给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px
 	calGridItemPosition(gridx, gridy) {
 		var { margin, rowHeight, calWidth } = this.props;
 
@@ -111,7 +111,7 @@ class Item extends Component {
 			y: y
 		};
 	}
-	/**宽和高计算成为px */
+	//宽和高计算成为px
 	calWHtoPx(w, h) {
 		const { margin, calWidth, rowHeight } = this.props;
 		const wPx = Math.round(w * calWidth + (w - 1) * margin[0]);
@@ -170,7 +170,6 @@ class Item extends Component {
 					style={{
 						width: wPx,
 						height: hPx,
-						background: '#fff',
 						transform: `translate(${x}px, ${y}px)`,
 						
 					}}
@@ -208,7 +207,8 @@ const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('i
 export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		selectCardIDList: state.templateDragData.selectCardIDList
+		selectCardIDList: state.templateDragData.selectCardIDList,
+		shadowCard: state.templateDragData.shadowCard,
 	}),
 	{
 		updateShadowCard,

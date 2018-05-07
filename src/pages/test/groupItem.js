@@ -9,7 +9,7 @@ import {Icon,Input,Button,Checkbox } from 'antd';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import * as utilService from './utilService';
-import { updateShadowCard, updateGroupList,updateCurrEditID } from 'Store/test/action';
+import { updateGroupList,updateCurrEditID } from 'Store/test/action';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -326,7 +326,6 @@ export default (connect(
         currEditID: state.templateDragData.currEditID
 	}),
 	{
-        updateShadowCard,
         updateGroupList,
         updateCurrEditID
 	}
