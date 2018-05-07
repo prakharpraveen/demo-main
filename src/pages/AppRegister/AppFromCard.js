@@ -4,10 +4,36 @@ import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import _ from 'lodash';
 import { updateTreeData, setNodeData, setAppData, getFromDataFunc } from 'Store/AppRegister/action';
+import ChooseImageForForm from 'Components/ChooseImageForForm';
 import Ajax from 'Pub/js/ajax';
 import FromTable from './FromTable';
 const FormItem = Form.Item;
 const Option = Select.Option;
+const imgs = [{
+	name:'img1',
+	value:'/nccloud/resources/workbench/assets/images/img1.png',
+	src:'assets/images/img1.png'
+},{
+	name:'img2',
+	value:'/nccloud/resources/workbench/assets/images/img2.png',
+	src:'assets/images/img2.png'
+},{
+	name:'img3',
+	value:'/nccloud/resources/workbench/assets/images/img3.png',
+	src:'assets/images/img3.png'
+},{
+	name:'img4',
+	value:'/nccloud/resources/workbench/assets/images/img4.png',
+	src:'assets/images/img4.png'
+},{
+	name:'img5',
+	value:'/nccloud/resources/workbench/assets/images/img5.png',
+	src:'assets/images/img5.png'
+},{
+	name:'img6',
+	value:'/nccloud/resources/workbench/assets/images/img6.png',
+	src:'assets/images/img6.png'
+}];
 let timeout;
 let currentValue;
 /**
@@ -166,7 +192,7 @@ class AppFromCard extends Component {
 				},
 				{
 					lable: '图标路径',
-					type: 'input',
+					type: 'chooseImage',
 					code: 'image_src',
 					required: true,
 					md: 24,
@@ -320,6 +346,21 @@ class AppFromCard extends Component {
 							valuePropName: 'checked',
 							initialValue: nodeData[code]
 						})(<Checkbox disabled={!isEdit}>{lable}</Checkbox>)}
+					</FormItem>
+				);
+			case 'chooseImage':
+				return isEdit ? (
+					<FormItem label={lable}>
+							{getFieldDecorator(code, {
+								initialValue: nodeData[code],
+								rules: [
+									{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
+								],
+							})(<ChooseImageForForm data={imgs} title={'图标选择'}/>)}
+						</FormItem>
+				) : (
+					<FormItem label={lable}>
+						<span className='ant-form-text'>{nodeData[code]}</span>
 					</FormItem>
 				);
 			default:

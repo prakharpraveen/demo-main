@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {
+	Component
+} from 'react';
+import {
+	connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import {
 	setNodeData,
@@ -11,26 +15,27 @@ import {
 	setAppData,
 	delTreeData
 } from 'Store/AppRegister/action';
-import { Tree, Input } from 'antd';
+import {
+	Tree,
+	Input
+} from 'antd';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import Item from 'antd/lib/list/Item';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-const initTreeData = [
-	{
-		key: '0',
-		systypename: '应用节点',
-		moduleid: '',
-		text: '应用节点',
-		children: []
-	}
-];
+const initTreeData = [{
+	key: '0',
+	systypename: '应用节点',
+	moduleid: '',
+	text: '应用节点',
+	children: []
+}];
 class SearchTree extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			expandedKeys: [ '0' ],
+			expandedKeys: ['0'],
 			selectedKeys: [],
 			treeDataArray: [],
 			treeData: [],
@@ -39,9 +44,13 @@ class SearchTree extends Component {
 		};
 	}
 	componentDidMount() {
-		let { treeData } = this.state;
+		let {
+			treeData
+		} = this.state;
 		treeData = initTreeData;
-		this.setState({ treeData }, this.reqTreeData);
+		this.setState({
+			treeData
+		}, this.reqTreeData);
 		this.props.addTreeData(this.addTreeData);
 		this.props.delTreeData(this.delTreeData);
 	}
@@ -51,9 +60,13 @@ class SearchTree extends Component {
 	reqTreeData = () => {
 		Ajax({
 			url: `/nccloud/platform/appregister/querymodules.do`,
-			success: ({ data }) => {
+			success: ({
+				data
+			}) => {
 				if (data.success && data.data.length > 0) {
-					this.setState({ treeDataArray: data.data }, this.restoreTreeData);
+					this.setState({
+						treeDataArray: data.data
+					}, this.restoreTreeData);
 				}
 			}
 		});
@@ -63,36 +76,49 @@ class SearchTree extends Component {
 	 * @param {Object} nodeData
 	 */
 	addTreeData = (nodeData) => {
-		let { treeDataArray, selectedKeys } = this.state;
+		let {
+			treeDataArray,
+			selectedKeys
+		} = this.state;
 		selectedKeys = [];
 		treeDataArray.push(nodeData);
 		selectedKeys.push(nodeData.moduleid);
-		this.setState({ treeDataArray, selectedKeys }, this.restoreTreeData);
+		this.setState({
+			treeDataArray,
+			selectedKeys
+		}, this.restoreTreeData);
 	};
 	/**
 	 * 删除树节点
 	 * @param {Object} nodeData
 	 */
 	delTreeData = (nodeData) => {
-		let { treeDataArray, selectedKeys } = this.state;
+		let {
+			treeDataArray,
+			selectedKeys
+		} = this.state;
 		selectedKeys = [];
 		treeDataArray = treeDataArray.filter((item) => item.moduleid !== nodeData.moduleid);
-		this.setState({ treeDataArray, selectedKeys }, this.restoreTreeData);
+		this.setState({
+			treeDataArray,
+			selectedKeys
+		}, this.restoreTreeData);
 	};
 	/**
 	 * 更新树节点
 	 * @param {Object} nodeData
 	 */
 	updateNodeData = (nodeData) => {
-		let { treeDataArray } = this.state;
+		let {
+			treeDataArray
+		} = this.state;
 		treeDataArray = treeDataArray.map((item, index) => {
 			if (item.moduleid === nodeData.moduleid) {
 				item = nodeData;
 			}
 			return item;
 		});
-		this.setState(
-			{
+		this.setState({
 				treeDataArray
 			},
 			this.restoreTreeData
@@ -103,9 +129,15 @@ class SearchTree extends Component {
 	 * 
 	 */
 	restoreTreeData = () => {
-		let { treeData, treeDataArray } = this.state;
+		let {
+			treeData,
+			treeDataArray
+		} = this.state;
 		let treeInfo = generateData(treeDataArray);
-		let { treeArray, treeObj } = treeInfo;
+		let {
+			treeArray,
+			treeObj
+		} = treeInfo;
 		for (const key in treeObj) {
 			if (treeObj.hasOwnProperty(key)) {
 				const element = treeObj[key];
@@ -113,11 +145,11 @@ class SearchTree extends Component {
 					treeObj[key] = element.map((item, index) => {
 						if (treeObj[item.moduleid]) {
 							item.children = treeObj[item.moduleid];
-							return item;
 						} else if (treeObj[item.systypecode]) {
 							item.children = treeObj[item.systypecode];
-							return item;
+
 						}
+						return item;
 					});
 				}
 			}
@@ -152,9 +184,13 @@ class SearchTree extends Component {
 		});
 	};
 	onSelect = (key, e) => {
-		let { selectedKeys } = this.state;
+		let {
+			selectedKeys
+		} = this.state;
 		selectedKeys = key;
-		this.setState({ selectedKeys });
+		this.setState({
+			selectedKeys
+		});
 		if (key.length === 0) {
 			return;
 		} else {
@@ -169,7 +205,9 @@ class SearchTree extends Component {
 			this.props.setOpType('');
 			this.props.setParentData(null);
 		} else {
-			let { treeDataArray } = this.state;
+			let {
+				treeDataArray
+			} = this.state;
 			let selectedNodeData = treeDataArray.find((item) => {
 				if (item.key === key) {
 					return item;
@@ -184,7 +222,9 @@ class SearchTree extends Component {
 					data: {
 						pk_appregister: key
 					},
-					success: ({ data }) => {
+					success: ({
+						data
+					}) => {
 						if (data.success && data.data) {
 							if (selectedNodeData.parentcode.length > 4) {
 								this.props.setOpType('app');
@@ -192,8 +232,15 @@ class SearchTree extends Component {
 								this.props.setOpType('classify');
 							}
 
-							let { appRegisterVO, appButtonVOs, appParamVOs } = data.data;
-							this.props.setAppData({ appButtonVOs, appParamVOs });
+							let {
+								appRegisterVO,
+								appButtonVOs,
+								appParamVOs
+							} = data.data;
+							this.props.setAppData({
+								appButtonVOs,
+								appParamVOs
+							});
 							this.props.setNodeData(appRegisterVO);
 						}
 					}
@@ -213,52 +260,60 @@ class SearchTree extends Component {
 		}
 	};
 	render() {
-		const { expandedKeys, searchValue, autoExpandParent, selectedKeys, treeData } = this.state;
+		const {
+			expandedKeys,
+			searchValue,
+			autoExpandParent,
+			selectedKeys,
+			treeData
+		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
-				let { text, key, children } = item;
+				let {
+					text,
+					key,
+					children
+				} = item;
 				const index = text.indexOf(searchValue);
 				const beforeStr = text.substr(0, index);
 				const afterStr = text.substr(index + searchValue.length);
-				const title =
-					index > -1 ? (
-						<span>
-							{beforeStr}
-							<span style={{ color: '#f50' }}>{searchValue}</span>
-							{afterStr}
+				const title = index > -1 ? ( 
+					<span> 
+						{beforeStr} 
+						<span style = {{color: '#f50'}} > 
+							{searchValue} 
 						</span>
-					) : (
-						<div>
-							<span>{text}</span>
-						</div>
-					);
+							{afterStr} 
+					</span>
+				) : (
+					<div>
+						<span> {text} </span> 
+					</div>
+				);
 				if (children) {
-					return (
-						<TreeNode key={key} title={title}>
-							{loop(children)}
-						</TreeNode>
+					return ( <TreeNode key = {key} title = {title} > {loop(children)} </TreeNode>
 					);
 				}
-				return <TreeNode key={key} title={title} />;
+				return <TreeNode key = {key} title = {title}
+				/>;
 			});
 		};
-		return (
-			<div>
-				<Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />
-				{treeData.length > 0 &&
-				treeData[0].children.length > 0 && (
-					<Tree
-						showLine
-						onExpand={this.onExpand}
-						expandedKeys={expandedKeys}
-						onSelect={this.onSelect}
-						autoExpandParent={autoExpandParent}
-						selectedKeys={selectedKeys}
-					>
-						{loop(treeData)}
-					</Tree>
-				)}
-			</div>
+		return( <div>
+					<Search 
+					style = {{marginBottom: 8}}
+					placeholder = 'Search'
+					onChange = {this.onChange}
+					/> 
+					{treeData.length > 0 && treeData[0].children.length > 0 && ( 
+						<Tree showLine onExpand = {this.onExpand}
+						expandedKeys = {expandedKeys}
+						onSelect = {this.onSelect}
+						autoExpandParent = {autoExpandParent}
+						selectedKeys = {selectedKeys} >
+						{loop(treeData)} 
+						</Tree>
+					)} 
+				</div>
 		);
 	}
 }
@@ -272,7 +327,12 @@ const generateData = (data) => {
 	// 所有 children 数组
 	let treeObj = {};
 	data.map((item, index) => {
-		let { parentcode, moduleid, systypename, systypecode } = item;
+		let {
+			parentcode,
+			moduleid,
+			systypename,
+			systypecode
+		} = item;
 		if (moduleid.length > 4) {
 			item.text = `${systypecode} ${systypename}`;
 		} else {
@@ -325,6 +385,14 @@ SearchTree.PropTypes = {
 export default connect(
 	(state) => {
 		return {};
-	},
-	{ setNodeData, updateTreeData, setOpType, setBillStatus, setParentData, setAppData, addTreeData, delTreeData }
+	}, {
+		setNodeData,
+		updateTreeData,
+		setOpType,
+		setBillStatus,
+		setParentData,
+		setAppData,
+		addTreeData,
+		delTreeData
+	}
 )(SearchTree);
