@@ -194,6 +194,10 @@ class MySider extends Component {
 						<span className='add'>添加</span>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
+					
+					{/* <div className='sider-result'>
+					<div  style={{width:'100px', height: '100px', border:'1px solid'}}>2222222</div>
+					</div> */}
 				</div>
 			</Sider>
 		);

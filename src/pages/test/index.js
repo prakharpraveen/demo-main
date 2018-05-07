@@ -315,6 +315,7 @@ class Test extends Component {
 	render() {
 		let { groups } = this.props;
 		const contentHeight = 'calc(100vh - 116px)';
+		const siderHeight = 'calc(100vh - 68px)';
 		return (
 			<Layout>
 				{/* Header占位符 */}
@@ -323,7 +324,7 @@ class Test extends Component {
 				面包屑
 				</div>
 				<Layout>
-					<MySider contentHeight={contentHeight}/>
+					<MySider contentHeight={siderHeight}/>
 					<Content style={{ height: contentHeight }}>
 						<div className='nc-workbench-home-container'>
 							{this.initGroupItem(groups)}
