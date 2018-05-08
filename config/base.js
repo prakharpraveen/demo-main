@@ -7,16 +7,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pubPath = __dirname.split('config')[0];
 module.exports = {
 	configInfo: {
-		context: path.resolve(pubPath, 'src'),
+		context: path.resolve(pubPath, 'src/workbench_front'),
 		entry: './app.js',
 
 		// 包(bundle)应该运行的环境
 		target: 'web',
-		externals: {
-			react: 'React',
-			'react-dom': 'ReactDOM',
-			axios: 'Axios'
-		},
 		module: {
 			rules: [
 				{
@@ -69,11 +64,11 @@ module.exports = {
 		resolve: {
 			extensions: [ '.jsx', '.js' ],
 			alias: {
-				Components: path.resolve(pubPath, 'src/components/'),
-				Assets: path.resolve(pubPath, 'src/assets/'),
-				Pages: path.resolve(pubPath, 'src/pages/'),
-				Pub: path.resolve(pubPath, 'src/pub/'),
-				Store: path.resolve(pubPath, 'src/store/')
+				Components: path.resolve(pubPath, 'src/workbench_front/components/'),
+				Assets: path.resolve(pubPath, 'src/workbench_front/assets/'),
+				Pages: path.resolve(pubPath, 'src/workbench_front/pages/'),
+				Pub: path.resolve(pubPath, 'src/workbench_front/pub/'),
+				Store: path.resolve(pubPath, 'src/workbench_front/store/')
 			}
 		}
 	},

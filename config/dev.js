@@ -94,7 +94,7 @@ module.exports = {
 			collections: true,
 			paths: true
 		}),
-		new CopyWebpackPlugin([ { from: pubPath + '/src/assets', to: './assets' } ]),
+		new CopyWebpackPlugin([ { from: pubPath + '/src/workbench_front/assets', to: './assets' } ]),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new OpenBrowserPlugin({ url: `http://${host}:${port}` })
