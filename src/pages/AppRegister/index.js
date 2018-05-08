@@ -152,8 +152,6 @@ class AppRegister extends Component {
 				break;
 			case '保存':
 				let fromData = this.props.getFromData();
-				console.log(fromData);
-
 				if (!fromData) {
 					return;
 				}
@@ -248,7 +246,6 @@ class AppRegister extends Component {
 								isNew: false
 							});
 						} else {
-							console.log(res);
 							Notice({ status: 'error', msg: res.error.message });
 						}
 					}
@@ -320,7 +317,6 @@ class AppRegister extends Component {
 			case '修改':
 				this.nodeData = this.props.nodeData;
 				this.optype = this.props.optype;
-				console.log(this.optype);
 				switch (this.optype) {
 					case 'module':
 						this.actionType = 1;

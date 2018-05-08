@@ -78,14 +78,14 @@ class SearchTree extends Component {
 	addTreeData = (nodeData) => {
 		let {
 			treeDataArray,
-			selectedKeys
+			selectedKeys,
 		} = this.state;
 		selectedKeys = [];
 		treeDataArray.push(nodeData);
 		selectedKeys.push(nodeData.moduleid);
 		this.setState({
 			treeDataArray,
-			selectedKeys
+			selectedKeys,
 		}, this.restoreTreeData);
 	};
 	/**
@@ -333,6 +333,9 @@ const generateData = (data) => {
 			systypename,
 			systypecode
 		} = item;
+		if(item.children){
+			delete item.children;
+		}
 		if (moduleid.length > 4) {
 			item.text = `${systypecode} ${systypename}`;
 		} else {

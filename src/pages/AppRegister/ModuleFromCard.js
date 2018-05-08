@@ -15,13 +15,20 @@ class ModuleFromCard extends Component {
 					lable: '模块编码',
 					type: 'input',
 					code: 'systypecode',
-					required: true
+					required: true,
 				},
 				{
 					lable: '模块号',
 					type: 'input',
 					code: 'moduleid',
-					required: true
+					required: true,
+					check: (rule, value, callback)=>{
+						if(value === this.props.parentData){
+							callback('不能与父节点编码重复');
+						}else{
+							callback();
+						}
+					}
 				},
 				{
 					lable: '模块名称',
@@ -148,7 +155,7 @@ class ModuleFromCard extends Component {
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
 		const { isEdit } = this.props.billStatus;
-		let { lable, type, code, required } = itemInfo;
+		let { lable, type, code, required,check } = itemInfo;
 		switch (type) {
 			case 'select':
 				return isEdit ? (
@@ -180,7 +187,9 @@ class ModuleFromCard extends Component {
 							rules: [
 								{
 									required: required,
-									message: `请输入${lable}`
+									message: `请输入${lable}`,
+								},{
+									validator: check?check:null,
 								}
 							]
 						})(<Input placeholder={`请输入${lable}`} />)}
@@ -220,12 +229,13 @@ ModuleFromCard.PropTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	getFromDataFunc: PropTypes.func.isRequired
+	getFromDataFunc: PropTypes.func.isRequired,
+	parentData: PropTypes.string.isRequired
 };
 export default connect(
 	(state) => {
-		let { nodeData, updateTreeData, billStatus } = state.AppRegisterData;
-		return { nodeData, updateTreeData, billStatus };
+		let { nodeData, updateTreeData, billStatus,parentData } = state.AppRegisterData;
+		return { nodeData, updateTreeData, billStatus,parentData };
 	},
 	{
 		getFromDataFunc

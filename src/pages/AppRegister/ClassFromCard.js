@@ -5,45 +5,55 @@ import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import { getFromDataFunc } from 'Store/AppRegister/action';
 const FormItem = Form.Item;
 const Option = Select.Option;
-const DOMDATA = [
-	{
-		lable: '应用编码',
-		type: 'input',
-		code: 'code',
-		required: true
-	},
-	{
-		lable: '应用名称',
-		type: 'input',
-		code: 'name',
-		required: true
-	},
-	{
-		lable: '应用描述',
-		type: 'input',
-		code: 'app_desc',
-		required: false,
-		md: 24,
-		lg: 24,
-		xl: 12
-	},
-	{
-		lable: '帮助文件名',
-		type: 'input',
-		code: 'help_name',
-		required: false,
-		md: 24,
-		lg: 24,
-		xl: 12
-	}
-];
 class ClassFromCard extends Component {
 	constructor(props, context) {
 		super(props, context);
+		this.state ={
+			DOMDATA:[
+				{
+					lable: '应用编码',
+					type: 'input',
+					code: 'code',
+					required: true,
+					check:(rule, value, callback)=>{
+						if(value === this.props.parentData){
+							callback('不能与父节点编码重复');
+						}else{
+							callback();
+						}
+					}
+				},
+				{
+					lable: '应用名称',
+					type: 'input',
+					code: 'name',
+					required: true
+				},
+				{
+					lable: '应用描述',
+					type: 'input',
+					code: 'app_desc',
+					required: false,
+					md: 24,
+					lg: 24,
+					xl: 12
+				},
+				{
+					lable: '帮助文件名',
+					type: 'input',
+					code: 'help_name',
+					required: false,
+					md: 24,
+					lg: 24,
+					xl: 12
+				}
+			]
+		}
 	}
 	// To generate mock Form.Item
 	getFields(nodeData) {
 		const children = [];
+		let {DOMDATA} = this.state;
 		DOMDATA.map((item, index) => {
 			let { lable, md = 24, lg = 12, xl = 12 } = item;
 			children.push(
@@ -57,7 +67,7 @@ class ClassFromCard extends Component {
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
 		const { isEdit } = this.props.billStatus;
-		let { lable, type, code, required } = itemInfo;
+		let { lable, type, code, required,check } = itemInfo;
 		switch (type) {
 			case 'select':
 				return isEdit ? (
@@ -95,6 +105,8 @@ class ClassFromCard extends Component {
 								{
 									required: required,
 									message: `请输入${lable}`
+								},{
+									validator: check?check:null,
 								}
 							]
 						})(<Input placeholder={`请输入${lable}`} />)}
@@ -134,12 +146,13 @@ ClassFromCard.PropTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	getFromDataFunc: PropTypes.func.isRequired
+	getFromDataFunc: PropTypes.func.isRequired,
+	parentData:PropTypes.string.isRequired,
 };
 export default connect(
 	(state) => {
-		let { nodeData, updateTreeData, billStatus } = state.AppRegisterData;
-		return { nodeData, updateTreeData, billStatus };
+		let { nodeData, updateTreeData, billStatus,parentData } = state.AppRegisterData;
+		return { nodeData, updateTreeData, billStatus,parentData };
 	},
 	{ getFromDataFunc }
 )(ClassFromCard);
