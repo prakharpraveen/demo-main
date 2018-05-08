@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Layout, Cascader, Input, Icon, Checkbox, List, Button } from 'antd';
+import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal } from 'antd';
 import SiderCard from './siderCard.js'
-const { Sider } = Layout;
-
+import { connect } from 'react-redux';
+import { updateShadowCard, updateGroupList, updateSelectCardIDList } from 'Store/test/action';
+import * as utilService from './utilService';
 import Ajax from 'Pub/js/ajax';
-
-function onChange(value) {
-	console.log(value);
-}
+const { Sider } = Layout;
+const RadioGroup = Radio.Group;
 
 class MySider extends Component {
 	constructor(props) {
@@ -16,7 +15,9 @@ class MySider extends Component {
 		this.state = {
 			showSearch: false,
 			searchValue: '',
-			selectGroupArr: []
+			selectGroupArr: [],
+			modalVisible: false,
+			selectedValue: 0
 		};
 	}
 	componentDidMount() {
@@ -38,6 +39,20 @@ class MySider extends Component {
 		this.state.searchValue = _serachText;
 	}
 	onInputSearch() {
+		Ajax({
+			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			data: {
+				search_content: this.state.searchValue,
+				userid: '1111Z510000000039689'
+				// search_content:'采购'
+			},
+			success: (res) => {
+				const { data, success } = res.data;
+				if (success && data && data.length > 0) {
+                    console.log(data);
+				}
+			}
+		});
 		console.log(this.state.searchValue, '搜索开始');
 	}
 	onCascaderChange(value) {
@@ -57,6 +72,7 @@ class MySider extends Component {
 				if (success && data && data.length > 0) {
                     console.log(data);
                     _.forEach(data,(d)=>{
+						d.isShow = true;
                         d.checkedAll = false;
                         d.indeterminate = false;
                         _.forEach(d.children,(c)=>{
@@ -140,16 +156,44 @@ class MySider extends Component {
 
         selectGroup.checkedAll = checkCount===selectGroup.children.length;
         selectGroup.indeterminate = !!checkCount && checkCount<selectGroup.children.length;
-        this.setState(selectGroupArr);
-      }
+        this.setState({selectGroupArr});
+	  }
+	hasChechedItem() {
+		let flag = false;
+		let { selectGroupArr } = this.state;
+		_.forEach(selectGroupArr, (s) => {
+			_.forEach(s.children, (c) => {
+				if (c.checked) {
+					flag = true;
+					return false;
+				}
+			});
+			if (flag) {
+				return false;
+			}
+		})
+		return flag;
+	}
+	onChangeShowHide(index){
+		let { selectGroupArr } = this.state;
+		selectGroupArr[index].isShow = !selectGroupArr[index].isShow;
+		this.setState({selectGroupArr});
+	}
 	getResultDom() {
         return this.state.selectGroupArr.map((item, index) => {
             return (
                 <div className='result-group-list'>
                     <h4 className='result-header'>
-                        <Checkbox checked={item.checkedAll} indeterminate={item.indeterminate} onChange={(e)=>{this.onCheckAllChange(e,index)}}>{item.label}</Checkbox>
+                        <Checkbox checked={item.checkedAll} indeterminate={item.indeterminate} onChange={(e)=>{this.onCheckAllChange(e,index)}}></Checkbox>
+						
+						<span className='result-header-name' onClick={()=>{this.onChangeShowHide(index)}}>
+						{item.label}
+						{
+							item.isShow? <Icon type="down" />: <Icon type="right" />
+						}
+						</span>
                     </h4>
-                    <div className='result-app-list'>
+                    <div className='result-app-list' style={{display: item.isShow?'flex':'none'}}>
                         {
                             item.children.map((child, i) => {
                                 return (
@@ -177,8 +221,47 @@ class MySider extends Component {
             )
         })
 	}
+	getGroupItemNameRadio(groups) {
+		if (!groups) return;
+		return (
+			<RadioGroup
+				className='modal-radio-group'
+				value={this.state.selectedValue}
+				onChange={this.onChangeRadio.bind(this)}
+			>
+				{
+					groups.map((g, i) => {
+						return (
+							<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
+								{g.groupname}
+							</Radio>
+						)
+
+					})
+				}
+			</RadioGroup>
+		);
+	}
+	setModalVisible(modalVisible) {
+		this.setState({ modalVisible });
+	}
+	//移动到的弹出框中，组名选择
+	onChangeRadio(e) {
+		this.setState({ selectedValue: e.target.value });
+	}
+	//移动到的弹出框中，点击确认
+	onOkMoveDialog(modalVisible) {
+		const targetGroupID = this.state.selectedValue;
+		if (targetGroupID === 0) {
+			return;
+		}
+		this.setModalVisible(modalVisible);
+		console.log(targetGroupID);
+	}
 	render() {
 		const contentHeight = this.props.contentHeight;
+		const { groups } = this.props;
+		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<Sider
 				className='nc-workbench-home-sider'
@@ -191,7 +274,7 @@ class MySider extends Component {
 					{this.getSearchDom()}
 					<div className='add-item'>
 						<span />
-						<span className='add'>添加</span>
+						<Icon className={this.hasChechedItem() ? "add" : "cannot-add"} type="plus-circle-o" title ='占位符' onClick={()=>{this.setModalVisible(true)}}/>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 					
@@ -199,9 +282,35 @@ class MySider extends Component {
 					<div  style={{width:'100px', height: '100px', border:'1px solid'}}>2222222</div>
 					</div> */}
 				</div>
+				<Modal
+					title='添加到'
+					wrapClassName='vertical-center-modal'
+					visible={this.state.modalVisible}
+					onOk={() => this.onOkMoveDialog(false)}
+					onCancel={() => this.setModalVisible(false)}
+					footer={[
+						<Button key="submit" type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
+						<Button key="back" onClick={() => this.setModalVisible(false)}>
+						  取消
+						</Button>,
+					  ]}
+				>
+					{groupNameRadioGroup}
+				</Modal>
 			</Sider>
 		);
 	}
 }
-
-export default MySider;
+export default (connect(
+	(state) => ({
+		groups: state.templateDragData.groups,
+		selectCardIDList: state.templateDragData.selectCardIDList,
+		shadowCard: state.templateDragData.shadowCard,
+        layout: state.templateDragData.layout,
+	}),
+	{
+		updateShadowCard,
+		updateGroupList,
+		updateSelectCardIDList
+	}
+)(MySider))

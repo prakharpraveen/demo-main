@@ -9,7 +9,7 @@ import {Icon,Input,Button,Checkbox } from 'antd';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import * as utilService from './utilService';
-import { updateGroupList,updateCurrEditID } from 'Store/test/action';
+import { updateGroupList,updateCurrEditID, updateLayout } from 'Store/test/action';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -103,7 +103,6 @@ class GroupItem extends Component {
     constructor(props) {
 		super(props)
 		this.state = {
-            forbidDrag: false,
             groupName:props.groupname
 		}
     }
@@ -132,10 +131,7 @@ class GroupItem extends Component {
                 {...c} 
                 id={c.pk_appregister}
                 groupID = {groupID}
-                {...this.props.layout}
                 key={c.pk_appregister}
-                forbidDrag={this.state.forbidDrag} 
-                selectCardIDList = {this.props.selectCardIDList}
                 />
             );
         });
@@ -242,7 +238,7 @@ class GroupItem extends Component {
         return resultRow * this.props.layout.rowHeight + (resultRow - 1) * this.props.layout.margin[1] + 2 * this.props.layout.margin[1];
     }
     
-    //计算容器的每一个格子多大
+    //已知放置格子数量, 计算容器的每一个格子多大
     calColWidth() {
         const { containerWidth, col, containerPadding, margin } = this.props.layout;
 
@@ -251,19 +247,35 @@ class GroupItem extends Component {
         }
         return (containerWidth - containerPadding[0] * 2 - 0 * (col + 1)) / col
     }
+    //已知格子大小，计算容器一行放置格子数量
+    calColCount() {
+        const { calWidth } = this.props.defaultLayout;
+        const { containerWidth, containerPadding, margin } = this.props.layout;
+
+        if (margin) {
+            return Math.floor((containerWidth - containerPadding[0] * 2 -  margin[0])/(calWidth + margin[0])) ;
+        }
+    }
 
 	componentDidMount() {
         let { layout } = this.props;
         layout = _.cloneDeep(layout);
 		const containerDom = document.querySelector("#card-container");
 		const clientWidth = containerDom.clientWidth;
-		this.props.layout.containerWidth = clientWidth;
+        
+        const windowWidth = window.innerWidth - 60*2;
+        this.props.layout.containerWidth = windowWidth
+        const col = this.calColCount();
 
-		const calWidth = this.calColWidth();
-
-		layout.calWidth = layout.rowHeight = calWidth;
-		layout.containerWidth = clientWidth;
-        this.props.resetContainer(layout);
+        this.props.layout.col = col;
+        this.props.layout.containerWidth = clientWidth;
+        const calWidth = this.calColWidth();
+        
+        layout.calWidth = layout.rowHeight = calWidth;
+        layout.col = col;
+        layout.containerWidth = clientWidth;
+        console.log(layout);
+        this.props.updateLayout(layout);
     }
     
     render() {
@@ -323,10 +335,12 @@ export default (connect(
         shadowCard: state.templateDragData.shadowCard,
         layout: state.templateDragData.layout,
         defaultLayout: state.templateDragData.defaultLayout,
+        defaultLayout: state.templateDragData.defaultLayout,
         currEditID: state.templateDragData.currEditID
 	}),
 	{
         updateGroupList,
-        updateCurrEditID
+        updateCurrEditID,
+        updateLayout
 	}
 )(dragDropItem))

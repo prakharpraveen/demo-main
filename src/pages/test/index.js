@@ -18,7 +18,7 @@ import MyFooter from './footer'
 import GroupItem from './groupItem.js';
 
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateSelectCardIDList, updateCurrEditID, updateLayout } from 'Store/test/action';
+import { updateShadowCard, updateGroupList, updateSelectCardIDList, updateCurrEditID } from 'Store/test/action';
 import * as utilService from './utilService';
 
 class Test extends Component {
@@ -38,7 +38,7 @@ class Test extends Component {
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			data: {
 				// 'cuserid': '0001Z5100000000396E0'
-				relateid:'reid1'
+				relateid:'1111Z510000000039689'
 			},
 			success: (res) => {
 				if (res) {
@@ -60,19 +60,6 @@ class Test extends Component {
 	 * 工作桌面 用户桌面设置 页面
 	 * 关于卡片的操作
 	 */
-	//计算容器的每一个格子多大
-	calColWidth() {
-		const { containerWidth, col, containerPadding, margin } = this.props.layout;
-
-		if (margin) {
-			return (containerWidth - containerPadding[0] * 2 -  margin[0] * (col + 1)) / col
-		}
-		return (containerWidth - containerPadding[0] * 2 - 0 * (col + 1)) / col
-	}
-	//计算container中可以放多少个格子
-	calColNum(){
-		const { containerWidth, col, containerPadding, margin } = this.props.layout;
-	}
 	//通过坐标x，y计算所在的单元格
 	calGridXY(x, y,width) {
 		const { margin, containerWidth, col, rowHeight } = this.props.layout;
@@ -108,33 +95,8 @@ class Test extends Component {
 				return a.isShadow === true;
 			});
 		});
-		
-		// if(shadowCard.pk_appregister.indexOf('_') !== -1){
-		// 	const pk_appregister = shadowCard.pk_appregister.split('_')[0];
-		// 	const isContain = utilService.checkCardContainInGroup(groups[groupIndex], pk_appregister);
-			
-			
-		// 	if(isContain){
-		// 		console.log(isContain);
-		// 		return;
-		// 	}
-		// }else{
-		// 	const pk_appregister = shadowCard.pk_appregister;
-		// 	const isContain = utilService.checkCardContainInGroup(groups[groupIndex], pk_appregister);
-			
-		// 	if(isContain){
-		// 		console.log(isContain);
-		// 		return;
-		// 	}
-		// }
-		//再判断拖拽卡片为siderCard并且pk_appregister不包含当前组id
-		// if(shadowCard.pk_appregister.indexOf('_') !== -1 && shadowCard.pk_appregister.indexOf(groups[groupIndex].pk_app_group) === -1){
-		// 	shadowCard.pk_appregister = `${shadowCard.siderCardID}_${groups[groupIndex].pk_app_group}`
-		// 	console.log(shadowCard.pk_appregister)
-		// }
 
 		groups[groupIndex].apps.push(shadowCard);
-
 
 		const { GridX, GridY } = this.calGridXY(x, y, shadowCard.width);
 		shadowCard = { ...shadowCard, gridx: GridX, gridy: GridY };
@@ -193,18 +155,11 @@ class Test extends Component {
 	// 	groups[groupIndex].apps = compactedLayout;
 	// 	this.setState({ groups });
 	// }
-
-	//释放卡片到组
-	dropCardToGroupItem(dragItem,dropItem,x,y){
-		
-	}
 	
 	/*
 	 * 工作桌面 用户桌面设置 页面
 	 * 关于组的操作
 	 */
-	
-	
 	//移动组顺序
 	moveGroupItem(dragIndex, hoverIndex) {
 		let { groups } = this.props;
@@ -241,16 +196,9 @@ class Test extends Component {
 		this.props.updateGroupList(groups);
 
 	}
-	//获得组的宽度后，重新设置layout
-	resetContainer(layout){
-		this.props.updateLayout(layout);
-	}
 	//创建组
 	createGroupItem(pk_app_group, groupname, type, index, length, cards) {
 		return <GroupItem key={pk_app_group} id={pk_app_group} type={type} index={index} length={length} cards={cards} groupname={groupname} 
-			
-			resetContainer={this.resetContainer.bind(this)}
-			dropCardToGroupItem={this.dropCardToGroupItem.bind(this)}
 			moveCardInGroupItem = {this.moveCardInGroupItem.bind(this)}
 			onDrop={this.onDrop.bind(this)}
 			moveGroupItem={this.moveGroupItem.bind(this)}
@@ -353,8 +301,7 @@ export default (connect(
 		updateShadowCard,
 		updateGroupList,
 		updateSelectCardIDList,
-		updateCurrEditID,
-		updateLayout
+		updateCurrEditID
 	}
 )(draDrop))
 	

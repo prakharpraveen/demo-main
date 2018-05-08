@@ -99,12 +99,10 @@ class Item extends Component {
 	}
 	//给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px
 	calGridItemPosition(gridx, gridy) {
-		var { margin, rowHeight, calWidth } = this.props;
+		const { margin, rowHeight, calWidth } = this.props.layout;
 
-		if (!margin) margin = [ 0, 0 ];
-
-		let x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
-		let y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
+		const x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
+		const y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
 
 		return {
 			x: x,
@@ -113,7 +111,7 @@ class Item extends Component {
 	}
 	//宽和高计算成为px
 	calWHtoPx(w, h) {
-		const { margin, calWidth, rowHeight } = this.props;
+		const { margin, calWidth, rowHeight } = this.props.layout;
 		const wPx = Math.round(w * calWidth + (w - 1) * margin[0]);
 		const hPx = Math.round(h * rowHeight + (h - 1) * margin[1]);
 		return { wPx, hPx };
@@ -209,6 +207,7 @@ export default (connect(
 		groups: state.templateDragData.groups,
 		selectCardIDList: state.templateDragData.selectCardIDList,
 		shadowCard: state.templateDragData.shadowCard,
+        layout: state.templateDragData.layout,
 	}),
 	{
 		updateShadowCard,
