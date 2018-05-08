@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal } from 'antd';
+import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal, Switch  } from 'antd';
 import SiderCard from './siderCard.js'
 import { connect } from 'react-redux';
 import { updateShadowCard, updateGroupList, updateSelectCardIDList } from 'Store/test/action';
@@ -15,7 +15,7 @@ class MySider extends Component {
 		this.state = {
 			showSearch: false,
 			searchValue: '',
-			selectGroupArr: [],
+			appGroupArr: [],
 			modalVisible: false,
 			selectedValue: 0
 		};
@@ -79,7 +79,7 @@ class MySider extends Component {
                             c.checked = false;
                         });
                     });
-					this.setState({ selectGroupArr: data });
+					this.setState({ appGroupArr: data });
 				}
 			}
 		});
@@ -131,19 +131,19 @@ class MySider extends Component {
 
     onCheckAllChange = (e ,index ) => {
         const checked = e.target.checked;
-        let {selectGroupArr} = this.state;
-        let selectGroup = selectGroupArr[index];
+        let {appGroupArr} = this.state;
+        let selectGroup = appGroupArr[index];
 
         selectGroup.checkedAll = e.target.checked;
         _.forEach(selectGroup.children,(c)=>{
             c.checked = checked;
         });
-        this.setState({selectGroupArr});
+        this.setState({appGroupArr});
       }
       onChangeChecked = (e, groupIndex,index)=>{
         const checked = e.target.checked;
-        let {selectGroupArr} = this.state;
-        let selectGroup = selectGroupArr[groupIndex];
+        let {appGroupArr} = this.state;
+        let selectGroup = appGroupArr[groupIndex];
         let child = selectGroup.children[index];
         child.checked = checked;
 
@@ -156,12 +156,12 @@ class MySider extends Component {
 
         selectGroup.checkedAll = checkCount===selectGroup.children.length;
         selectGroup.indeterminate = !!checkCount && checkCount<selectGroup.children.length;
-        this.setState({selectGroupArr});
+        this.setState({appGroupArr});
 	  }
 	hasChechedItem() {
 		let flag = false;
-		let { selectGroupArr } = this.state;
-		_.forEach(selectGroupArr, (s) => {
+		let { appGroupArr } = this.state;
+		_.forEach(appGroupArr, (s) => {
 			_.forEach(s.children, (c) => {
 				if (c.checked) {
 					flag = true;
@@ -174,13 +174,8 @@ class MySider extends Component {
 		})
 		return flag;
 	}
-	onChangeShowHide(index){
-		let { selectGroupArr } = this.state;
-		selectGroupArr[index].isShow = !selectGroupArr[index].isShow;
-		this.setState({selectGroupArr});
-	}
 	getResultDom() {
-        return this.state.selectGroupArr.map((item, index) => {
+        return this.state.appGroupArr.map((item, index) => {
             return (
                 <div className='result-group-list'>
                     <h4 className='result-header'>
@@ -258,6 +253,20 @@ class MySider extends Component {
 		this.setModalVisible(modalVisible);
 		console.log(targetGroupID);
 	}
+	//所有结果展开/收缩显示
+	allShowOrHide(value){
+		let { appGroupArr } = this.state;
+		_.forEach(appGroupArr,(a)=>{
+			a.isShow = value;
+		})
+		this.setState({appGroupArr});
+	}
+	//单个结果展开/收缩展示
+	onChangeShowHide(index){
+		let { appGroupArr } = this.state;
+		appGroupArr[index].isShow = !appGroupArr[index].isShow;
+		this.setState({appGroupArr});
+	}
 	render() {
 		const contentHeight = this.props.contentHeight;
 		const { groups } = this.props;
@@ -273,14 +282,10 @@ class MySider extends Component {
 				<div className='sider-content'>
 					{this.getSearchDom()}
 					<div className='add-item'>
-						<span />
+						<Switch checkedChildren="展开" unCheckedChildren="收缩" className={this.state.appGroupArr.length===0 ? "cannot-add" : "aaa"} defaultChecked onChange={this.allShowOrHide.bind(this)} />,
 						<Icon className={this.hasChechedItem() ? "add" : "cannot-add"} type="plus-circle-o" title ='占位符' onClick={()=>{this.setModalVisible(true)}}/>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
-					
-					{/* <div className='sider-result'>
-					<div  style={{width:'100px', height: '100px', border:'1px solid'}}>2222222</div>
-					</div> */}
 				</div>
 				<Modal
 					title='添加到'

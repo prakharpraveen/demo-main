@@ -25,7 +25,8 @@ class Test extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			workbenchid:''
+			workbenchid:'',
+			relateid:''
 		 };
 	}
 
@@ -49,7 +50,7 @@ class Test extends Component {
 							d.type = "group";
 						})
 						this.props.updateGroupList(data[0].groups);
-						this.setState({workbenchid: data[0].pk_workbench})
+						this.setState({workbenchid: data[0].pk_workbench,relateid:'1111Z510000000039689' })
 					}
 				}
 			}
@@ -245,7 +246,7 @@ class Test extends Component {
 			tmpData.push(tmp);
 		})
 		const saveData = {
-			'workbenchid': this.state.workbenchid,
+			'relateid': this.state.relateid,
 			'data': tmpData
 		} 
 		console.log(saveData)
