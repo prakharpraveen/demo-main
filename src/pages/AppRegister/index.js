@@ -31,6 +31,10 @@ const Btns = [
 		type: 'primary'
 	},
 	{
+		name: '增加页面',
+		type: 'primary'
+	},
+	{
 		name: '保存',
 		type: 'primary'
 	},
@@ -374,7 +378,7 @@ class AppRegister extends Component {
 				if (isEdit) {
 					isShow = false;
 				} else {
-					if (optype === '' || optype === 'module') {
+					if (optype === '' || optype === 'module'&& !parentData) {
 						isShow = true;
 					} else {
 						isShow = false;
@@ -386,8 +390,7 @@ class AppRegister extends Component {
 					isShow = false;
 				} else {
 					if (
-						(optype === 'module' && parentData && parentData.length === 2) ||
-						(optype === 'classify' && parentData && parentData.length === 4)
+						(optype === 'module' && parentData && parentData.length === 2)
 					) {
 						isShow = true;
 					} else {
@@ -399,7 +402,18 @@ class AppRegister extends Component {
 				if (isEdit) {
 					isShow = false;
 				} else {
-					if (optype === 'classify' || optype === 'app') {
+					if (optype === 'classify') {
+						isShow = true;
+					} else {
+						isShow = false;
+					}
+				}
+				break;
+			case '增加页面':
+				if (isEdit) {
+					isShow = false;
+				} else {
+					if ( optype === 'app') {
 						isShow = true;
 					} else {
 						isShow = false;
