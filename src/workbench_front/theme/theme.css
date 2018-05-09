@@ -6,6 +6,10 @@
 	background-color: rgba(9, 44, 66, 0.08);
 	border-color: rgba(9, 44, 66, 0.08);
 }
+#ncc .ant-btn[disabled] {
+	opacity: .4;
+}
+
 #ncc .ant-btn.active,
 #ncc .ant-btn:active,
 #ncc .ant-btn:focus,
