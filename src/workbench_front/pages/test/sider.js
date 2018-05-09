@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal, Switch  } from 'antd';
 import SiderCard from './siderCard.js'
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateSelectCardIDList } from 'Store/test/action';
+import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
@@ -17,7 +17,8 @@ class MySider extends Component {
 			searchValue: '',
 			appGroupArr: [],
 			modalVisible: false,
-			selectedValue: 0
+			selectedValue: 0,
+			showAll:true
 		};
 	}
 	componentDidMount() {
@@ -129,35 +130,35 @@ class MySider extends Component {
 		return itemDom;
     }
 
-    onCheckAllChange = (e ,index ) => {
-        const checked = e.target.checked;
-        let {appGroupArr} = this.state;
-        let selectGroup = appGroupArr[index];
+	onCheckAllChange = (e, index) => {
+		const checked = e.target.checked;
+		let { appGroupArr } = this.state;
+		let selectGroup = appGroupArr[index];
 
-        selectGroup.checkedAll = e.target.checked;
-        _.forEach(selectGroup.children,(c)=>{
-            c.checked = checked;
-        });
-        this.setState({appGroupArr});
-      }
-      onChangeChecked = (e, groupIndex,index)=>{
-        const checked = e.target.checked;
-        let {appGroupArr} = this.state;
-        let selectGroup = appGroupArr[groupIndex];
-        let child = selectGroup.children[index];
-        child.checked = checked;
+		selectGroup.checkedAll = e.target.checked;
+		_.forEach(selectGroup.children, (c) => {
+			c.checked = checked;
+		});
+		this.setState({ appGroupArr });
+	}
+	onChangeChecked = (e, groupIndex, index) => {
+		const checked = e.target.checked;
+		let { appGroupArr } = this.state;
+		let selectGroup = appGroupArr[groupIndex];
+		let child = selectGroup.children[index];
+		child.checked = checked;
 
-        let checkCount = 0;
-        _.forEach(selectGroup.children,(c)=>{
-            if(c.checked){
-                checkCount ++;
-            }
-        });
+		let checkCount = 0;
+		_.forEach(selectGroup.children, (c) => {
+			if (c.checked) {
+				checkCount++;
+			}
+		});
 
-        selectGroup.checkedAll = checkCount===selectGroup.children.length;
-        selectGroup.indeterminate = !!checkCount && checkCount<selectGroup.children.length;
-        this.setState({appGroupArr});
-	  }
+		selectGroup.checkedAll = checkCount === selectGroup.children.length;
+		selectGroup.indeterminate = !!checkCount && checkCount < selectGroup.children.length;
+		this.setState({ appGroupArr });
+	}
 	hasChechedItem() {
 		let flag = false;
 		let { appGroupArr } = this.state;
@@ -179,8 +180,7 @@ class MySider extends Component {
             return (
                 <div className='result-group-list'>
                     <h4 className='result-header'>
-                        <Checkbox checked={item.checkedAll} indeterminate={item.indeterminate} onChange={(e)=>{this.onCheckAllChange(e,index)}}></Checkbox>
-						
+                        <Checkbox checked={item.checkedAll} indeterminate={item.indeterminate} onChange={(e)=>{this.onCheckAllChange(e,index)}}/>
 						<span className='result-header-name' onClick={()=>{this.onChangeShowHide(index)}}>
 						{item.label}
 						{
@@ -309,13 +309,11 @@ class MySider extends Component {
 export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		selectCardIDList: state.templateDragData.selectCardIDList,
 		shadowCard: state.templateDragData.shadowCard,
         layout: state.templateDragData.layout,
 	}),
 	{
 		updateShadowCard,
 		updateGroupList,
-		updateSelectCardIDList
 	}
 )(MySider))

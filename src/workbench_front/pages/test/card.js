@@ -4,14 +4,21 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateSelectCardIDList } from 'Store/test/action';
+import { updateShadowCard, updateGroupList,updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
 const noteSource = {
 	beginDrag(props, monitor, component) {
+		//开始抓取时，将该卡片从selectCardInGroupObj删除
+		let {selectCardInGroupObj} = props;
+		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+		utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,props.groupID,props.id)
+		props.updateSelectCardInGroupObj(selectCardInGroupObj);
+		//
 		const dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID,  props.id);
 		dragCard.isShadow = true;
 		props.updateShadowCard(dragCard);
+
 		return {id: props.id, type: props.type} ;
 	},
 	endDrag(props, monitor, component) {
@@ -84,19 +91,6 @@ class Item extends Component {
 
 		}
 	}
-	//删除卡片
-	deleteCard(cardID, groupID) {
-		let {groups, selectCardIDList} = this.props;
-		groups = _.cloneDeep(groups);
-		selectCardIDList = _.cloneDeep(groups);
-
-		utilService.removeCardByGroupIDAndCardID(groups, groupID, cardID)
-		_.remove(selectCardIDList,(d)=>{
-			return d === cardID;
-		});
-		this.props.updateGroupList(groups);
-		this.props.updateSelectCardIDList(selectCardIDList);
-	}
 	//给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px
 	calGridItemPosition(gridx, gridy) {
 		const { margin, rowHeight, calWidth } = this.props.layout;
@@ -116,22 +110,38 @@ class Item extends Component {
 		const hPx = Math.round(h * rowHeight + (h - 1) * margin[1]);
 		return { wPx, hPx };
 	}
+	//删除卡片
+	deleteCard(cardID, groupID) {
+		let {groups, selectCardInGroupObj} = this.props;
+		groups = _.cloneDeep(groups);
+		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+
+		utilService.removeCardByGroupIDAndCardID(groups, groupID, cardID)
+		utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,groupID,cardID)
+
+		this.props.updateGroupList(groups);
+		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
+	}
 	//
 	onCheckboxChange(e, cardID) {
+		const groupID = this.props.groupID;
 		const checked = e.target.checked;
-		let selectCardIDList = this.props.selectCardIDList;
-		selectCardIDList = _.cloneDeep(selectCardIDList);
-		if (checked) {
-			selectCardIDList.push(cardID)
-		} else {
-			_.remove(selectCardIDList, (s) => {
-				return s === cardID;
-			})
+		let selectCardInGroupObj = this.props.selectCardInGroupObj;
+		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+		if(checked){
+			if(!selectCardInGroupObj[groupID]){
+				selectCardInGroupObj[groupID]= [];
+			}
+			selectCardInGroupObj[groupID].push(cardID);
+		}else{
+			utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,groupID,cardID)
 		}
-		this.props.updateSelectCardIDList(selectCardIDList);
+		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
+		console.log(selectCardInGroupObj);
 	}
 	isChecked(id) {
-		if (_.indexOf(this.props.selectCardIDList, id) !== -1) {
+		const groupID = this.props.groupID;
+		if (_.indexOf(this.props.selectCardInGroupObj[groupID], id) !== -1) {
 			return true;
 		} else {
 			return false;
@@ -205,13 +215,13 @@ const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('i
 export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		selectCardIDList: state.templateDragData.selectCardIDList,
+		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 		shadowCard: state.templateDragData.shadowCard,
         layout: state.templateDragData.layout,
 	}),
 	{
 		updateShadowCard,
 		updateGroupList,
-		updateSelectCardIDList
+		updateSelectCardInGroupObj
 	}
 )(dragDropItem))

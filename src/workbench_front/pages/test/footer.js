@@ -6,7 +6,8 @@ import Ajax from 'Pub/js/ajax';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import { connect } from 'react-redux';
-import { updateSelectCardIDList, updateGroupList } from 'Store/test/action';
+import { updateGroupList, updateSelectCardInGroupObj  } from 'Store/test/action';
+import * as utilService from './utilService';
 const RadioGroup = Radio.Group;
 
 class MyFooter extends Component {
@@ -19,17 +20,19 @@ class MyFooter extends Component {
 	}
 	//点击删除按钮
 	deleteSelectedCardArr(){
-		let {selectCardIDList,groups} = this.props;
-		selectCardIDList = _.cloneDeep(selectCardIDList);
+		let {groups, selectCardInGroupObj} = this.props;
 		groups = _.cloneDeep(groups);
-		_.forEach(groups,(g,i)=>{
-			_.remove(g.apps,(a)=>{
-				return _.indexOf(selectCardIDList,a.pk_appregister) !== -1
+		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+
+		_.forEach(selectCardInGroupObj,(value, key)=>{
+			_.forEach(value,(a)=>{
+				utilService.removeCardByGroupIDAndCardID(groups, key, a)
 			})
-		});
-		selectCardIDList = [];
-		this.props.updateSelectCardIDList(selectCardIDList);
+		})
+		//todo 自动排版
+
 		this.props.updateGroupList(groups);
+		this.props.updateSelectCardInGroupObj({});
 	}
 	getGroupItemNameRadio(groups) {
 		if (!groups) return;
@@ -65,43 +68,49 @@ class MyFooter extends Component {
 		if (targetGroupID === 0) {
 			return;
 		}
-		this.setModalVisible(modalVisible);
-		let {groups,selectCardIDList} = this.props;
-		selectCardIDList = _.cloneDeep(selectCardIDList);
+		let {groups,selectCardInGroupObj} = this.props;
+		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
 		groups = _.cloneDeep(groups);
-
+		//需要重新布局的组，需要把目标组也加进来
+		let sourceGroupIDArr = _.keys(selectCardInGroupObj);
+		if(sourceGroupIDArr.indexOf(targetGroupID) === -1){
+			sourceGroupIDArr.push(targetGroupID)
+		}
+		//删掉所有被勾选的卡片，合并到目标组中，并且目标组内去重
 		let moveCardArr = [];
 		let targetGroupIndex = -1;
-		let souceGroupIndexArr = [];
 		_.forEach(groups,(g,i)=>{
-			if(g.pk_app_group === targetGroupID){
+			if (g.pk_app_group === targetGroupID) {
 				targetGroupIndex = i;
-			}
-			const tmpArr = _.remove(g.apps,(a)=>{
-				if(targetGroupIndex !==i  && souceGroupIndexArr.indexOf(i) === -1 && selectCardIDList.indexOf(a.pk_appregister)!== -1 ){
-					souceGroupIndexArr.push(i);
-				}
-				return _.indexOf(selectCardIDList,a.pk_appregister) !== -1
-			})
-			moveCardArr = _.concat(moveCardArr,tmpArr);
-		});
-		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps,moveCardArr);
-		selectCardIDList = [];
-
-		souceGroupIndexArr.push(targetGroupIndex);
-		//循环所有改变的组，进行重新布局
-		_.forEach(souceGroupIndexArr,(i)=>{
-			if(groups[i].apps.length === 0){
 				return;
 			}
-			const removeCard = groups[i].apps[0];
-			const newlayout = layoutCheck(groups[i].apps, removeCard, removeCard.pk_appregister, removeCard.pk_appregister);
+			const tmpArr = _.remove(g.apps, (a) => {
+				return _.indexOf(selectCardInGroupObj[g.pk_app_group], a.pk_appregister) !== -1
+			})
+			moveCardArr = _.concat(moveCardArr, tmpArr);
+		})
+
+		utilService.setGridXGridYMaxInCards(moveCardArr);
+		
+		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps,moveCardArr);
+		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		//循环所有改变的组，进行重新布局
+		_.forEach(groups,(g)=>{
+			if(sourceGroupIDArr.indexOf(g.pk_app_group) === -1){
+				return;
+			}
+			if(g.apps.length === 0){
+				return;
+			}
+			const firstCard = g.apps[0];
+			const newlayout = layoutCheck(g.apps, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
 			
 			const compactedLayout = compactLayout(newlayout);
-			groups[i].apps = compactedLayout;
-		});
-		this.props.updateSelectCardIDList(selectCardIDList);
+			g.apps = compactedLayout;
+		})
+		this.props.updateSelectCardInGroupObj({});
 		this.props.updateGroupList(groups);
+		this.setModalVisible(modalVisible);
 	}
 	//点击保存
 	saveGroupItemAndCard() {
@@ -110,13 +119,24 @@ class MyFooter extends Component {
 	cancleSave() {
 		location.reload();
 	}
+	checkInSelectCardInGroupObj(){
+		const selectCardInGroupObj = this.props.selectCardInGroupObj;
+		let flag = true;
+		_.forEach(selectCardInGroupObj,(c)=>{
+			if(c.length>0){
+				flag = false;
+				return false;
+			}
+		})
+		return flag;
+	}
 	//抽象方法，参数为显示的button文本和方法体，注意方法提前bind
 	getMoveCardButton = (text, fn) => {
 		let tmpDom;
-		const selectCardIDList = this.props.selectCardIDList;
+		const checked = this.checkInSelectCardInGroupObj();
 		tmpDom = (
 			<Button
-				disabled={selectCardIDList.length === 0}
+				disabled={checked}
 				onClick={() => {
 					fn(true);
 				}}
@@ -127,7 +147,7 @@ class MyFooter extends Component {
 		return tmpDom;
 	};
 	render() {
-		const { groups, selectCardIDList } = this.props;
+		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<div className='nc-workbench-home-footer'>
@@ -162,11 +182,11 @@ export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
-		selectCardIDList: state.templateDragData.selectCardIDList,
+		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 		layout: state.templateDragData.layout,
 	}),
 	{
-		updateSelectCardIDList,
+		updateSelectCardInGroupObj,
 		updateGroupList,
 	}
 )(MyFooter))

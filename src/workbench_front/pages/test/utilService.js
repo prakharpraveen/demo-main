@@ -89,3 +89,16 @@ export const getAddedGroupItemCount = (groups)=>{
     })
     return count;
 }
+
+export const removeCardIDInSelectCardInGroupObj = (selectCardInGroupObj, groupID, cardID )=>{
+    if(selectCardInGroupObj[groupID]){
+        _.remove(selectCardInGroupObj[groupID],(c)=>{
+            return c === cardID
+        })
+    }
+}
+export const setGridXGridYMaxInCards = (cardList)=>{
+    _.forEach(cardList ,(c)=>{
+        c.gridy = 9999;
+    })
+}

@@ -12,7 +12,6 @@ const noteSource = {
 		console.log(props);
 		const dragCard = {
 			pk_appregister: props.id,
-			siderCardID: props.id,
 			width: props.width,
 			height: props.height,
 			name: props.id,

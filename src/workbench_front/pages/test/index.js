@@ -7,7 +7,7 @@ import './index.less';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 //ant
-import { Layout } from 'antd';
+import { Layout,Button } from 'antd';
 const { Header, Content } = Layout;
 //自定义组件
 import {collision,layoutCheck} from './collision';
@@ -18,8 +18,9 @@ import MyFooter from './footer'
 import GroupItem from './groupItem.js';
 
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateSelectCardIDList, updateCurrEditID } from 'Store/test/action';
+import { updateShadowCard, updateGroupList, updateCurrEditID } from 'Store/test/action';
 import * as utilService from './utilService';
+import {GetQuery} from 'Pub/js/utils'
 
 class Test extends Component {
 	constructor(props) {
@@ -46,9 +47,12 @@ class Test extends Component {
 					
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
-						_.forEach(data[0].groups, (d) => {
-							d.type = "group";
-						})
+						_.forEach(data[0].groups, (g) => {
+							g.type = "group";
+							_.forEach(g.apps,(a)=>{
+								a.isShadow = false;
+							})
+						});
 						this.props.updateGroupList(data[0].groups);
 						this.setState({workbenchid: data[0].pk_workbench,relateid:'1111Z510000000039689' })
 					}
@@ -88,6 +92,7 @@ class Test extends Component {
 		const pk_appregister = shadowCard.pk_appregister;
 		const isContain = utilService.checkCardContainInGroup(groups[groupIndex], pk_appregister);
 
+		console.log(isContain)
 		if (isContain) {
 			return;
 		}
@@ -106,7 +111,7 @@ class Test extends Component {
 		
 		const compactedLayout = compactLayout(newlayout, shadowCard);
 		groups[groupIndex].apps = compactedLayout;
-		console.log(shadowCard.gridx,shadowCard.gridy)
+		// console.log(shadowCard.gridx,shadowCard.gridy)
 		this.props.updateShadowCard(shadowCard);
 		this.props.updateGroupList(groups);
 	}
@@ -205,9 +210,30 @@ class Test extends Component {
 			moveGroupItem={this.moveGroupItem.bind(this)}
 		/>
 	}
+	//添加第一个组
+	addFirstGroupItem(groupID) {
+        let { groups } = this.props;
+        groups = _.cloneDeep(groups);
+		let insertIndex;
+		const tmpItem = {
+			pk_app_group: "newGroupItem" + new Date().getTime(),
+			groupname: `分组`,
+			type: "group",
+			apps: []
+		}
+		groups.push(tmpItem);
+		this.props.updateGroupList(groups);
+	}
 	//初始化组
 	initGroupItem(groups) {
 		let itemDoms = [];
+		if(groups.length === 0){
+			itemDoms.push(
+				<div>
+                <Button className='group-item-add' onClick={()=>{this.addFirstGroupItem()}}> + 添加分组</Button>
+              </div>
+			)
+		}
 		_.forEach(groups, (g, i) => {
 			itemDoms.push(
 				this.createGroupItem(g.pk_app_group, g.groupname, g.type, i, groups.length, g.apps)
@@ -265,6 +291,8 @@ class Test extends Component {
 		let { groups } = this.props;
 		const contentHeight = 'calc(100vh - 116px)';
 		const siderHeight = 'calc(100vh - 68px)';
+		// console.log(this.props.location.search);
+		// console.log(GetQuery(this.props.location.search));
 		return (
 			<Layout>
 				{/* Header占位符 */}
@@ -295,13 +323,11 @@ export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
-		selectCardIDList: state.templateDragData.selectCardIDList,
 		layout: state.templateDragData.layout,
 	}),
 	{
 		updateShadowCard,
 		updateGroupList,
-		updateSelectCardIDList,
 		updateCurrEditID
 	}
 )(draDrop))

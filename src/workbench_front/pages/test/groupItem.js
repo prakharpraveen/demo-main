@@ -9,7 +9,7 @@ import {Icon,Input,Button,Checkbox } from 'antd';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import * as utilService from './utilService';
-import { updateGroupList,updateCurrEditID, updateLayout } from 'Store/test/action';
+import { updateGroupList,updateCurrEditID, updateLayout,updateSelectCardInGroupObj } from 'Store/test/action';
 
 const groupItemSource ={
     beginDrag(props, monitor, component) {
@@ -28,7 +28,7 @@ const groupItemTarget ={
     hover(props, monitor, component) {
         const dragItem = monitor.getItem();
 
-        console.log(props);
+        // console.log(props);
         if (dragItem.type === "group") {//组hover到组
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
@@ -68,7 +68,7 @@ const groupItemTarget ={
     },
     drop(props, monitor, component){
         
-        console.log(props);
+        // console.log(props);
         //获取结果来判断是否冒泡,有结果时为冒泡
         // if (!_.isNull(monitor.getDropResult())) {
         //     return;
@@ -76,11 +76,11 @@ const groupItemTarget ={
         const dragItem = monitor.getItem();
         const dropItem = props;
         if (dragItem.type === "group") {
-            console.log("group in dropGroup");
+            // console.log("group in dropGroup");
             props.onDrop(dragItem , dropItem);
         } else {
-            console.log(dragItem);
-            console.log("card in dropGroup");
+            // console.log(dragItem);
+            // console.log("card in dropGroup");
         }
     }
 }
@@ -166,14 +166,19 @@ class GroupItem extends Component {
     //
     //删除组
 	deleteGroupItem = (groupID)=>{
-        let { groups } = this.props;
-		groups = _.cloneDeep(groups);
-		if (groups.length <= 1) {
-			return;
-		}
+        let { groups,selectCardInGroupObj } = this.props;
+        groups = _.cloneDeep(groups);
+        selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+        
 		_.remove(groups,(g)=>{
 			return g.pk_app_group === groupID;
-		})
+        })
+
+        if(selectCardInGroupObj[groupID]){
+            selectCardInGroupObj[groupID]=[];
+        }
+
+        this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
 		this.props.updateGroupList(groups);
     }
     //添加组
@@ -336,11 +341,13 @@ export default (connect(
         layout: state.templateDragData.layout,
         defaultLayout: state.templateDragData.defaultLayout,
         defaultLayout: state.templateDragData.defaultLayout,
-        currEditID: state.templateDragData.currEditID
+        currEditID: state.templateDragData.currEditID,
+        selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 	}),
 	{
         updateGroupList,
         updateCurrEditID,
-        updateLayout
+        updateLayout,
+        updateSelectCardInGroupObj
 	}
 )(dragDropItem))

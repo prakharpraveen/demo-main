@@ -14,12 +14,11 @@ export const updateGroupList = (groups) => {
 		groups: groups
 	};
 };
-//
 //更新GroupList数据
-export const updateSelectCardIDList = (selectCardIDList) => {
+export const updateSelectCardInGroupObj = (selectCardInGroupObj) => {
 	return {
-		type: actionType.UPDATESELECTCARDIDLIST,
-		selectCardIDList: selectCardIDList
+		type: actionType.UPDATESELECTCARDINGROUPOBJ,
+		selectCardInGroupObj: selectCardInGroupObj
 	};
 };
 //
