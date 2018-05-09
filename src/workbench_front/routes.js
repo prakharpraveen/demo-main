@@ -19,12 +19,12 @@ const NotFound = Loadable({
 	loader: () => import('Pages/404'),
 	loading: Loading
 });
-const Drag = Loadable({
-	loader: () => import('Pages/drag'),
-	loading: Loading
-});
 const Test = Loadable({
 	loader: () => import('Pages/test'),
+	loading: Loading
+});
+const DesktopSetting = Loadable({
+	loader: () => import('Pages/DesktopSetting'),
 	loading: Loading
 });
 const AppRegister = Loadable({
@@ -46,12 +46,12 @@ const routes = [
 		component: NotFound
 	},
 	{
-		path: '/drag',
-		component: Drag
-	},
-	{
 		path: '/test',
 		component: Test
+	},
+	{
+		path: '/ds',
+		component: DesktopSetting
 	},
 	{
 		path: '/ar',
