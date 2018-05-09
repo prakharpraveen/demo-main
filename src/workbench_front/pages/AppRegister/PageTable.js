@@ -104,7 +104,7 @@ BodyRow = DropTarget('row', rowTarget, (connect, monitor) => ({
 	}))(BodyRow)
 );
 
-class FromeTable extends Component {
+class PageTable extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -476,14 +476,14 @@ class FromeTable extends Component {
 		);
 	}
 }
-FromeTable.PropTypes = {
+PageTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appData: PropTypes.object.isRequired,
 	setAppData: PropTypes.object.isRequired,
 	nodeData: PropTypes.object.isRequired
 };
-let DragFromeTable = DragDropContext(HTML5Backend)(FromeTable);
+let DragFromeTable = DragDropContext(HTML5Backend)(PageTable);
 export default connect(
 	(state) => {
 		return {

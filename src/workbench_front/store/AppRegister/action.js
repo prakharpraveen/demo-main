@@ -62,11 +62,25 @@ export const setAppType = (appType) => {
 		appType
 	};
 };
-// 设置 应用按钮及参数信息 数据
-export const setAppData = (appData) => {
+// 设置 应用参数信息 数据
+export const setAppParamData = (data) => {
 	return {
-		type: AppRegister.APPDATA,
-		appData
+		type: AppRegister.APPPARAMDATA,
+		data
+	};
+};
+// 设置 页面按钮 数据
+export const setPageButtonData = (data) => {
+	return {
+		type: AppRegister.PAGEBUTTONDATA,
+		data
+	};
+};
+// 设置 页面模板 数据
+export const setPageTemplateData = (data) => {
+	return {
+		type: AppRegister.PAGETEMPLATEDATA,
+		data
 	};
 };
 // 获取表单数据
