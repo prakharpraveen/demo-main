@@ -12,7 +12,7 @@ import {
 	setOpType,
 	setBillStatus,
 	setParentData,
-	setAppData,
+	setAppParamData,
 	delTreeData
 } from 'Store/AppRegister/action';
 import {
@@ -237,10 +237,7 @@ class SearchTree extends Component {
 								appButtonVOs,
 								appParamVOs
 							} = data.data;
-							this.props.setAppData({
-								appButtonVOs,
-								appParamVOs
-							});
+							this.props.setAppParamData(appParamVOs);
 							this.props.setNodeData(appRegisterVO);
 						}
 					}
@@ -381,7 +378,7 @@ SearchTree.PropTypes = {
 	setOpType: PropTypes.func.isRequired,
 	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
-	setAppData: PropTypes.func.isRequired,
+	setAppParamData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired
 };
@@ -394,7 +391,7 @@ export default connect(
 		setOpType,
 		setBillStatus,
 		setParentData,
-		setAppData,
+		setAppParamData,
 		addTreeData,
 		delTreeData
 	}

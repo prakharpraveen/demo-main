@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setNodeData, setBillStatus, setOpType, setAppData, setParentData } from 'Store/AppRegister/action';
+import { setNodeData, setBillStatus, setOpType, setAppParamData, setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import SearchTree from './SearchTree';
-import ModuleFromCard from './ModuleFromCard';
-import ClassFromCard from './ClassFromCard';
-import AppFromCard from './AppFromCard';
+import ModuleFormCard from './ModuleFormCard';
+import ClassFormCard from './ClassFormCard';
+import AppFormCard from './AppFormCard';
+import PageFromCard from './PageFromCard';
 import PageLayout from 'Components/PageLayout';
 import Notice from 'Components/Notice';
 import './index.less';
@@ -113,13 +114,7 @@ class AppRegister extends Component {
 			case '增加应用':
 				this.actionType = 3;
 				this.nodeData = this.props.nodeData;
-				if (this.nodeData.apptype) {
-					this.props.setParentData(this.nodeData.parent_id);
-				} else {
-					// if (this.props.parentData === this.nodeData.parent_id) {
-					this.props.setParentData(this.nodeData.code);
-					// }
-				}
+				this.props.setParentData(this.nodeData.pk_appregister);
 
 				this.optype = this.props.optype;
 				let appData = {
@@ -139,12 +134,19 @@ class AppRegister extends Component {
 					apptype: 1,
 					image_src: ''
 				};
-				this.props.setAppData({
-					appParamVOs: [],
-					appButtonVOs: []
-				});
+				this.props.setAppParamData([]);
 				this.props.setNodeData(appData);
 				this.props.setOpType('app');
+				this.props.setBillStatus({
+					isEdit: true,
+					isNew: true
+				});
+				break;
+			case '增加页面':
+				this.actionType = 4;
+				this.optype = this.props.optype;
+				this.nodeData = this.props.nodeData;
+				this.props.setOpType('page');
 				this.props.setBillStatus({
 					isEdit: true,
 					isNew: true
@@ -275,7 +277,7 @@ class AppRegister extends Component {
 					case 'classify':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
 						data = {
-							pk_appregister: this.props.nodeData.pk_appregister
+							pk_appregister: pk_appregister
 						};
 						nodeData = {
 							moduleid: pk_appregister,
@@ -287,7 +289,7 @@ class AppRegister extends Component {
 					case 'app':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
 						data = {
-							pk_appregister: this.props.nodeData.pk_appregister
+							pk_appregister: pk_appregister
 						};
 						nodeData = {
 							moduleid: pk_appregister,
@@ -353,12 +355,14 @@ class AppRegister extends Component {
 		let optype = this.props.optype;
 		switch (optype) {
 			case 'module':
-				return <ModuleFromCard />;
+				return <ModuleFormCard />;
 				break;
 			case 'classify':
-				return <ClassFromCard />;
+				return <ClassFormCard />;
 			case 'app':
-				return <AppFromCard />;
+				return <AppFormCard />;
+			case 'page':
+				return <PageFromCard />;
 			default:
 				return '';
 		}
@@ -505,7 +509,7 @@ AppRegister.PropTypes = {
 	parentData: PropTypes.string.isRequired,
 	setOpType: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
-	setAppData: PropTypes.func.isRequired,
+	setAppParamData: PropTypes.func.isRequired,
 	getFromData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
@@ -527,7 +531,7 @@ export default connect(
 		setNodeData,
 		setBillStatus,
 		setOpType,
-		setAppData,
+		setAppParamData,
 		setParentData
 	}
 )(AppRegister);

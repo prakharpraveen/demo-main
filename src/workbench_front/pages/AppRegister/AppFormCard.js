@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { updateTreeData, setNodeData, setAppData, getFromDataFunc } from 'Store/AppRegister/action';
 import ChooseImageForForm from 'Components/ChooseImageForForm';
 import Ajax from 'Pub/js/ajax';
-import FromTable from './FromTable';
+import AppTable from './AppTable';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const imgs = [{
@@ -157,7 +157,6 @@ class AppFromCard extends Component {
 						}
 					]
 				},
-
 				{
 					lable: '应用宽',
 					type: 'input',
@@ -414,7 +413,7 @@ class AppFromCard extends Component {
 					<Row gutter={24}>{this.getFields(this.props.nodeData)}</Row>
 				</Form>
 				<div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
-					<FromTable />
+					<AppTable />
 				</div>
 			</div>
 		);

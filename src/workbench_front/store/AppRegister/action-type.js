@@ -16,7 +16,11 @@ export const BILLSTATUS = 'BILLSTATUS';
 export const PARENTDATA = 'PARENTDATA';
 // 应用类型
 export const APPTYPE = 'APPTYPE';
-// 应用数据 包括 按钮注册及参数注册
-export const APPDATA = 'APPDATA';
+// 应用参数数据
+export const APPPARAMDATA = 'APPPARAMDATA';
+// 页面按钮数据
+export const PAGEBUTTONDATA = 'PAGEBUTTONDATA';
+// 页面模板数据
+export const PAGETEMPLATEDATA = 'PAGETEMPLATEDATA';
 // 应用数据 包括 按钮注册及参数注册
 export const GETFROMDATA = 'GETFROMDATA';
