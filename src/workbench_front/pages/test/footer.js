@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Button, Modal, Radio } from 'antd';
 import Ajax from 'Pub/js/ajax';
 //自定义组件
-import {collision,layoutCheck} from './collision';
+import {layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import { connect } from 'react-redux';
 import { updateGroupList, updateSelectCardInGroupObj  } from 'Store/test/action';

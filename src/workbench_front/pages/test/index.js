@@ -10,7 +10,7 @@ import { DragDropContext } from 'react-dnd';
 import { Layout,Button } from 'antd';
 const { Header, Content } = Layout;
 //自定义组件
-import {collision,layoutCheck} from './collision';
+import {layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
 import { checkInContainer } from './correction';
 import MySider from './sider';
@@ -91,8 +91,7 @@ class Test extends Component {
 		//先判断组内有没有相同的appID
 		const pk_appregister = shadowCard.pk_appregister;
 		const isContain = utilService.checkCardContainInGroup(groups[groupIndex], pk_appregister);
-
-		console.log(isContain)
+		
 		if (isContain) {
 			return;
 		}
