@@ -112,10 +112,6 @@ class MyFooter extends Component {
 		this.props.updateGroupList(groups);
 		this.setModalVisible(modalVisible);
 	}
-	//点击保存
-	saveGroupItemAndCard() {
-		this.props.saveGroupItemAndCard();
-	}
 	cancleSave() {
 		location.reload();
 	}
@@ -146,7 +142,50 @@ class MyFooter extends Component {
 		);
 		return tmpDom;
 	};
+	//保存
+	saveGroupItemAndCard() {
+		let tmpData = [];
+		_.forEach(this.props.groups, (g,i) => {
+
+			let tmp = {
+				"groupname": g.groupname,
+				"apps": [],
+				"position": i,
+			}
+			if (g.pk_app_group.indexOf("newGroupItem") === -1) {
+				tmp.pk_app_group = g.pk_app_group
+			}
+			_.forEach(g.apps, (a) => {
+				if(a.pk_appregister.indexOf('_')!==-1){
+					const tmpIDArr = a.pk_appregister.split('_');
+					a.pk_appregister = tmpIDArr[0];
+				}
+				tmp.apps.push({
+					'pk_appregister': a.pk_appregister,
+					'gridx': a.gridx,
+					'gridy': a.gridy
+				})
+			})
+			tmpData.push(tmp);
+		})
+		const saveData = {
+			'relateid': this.props.relateid,
+			'data': tmpData
+		} 
+		console.log(saveData)
+		Ajax({
+			url: `/nccloud/platform/appregister/setapp.do`,
+			data: saveData,
+			success: (res) => {
+				const { data, success } = res.data;
+					if (success) {
+						// location.reload();
+					}
+			}
+		});
+	}
 	render() {
+		console.log('footer');
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
@@ -185,9 +224,11 @@ export default (connect(
 		shadowCard: state.templateDragData.shadowCard,
 		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 		layout: state.templateDragData.layout,
+		relateid: state.templateDragData.relateid,
 	}),
 	{
 		updateSelectCardInGroupObj,
 		updateGroupList,
+		
 	}
 )(MyFooter))

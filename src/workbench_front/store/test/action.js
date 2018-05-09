@@ -37,3 +37,11 @@ export const updateLayout = (layout) => {
 	};
 };
 //
+//更新GroupList数据
+export const updateRelateID = (relateid) => {
+	return {
+		type: actionType.UPDATERELATEID,
+		relateid: relateid
+	};
+};
+//

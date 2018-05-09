@@ -4,9 +4,10 @@ import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal, Switch }
 import SiderCard from './siderCard.js';
 import { connect } from 'react-redux';
 import {collision,layoutCheck} from './collision';
-import {compactLayout} from './compact.js';
+import {compactLayout} from './compact';
 import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
+import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
 const RadioGroup = Radio.Group;
@@ -19,7 +20,6 @@ class MySider extends Component {
 			searchValue: '',
 			appGroupArr: [],
 			modalVisible: false,
-			selectedValue: 0,
 			isShowAll: true
 		};
 	}
@@ -35,6 +35,9 @@ class MySider extends Component {
 				}
 			}
 		});
+	}
+	setModalVisible=(modalVisible) => {
+		this.setState({ modalVisible});
 	}
 	//搜索框文本改变
 	onInputChange(e) {
@@ -185,79 +188,7 @@ class MySider extends Component {
 			);
 		});
 	}
-	//通过组名来创建Radio
-	getGroupItemNameRadio(groups) {
-		if (!groups) return;
-		return (
-			<RadioGroup
-				className='modal-radio-group'
-				value={this.state.selectedValue}
-				onChange={this.onChangeRadio.bind(this)}
-			>
-				{groups.map((g, i) => {
-					return (
-						<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
-							{g.groupname}
-						</Radio>
-					);
-				})}
-			</RadioGroup>
-		);
-	}
-	//设置模态框显示与否
-	setModalVisible(modalVisible) {
-		this.setState({ modalVisible, selectedValue: 0 });
-	}
-	//移动到的弹出框中，组名选择
-	onChangeRadio(e) {
-		this.setState({ selectedValue: e.target.value });
-	}
-	//移动到的弹出框中，点击确认
-	onOkMoveDialog(modalVisible) {
-		const targetGroupID = this.state.selectedValue;
-		let { appGroupArr } = this.state;
-		let { groups } = this.props;
-		groups = _.cloneDeep(groups);
-		const targetGroupIndex = utilService.getGroupIndexByGroupID(groups, targetGroupID);
-
-		let checkedAppList = [];
-		if (targetGroupID === 0) {
-			return;
-		}
-		_.forEach(appGroupArr, (a) => {
-			_.forEach(a.children, (c) => {
-				if (c.checked) {
-					checkedAppList.push({
-						pk_appregister: c.value,
-						width: c.width,
-						height: c.height,
-						name: c.value,
-						isShadow: false,
-						gridx: 0,
-						gridy: 9999
-					});
-					a.checked = false;
-				}
-			});
-		});
-
-		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, checkedAppList);
-		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
-		//目标组内重新布局
-		const firstCard = groups[targetGroupIndex].apps[0];
-		const newlayout = layoutCheck(
-			groups[targetGroupIndex].apps,
-			firstCard,
-			firstCard.pk_appregister,
-			firstCard.pk_appregister
-		);
-		const compactedLayout = compactLayout(newlayout);
-		groups[targetGroupIndex].apps = compactedLayout;
-
-		this.props.updateGroupList(groups);
-		this.setModalVisible(modalVisible);
-		this.setState({ appGroupArr });
-	}
+	
 	//所有结果展开/收缩显示
 	allShowOrHide(value) {
 		let { appGroupArr, isAllShow } = this.state;
@@ -324,8 +255,7 @@ class MySider extends Component {
 	}
 	render() {
 		const contentHeight = this.props.contentHeight;
-		const { groups } = this.props;
-		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
+		console.log("sider");
 		return (
 			<Sider
 				className='nc-workbench-home-sider'
@@ -355,38 +285,16 @@ class MySider extends Component {
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 				</div>
-				<Modal
-					title='添加到'
-					mask={false}
-					wrapClassName='vertical-center-modal'
-					visible={this.state.modalVisible}
-					onOk={() => this.onOkMoveDialog(false)}
-					onCancel={() => this.setModalVisible(false)}
-					footer={[
-						<Button
-							key='submit'
-							disabled={this.state.selectedValue === 0}
-							type='primary'
-							onClick={() => this.onOkMoveDialog(false)}
-						>
-							确定
-						</Button>,
-						<Button key='back' onClick={() => this.setModalVisible(false)}>
-							取消
-						</Button>
-					]}
-				>
-					{groupNameRadioGroup}
-				</Modal>
+				<MyModal appGroupArr={this.state.appGroupArr} setModalVisible={this.setModalVisible}  modalVisible={this.state.modalVisible} />
+				
 			</Sider>
 		);
 	}
 }
 export default connect(
 	(state) => ({
-		groups: state.templateDragData.groups
 	}),
 	{
-		updateGroupList
+	
 	}
 )(MySider);

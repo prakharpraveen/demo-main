@@ -137,7 +137,6 @@ class Item extends Component {
 			utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,groupID,cardID)
 		}
 		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
-		console.log(selectCardInGroupObj);
 	}
 	isChecked(id) {
 		const groupID = this.props.groupID;
@@ -158,7 +157,7 @@ class Item extends Component {
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;
 		// }
-
+		console.log('card')
 		if(isShadow){
 			cardDom = (	<div
 					className='card-shadow'
