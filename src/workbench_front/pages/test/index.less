@@ -29,7 +29,7 @@
 			justify-content: space-between;
 			border-top: 1px solid rgba(204, 204, 204, 1);
 			border-bottom: 1px solid rgba(204, 204, 204, 1);
-			align-items:center;
+			align-items: center;
 			.add {
 				cursor: pointer;
 				font-size: 19px;
@@ -43,7 +43,8 @@
 				border-bottom: 1px solid #e9e9e9;
 				.result-header {
 					padding-left: 5px;
-					.result-header-name{
+					background: rgba(244, 245, 247, 1);
+					.result-header-name {
 						cursor: pointer;
 					}
 				}
@@ -77,9 +78,11 @@
 	}
 }
 .nc-workbench-home-container {
-	background: #e6e9e9;
 	padding: 50px 23px 48px;
-
+	.group-item-add {
+		width: 100%;
+		border: 1px solid rgba(78, 89, 104, .25);
+	}
 	.group-item {
 		width: 100%;
 		margin-bottom: 10px;
@@ -144,12 +147,11 @@
 						}
 					}
 				}
+				// .card:hover {
+				// 	box-shadow: 3px 3px 10px rgba(74,81,93,.7);
+				// 	border-radius: 3px;
+				// }
 			}
-		}
-
-		.group-item-add {
-			width: 100%;
-			border: 1px solid rgba(78, 89, 104, .25);
 		}
 	}
 }
@@ -157,7 +159,7 @@
 	width: calc(100vw - 300px);
 	height: 48px;
 	position: fixed;
-	left:300px;
+	left: 300px;
 	bottom: 0;
 	border-top: solid 1px #ccc;
 	// background: rgba(43, 55, 66, .6);

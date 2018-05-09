@@ -18,7 +18,7 @@ class MySider extends Component {
 			appGroupArr: [],
 			modalVisible: false,
 			selectedValue: 0,
-			showAll:true
+			isShowAll:true
 		};
 	}
 	componentDidMount() {
@@ -80,7 +80,7 @@ class MySider extends Component {
                             c.checked = false;
                         });
                     });
-					this.setState({ appGroupArr: data });
+					this.setState({ appGroupArr: data, isAllShow:true });
 				}
 			}
 		});
@@ -136,6 +136,7 @@ class MySider extends Component {
 		let selectGroup = appGroupArr[index];
 
 		selectGroup.checkedAll = e.target.checked;
+		selectGroup.indeterminate =false;
 		_.forEach(selectGroup.children, (c) => {
 			c.checked = checked;
 		});
@@ -157,6 +158,7 @@ class MySider extends Component {
 
 		selectGroup.checkedAll = checkCount === selectGroup.children.length;
 		selectGroup.indeterminate = !!checkCount && checkCount < selectGroup.children.length;
+		console.log(selectGroup.indeterminate);
 		this.setState({ appGroupArr });
 	}
 	hasChechedItem() {
@@ -238,7 +240,7 @@ class MySider extends Component {
 		);
 	}
 	setModalVisible(modalVisible) {
-		this.setState({ modalVisible });
+		this.setState({ modalVisible,selectedValue:0 });
 	}
 	//移动到的弹出框中，组名选择
 	onChangeRadio(e) {
@@ -255,11 +257,11 @@ class MySider extends Component {
 	}
 	//所有结果展开/收缩显示
 	allShowOrHide(value){
-		let { appGroupArr } = this.state;
+		let { appGroupArr,  isAllShow} = this.state;
 		_.forEach(appGroupArr,(a)=>{
 			a.isShow = value;
 		})
-		this.setState({appGroupArr});
+		this.setState({appGroupArr,isAllShow:value});
 	}
 	//单个结果展开/收缩展示
 	onChangeShowHide(index){
@@ -282,19 +284,20 @@ class MySider extends Component {
 				<div className='sider-content'>
 					{this.getSearchDom()}
 					<div className='add-item'>
-						<Switch checkedChildren="展开" unCheckedChildren="收缩" className={this.state.appGroupArr.length===0 ? "cannot-add" : "aaa"} defaultChecked onChange={this.allShowOrHide.bind(this)} />,
+						<Switch checkedChildren="展开" checked={this.state.isAllShow} unCheckedChildren="收缩" className={this.state.appGroupArr.length===0 ? "cannot-add" : "aaa"} onChange={this.allShowOrHide.bind(this)} />,
 						<Icon className={this.hasChechedItem() ? "add" : "cannot-add"} type="plus-circle-o" title ='占位符' onClick={()=>{this.setModalVisible(true)}}/>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 				</div>
 				<Modal
 					title='添加到'
+					mask= {false}
 					wrapClassName='vertical-center-modal'
 					visible={this.state.modalVisible}
 					onOk={() => this.onOkMoveDialog(false)}
 					onCancel={() => this.setModalVisible(false)}
 					footer={[
-						<Button key="submit" type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
+						<Button key="submit" disabled={this.state.selectedValue ===0 } type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
 						<Button key="back" onClick={() => this.setModalVisible(false)}>
 						  取消
 						</Button>,

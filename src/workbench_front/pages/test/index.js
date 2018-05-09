@@ -229,7 +229,7 @@ class Test extends Component {
 		let itemDoms = [];
 		if(groups.length === 0){
 			itemDoms.push(
-				<div>
+				<div className="first-add">
                 <Button className='group-item-add' onClick={()=>{this.addFirstGroupItem()}}> + 添加分组</Button>
               </div>
 			)

@@ -56,7 +56,7 @@ class MyFooter extends Component {
 		);
 	}
 	setModalVisible(modalVisible) {
-		this.setState({ modalVisible });
+		this.setState({ modalVisible,selectedValue:0 });
 	}
 	//移动到的弹出框中，组名选择
 	onChangeRadio(e) {
@@ -161,12 +161,13 @@ class MyFooter extends Component {
 				</div>
 				<Modal
 					title='移动到'
+					mask= {false}
 					wrapClassName='vertical-center-modal'
 					visible={this.state.modalVisible}
 					onOk={() => this.onOkMoveDialog(false)}
 					onCancel={() => this.setModalVisible(false)}
 					footer={[
-						<Button key="submit" type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
+						<Button key="submit" disabled={this.state.selectedValue===0} type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
 						<Button key="back" onClick={() => this.setModalVisible(false)}>
 						  取消
 						</Button>,
