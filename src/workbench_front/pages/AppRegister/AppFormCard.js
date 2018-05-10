@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import _ from 'lodash';
-import { updateTreeData, setNodeData, setAppData, getFromDataFunc } from 'Store/AppRegister/action';
+import { getFromDataFunc } from 'Store/AppRegister/action';
 import ChooseImageForForm from 'Components/ChooseImageForForm';
 import Ajax from 'Pub/js/ajax';
 import AppTable from './AppTable';
@@ -116,36 +116,10 @@ class AppFromCard extends Component {
 					]
 				},
 				{
-					lable: '应用描述',
-					type: 'input',
-					code: 'app_desc',
-					required: false
-				},
-				{
-					lable: '帮助文件名',
-					type: 'input',
-					code: 'help_name',
-					required: false
-				},
-				{
-					lable: '关联元数据ID',
-					type: 'search',
-					code: 'mdid',
-					required: false,
-					placeholder: '请输入元数据名称过滤',
-					options: []
-				},
-				{
-					lable: '所属集团',
-					type: 'input',
-					code: 'pk_group',
-					required: false
-				},
-				{
 					lable: '应用类型',
 					type: 'select',
 					code: 'apptype',
-					required: false,
+					required: true,
 					options: [
 						{
 							value: 1,
@@ -168,17 +142,25 @@ class AppFromCard extends Component {
 					type: 'input',
 					code: 'height',
 					required: true
+				},	
+				{
+					lable: '关联元数据ID',
+					type: 'search',
+					code: 'mdid',
+					required: false,
+					placeholder: '请输入元数据名称过滤',
+					options: []
+				},
+				{
+					lable: '所属集团',
+					type: 'input',
+					code: 'pk_group',
+					required: false
 				},
 				{
 					lable: '是否启用',
 					type: 'checkbox',
 					code: 'isenable',
-					required: false
-				},
-				{
-					lable: '是否CA用户可用',
-					type: 'checkbox',
-					code: 'iscauserusable',
 					required: false
 				},
 				{
@@ -188,10 +170,38 @@ class AppFromCard extends Component {
 					required: false
 				},
 				{
-					lable: '跳转路径',
-					type: 'input',
+					lable: '是否CA用户可用',
+					type: 'checkbox',
+					code: 'iscauserusable',
+					required: false
+				},
+				{
+					lable: '默认页面',
+					type: 'select',
 					code: 'target_path',
-					required: true,
+					required: false,
+					options: [
+						{
+							value: 1,
+							text: '页面1'
+						},
+						{
+							value: 2,
+							text: '页面2'
+						}
+					]
+				},
+				{
+					lable: '帮助文件名',
+					type: 'input',
+					code: 'help_name',
+					required: false
+				},
+				{
+					lable: '应用描述',
+					type: 'input',
+					code: 'app_desc',
+					required: false,
 					md: 24,
 					lg: 24,
 					xl: 24
@@ -204,7 +214,7 @@ class AppFromCard extends Component {
 					md: 24,
 					lg: 24,
 					xl: 24
-				}
+				},
 			]
 		};
 	}
@@ -303,22 +313,37 @@ class AppFromCard extends Component {
 	};
 	createDom = (itemInfo, nodeData) => {
 		const { getFieldDecorator } = this.props.form;
-		const { isEdit } = this.props.billStatus;
+		const { isEdit,isNew } = this.props.billStatus;
 		let { lable, type, code,required,check } = itemInfo;
 		switch (type) {
 			case 'select':
-				return isEdit ? (
-					<FormItem label={lable} hasFeedback>
-						{getFieldDecorator(code, {
-							initialValue: nodeData[code],
-							rules: [ { required: required, message: `请选择${lable}` } ]
-						})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
-					</FormItem>
-				) : (
-					<FormItem label={lable}>
-						<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
-					</FormItem>
-				);
+				if(code === 'target_path'){
+					return isEdit ? !isNew?(
+						<FormItem label={lable} hasFeedback>
+							{getFieldDecorator(code, {
+								initialValue: nodeData[code],
+								rules: [ { required: required, message: `请选择${lable}` } ]
+							})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
+						</FormItem>
+					) :null: (
+						<FormItem label={lable}>
+							<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
+						</FormItem>
+					);
+				}else{
+					return isEdit ? (
+						<FormItem label={lable} hasFeedback>
+							{getFieldDecorator(code, {
+								initialValue: nodeData[code],
+								rules: [ { required: required, message: `请选择${lable}` } ]
+							})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
+						</FormItem>
+					) : (
+						<FormItem label={lable}>
+							<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
+						</FormItem>
+					);
+				}
 			case 'search':
 				return isEdit ? (
 					<FormItem label={lable} hasFeedback>
@@ -373,7 +398,7 @@ class AppFromCard extends Component {
 				return isEdit ? (
 					<FormItem label={lable}>
 						{getFieldDecorator(code, {
-							initialValue: nodeData[code],
+							initialValue: nodeData[code]?nodeData[code]+'':'',
 							rules: [
 								{
 									required: required,
@@ -421,18 +446,15 @@ class AppFromCard extends Component {
 }
 AppFromCard = Form.create()(AppFromCard);
 AppFromCard.PropTypes = {
-	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	setNodeData: PropTypes.func.isRequired,
-	setAppData: PropTypes.func.isRequired,
 	getFromDataFunc: PropTypes.func.isRequired,
 	parentData: PropTypes.string.isRequired,
 };
 export default connect(
 	(state) => {
-		let { nodeData, updateTreeData, billStatus,parentData } = state.AppRegisterData;
-		return { nodeData, updateTreeData, billStatus,parentData };
+		let { nodeData, billStatus,parentData } = state.AppRegisterData;
+		return { nodeData, billStatus,parentData };
 	},
-	{ setNodeData, setAppData, getFromDataFunc }
+	{ getFromDataFunc }
 )(AppFromCard);

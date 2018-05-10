@@ -231,7 +231,6 @@ class SearchTree extends Component {
 							} else {
 								this.props.setOpType('classify');
 							}
-
 							let {
 								appRegisterVO,
 								appButtonVOs,

@@ -9,11 +9,6 @@ import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 const TabPane = Tabs.TabPane;
-const BTNS = [
-	{
-		name: '新增行'
-	}
-];
 const EditableCell = ({ editable, value, onChange }) => (
 	<div>
 		{editable ? (
@@ -172,6 +167,61 @@ class PageTable extends Component {
 			}
 		];
 		this.columnsSt = [
+			{
+				title: '序号',
+				dataIndex: 'num',
+				width: '5%'
+			},
+			{
+				title: '模板编码',
+				dataIndex: 'templateid',
+				width: '25%',
+				render: (text, record) => this.renderColumns(text, record, 'templateid')
+			},
+			{
+				title: '模板名称',
+				dataIndex: 'templatename',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'templatename')
+			},
+			{
+				title: '所属模块',
+				width: '10%',
+				dataIndex: 'moduleid',
+				render: (text, record) => this.renderColumns(text, record, 'moduleid')
+			},
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (text, record) => {
+					const { editable } = record;
+					return (
+						<div className='editable-row-operations'>
+							{editable ? (
+								<span>
+									<a className='margin-right-5' onClick={() => this.save(record)}>
+										保存
+									</a>
+									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+										<a className='margin-right-5'>取消</a>
+									</Popconfirm>
+								</span>
+							) : (
+								<span>
+									<a className='margin-right-5' onClick={() => this.edit(record)}>
+										编辑
+									</a>
+									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+										<a className='margin-right-5'>删除</a>
+									</Popconfirm>
+								</span>
+							)}
+						</div>
+					);
+				}
+			}
+		];
+		this.columnsPt = [
 			{
 				title: '序号',
 				dataIndex: 'num',
@@ -473,6 +523,19 @@ class PageTable extends Component {
 						pagination={false}
 						rowKey='num'
 						dataSource={pageSystemplateVO.map((item, index) => {
+							item.num = index + 1;
+							return item;
+						})}
+						columns={this.columnsSt}
+						size='middle'
+					/>
+				</TabPane>
+				<TabPane tab='打印模板注册' key='3'>
+					<Table
+						bordered
+						pagination={false}
+						rowKey='num'
+						dataSource={printSystemplateVO.map((item, index) => {
 							item.num = index + 1;
 							return item;
 						})}
