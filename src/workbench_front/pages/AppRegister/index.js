@@ -146,6 +146,7 @@ class AppRegister extends Component {
 				this.actionType = 4;
 				this.optype = this.props.optype;
 				this.nodeData = this.props.nodeData;
+				this.props.setParentData(this.nodeData.pk_appregister);
 				this.props.setOpType('page');
 				this.props.setBillStatus({
 					isEdit: true,

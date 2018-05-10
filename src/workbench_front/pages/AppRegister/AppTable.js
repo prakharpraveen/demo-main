@@ -236,8 +236,8 @@ class AppTable extends Component {
 AppTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	appParamVOs: PropTypes.object.isRequired,
-	setAppParamData: PropTypes.object.isRequired,
+	appParamVOs: PropTypes.array.isRequired,
+	setAppParamData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired
 };
 let DragFromeTable = DragDropContext(HTML5Backend)(AppTable);

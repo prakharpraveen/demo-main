@@ -22,5 +22,7 @@ export const APPPARAMDATA = 'APPPARAMDATA';
 export const PAGEBUTTONDATA = 'PAGEBUTTONDATA';
 // 页面模板数据
 export const PAGETEMPLATEDATA = 'PAGETEMPLATEDATA';
+// 页面打印模板数据
+export const PRINTTEMPLATEDATA = 'PRINTTEMPLATEDATA';
 // 应用数据 包括 按钮注册及参数注册
 export const GETFROMDATA = 'GETFROMDATA';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import Ajax from 'Pub/js/ajax';
-import AppTable from './AppTable';
+import PageTable from './PageTable';
 const FormItem = Form.Item;
 class PageFormCard extends Component{
     constructor(props) {
@@ -155,7 +155,7 @@ class PageFormCard extends Component{
 					<Row gutter={24}>{this.getFields(this.props.nodeData)}</Row>
 				</Form>
                 <div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
-					<AppTable />
+					<PageTable />
 				</div>
             </div>
         );
