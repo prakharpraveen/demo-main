@@ -30,8 +30,8 @@ class Test extends Component {
 	componentDidMount() {
 		const urlRequestObj = GetQuery(this.props.location.search);
 		let relateid;
-		if(urlRequestObj.zhize){
-			relateid = urlRequestObj.zhize;
+		if(urlRequestObj.pk_responsibility){
+			relateid = urlRequestObj.pk_responsibility;
 		}
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
