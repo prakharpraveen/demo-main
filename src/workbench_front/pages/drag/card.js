@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { DragSource ,DropTarget} from 'react-dnd';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-const UNIT = 150;
+import { DragSource, DropTarget } from 'react-dnd'
+import ItemTypes from './ItemTypes'
 
-/**
- * Implements the drag source contract.
- */
+
+const style = {
+	border: '1px dashed gray',
+	padding: '0.5rem 1rem',
+	marginBottom: '.5rem',
+	backgroundColor: 'white',
+	cursor: 'move',
+}
+
 const cardSource = {
 	beginDrag(props) {
 		return {
@@ -62,33 +68,23 @@ const cardTarget = {
 		monitor.getItem().index = hoverIndex
 	},
 }
-/**
- * Specifies the props to inject into your component.
- */
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
+const collectSource = (connect , monitor )=>{
+	return {
+			connectDragSource: connect.dragSource(),
 	isDragging: monitor.isDragging(),
-  };
+	}
+}
+
+const collectTarget = (connect, monitor)=>{
+	return {
+		connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
+	}
 }
 
 
-function collectTarget  (connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget(),
-    };
-  }
-
-const propTypes = {
-  text: PropTypes.string.isRequired,
-
-  // Injected by React DnD:
-  isDragging: PropTypes.bool.isRequired,
-  connectDragSource: PropTypes.func.isRequired
-};
-
 class Card extends Component {
-    static propTypes = {
+	static propTypes = {
 		connectDragSource: PropTypes.func.isRequired,
 		connectDropTarget: PropTypes.func.isRequired,
 		index: PropTypes.number.isRequired,
@@ -97,38 +93,22 @@ class Card extends Component {
 		text: PropTypes.string.isRequired,
 		moveCard: PropTypes.func.isRequired,
 	}
-  render() {
-    // const { isDragging, connectDragSource, text } = this.props;
-    // return connectDragSource(
-    //     <div style={{ width: `${UNIT}px`, height: `${UNIT}px`,opacity: isDragging ? 0.5 : 1  }} className={`grid-item widget-container `}>
-    //     {text}
-    //   </div>
-    // );
 
-    const {
-        text,
-        isDragging,
-        connectDragSource,
-        connectDropTarget,
-        index,
-        height,
-        width
-    } = this.props
-    const opacity = isDragging ? 0 : 1
-
-    return connectDragSource(
-        connectDropTarget(
-            <div class="item">
-            <div style={{ width: `${width}px`, height: `${height}px`,opacity: isDragging ? 0.5 : 1,float:'left','margin-left':'10px',background:'#ccc'  }} className={` widget-container `}>{text}</div>
-
-          </div>
-        ),
-        // connectDropTarget(<div style={{ ...style, opacity }}>{text}</div>),
-    )
-  }
+	render() {
+		const {
+			text,
+			isDragging,
+			connectDragSource,
+			connectDropTarget,
+			isOver
+		} = this.props
+		let opacity = isDragging ? 0 : 1
+		opacity = isOver ? 0.2 : 1
+		return connectDragSource(
+			connectDropTarget(<div style={{ ...style, opacity }}  >{text}</div>),
+		)
+	}
 }
 
-Card.propTypes = propTypes;
-
-// Export the wrapped component:
-export default DropTarget('card', cardTarget, collectTarget)(DragSource('card', cardSource, collect)(Card));
+const dragDropItem = DropTarget(ItemTypes.CARD,cardTarget,collectTarget)(DragSource(ItemTypes.CARD,cardSource,collectSource)(Card));
+export default dragDropItem;
