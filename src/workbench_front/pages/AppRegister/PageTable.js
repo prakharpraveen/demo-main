@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs, Button, Table, Input, Popconfirm } from 'antd';
+import { Tabs, Button, Table, Input, Popconfirm, Select } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -9,8 +9,9 @@ import _ from 'lodash';
 import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
+const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-const EditableCell = ({ editable, value, onChange }) => (
+const EditableInputCell = ({ editable, value, onChange }) => (
 	<div>
 		{editable ? (
 			<Input style={{ margin: '-5px 0' }} value={value} onChange={(e) => onChange(e.target.value)} />
@@ -19,6 +20,42 @@ const EditableCell = ({ editable, value, onChange }) => (
 		)}
 	</div>
 );
+const EditableSelectCell = ({ editable, value, onChange }) => (
+	<div>
+		{editable ? (
+			<Select  value={value} style={{ width: 120 }} onChange={(selected) => onChange(selected)}>
+				<Option value="button_main">主要按钮</Option>
+				<Option value="button_secondary">次要按钮</Option>
+				<Option value="buttongroup">按钮组</Option>
+				<Option value="dropdown">下拉按钮</Option>
+				<Option value="divider">分割下拉按钮</Option>
+				<Option value="more">更多按钮</Option>
+    		</Select>
+		) : (switchType(value))}
+	</div>
+);
+/**
+ * 按钮类型选择
+ * @param {String} value 
+ */
+const switchType = (value)=>{
+	switch (value) {
+		case "button_main":
+			return '主要按钮';
+		case "button_secondary":
+			return '次要按钮';
+		case "buttongroup":
+			return '按钮组';
+		case "dropdown":
+			return '下拉按钮';
+		case "divider":
+			return '分割下拉按钮';
+		case "more":
+			return '更多按钮';
+		default:
+			break;
+	}
+}
 function dragDirection(dragIndex, hoverIndex, initialClientOffset, clientOffset, sourceClientOffset) {
 	const hoverMiddleY = (initialClientOffset.y - sourceClientOffset.y) / 2;
 	const hoverClientY = clientOffset.y - sourceClientOffset.y;
@@ -115,14 +152,32 @@ class PageTable extends Component {
 			{
 				title: '按钮编码',
 				dataIndex: 'btncode',
-				width: '15%',
+				width: '10%',
 				render: (text, record) => this.renderColumns(text, record, 'btncode')
 			},
 			{
 				title: '按钮名称',
 				dataIndex: 'btnname',
-				width: '15%',
+				width: '10%',
 				render: (text, record) => this.renderColumns(text, record, 'btnname')
+			},
+			{
+				title: '按钮类型',
+				dataIndex: 'btntype',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'btntype','select')
+			},
+			{
+				title: '父按钮编码',
+				dataIndex: 'parent_code',
+				width: '10%',
+				render: (text, record) => this.renderColumns(text, record, 'parent_code')
+			},
+			{
+				title: '按钮区域',
+				dataIndex: 'btnarea',
+				width: '10%',
+				render: (text, record) => this.renderColumns(text, record, 'btnarea')
 			},
 			{
 				title: 'pagecode',
@@ -133,7 +188,7 @@ class PageTable extends Component {
 			{
 				title: '按钮功能描述',
 				dataIndex: 'btndesc',
-				width: '40%',
+				width: '25%',
 				render: (text, record) => this.renderColumns(text, record, 'btndesc')
 			},
 			{
@@ -285,35 +340,45 @@ class PageTable extends Component {
 		}
 	};
 	moveRow = (dragIndex, hoverIndex) => {
-		let { appButtonVOs } = this.props.appData;
+		let appButtonVOs = this.props.appButtonVOs;
 		const dragRow = appButtonVOs[dragIndex];
-		let sortData = update(this.props.appData, {
-			appButtonVOs: {
-				$splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
-			}
+		let sortData = update(appButtonVOs, {
+			$splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
 		});
-		sortData.appButtonVOs.map((item, index) => (item.btnorder = index));
+		sortData.map((item, index) => (item.btnorder = index));
 		Ajax({
 			url: `/nccloud/platform/appregister/orderbuttons.do`,
-			data: sortData.appButtonVOs,
+			data: sortData,
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					this.props.setAppData(sortData);
+					this.props.setPageButtonData(sortData);
 				}
 			}
 		});
 	};
-	renderColumns(text, record, column) {
+	renderColumns(text, record, column, type = 'input') {
 		record = _.cloneDeep(record);
-		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				onChange={(value) => this.handleChange(value, record, column)}
-			/>
-		);
+		if(type === 'input'){
+			return (
+				<EditableInputCell
+					editable={record.editable}
+					value={text}
+					onChange={(value) => this.handleChange(value, record, column)}
+				/>
+			);
+		}else if(type === 'select'){
+			return (
+				<EditableSelectCell
+					editable={record.editable}
+					value={text}
+					onChange={(value) => this.handleChange(value, record, column)}
+				/>
+			);
+		}
 	}
 	handleChange(value, record, column) {
+		console.log(value);
+		
 		let newData = this.getNewData();
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -322,8 +387,6 @@ class PageTable extends Component {
 		}
 	}
 	edit(record) {
-		console.log(record);
-
 		let newData = this.getNewData();
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
@@ -427,14 +490,17 @@ class PageTable extends Component {
 			return;
 		}
 		let { activeKey } = this.state;
-		let parentId = this.props.nodeData.pk_appregister;
+		let parentId = this.props.nodeData.pk_apppage;
 		let newData = this.getNewData();
 		this.cacheData = _.cloneDeep(newData);
 		if (activeKey === '1') {
 			newData.push({
 				editable: true,
+				btntype:'button_main',
 				btncode: '',
 				btnname: '',
+				parent_code:'',
+				btnarea:'',
 				btndesc: '',
 				parent_id: parentId,
 				isenable: true,
@@ -488,6 +554,7 @@ class PageTable extends Component {
 	creatAddLineBtn = () => {
 		return (
 			<div>
+				{this.state.activeKey === '1'?<span style={{color:'#e14c46'}}>提示：按钮可通过拖拽进行排序！</span>:null}
 				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
 					新增行
 				</Button>

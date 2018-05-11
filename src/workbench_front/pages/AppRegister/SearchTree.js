@@ -13,6 +13,9 @@ import {
 	setBillStatus,
 	setParentData,
 	setAppParamData,
+	setPageButtonData,
+	setPageTemplateData,
+	setPrintTemplateData,
 	delTreeData
 } from 'Store/AppRegister/action';
 import {
@@ -213,9 +216,9 @@ class SearchTree extends Component {
 					return item;
 				}
 			});
-			if (selectedNodeData.moduleid.length <= 4) {
+			if (selectedNodeData.flag + '' === '0') {
 				this.props.setOpType('module');
-			} else {
+			} else if(selectedNodeData.flag + '' === '1'){
 				// 查询应用分类 及 应用数据
 				Ajax({
 					url: `/nccloud/platform/appregister/query.do`,
@@ -233,11 +236,31 @@ class SearchTree extends Component {
 							}
 							let {
 								appRegisterVO,
-								appButtonVOs,
 								appParamVOs
 							} = data.data;
 							this.props.setAppParamData(appParamVOs);
 							this.props.setNodeData(appRegisterVO);
+						}
+					}
+				});
+			} else if(selectedNodeData.flag + '' === '2'){
+				// 查询页面数据
+				Ajax({
+					url: `/nccloud/platform/appregister/querypage.do`,
+					data: {
+						pk_apppage: key
+					},
+					success: ({
+						data
+					}) => {
+						if (data.success && data.data) {
+							let {
+								appPageVO,
+								appButtonVOs,
+								appParamVOs
+							} = data.data;
+							this.props.setAppParamData(appParamVOs);
+							this.props.setNodeData(appPageVO);
 						}
 					}
 				});
@@ -378,6 +401,9 @@ SearchTree.PropTypes = {
 	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
 	setAppParamData: PropTypes.func.isRequired,
+	setPageButtonData: PropTypes.func.isRequired,
+	setPageTemplateData: PropTypes.func.isRequired,
+	setPrintTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired
 };
@@ -391,6 +417,9 @@ export default connect(
 		setBillStatus,
 		setParentData,
 		setAppParamData,
+		setPageButtonData,
+		setPageTemplateData,
+		setPrintTemplateData,
 		addTreeData,
 		delTreeData
 	}
