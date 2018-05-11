@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setAppData } from 'Store/AppRegister/action';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { Tabs, Button, Table, Input, Popconfirm } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
+import _ from 'lodash';
+import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
+import Ajax from 'Pub/js/ajax';
+import Notice from 'Components/Notice';
 const TabPane = Tabs.TabPane;
-const BTNS = [
-	{
-		name: '新增行'
-	}
-];
 const EditableCell = ({ editable, value, onChange }) => (
 	<div>
 		{editable ? (
@@ -139,57 +135,148 @@ class PageTable extends Component {
 				dataIndex: 'btndesc',
 				width: '40%',
 				render: (text, record) => this.renderColumns(text, record, 'btndesc')
+			},
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (text, record) => {
+					const { editable } = record;
+					return (
+						<div className='editable-row-operations'>
+							{editable ? (
+								<span>
+									<a className='margin-right-5' onClick={() => this.save(record)}>
+										保存
+									</a>
+									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+										<a className='margin-right-5'>取消</a>
+									</Popconfirm>
+								</span>
+							) : (
+								<span>
+									<a className='margin-right-5' onClick={() => this.edit(record)}>
+										编辑
+									</a>
+									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+										<a className='margin-right-5'>删除</a>
+									</Popconfirm>
+								</span>
+							)}
+						</div>
+					);
+				}
 			}
 		];
-		this.columnsPar = [
+		this.columnsSt = [
 			{
 				title: '序号',
 				dataIndex: 'num',
 				width: '5%'
 			},
 			{
-				title: '参数名称',
-				dataIndex: 'paramname',
+				title: '模板编码',
+				dataIndex: 'templateid',
 				width: '25%',
-				render: (text, record) => this.renderColumns(text, record, 'paramname')
+				render: (text, record) => this.renderColumns(text, record, 'templateid')
 			},
 			{
-				title: '参数值',
-				width: '55%',
-				dataIndex: 'paramvalue',
-				render: (text, record) => this.renderColumns(text, record, 'paramvalue')
+				title: '模板名称',
+				dataIndex: 'templatename',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'templatename')
+			},
+			{
+				title: '所属模块',
+				width: '10%',
+				dataIndex: 'moduleid',
+				render: (text, record) => this.renderColumns(text, record, 'moduleid')
+			},
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (text, record) => {
+					const { editable } = record;
+					return (
+						<div className='editable-row-operations'>
+							{editable ? (
+								<span>
+									<a className='margin-right-5' onClick={() => this.save(record)}>
+										保存
+									</a>
+									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+										<a className='margin-right-5'>取消</a>
+									</Popconfirm>
+								</span>
+							) : (
+								<span>
+									<a className='margin-right-5' onClick={() => this.edit(record)}>
+										编辑
+									</a>
+									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+										<a className='margin-right-5'>删除</a>
+									</Popconfirm>
+								</span>
+							)}
+						</div>
+					);
+				}
 			}
 		];
-		this.operationCol = {
-			title: '操作',
-			dataIndex: 'operation',
-			render: (text, record) => {
-				const { editable } = record;
-				return (
-					<div className='editable-row-operations'>
-						{editable ? (
-							<span>
-								<a className='margin-right-5' onClick={() => this.save(record)}>
-									保存
-								</a>
-								<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
-									<a className='margin-right-5'>取消</a>
-								</Popconfirm>
-							</span>
-						) : (
-							<span>
-								<a className='margin-right-5' onClick={() => this.edit(record)}>
-									编辑
-								</a>
-								<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
-									<a className='margin-right-5'>删除</a>
-								</Popconfirm>
-							</span>
-						)}
-					</div>
-				);
+		this.columnsPt = [
+			{
+				title: '序号',
+				dataIndex: 'num',
+				width: '5%'
+			},
+			{
+				title: '模板编码',
+				dataIndex: 'templateid',
+				width: '25%',
+				render: (text, record) => this.renderColumns(text, record, 'templateid')
+			},
+			{
+				title: '模板名称',
+				dataIndex: 'templatename',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'templatename')
+			},
+			{
+				title: '所属模块',
+				width: '10%',
+				dataIndex: 'moduleid',
+				render: (text, record) => this.renderColumns(text, record, 'moduleid')
+			},
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (text, record) => {
+					const { editable } = record;
+					return (
+						<div className='editable-row-operations'>
+							{editable ? (
+								<span>
+									<a className='margin-right-5' onClick={() => this.save(record)}>
+										保存
+									</a>
+									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+										<a className='margin-right-5'>取消</a>
+									</Popconfirm>
+								</span>
+							) : (
+								<span>
+									<a className='margin-right-5' onClick={() => this.edit(record)}>
+										编辑
+									</a>
+									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+										<a className='margin-right-5'>删除</a>
+									</Popconfirm>
+								</span>
+							)}
+						</div>
+					);
+				}
 			}
-		};
+		];
 		this.cacheData;
 	}
 	components = {
@@ -284,17 +371,17 @@ class PageTable extends Component {
 		let url, listData;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
-			if (target.pk_btn || target.pk_param) {
+			if (target.pk_btn || target.pk_systemplate) {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/editbutton.do`;
-				} else {
-					url = `/nccloud/platform/appregister/editparam.do`;
+				} else if(activeKey === '2'){
+					url = `/nccloud/platform/appregister/editsystemplate.do`;
 				}
 			} else {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/insertbutton.do`;
-				} else {
-					url = `/nccloud/platform/appregister/insertparam.do`;
+				} else if(activeKey === '2'){
+					url = `/nccloud/platform/appregister/insertsystemplate.do`;
 				}
 			}
 			listData = {
@@ -306,9 +393,9 @@ class PageTable extends Component {
 				success: ({ data }) => {
 					if (data.success && data.data) {
 						delete target.editable;
-						if (listData.pk_btn || listData.pk_param) {
+						if (listData.pk_btn || listData.pk_systemplate) {
 							newData.map((item, index) => {
-								if (listData.pk_btn === item.pk_btn || listData.pk_param === item.pk_param) {
+								if (listData.pk_btn === item.pk_btn || listData.pk_systemplate === item.pk_systemplate) {
 									return { ...item, ...listData };
 								} else {
 									return item;
@@ -335,12 +422,15 @@ class PageTable extends Component {
 		}
 	}
 	add() {
+		if(this.props.billStatus.isNew){
+			Notice({ status: 'warning', msg: '请先将页面进行保存！' });
+			return;
+		}
 		let { activeKey } = this.state;
 		let parentId = this.props.nodeData.pk_appregister;
 		let newData = this.getNewData();
 		this.cacheData = _.cloneDeep(newData);
-		let flag = activeKey === '1';
-		if (flag) {
+		if (activeKey === '1') {
 			newData.push({
 				editable: true,
 				btncode: '',
@@ -350,128 +440,114 @@ class PageTable extends Component {
 				isenable: true,
 				pagecode: ''
 			});
-		} else {
+		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
-				paramname: '',
-				paramvalue: '',
-				parentid: parentId
+				tempstyle: 0,
+				templatename: '',
+				parent_id: parentId,
+				isenable: true,
+				pagecode: ''
+			});
+		}else if(activeKey === '3'){
+			newData.push({
+				editable: true,
+				tempstyle: 1,
+				templatename: '',
+				parent_id: parentId,
+				isenable: true,
+				pagecode: ''
 			});
 		}
 		this.setNewData(newData);
 	}
 	getNewData() {
 		let { activeKey } = this.state;
-		let { appParamVOs, appButtonVOs } = this.props.appData;
+		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
 		if (activeKey === '1') {
 			return _.cloneDeep(appButtonVOs);
-		} else {
-			return _.cloneDeep(appParamVOs);
+		} else if(activeKey === '2'){
+			return _.cloneDeep(pageSystemplateVO);
+		}else if(activeKey === '3'){
+			return _.cloneDeep(printSystemplateVO);
 		}
 	}
 	setNewData(newData) {
 		let { activeKey } = this.state;
-		let { appParamVOs, appButtonVOs } = this.props.appData;
 		if (activeKey === '1') {
-			this.props.setAppData({ appParamVOs, appButtonVOs: newData });
-		} else {
-			this.props.setAppData({ appButtonVOs, appParamVOs: newData });
+			this.props.setPageButtonData(newData);
+		} else if(activeKey === '2'){
+			this.props.setPageTemplateData(newData);
+		} else if(activeKey === '3'){
+			this.props.setPrintTemplateData(newData);
 		}
 	}
 	/**
      * 创建按钮
      */
-	createBtns = () => {
-		return BTNS.map((item, index) => {
-			item = this.setBtnsShow(item);
-			// if (item.isShow) {
-				return (
-					<div>
-						<span style={{color:'#e14c46'}}>提示：按钮顺序可以通过拖拽进行排序！</span>
-						<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
-							{item.name}
-						</Button>
-					</div>
-				);
-			// }
-		});
-	};
-	/**
-     * 设置按钮显影性
-     * @param {Object} item
-     */
-	setBtnsShow = (item) => {
-		let { isEdit } = this.props.billStatus;
-		if (isEdit) {
-			item.isShow = true;
-		} else {
-			item.isShow = false;
-		}
-		return item;
-	};
-	/**
-     * 创建 页签内容
-     */
-	createTabPane = () => {
-		let { appButtonVOs = [], appParamVOs = [] } = this.props.appData;
-		let columns1 = _.cloneDeep(this.columnsBtn);
-		// if (this.props.billStatus.isEdit) {
-			columns1.push(this.operationCol);
-		// }
-		let tabsArray = [
-			<TabPane tab='按钮注册' key='1'>
-				<Table
-					bordered
-					pagination={false}
-					rowKey='num'
-					components={this.components}
-					dataSource={appButtonVOs.map((item, index) => {
-						item.num = index + 1;
-						return item;
-					})}
-					onRow={(record, index) => ({
-						index,
-						moveRow: this.moveRow
-					})}
-					columns={columns1}
-					size='middle'
-				/>
-			</TabPane>
-		];
-		if (this.props.appType === 2) {
-			let columns2 = _.cloneDeep(this.columnsPar);
-			// if (this.props.billStatus.isEdit) {
-				columns2.push(this.operationCol);
-			// }
-			tabsArray.push(
-				<TabPane tab='参数注册' key='2'>
-					<Table
-						bordered
-						pagination={false}
-						rowKey='num'
-						dataSource={appParamVOs.map((item, index) => {
-							item.num = index + 1;
-							return item;
-						})}
-						columns={columns2}
-						size='middle'
-					/>
-				</TabPane>
-			);
-		} else {
-		}
-		return tabsArray;
+	creatAddLineBtn = () => {
+		return (
+			<div>
+				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
+					新增行
+				</Button>
+			</div>
+		);
 	};
 	render() {
+		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
 		return (
 			<Tabs
 				onChange={(activeKey) => {
 					this.setState({ activeKey });
 				}}
 				type='card'
-				tabBarExtraContent={this.createBtns()}
+				tabBarExtraContent={this.creatAddLineBtn()}
 			>
-				{this.createTabPane()}
+				<TabPane tab='按钮注册' key='1'>
+					<Table
+						bordered
+						pagination={false}
+						rowKey='num'
+						components={this.components}
+						dataSource={appButtonVOs.map((item, index) => {
+							item.num = index + 1;
+							return item;
+						})}
+						onRow={(record, index) => ({
+							index,
+							moveRow: this.moveRow
+						})}
+						columns={this.columnsBtn}
+						size='middle'
+					/>
+				</TabPane>
+				<TabPane tab='页面模板注册' key='2'>
+					<Table
+						bordered
+						pagination={false}
+						rowKey='num'
+						dataSource={pageSystemplateVO.map((item, index) => {
+							item.num = index + 1;
+							return item;
+						})}
+						columns={this.columnsSt}
+						size='middle'
+					/>
+				</TabPane>
+				<TabPane tab='打印模板注册' key='3'>
+					<Table
+						bordered
+						pagination={false}
+						rowKey='num'
+						dataSource={printSystemplateVO.map((item, index) => {
+							item.num = index + 1;
+							return item;
+						})}
+						columns={this.columnsSt}
+						size='middle'
+					/>
+				</TabPane>
 			</Tabs>
 		);
 	}
@@ -479,8 +555,12 @@ class PageTable extends Component {
 PageTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	appData: PropTypes.object.isRequired,
-	setAppData: PropTypes.object.isRequired,
+	appButtonVOs: PropTypes.array.isRequired,
+	pageSystemplateVO: PropTypes.array.isRequired,
+	printSystemplateVO: PropTypes.array.isRequired,
+	setPageTemplateData: PropTypes.func.isRequired,
+	setPrintTemplateData: PropTypes.func.isRequired,
+	setPageButtonData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired
 };
 let DragFromeTable = DragDropContext(HTML5Backend)(PageTable);
@@ -489,9 +569,11 @@ export default connect(
 		return {
 			appType: state.AppRegisterData.appType,
 			billStatus: state.AppRegisterData.billStatus,
-			appData: state.AppRegisterData.appData,
+			printSystemplateVO: state.AppRegisterData.printSystemplateVO,
+			pageSystemplateVO: state.AppRegisterData.pageSystemplateVO,
+			appButtonVOs: state.AppRegisterData.appButtonVOs,
 			nodeData: state.AppRegisterData.nodeData
 		};
 	},
-	{ setAppData }
+	{ setPageButtonData,setPageTemplateData,setPrintTemplateData }
 )(DragFromeTable);

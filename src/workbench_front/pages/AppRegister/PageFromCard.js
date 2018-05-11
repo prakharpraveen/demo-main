@@ -2,8 +2,9 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
+import { getFromDataFunc } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
-import AppTable from './AppTable';
+import PageTable from './PageTable';
 const FormItem = Form.Item;
 class PageFormCard extends Component{
     constructor(props) {
@@ -13,7 +14,7 @@ class PageFormCard extends Component{
 				{
 					lable: '页面编码',
 					type: 'input',
-					code: 'code',
+					code: 'pagecode',
 					required: true,
 					check: (rule, value, callback)=>{
 						if(value === this.props.parentData){
@@ -26,13 +27,25 @@ class PageFormCard extends Component{
 				{
 					lable: '页面名称',
 					type: 'input',
-					code: 'name',
+					code: 'pagename',
 					required: true
+				},
+				{
+					lable: '多语资源',
+					type: 'input',
+					code: 'resid',
+					required: false	
+				},
+				{
+					lable: '页面地址',
+					type: 'input',
+					code: 'pageurl',
+					required: true	
 				},
 				{
 					lable: '页面描述',
 					type: 'imput',
-					code: 'orgtypecode',
+					code: 'pagedesc',
 					required: false,
 				}
 			]
@@ -148,6 +161,19 @@ class PageFormCard extends Component{
 				);
 		}
 	};
+	getFromData = () => {
+		const { getFieldsValue, validateFields } = this.props.form;
+		let flag = false;
+		validateFields((err, values) => {
+			if (!err) {
+				flag = true;
+			}
+		});
+		return flag ? getFieldsValue() : null;
+	};
+	componentWillMount() {
+		this.props.getFromDataFunc(this.getFromData);
+	}
     render() {
         return (
             <div>
@@ -155,7 +181,7 @@ class PageFormCard extends Component{
 					<Row gutter={24}>{this.getFields(this.props.nodeData)}</Row>
 				</Form>
                 <div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
-					<AppTable />
+					<PageTable />
 				</div>
             </div>
         );
@@ -166,12 +192,10 @@ PageFormCard.PropTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	setNodeData: PropTypes.func.isRequired,
-	setAppData: PropTypes.func.isRequired,
 	getFromDataFunc: PropTypes.func.isRequired,
 	parentData: PropTypes.string.isRequired,
 };
 export default connect((state)=>{
     let { nodeData, updateTreeData, billStatus,parentData } = state.AppRegisterData;
 	return { nodeData, updateTreeData, billStatus,parentData };
-},{})(PageFormCard);
+},{getFromDataFunc})(PageFormCard);

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setNodeData, setBillStatus, setOpType, setAppParamData, setParentData } from 'Store/AppRegister/action';
+import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
+	setPageTemplateData,
+	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import SearchTree from './SearchTree';
 import ModuleFormCard from './ModuleFormCard';
@@ -128,8 +130,8 @@ class AppRegister extends Component {
 					iscauserusable: false,
 					uselicense_load: true,
 					pk_group: '',
-					width: 1,
-					height: 1,
+					width: '1',
+					height: '1',
 					target_path: '',
 					apptype: 1,
 					image_src: ''
@@ -146,6 +148,18 @@ class AppRegister extends Component {
 				this.actionType = 4;
 				this.optype = this.props.optype;
 				this.nodeData = this.props.nodeData;
+				this.props.setParentData(this.nodeData.pk_appregister);
+				let pageData = {
+					pagecode: '',
+					pagename: '',
+					pagedesc: '',
+					pageurl: '',
+					resid: '',
+				};
+				this.props.setPageButtonData([]);
+				this.props.setPageTemplateData([]);
+				this.props.setPrintTemplateData([]);
+				this.props.setNodeData(pageData);
 				this.props.setOpType('page');
 				this.props.setBillStatus({
 					isEdit: true,
@@ -199,11 +213,15 @@ class AppRegister extends Component {
 							url = `/nccloud/platform/appregister/editapp.do`;
 						}
 						fromData.parent_id = this.props.parentData;
-						// if (this.optype === 'classify') {
-						// 	fromData.parent_id = this.nodeData.moduleid;
-						// } else {
-						// 	fromData.parent_id = this.props.parentData;
-						// }
+						reqData = { ...this.props.nodeData, ...fromData };
+						break;
+					case 4:
+						if (isNew) {
+							url = `/nccloud/platform/appregister/insertpage.do`;
+						} else {
+							url = `/nccloud/platform/appregister/editpage.do`;
+						}
+						fromData.parent_id = this.props.parentData;
 						reqData = { ...this.props.nodeData, ...fromData };
 						break;
 					default:
@@ -225,6 +243,14 @@ class AppRegister extends Component {
 										systypename: data.data.name
 									};
 									this.props.addTreeData(treeData);
+								} else if(this.props.optype === 'page'){
+									let treeData = {
+										moduleid: data.data.pk_apppage,
+										parentcode: this.props.parentData,
+										systypecode: data.data.pagecode,
+										systypename: data.data.pagename
+									}
+									this.props.addTreeData(treeData);
 								} else {
 									this.props.addTreeData(reqData);
 								}
@@ -237,6 +263,14 @@ class AppRegister extends Component {
 										systypecode: reqData.code,
 										systypename: reqData.name
 									};
+									this.props.updateTreeData(treeData);
+								} else if(this.props.optype === 'page'){
+									let treeData = {
+										moduleid: data.data.pk_apppage,
+										parentcode: this.props.parentData,
+										systypecode: data.data.pagecode,
+										systypename: data.data.pagename
+									}
 									this.props.updateTreeData(treeData);
 								} else {
 									this.props.updateTreeData(reqData);
@@ -510,6 +544,9 @@ AppRegister.PropTypes = {
 	setOpType: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	setAppParamData: PropTypes.func.isRequired,
+	setPageButtonData: PropTypes.func.isRequired,
+	setPageTemplateData: PropTypes.func.isRequired,
+	setPrintTemplateData: PropTypes.func.isRequired,
 	getFromData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
@@ -532,6 +569,9 @@ export default connect(
 		setBillStatus,
 		setOpType,
 		setAppParamData,
+		setPageButtonData,
+		setPageTemplateData,
+		setPrintTemplateData,
 		setParentData
 	}
 )(AppRegister);

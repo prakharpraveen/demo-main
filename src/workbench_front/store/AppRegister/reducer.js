@@ -15,9 +15,11 @@ let defaultState = {
 	// 应用参数数据
 	appParamVOs: [],
 	// 页面按钮数据
-	pageButtonData:[],
+	appButtonVOs:[],
 	// 页面模板数据
-	pageTemplateData:[],
+	pageSystemplateVO:[],
+	// 页面打印模板数据
+	printSystemplateVO:[],
 	// 父节点信息
 	parentData: '',
 	// 应用类型 1 为 小应用 2 为 小部件
@@ -89,13 +91,19 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 		case AppRegister.PAGEBUTTONDATA:
 			return { ...state,
 				...{
-					pageButtonData: action.data
+					appButtonVOs: action.data
 				}
 			};
 		case AppRegister.PAGETEMPLATEDATA:
 			return { ...state,
 				...{
-					pageTemplateData: action.data
+					pageSystemplateVO: action.data
+				}
+			};
+		case AppRegister.PRINTTEMPLATEDATA:
+			return { ...state,
+				...{
+					printSystemplateVO: action.data
 				}
 			};
 		case AppRegister.GETFROMDATA:
