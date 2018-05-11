@@ -33,10 +33,10 @@ const Btns = [
 		name: '增加应用',
 		type: 'primary'
 	},
-	// {
-	// 	name: '增加页面',
-	// 	type: 'primary'
-	// },
+	{
+		name: '增加页面',
+		type: 'primary'
+	},
 	{
 		name: '保存',
 		type: 'primary'
