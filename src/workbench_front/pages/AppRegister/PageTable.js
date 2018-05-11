@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { Tabs, Button, Table, Input, Popconfirm } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
+import _ from 'lodash';
+import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
+import Ajax from 'Pub/js/ajax';
+import Notice from 'Components/Notice';
 const TabPane = Tabs.TabPane;
 const EditableCell = ({ editable, value, onChange }) => (
 	<div>
@@ -421,6 +422,10 @@ class PageTable extends Component {
 		}
 	}
 	add() {
+		if(this.props.billStatus.isNew){
+			Notice({ status: 'warning', msg: '请先将页面进行保存！' });
+			return;
+		}
 		let { activeKey } = this.state;
 		let parentId = this.props.nodeData.pk_appregister;
 		let newData = this.getNewData();
