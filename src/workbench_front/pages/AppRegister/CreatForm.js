@@ -1,6 +1,34 @@
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
+import ChooseImageForForm from 'Components/ChooseImageForForm';
 const FormItem = Form.Item;
 const Option = Select.Option;
+const imgs = [
+	{
+		name:'img1',
+		value:'/nccloud/resources/workbench/assets/images/img1.png',
+		src:'assets/images/img1.png'
+	},{
+		name:'img2',
+		value:'/nccloud/resources/workbench/assets/images/img2.png',
+		src:'assets/images/img2.png'
+	},{
+		name:'img3',
+		value:'/nccloud/resources/workbench/assets/images/img3.png',
+		src:'assets/images/img3.png'
+	},{
+		name:'img4',
+		value:'/nccloud/resources/workbench/assets/images/img4.png',
+		src:'assets/images/img4.png'
+	},{
+		name:'img5',
+		value:'/nccloud/resources/workbench/assets/images/img5.png',
+		src:'assets/images/img5.png'
+	},{
+		name:'img6',
+		value:'/nccloud/resources/workbench/assets/images/img6.png',
+		src:'assets/images/img6.png'
+	}
+];
 /**
  * 创建 下拉内容
  */
@@ -31,14 +59,14 @@ export const createForm =(DOMDATA,propsData)=>{
 		// }
 		const children = [];
 		DOMDATA.map((item, index) => {
-			let { lable, md = 24, lg = 12, xl = 8 } = item;
+            let { lable, md = 24, lg = 12, xl = 8 } = item;
 			children.push(
 				<Col md={md} lg={lg} xl={xl} key={index}>
 					{createFormItem(propsData, item)}
 				</Col>
 			);
-		});
-		return children;
+        });
+		return children.filter((item)=>item.props.children);
 }
 /**
  * 创建表单
@@ -49,7 +77,7 @@ const createFormItem = (props,itemInfo) => {
     let nodeData = props.nodeData;
     const { getFieldDecorator } = props.form;
     const { isEdit,isNew } = props.billStatus;
-    let { lable, type, code,required,check } = itemInfo;
+    let { lable, type, code,required,check,search } = itemInfo;
     switch (type) {
         case 'select':
             if(code === 'target_path'){
@@ -94,9 +122,9 @@ const createFormItem = (props,itemInfo) => {
                             defaultActiveFirstOption={false}
                             showArrow={false}
                             filterOption={false}
-                            onChange={this.handleSearch}
+                            onChange={search}
                         >
-                            {this.createOption(itemInfo.options)}
+                            {createOption(itemInfo.options)}
                         </Select>
                     )}
                 </FormItem>

@@ -4,37 +4,10 @@ import PropTypes from 'prop-types';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import _ from 'lodash';
 import { getFromDataFunc } from 'Store/AppRegister/action';
-import ChooseImageForForm from 'Components/ChooseImageForForm';
 import Ajax from 'Pub/js/ajax';
 import AppTable from './AppTable';
 import { createForm } from './CreatForm';
-const imgs = [
-	{
-		name:'img1',
-		value:'/nccloud/resources/workbench/assets/images/img1.png',
-		src:'assets/images/img1.png'
-	},{
-		name:'img2',
-		value:'/nccloud/resources/workbench/assets/images/img2.png',
-		src:'assets/images/img2.png'
-	},{
-		name:'img3',
-		value:'/nccloud/resources/workbench/assets/images/img3.png',
-		src:'assets/images/img3.png'
-	},{
-		name:'img4',
-		value:'/nccloud/resources/workbench/assets/images/img4.png',
-		src:'assets/images/img4.png'
-	},{
-		name:'img5',
-		value:'/nccloud/resources/workbench/assets/images/img5.png',
-		src:'assets/images/img5.png'
-	},{
-		name:'img6',
-		value:'/nccloud/resources/workbench/assets/images/img6.png',
-		src:'assets/images/img6.png'
-	}
-];
+
 let timeout;
 let currentValue;
 /**
@@ -150,6 +123,7 @@ class AppFromCard extends Component {
 					code: 'mdid',
 					required: false,
 					placeholder: '请输入元数据名称过滤',
+					search: this.handleSearch,
 					options: []
 				},
 				{
@@ -181,16 +155,7 @@ class AppFromCard extends Component {
 					type: 'select',
 					code: 'target_path',
 					required: false,
-					options: [
-						{
-							value: 1,
-							text: '页面1'
-						},
-						{
-							value: 2,
-							text: '页面2'
-						}
-					]
+					options: []
 				},
 				{
 					lable: '帮助文件名',
@@ -235,17 +200,30 @@ class AppFromCard extends Component {
 	 */
 	getOptionsData = (code) => {
 		let { DOMDATA } = this.state;
+		let url,data;
+		if(code === 'target_path'){
+			url = `/nccloud/platform/appregister/querypagesel.do`;
+			data = { pk_appregister: this.props.nodeData.moduleid };
+		}else{
+			url = `/nccloud/platform/appregister/queryorgtype.do`;
+		}
 		Ajax({
-			url: `/nccloud/platform/appregister/queryorgtype.do`,
+			url: url,
+			data: data,
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					let options = data.data.rows;
-					options = options.map((option, i) => {
-						return {
-							value: option.refpk,
-							text: option.refname
-						};
-					});
+					let options;
+					if(code === 'target_path'){
+						options = data.data;
+					}else{
+						options = data.data.rows;
+						options = options.map((option, i) => {
+							return {
+								value: option.refpk,
+								text: option.refname
+							};
+						});
+					}
 					DOMDATA.map((item, index) => {
 						if (item.code === code) {
 							item.options = options;
@@ -255,15 +233,6 @@ class AppFromCard extends Component {
 					this.setState({ DOMDATA });
 				}
 			}
-		});
-	};
-	/**
-	 * 创建 下拉内容
-	 * @param {Array} options
-	 */
-	createOption = (options) => {
-		return options.map((item, index) => {
-			return <Option value={item.value}>{item.text}</Option>;
 		});
 	};
 	/**
@@ -291,111 +260,6 @@ class AppFromCard extends Component {
 			this.setState({ DOMDATA });
 		});
 	};
-	// createDom = (itemInfo, nodeData) => {
-	// 	const { getFieldDecorator } = this.props.form;
-	// 	const { isEdit,isNew } = this.props.billStatus;
-	// 	let { lable, type, code,required,check } = itemInfo;
-	// 	switch (type) {
-	// 		case 'select':
-	// 			if(code === 'target_path'){
-	// 				return isEdit ? !isNew?(
-	// 					<FormItem label={lable} hasFeedback>
-	// 						{getFieldDecorator(code, {
-	// 							initialValue: nodeData[code],
-	// 							rules: [ { required: required, message: `请选择${lable}` } ]
-	// 						})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
-	// 					</FormItem>
-	// 				) :null: (
-	// 					<FormItem label={lable}>
-	// 						<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
-	// 					</FormItem>
-	// 				);
-	// 			}else{
-	// 				return isEdit ? (
-	// 					<FormItem label={lable} hasFeedback>
-	// 						{getFieldDecorator(code, {
-	// 							initialValue: nodeData[code],
-	// 							rules: [ { required: required, message: `请选择${lable}` } ]
-	// 						})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
-	// 					</FormItem>
-	// 				) : (
-	// 					<FormItem label={lable}>
-	// 						<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
-	// 					</FormItem>
-	// 				);
-	// 			}
-	// 		case 'search':
-	// 			return isEdit ? (
-	// 				<FormItem label={lable} hasFeedback>
-	// 					{getFieldDecorator(code, {
-	// 						initialValue: nodeData[code],
-	// 						rules: [
-	// 							{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-	// 						]
-	// 					})(
-	// 						<Select
-	// 							placeholder={itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}`}
-	// 							mode='combobox'
-	// 							defaultActiveFirstOption={false}
-	// 							showArrow={false}
-	// 							filterOption={false}
-	// 							onChange={this.handleSearch}
-	// 						>
-	// 							{this.createOption(itemInfo.options)}
-	// 						</Select>
-	// 					)}
-	// 				</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 		case 'checkbox':
-	// 			return (
-	// 				<FormItem>
-	// 					{getFieldDecorator(code, {
-	// 						valuePropName: 'checked',
-	// 						initialValue: nodeData[code]
-	// 					})(<Checkbox disabled={!isEdit}>{lable}</Checkbox>)}
-	// 				</FormItem>
-	// 			);
-	// 		case 'chooseImage':
-	// 			return isEdit ? (
-	// 				<FormItem label={lable}>
-	// 						{getFieldDecorator(code, {
-	// 							initialValue: nodeData[code],
-	// 							rules: [
-	// 								{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-	// 							],
-	// 						})(<ChooseImageForForm data={imgs} title={'图标选择'}/>)}
-	// 					</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 		default:
-	// 			return isEdit ? (
-	// 				<FormItem label={lable}>
-	// 					{getFieldDecorator(code, {
-	// 						initialValue: nodeData[code]?nodeData[code]+'':'',
-	// 						rules: [
-	// 							{
-	// 								required: required,
-	// 								message: `请输入${lable}`
-	// 							},{
-	// 								validator: check?check:null
-	// 							}
-	// 						]
-	// 					})(<Input placeholder={`请输入${lable}`} />)}
-	// 				</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 	}
-	// };
 	getFromData = () => {
 		const { getFieldsValue, validateFields } = this.props.form;
 		let flag = false;
@@ -406,10 +270,13 @@ class AppFromCard extends Component {
 		});
 		return flag ? getFieldsValue() : null;
 	};
+	
 	componentWillMount() {
-		this.props.getFromDataFunc(this.getFromData);
 		this.getOptionsData('orgtypecode');
+		this.getOptionsData('target_path');
+		this.props.getFromDataFunc(this.getFromData);
 	}
+
 	render() {
 		// console.log(this.props.nodeData);
 		return (

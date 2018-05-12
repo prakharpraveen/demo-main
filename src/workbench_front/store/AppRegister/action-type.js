@@ -1,7 +1,9 @@
 // 清空数据
 export const CLEARDATA = 'CLEARDATA';
-// 获取树数据
+// 设置树数据
 export const SETNODEDATA = 'SETNODEDATA';
+// 获取树数据
+export const REQTREEDATA = 'REQTREEDATA';
 // 新增树节点
 export const ADDNODEDATA = 'ADDNODEDATA';
 // 更新树数据

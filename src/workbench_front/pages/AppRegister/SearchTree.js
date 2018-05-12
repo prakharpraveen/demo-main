@@ -16,7 +16,8 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	setPrintTemplateData,
-	delTreeData
+	delTreeData,
+	reqTreeData
 } from 'Store/AppRegister/action';
 import {
 	Tree,
@@ -56,6 +57,7 @@ class SearchTree extends Component {
 		}, this.reqTreeData);
 		this.props.addTreeData(this.addTreeData);
 		this.props.delTreeData(this.delTreeData);
+		this.props.reqTreeData(this.reqTreeData);
 	}
 	/**
 	 * tree 数据请求
@@ -244,9 +246,10 @@ class SearchTree extends Component {
 					}
 				});
 			} else if(selectedNodeData.flag + '' === '2'){
+				this.props.setOpType('page');
 				// 查询页面数据
 				Ajax({
-					url: `/nccloud/platform/appregister/querypage.do`,
+					url: `/nccloud/platform/appregister/querypagedetail.do`,
 					data: {
 						pk_apppage: key
 					},
@@ -255,12 +258,15 @@ class SearchTree extends Component {
 					}) => {
 						if (data.success && data.data) {
 							let {
-								appPageVO,
+								apppageVO,
 								appButtonVOs,
-								appParamVOs
+								pageSystemplateVO,
+								printSystemplateVO,
 							} = data.data;
-							this.props.setAppParamData(appParamVOs);
-							this.props.setNodeData(appPageVO);
+							this.props.setPageButtonData(appButtonVOs);
+							this.props.setPageTemplateData(appButtonVOs);
+							this.props.setPrintTemplateData(appButtonVOs);
+							this.props.setNodeData(apppageVO);
 						}
 					}
 				});
@@ -405,7 +411,8 @@ SearchTree.PropTypes = {
 	setPageTemplateData: PropTypes.func.isRequired,
 	setPrintTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired
+	delTreeData: PropTypes.func.isRequired,
+	reqTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => {
@@ -421,6 +428,7 @@ export default connect(
 		setPageTemplateData,
 		setPrintTemplateData,
 		addTreeData,
-		delTreeData
+		delTreeData,
+		reqTreeData
 	}
 )(SearchTree);

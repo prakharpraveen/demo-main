@@ -146,8 +146,9 @@ class PageTable extends Component {
 		this.columnsBtn = [
 			{
 				title: '序号',
-				dataIndex: 'num',
-				width: '5%'
+				dataIndex: 'btnorder',
+				width: '5%',
+				render: (text) => (text+1)
 			},
 			{
 				title: '按钮编码',
@@ -179,12 +180,12 @@ class PageTable extends Component {
 				width: '10%',
 				render: (text, record) => this.renderColumns(text, record, 'btnarea')
 			},
-			{
-				title: 'pagecode',
-				dataIndex: 'pagecode',
-				width: '10%',
-				render: (text, record) => this.renderColumns(text, record, 'pagecode')
-			},
+			// {
+			// 	title: 'pagecode',
+			// 	dataIndex: 'pagecode',
+			// 	width: '10%',
+			// 	render: (text, record) => this.renderColumns(text, record, 'pagecode')
+			// },
 			{
 				title: '按钮功能描述',
 				dataIndex: 'btndesc',
@@ -377,8 +378,6 @@ class PageTable extends Component {
 		}
 	}
 	handleChange(value, record, column) {
-		console.log(value);
-		
 		let newData = this.getNewData();
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -388,6 +387,11 @@ class PageTable extends Component {
 	}
 	edit(record) {
 		let newData = this.getNewData();
+		const dataList = newData.filter((item) => item.editable === true);
+		if(dataList.length > 0){
+			Notice({ status: 'warning', msg: '请逐条修改按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -489,10 +493,15 @@ class PageTable extends Component {
 			Notice({ status: 'warning', msg: '请先将页面进行保存！' });
 			return;
 		}
-		let { activeKey } = this.state;
-		let parentId = this.props.nodeData.pk_apppage;
 		let newData = this.getNewData();
+		const target = newData.filter((item) => item.editable === true);
+		if(target.length > 0){
+			Notice({ status: 'warning', msg: '请逐条添加按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
+		let { activeKey } = this.state;
+		let {pk_apppage,pagecode} = this.props.nodeData;
 		if (activeKey === '1') {
 			newData.push({
 				editable: true,
@@ -502,18 +511,19 @@ class PageTable extends Component {
 				parent_code:'',
 				btnarea:'',
 				btndesc: '',
-				parent_id: parentId,
+				parent_id: pk_apppage,
 				isenable: true,
-				pagecode: ''
+				pagecode: pagecode,
+				btnorder: newData.length
 			});
 		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
 				tempstyle: 0,
 				templatename: '',
-				parent_id: parentId,
+				parent_id: pk_apppage,
 				isenable: true,
-				pagecode: ''
+				pagecode: pagecode
 			});
 		}else if(activeKey === '3'){
 			newData.push({
@@ -566,8 +576,13 @@ class PageTable extends Component {
 		return (
 			<Tabs
 				onChange={(activeKey) => {
+					if(activeKey !== '1'){
+						Notice({ status: 'warning', msg: '功能正在开发中。。。' });
+						return;
+					}
 					this.setState({ activeKey });
 				}}
+				activeKey= {this.state.activeKey}
 				type='card'
 				tabBarExtraContent={this.creatAddLineBtn()}
 			>
@@ -575,10 +590,10 @@ class PageTable extends Component {
 					<Table
 						bordered
 						pagination={false}
-						rowKey='num'
+						rowKey='btnorder'
 						components={this.components}
 						dataSource={appButtonVOs.map((item, index) => {
-							item.num = index + 1;
+							item.num = item.btnorder;
 							return item;
 						})}
 						onRow={(record, index) => ({

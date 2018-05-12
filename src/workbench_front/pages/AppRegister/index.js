@@ -155,6 +155,7 @@ class AppRegister extends Component {
 					pagedesc: '',
 					pageurl: '',
 					resid: '',
+					isdefault: false
 				};
 				this.props.setPageButtonData([]);
 				this.props.setPageTemplateData([]);
@@ -180,6 +181,7 @@ class AppRegister extends Component {
 				 * 1 -> 模块
 				 * 2 -> 应用分类
 				 * 3 -> 应用
+				 * 4 -> 页面
 				 */
 				switch (this.actionType) {
 					case 1:
@@ -234,28 +236,14 @@ class AppRegister extends Component {
 					success: ({data}) => {
 						if (data.success && data.data) {
 							Notice({ status: 'success' });
-							if (isNew) {
-								if (this.props.optype === 'classify' || this.props.optype === 'app') {
-									let treeData = {
-										moduleid: data.data.pk_appregister,
-										parentcode: this.props.parentData,
-										systypecode: data.data.code,
-										systypename: data.data.name
-									};
-									this.props.addTreeData(treeData);
-								} else if(this.props.optype === 'page'){
-									let treeData = {
-										moduleid: data.data.pk_apppage,
-										parentcode: this.props.parentData,
-										systypecode: data.data.pagecode,
-										systypename: data.data.pagename
-									}
-									this.props.addTreeData(treeData);
-								} else {
-									this.props.addTreeData(reqData);
-								}
+							this.props.setBillStatus({
+								isEdit: false,
+								isNew: false
+							});
+							if(isNew){
+								this.props.reqTreeData();
 								this.props.setNodeData(data.data);
-							} else {
+							}else{
 								if (this.props.optype === 'classify' || this.props.optype === 'app') {
 									let treeData = {
 										moduleid: reqData.pk_appregister,
@@ -277,10 +265,30 @@ class AppRegister extends Component {
 								}
 								this.props.setNodeData(reqData);
 							}
-							this.props.setBillStatus({
-								isEdit: false,
-								isNew: false
-							});
+							// if (isNew) {
+							// 	if (this.props.optype === 'classify' || this.props.optype === 'app') {
+							// 		let treeData = {
+							// 			moduleid: data.data.pk_appregister,
+							// 			parentcode: this.props.parentData,
+							// 			systypecode: data.data.code,
+							// 			systypename: data.data.name
+							// 		};
+							// 		this.props.addTreeData(treeData);
+							// 	} else if(this.props.optype === 'page'){
+							// 		let treeData = {
+							// 			moduleid: data.data.pk_apppage,
+							// 			parentcode: this.props.parentData,
+							// 			systypecode: data.data.pagecode,
+							// 			systypename: data.data.pagename
+							// 		}
+							// 		this.props.addTreeData(treeData);
+							// 	} else {
+							// 		this.props.addTreeData(reqData);
+							// 	}
+							// 	this.props.setNodeData(data.data);
+							// } else {
+								
+							// }
 						} else {
 							Notice({ status: 'error', msg: res.error.message });
 						}
@@ -332,6 +340,18 @@ class AppRegister extends Component {
 							systypename: name
 						};
 						break;
+					case 'page':
+						url = `/nccloud/platform/appregister/deletepage.do`;
+						data = {
+							pk_apppage: this.props.nodeData.pk_apppage
+						};
+						nodeData = {
+							moduleid: this.props.nodeData.pk_apppage,
+							parentcode: this.props.parentData,
+							systypecode: this.props.nodeData.pagecode,
+							systypename: this.props.nodeData.pagename
+						};
+						break;
 					default:
 						break;
 				}
@@ -348,7 +368,6 @@ class AppRegister extends Component {
 						}
 					}
 				});
-				console.log(`删除 ${nodeData}`);
 				break;
 			case '修改':
 				this.nodeData = this.props.nodeData;
@@ -362,6 +381,9 @@ class AppRegister extends Component {
 						break;
 					case 'app':
 						this.actionType = 3;
+						break;
+					case 'page':
+						this.actionType = 4;
 						break;
 					default:
 						break;
@@ -551,7 +573,8 @@ AppRegister.PropTypes = {
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired
+	setParentData: PropTypes.func.isRequired,
+	reqTreeData: PropTypes.func.isRequired,
 };
 export default connect(
 	(state) => ({
@@ -562,7 +585,8 @@ export default connect(
 		getFromData: state.AppRegisterData.getFromData,
 		addTreeData: state.AppRegisterData.addTreeData,
 		delTreeData: state.AppRegisterData.delTreeData,
-		updateTreeData: state.AppRegisterData.updateTreeData
+		updateTreeData: state.AppRegisterData.updateTreeData,
+		reqTreeData: state.AppRegisterData.reqTreeData
 	}),
 	{
 		setNodeData,

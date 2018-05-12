@@ -6,7 +6,14 @@ export const clearData = () => {
 		type: AppRegister.CLEARDATA
 	};
 };
-// 获取 树节点 数据
+// 获取树数据
+export const reqTreeData = (data)=>{
+	return {
+		type: AppRegister.REQTREEDATA,
+		data
+	}
+}
+// 设置 树节点 数据
 export const setNodeData = (data) => {
 	return {
 		type: AppRegister.SETNODEDATA,

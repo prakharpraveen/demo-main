@@ -37,9 +37,9 @@ class PageFormCard extends Component{
 					required: false	
 				},
 				{
-					lable: '页面地址',
-					type: 'input',
-					code: 'pageurl',
+					lable: '设为默认页面',
+					type: 'checkbox',
+					code: 'isdefault',
 					required: true	
 				},
 				{
@@ -47,7 +47,19 @@ class PageFormCard extends Component{
 					type: 'imput',
 					code: 'pagedesc',
 					required: false,
-				}
+					md: 24,
+					lg: 16,
+					xl: 16
+				},
+				{
+					lable: '页面地址',
+					type: 'input',
+					code: 'pageurl',
+					required: true,
+					md: 24,
+					lg: 24,
+					xl: 24	
+				},
 			]
         }
     }

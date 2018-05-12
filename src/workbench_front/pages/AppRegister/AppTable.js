@@ -119,6 +119,9 @@ class AppTable extends Component {
 						_.remove(newData, (item) => record.pk_param === item.pk_param);
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
@@ -158,6 +161,9 @@ class AppTable extends Component {
 							this.setNewData(newData);
 						}
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
