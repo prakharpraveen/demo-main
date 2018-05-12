@@ -63,6 +63,8 @@ typings/
 
 .idea/
 
+dist/
+
 dist.zip
 
 dist.rar
