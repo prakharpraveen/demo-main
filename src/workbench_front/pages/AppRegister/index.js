@@ -249,7 +249,8 @@ class AppRegister extends Component {
 										moduleid: reqData.pk_appregister,
 										parentcode: this.props.parentData,
 										systypecode: reqData.code,
-										systypename: reqData.name
+										systypename: reqData.name,
+										flag:'1'
 									};
 									this.props.updateTreeData(treeData);
 								} else if(this.props.optype === 'page'){
@@ -257,11 +258,12 @@ class AppRegister extends Component {
 										moduleid: data.data.pk_apppage,
 										parentcode: this.props.parentData,
 										systypecode: data.data.pagecode,
-										systypename: data.data.pagename
+										systypename: data.data.pagename,
+										flag:'2'
 									}
 									this.props.updateTreeData(treeData);
 								} else {
-									this.props.updateTreeData(reqData);
+									this.props.updateTreeData({...reqData,flag:'0'});
 								}
 								this.props.setNodeData(reqData);
 							}
