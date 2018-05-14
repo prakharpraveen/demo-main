@@ -107,6 +107,8 @@ class ChooseImageForForm extends Component {
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    cancelText={'取消'}
+                    okText={'确认'}
                 >
                     <ul className='choose-imgae-list'>
                         {this.creatImgList(listData)}

@@ -55,7 +55,7 @@ class AppTable extends Component {
 									<a className='margin-right-5' onClick={() => this.save(record)}>
 										保存
 									</a>
-									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
 										<a className='margin-right-5'>取消</a>
 									</Popconfirm>
 								</span>
@@ -64,7 +64,7 @@ class AppTable extends Component {
 									<a className='margin-right-5' onClick={() => this.edit(record)}>
 										编辑
 									</a>
-									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
 								</span>
