@@ -96,6 +96,11 @@ class AppTable extends Component {
 	}
 	edit(record) {
 		let newData = this.getNewData();
+		const dataList = newData.filter((item) => item.editable === true);
+		if(dataList.length > 0){
+			Notice({ status: 'warning', msg: '请逐条修改按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -184,6 +189,11 @@ class AppTable extends Component {
 		}
 		let parentId = this.props.nodeData.pk_appregister;
 		let newData = this.getNewData();
+		const target = newData.filter((item) => item.editable === true);
+		if(target.length > 0){
+			Notice({ status: 'warning', msg: '请逐条添加按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		newData.push({
 			editable: true,
