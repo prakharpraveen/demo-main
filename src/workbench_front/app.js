@@ -24,6 +24,7 @@ class App extends Component {
 	openNewApp = ({ appOption, type }) => {
 		let { code, name } = appOption;
 		let { pk_appregister } = appOption;
+		let win = window.open('', '_blank');
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
 			data: {
@@ -34,10 +35,10 @@ class App extends Component {
 					let { data, success } = res.data;
 					if (success) {
 						if(data === 'false'){
+							win.close();
 							Notice({ status: 'error', msg: '请确认当前应用是否设置默认页面！' });
 							return;
 						}
-						let win = window.open('', '_blank');
 						switch (type) {
 							case 'current':
 								// 浏览器当前页打开
