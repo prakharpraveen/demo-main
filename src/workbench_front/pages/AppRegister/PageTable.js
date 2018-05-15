@@ -231,21 +231,21 @@ class PageTable extends Component {
 			},
 			{
 				title: '模板编码',
-				dataIndex: 'templateid',
+				dataIndex: 'code',
 				width: '25%',
-				render: (text, record) => this.renderColumns(text, record, 'templateid')
+				render: (text, record) => this.renderColumns(text, record, 'code')
 			},
 			{
 				title: '模板名称',
-				dataIndex: 'templatename',
+				dataIndex: 'name',
 				width: '15%',
-				render: (text, record) => this.renderColumns(text, record, 'templatename')
+				render: (text, record) => this.renderColumns(text, record, 'name')
 			},
 			{
-				title: '所属模块',
-				width: '10%',
-				dataIndex: 'moduleid',
-				render: (text, record) => this.renderColumns(text, record, 'moduleid')
+				title: '多语文件',
+				dataIndex: 'resid',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'resid')
 			},
 			{
 				title: '操作',
@@ -527,16 +527,15 @@ class PageTable extends Component {
 		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
-				tempstyle: 0,
-				templatename: '',
-				parent_id: pk_apppage,
+				name: '',
+				pageid: pk_apppage,
 				isenable: true,
-				pagecode: pagecode
+				resid:'',
+				code: ''
 			});
 		}else if(activeKey === '3'){
 			newData.push({
 				editable: true,
-				tempstyle: 1,
 				templatename: '',
 				parent_id: parentId,
 				isenable: true,
@@ -547,11 +546,11 @@ class PageTable extends Component {
 	}
 	getNewData() {
 		let { activeKey } = this.state;
-		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
+		let { appButtonVOs,pageTemplets,printSystemplateVO } = this.props;
 		if (activeKey === '1') {
 			return _.cloneDeep(appButtonVOs);
 		} else if(activeKey === '2'){
-			return _.cloneDeep(pageSystemplateVO);
+			return _.cloneDeep(pageTemplets);
 		}else if(activeKey === '3'){
 			return _.cloneDeep(printSystemplateVO);
 		}
@@ -580,11 +579,11 @@ class PageTable extends Component {
 		);
 	};
 	render() {
-		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
+		let { appButtonVOs=[],pageTemplets=[],printSystemplateVO=[] } = this.props;
 		return (
 			<Tabs
 				onChange={(activeKey) => {
-					if(activeKey !== '1'){
+					if(activeKey === '3'){
 						Notice({ status: 'warning', msg: '功能正在开发中。。。' });
 						return;
 					}
@@ -617,7 +616,7 @@ class PageTable extends Component {
 						bordered
 						pagination={false}
 						rowKey='num'
-						dataSource={pageSystemplateVO.map((item, index) => {
+						dataSource={pageTemplets.map((item, index) => {
 							item.num = index + 1;
 							return item;
 						})}
@@ -646,7 +645,7 @@ PageTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appButtonVOs: PropTypes.array.isRequired,
-	pageSystemplateVO: PropTypes.array.isRequired,
+	pageTemplets: PropTypes.array.isRequired,
 	printSystemplateVO: PropTypes.array.isRequired,
 	setPageTemplateData: PropTypes.func.isRequired,
 	setPrintTemplateData: PropTypes.func.isRequired,
@@ -660,7 +659,7 @@ export default connect(
 			appType: state.AppRegisterData.appType,
 			billStatus: state.AppRegisterData.billStatus,
 			printSystemplateVO: state.AppRegisterData.printSystemplateVO,
-			pageSystemplateVO: state.AppRegisterData.pageSystemplateVO,
+			pageTemplets: state.AppRegisterData.pageTemplets,
 			appButtonVOs: state.AppRegisterData.appButtonVOs,
 			nodeData: state.AppRegisterData.nodeData
 		};

@@ -260,12 +260,12 @@ class SearchTree extends Component {
 							let {
 								apppageVO,
 								appButtonVOs,
-								pageSystemplateVO,
+								pageTemplets,
 								printSystemplateVO,
 							} = data.data;
 							this.props.setPageButtonData(appButtonVOs);
-							this.props.setPageTemplateData(appButtonVOs);
-							this.props.setPrintTemplateData(appButtonVOs);
+							this.props.setPageTemplateData(pageTemplets);
+							this.props.setPrintTemplateData(printSystemplateVO);
 							this.props.setNodeData(apppageVO);
 						}
 					}
