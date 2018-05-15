@@ -102,3 +102,42 @@ export const setGridXGridYMaxInCards = (cardList)=>{
         c.gridy = 9999;
     })
 }
+ //已知放置格子数量, 计算容器的每一个格子多大
+ export const  calColWidth =(containerWidth, col, containerPadding, margin)=>{
+    // const { containerWidth, col, containerPadding, margin } = this.props.layout;
+
+    if (margin) {
+        return (containerWidth - containerPadding[0] * 2 -  margin[0] * (col + 1)) / col
+    }
+    return (containerWidth - containerPadding[0] * 2 - 0 * (col + 1)) / col
+}
+//已知格子大小，计算容器一行放置格子数量
+export const calColCount = (defaultCalWidth,containerWidth, containerPadding, margin) =>{
+    // const { calWidth } = this.props.defaultLayout;
+    // const { containerWidth, containerPadding, margin } = this.props.layout;
+
+    if (margin) {
+        return Math.floor((containerWidth - containerPadding[0] * 2 -  margin[0])/(defaultCalWidth + margin[0])) ;
+    }
+}
+ //计算卡片容器的最大高度
+ export const  getContainerMaxHeight = (cards , rowHeight, margin) =>{
+    //行转列并且分组
+    const rowRes = _.chain(cards).sortBy(["gridx", "gridy"]).groupBy("gridx").value();
+    //寻找每列最后item的GridY和height的和
+    let endHeight = [];
+    _.forEach(rowRes, (r) => {
+        const temp = r[r.length - 1];
+        endHeight.push(temp.gridy + temp.height);
+    });
+    //获得最大的值
+    const resultRow = _.max(endHeight);
+    return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
+}
+export const  hasScrolled =(el, direction = "vertical")=> {
+    if(direction === "vertical") {
+        return el.scrollHeight > el.clientHeight;
+    }else if(direction === "horizontal") {
+        return el.scrollWidth > el.clientWidth;
+    }
+ }

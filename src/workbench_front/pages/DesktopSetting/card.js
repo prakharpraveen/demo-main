@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
@@ -67,12 +67,13 @@ function collectTarget(connect, monitor) {
 	};
 }
 
-class Item extends Component {
+class Item extends PureComponent {
 	constructor(props) {
 		super(props);
 	}
 	//依靠前后props中shadowCard状态（前为空对象，后为有对象，）来判断是否为beginDrag状态，来阻止dom刷新，从而使dragLayer不会变化
 	shouldComponentUpdate(nextProps, nextState) {
+		const thisProps = this.props || {}, thisState = this.state || {};
 		if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
 			return false;
 		}
@@ -111,8 +112,9 @@ class Item extends Component {
 		return { wPx, hPx };
 	}
 	//删除卡片
-	deleteCard(cardID, groupID) {
-		let {groups, selectCardInGroupObj} = this.props;
+	deleteCard=()=> {
+		const cardID = this.props.id;
+		let {groups, selectCardInGroupObj, groupID} = this.props;
 		groups = _.cloneDeep(groups);
 		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
 
@@ -123,7 +125,9 @@ class Item extends Component {
 		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
 	}
 	//
-	onCheckboxChange(e, cardID) {
+	onCheckboxChange=(e) =>{
+		console.log(e.target.checked);
+		const cardID = this.props.id;
 		const groupID = this.props.groupID;
 		const checked = e.target.checked;
 		let selectCardInGroupObj = this.props.selectCardInGroupObj;
@@ -146,18 +150,16 @@ class Item extends Component {
 			return false;
 		}
 	}
-
 	render() {
-		const { connectDragSource, connectDropTarget, isDragging, isOver, groupID } = this.props;
+		const { connectDragSource, isDragging, groupID } = this.props;
 		const { id, name, gridx, gridy, width, height, isShadow } = this.props;
 		const { x, y } = this.calGridItemPosition(gridx, gridy);
 		const { wPx, hPx } = this.calWHtoPx(width, height);
+		// console.log(wPx)
 		let cardDom;
-
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;
 		// }
-		console.log('card')
 		if(isShadow){
 			cardDom = (	<div
 					className='card-shadow'
@@ -186,30 +188,30 @@ class Item extends Component {
 					<div className='card-footer'>
 						<Checkbox
 							checked={this.isChecked(id)}
-							onChange={(e) => {
-								this.onCheckboxChange(e, id);
-							}}
+							onChange={this.onCheckboxChange}
 						/>
 						<Icon
 							type='delete'
 							className='card-delete'
-							onClick={() => {
-								this.deleteCard(id, groupID);
-							}}
+							onClick={this.deleteCard}
 						/>
 					</div>
 				</div>
 			)
 		}
+		// return connectDragSource(
+		// 	connectDropTarget(
+		// 		cardDom
+		// 	)
+		// );
 		return connectDragSource(
-			connectDropTarget(
 				cardDom
-			)
 		);
 	}
 }
 
-const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
+// const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
+const dragDropItem = (DragSource('item', noteSource, collectSource)(Item));
 
 export default (connect(
 	(state) => ({
