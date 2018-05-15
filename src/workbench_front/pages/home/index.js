@@ -113,7 +113,7 @@ class Home extends Component {
 					<span className='title'>{name}</span>
 					<div className='app-content'>
 						{/* <img className='icon' src={image_src} alt={name} /> */}
-						{image_src.indexOf('/') === -1?(<div className='icon'>
+						{image_src.indexOf('/') === -1?(<div >
 								<Svg width={100} height={100} xlinkHref={`#icon-${image_src}`}></Svg>
 							</div>):(<div
 							className='icon'
@@ -166,29 +166,6 @@ class Home extends Component {
 				<TabsLink />
 				<div className='nc-workbench-home-container'>
 					<Element name='no1' className='n-col padding-left-70 padding-right-60'>
-						<div className='title'>分组一</div>
-						<div class='grid'>
-							{paths.length > 0 ? (
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										return item;
-									})
-								)
-							) : (
-								<div
-									className='grid-item app-item widget-container'
-									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
-								>
-									<div className='app-item'>
-										<span className='icon'>loa</span>
-										<span className='title'>loading</span>
-									</div>
-								</div>
-							)}
-							{/* {createItem()} */}
-						</div>
-					</Element>
-					<Element name='no2' className='n-col padding-left-70 padding-right-60 padding-bottom-60'>
 						<div className='title'>分组一</div>
 						<div class='grid'>
 							{paths.length > 0 ? (
