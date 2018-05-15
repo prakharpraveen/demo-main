@@ -13,10 +13,19 @@ class AnchorLi extends Component {
 		const targetID = this.props.id;
 		//id不能以数字开头
 		document.querySelector(`#a${targetID}`).scrollIntoView();
-	};
+    };
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.name !== nextProps.name){
+            return true;
+        }
+        if(this.props.index !== nextProps.index){
+            return true;
+        }
+        return false;
+    }
 	render() {
 		const { name } = this.props;
-		return <li onClick={this.targetAnchor}>{name}</li>;
+		return (<li onClick={this.targetAnchor}>{name}</li>)
 	}
 }
 
@@ -24,13 +33,13 @@ class MyContentAnchor extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-	}
+    }
 	render() {
 		const { groups, contentHeight } = this.props;
 		return (
 			<ul className='content-anchor'>
 				{groups.map((g, i) => {
-					return <AnchorLi key={g.pk_app_group} id={g.pk_app_group} name={g.groupname} />;
+					return <AnchorLi key={g.pk_app_group} id={g.pk_app_group} index={i} name={g.groupname} />;
 				})}
 			</ul>
 		);

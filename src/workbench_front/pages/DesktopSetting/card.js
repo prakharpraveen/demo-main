@@ -77,6 +77,10 @@ class Item extends PureComponent {
 		if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
 			return false;
 		}
+		// if(this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy){
+		// 	return true
+		// }
+		// return false;
 		return true;
 	}
 	//依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
@@ -155,7 +159,6 @@ class Item extends PureComponent {
 		const { id, name, gridx, gridy, width, height, isShadow } = this.props;
 		const { x, y } = this.calGridItemPosition(gridx, gridy);
 		const { wPx, hPx } = this.calWHtoPx(width, height);
-		// console.log(wPx)
 		let cardDom;
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;

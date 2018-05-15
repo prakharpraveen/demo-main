@@ -10,12 +10,10 @@ import { layoutCheck } from './collision';
 import { compactLayout } from './compact';
 import { checkInContainer } from './correction';
 import GroupItem from './groupItem';
-import MyContentAnchor from './anchor';
 
 import { connect } from 'react-redux';
 import { updateShadowCard, updateGroupList, updateSelectCardInGroupObj, updateCurrEditID,updateLayout } from 'Store/test/action';
 import * as utilService from './utilService';
-
 class MyContent extends Component {
 	constructor(props) {
 		super(props);
@@ -140,30 +138,31 @@ class MyContent extends Component {
 					</Button>
 				</div>
 			);
+		}else{
+			itemDoms = groups.map((g, i) => {
+					return (
+							<GroupItem
+								key={g.pk_app_group}
+								id={g.pk_app_group}
+								type={g.type}
+								index={i}
+								cards={g.apps}
+								length={groups.length}
+								groupname={g.groupname}
+								moveCardInGroupItem={this.moveCardInGroupItem}
+								onDrop={this.onDrop}
+								moveGroupItem={this.moveGroupItem}
+								upGroupItem={this.upGroupItem}
+								downGroupItem={this.downGroupItem}
+								deleteGroupItem={this.deleteGroupItem}
+								addGroupItem={this.addGroupItem}
+								changeGroupName={this.changeGroupName}
+								getCardsByGroupIndex={this.getCardsByGroupIndex}
+								handleLoad={this.handleLoad}
+							/>
+					)
+				})
 		}
-		_.forEach(groups, (g, i) => {
-			itemDoms.push(
-				<GroupItem
-					key={g.pk_app_group}
-					id={g.pk_app_group}
-					type={g.type}
-					index={i}
-					cards={g.apps}
-					length={groups.length}
-					groupname={g.groupname}
-					moveCardInGroupItem={this.moveCardInGroupItem}
-					onDrop={this.onDrop}
-					moveGroupItem={this.moveGroupItem}
-					upGroupItem={this.upGroupItem}
-					downGroupItem={this.downGroupItem}
-					deleteGroupItem={this.deleteGroupItem}
-					addGroupItem={this.addGroupItem}
-					changeGroupName={this.changeGroupName}
-					getCardsByGroupIndex={this.getCardsByGroupIndex}
-					handleLoad={this.handleLoad}
-				/>
-			);
-		});
 		return itemDoms;
 	}
 	//向上移动组
@@ -260,11 +259,15 @@ class MyContent extends Component {
 		window.addEventListener('resize', this.handleLoad);
 	 }
 	render() {
-		const { groups, contentHeight } = this.props;
+		const { groups, contentHeight, anchorHeight } = this.props;
 		return (
-			<Content style={{ height: contentHeight }}>
-				<MyContentAnchor/>
-				<div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div>
+			<Content style={{ height: contentHeight, 'margin-top':anchorHeight }}>
+				{/* <MyContentAnchor/> */}
+				<div className='nc-workbench-home-container'>
+				{this.initGroupItem(groups)}
+				</div>
+				
+				{/* <div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div> */}
 			</Content>
 		);
 	}

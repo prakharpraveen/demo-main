@@ -10,6 +10,7 @@ import { DragDropContext } from 'react-dnd';
 import { Layout } from 'antd';
 const { Header } = Layout;
 //自定义组件
+import MyContentAnchor from './anchor';
 import MySider from './sider';
 import MyFooter from './footer';
 import MyContent from './content';
@@ -60,7 +61,9 @@ class Test extends Component {
 
 	render() {
 		console.log("全部");
-		const contentHeight = 'calc(100vh - 116px)';
+		//header 48px,breadcrumb 20px, footer 48px, anchor 48px;
+		const anchorHeight = '48px';
+		const contentHeight = 'calc(100vh - 164px)';
 		const siderHeight = 'calc(100vh - 68px)';
 		return (
 			<Layout>
@@ -71,9 +74,11 @@ class Test extends Component {
 				面包屑
 				</div>
 
+				<MyContentAnchor />
+			
 				<Layout>
 					<MySider contentHeight={siderHeight}/>
-					<MyContent contentHeight = {contentHeight} />
+					<MyContent contentHeight = {contentHeight}  anchorHeight={anchorHeight}/>
 				</Layout>
 
 				<MyFooter />
