@@ -271,6 +271,9 @@ class PageTable extends Component {
 									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
+									<a className='margin-right-5' onClick={() => this.jumpPage(record)}>
+										设置页面模板
+									</a>
 								</span>
 							)}
 						</div>
@@ -340,6 +343,12 @@ class PageTable extends Component {
 			row: BodyRow
 		}
 	};
+	jumpPage = (record) =>{
+		let win = window.open('', '_blank');
+		// 浏览器当前页打开
+		win.location = `#/Zone?t=${record.pk_page_templet}&n=设置页面模板`;
+		win.focus();
+	}
 	moveRow = (dragIndex, hoverIndex) => {
 		let appButtonVOs = this.props.appButtonVOs;
 		const dragRow = appButtonVOs[dragIndex];
