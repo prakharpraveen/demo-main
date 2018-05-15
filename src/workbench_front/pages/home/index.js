@@ -8,6 +8,7 @@ import Ajax from 'Pub/js/ajax';
 import { Link as TabLink, Element } from 'react-scroll';
 // 工作桌面单页通用布局
 import TabsLink from 'Components/TabsLink';
+import Svg from 'Components/Svg';
 import './index.less';
 
 const UNIT = 175;
@@ -112,10 +113,12 @@ class Home extends Component {
 					<span className='title'>{name}</span>
 					<div className='app-content'>
 						{/* <img className='icon' src={image_src} alt={name} /> */}
-						<div
+						{image_src.indexOf('/') === -1?(<div className='icon'>
+								<Svg width={100} height={100} xlinkHref={`#icon-${image_src}`}></Svg>
+							</div>):(<div
 							className='icon'
 							style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}
-						/>
+						/>)}
 					</div>
 				</div>
 			</div>

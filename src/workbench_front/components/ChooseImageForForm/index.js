@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import { Modal, Button} from 'antd';
+import Svg from 'Components/Svg';
 import './index.less';
 class ChooseImageForForm extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class ChooseImageForForm extends Component {
     };
     handleOk = (e) => {
         let {value} = this.state;
+        this.value = value;
         this.setState({
             visible: false,
         },this.triggerChange(value));
@@ -47,7 +49,9 @@ class ChooseImageForForm extends Component {
             let {name,src,selected} = item;
             return (
                 <li className={selected?'img-selected':''}>
-                    <span title={name} onClick={this.handleSelect.bind(this,item)}><img width='80' src={src} alt={name}/></span>
+                    <div title={name} onClick={()=>{this.handleSelect(item)}}>
+                        {src.indexOf('/')===-1?<Svg width={80} height={80} xlinkHref={`#icon-${src}`}></Svg>:<img width='80' src={src} alt={name}/>}
+                    </div>
                 </li>
             )
         });
@@ -97,9 +101,10 @@ class ChooseImageForForm extends Component {
         let {listData,value} = this.state;
         return (
             <div className='choose-imgae'>
-                <div className='choose-btn' style={value.length>0?{ background: `url(${value}) no-repeat 0px 0px`, 'background-size': 'contain' }:null} onClick={this.showModal}>
+                {value.indexOf('/')===-1?<div onClick={this.showModal}  className='choose-btn'><i className='iconfont icon-tianjiayingyong font-size-80'></i><Svg width={98} height={93} xlinkHref={`#icon-${value}`}></Svg></div>:<div className='choose-btn' style={value.length>0?{ background: `url(${value}) no-repeat 0px 0px`, 'background-size': 'contain' }:null} onClick={this.showModal}>
                     <i className='iconfont icon-tianjiayingyong font-size-80'></i>
-                </div>
+                </div>}
+                
                 {/* <Button type="primary" onClick={this.showModal}>Open</Button> */}
                 <Modal
                     title={this.props.title}

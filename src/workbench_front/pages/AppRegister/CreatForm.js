@@ -5,28 +5,36 @@ const Option = Select.Option;
 const imgs = [
 	{
 		name:'img1',
-		value:'/nccloud/resources/workbench/assets/images/img1.png',
-		src:'assets/images/img1.png'
+		value:'toupiao',
+		src:'toupiao'
 	},{
 		name:'img2',
-		value:'/nccloud/resources/workbench/assets/images/img2.png',
-		src:'assets/images/img2.png'
+		value:'wenku',
+		src:'wenku'
 	},{
 		name:'img3',
-		value:'/nccloud/resources/workbench/assets/images/img3.png',
-		src:'assets/images/img3.png'
+		value:'rizhi',
+		src:'rizhi'
 	},{
 		name:'img4',
-		value:'/nccloud/resources/workbench/assets/images/img4.png',
-		src:'assets/images/img4.png'
+		value:'xinzifafang',
+		src:'xinzifafang'
 	},{
 		name:'img5',
-		value:'/nccloud/resources/workbench/assets/images/img5.png',
-		src:'assets/images/img5.png'
+		value:'gonggao',
+		src:'gonggao'
 	},{
 		name:'img6',
-		value:'/nccloud/resources/workbench/assets/images/img6.png',
-		src:'assets/images/img6.png'
+		value:'huati',
+		src:'huati'
+	},{
+		name:'img7',
+		value:'zuzhiguanli',
+		src:'zuzhiguanli'
+	},{
+		name:'img8',
+		value:'jiaqin',
+		src:'jiaqin'
 	}
 ];
 /**

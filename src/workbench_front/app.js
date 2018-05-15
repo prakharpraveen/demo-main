@@ -10,6 +10,7 @@ import { GetQuery } from 'Pub/js/utils';
 import store from './store';
 import Routes from './routes';
 import Notice from 'Components/Notice';
+import 'Assets/iconfont/iconfont.js';
 import 'Pub/css/public.less';
 import './theme/theme.css';
 window.proxyAction = $NCPE.proxyAction;
