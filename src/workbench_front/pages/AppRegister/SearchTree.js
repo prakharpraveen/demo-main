@@ -13,7 +13,11 @@ import {
 	setBillStatus,
 	setParentData,
 	setAppParamData,
-	delTreeData
+	setPageButtonData,
+	setPageTemplateData,
+	setPrintTemplateData,
+	delTreeData,
+	reqTreeData
 } from 'Store/AppRegister/action';
 import {
 	Tree,
@@ -53,6 +57,7 @@ class SearchTree extends Component {
 		}, this.reqTreeData);
 		this.props.addTreeData(this.addTreeData);
 		this.props.delTreeData(this.delTreeData);
+		this.props.reqTreeData(this.reqTreeData);
 	}
 	/**
 	 * tree 数据请求
@@ -213,9 +218,9 @@ class SearchTree extends Component {
 					return item;
 				}
 			});
-			if (selectedNodeData.moduleid.length <= 4) {
+			if (selectedNodeData.flag + '' === '0') {
 				this.props.setOpType('module');
-			} else {
+			} else if(selectedNodeData.flag + '' === '1'){
 				// 查询应用分类 及 应用数据
 				Ajax({
 					url: `/nccloud/platform/appregister/query.do`,
@@ -233,11 +238,35 @@ class SearchTree extends Component {
 							}
 							let {
 								appRegisterVO,
-								appButtonVOs,
 								appParamVOs
 							} = data.data;
 							this.props.setAppParamData(appParamVOs);
 							this.props.setNodeData(appRegisterVO);
+						}
+					}
+				});
+			} else if(selectedNodeData.flag + '' === '2'){
+				this.props.setOpType('page');
+				// 查询页面数据
+				Ajax({
+					url: `/nccloud/platform/appregister/querypagedetail.do`,
+					data: {
+						pk_apppage: key
+					},
+					success: ({
+						data
+					}) => {
+						if (data.success && data.data) {
+							let {
+								apppageVO,
+								appButtonVOs,
+								pageSystemplateVO,
+								printSystemplateVO,
+							} = data.data;
+							this.props.setPageButtonData(appButtonVOs);
+							this.props.setPageTemplateData(appButtonVOs);
+							this.props.setPrintTemplateData(appButtonVOs);
+							this.props.setNodeData(apppageVO);
 						}
 					}
 				});
@@ -378,8 +407,12 @@ SearchTree.PropTypes = {
 	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
 	setAppParamData: PropTypes.func.isRequired,
+	setPageButtonData: PropTypes.func.isRequired,
+	setPageTemplateData: PropTypes.func.isRequired,
+	setPrintTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired
+	delTreeData: PropTypes.func.isRequired,
+	reqTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => {
@@ -391,7 +424,11 @@ export default connect(
 		setBillStatus,
 		setParentData,
 		setAppParamData,
+		setPageButtonData,
+		setPageTemplateData,
+		setPrintTemplateData,
 		addTreeData,
-		delTreeData
+		delTreeData,
+		reqTreeData
 	}
 )(SearchTree);

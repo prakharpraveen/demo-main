@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs, Button, Table, Input, Popconfirm } from 'antd';
+import { Tabs, Button, Table, Input, Popconfirm, Select } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -9,8 +9,9 @@ import _ from 'lodash';
 import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
+const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-const EditableCell = ({ editable, value, onChange }) => (
+const EditableInputCell = ({ editable, value, onChange }) => (
 	<div>
 		{editable ? (
 			<Input style={{ margin: '-5px 0' }} value={value} onChange={(e) => onChange(e.target.value)} />
@@ -19,6 +20,42 @@ const EditableCell = ({ editable, value, onChange }) => (
 		)}
 	</div>
 );
+const EditableSelectCell = ({ editable, value, onChange }) => (
+	<div>
+		{editable ? (
+			<Select  value={value} style={{ width: 120 }} onChange={(selected) => onChange(selected)}>
+				<Option value="button_main">主要按钮</Option>
+				<Option value="button_secondary">次要按钮</Option>
+				<Option value="buttongroup">按钮组</Option>
+				<Option value="dropdown">下拉按钮</Option>
+				<Option value="divider">分割下拉按钮</Option>
+				<Option value="more">更多按钮</Option>
+    		</Select>
+		) : (switchType(value))}
+	</div>
+);
+/**
+ * 按钮类型选择
+ * @param {String} value 
+ */
+const switchType = (value)=>{
+	switch (value) {
+		case "button_main":
+			return '主要按钮';
+		case "button_secondary":
+			return '次要按钮';
+		case "buttongroup":
+			return '按钮组';
+		case "dropdown":
+			return '下拉按钮';
+		case "divider":
+			return '分割下拉按钮';
+		case "more":
+			return '更多按钮';
+		default:
+			break;
+	}
+}
 function dragDirection(dragIndex, hoverIndex, initialClientOffset, clientOffset, sourceClientOffset) {
 	const hoverMiddleY = (initialClientOffset.y - sourceClientOffset.y) / 2;
 	const hoverClientY = clientOffset.y - sourceClientOffset.y;
@@ -109,31 +146,50 @@ class PageTable extends Component {
 		this.columnsBtn = [
 			{
 				title: '序号',
-				dataIndex: 'num',
-				width: '5%'
+				dataIndex: 'btnorder',
+				width: '5%',
+				render: (text) => (text+1)
 			},
 			{
 				title: '按钮编码',
 				dataIndex: 'btncode',
-				width: '15%',
+				width: '10%',
 				render: (text, record) => this.renderColumns(text, record, 'btncode')
 			},
 			{
 				title: '按钮名称',
 				dataIndex: 'btnname',
-				width: '15%',
+				width: '10%',
 				render: (text, record) => this.renderColumns(text, record, 'btnname')
 			},
 			{
-				title: 'pagecode',
-				dataIndex: 'pagecode',
-				width: '10%',
-				render: (text, record) => this.renderColumns(text, record, 'pagecode')
+				title: '按钮类型',
+				dataIndex: 'btntype',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'btntype','select')
 			},
+			{
+				title: '父按钮编码',
+				dataIndex: 'parent_code',
+				width: '10%',
+				render: (text, record) => this.renderColumns(text, record, 'parent_code')
+			},
+			{
+				title: '按钮区域',
+				dataIndex: 'btnarea',
+				width: '10%',
+				render: (text, record) => this.renderColumns(text, record, 'btnarea')
+			},
+			// {
+			// 	title: 'pagecode',
+			// 	dataIndex: 'pagecode',
+			// 	width: '10%',
+			// 	render: (text, record) => this.renderColumns(text, record, 'pagecode')
+			// },
 			{
 				title: '按钮功能描述',
 				dataIndex: 'btndesc',
-				width: '40%',
+				width: '25%',
 				render: (text, record) => this.renderColumns(text, record, 'btndesc')
 			},
 			{
@@ -148,7 +204,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.save(record)}>
 										保存
 									</a>
-									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
 										<a className='margin-right-5'>取消</a>
 									</Popconfirm>
 								</span>
@@ -157,7 +213,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.edit(record)}>
 										编辑
 									</a>
-									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
 								</span>
@@ -203,7 +259,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.save(record)}>
 										保存
 									</a>
-									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
 										<a className='margin-right-5'>取消</a>
 									</Popconfirm>
 								</span>
@@ -212,7 +268,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.edit(record)}>
 										编辑
 									</a>
-									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
 								</span>
@@ -258,7 +314,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.save(record)}>
 										保存
 									</a>
-									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
 										<a className='margin-right-5'>取消</a>
 									</Popconfirm>
 								</span>
@@ -267,7 +323,7 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.edit(record)}>
 										编辑
 									</a>
-									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
 								</span>
@@ -285,33 +341,43 @@ class PageTable extends Component {
 		}
 	};
 	moveRow = (dragIndex, hoverIndex) => {
-		let { appButtonVOs } = this.props.appData;
+		let appButtonVOs = this.props.appButtonVOs;
 		const dragRow = appButtonVOs[dragIndex];
-		let sortData = update(this.props.appData, {
-			appButtonVOs: {
-				$splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
-			}
+		let sortData = update(appButtonVOs, {
+			$splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
 		});
-		sortData.appButtonVOs.map((item, index) => (item.btnorder = index));
+		sortData.map((item, index) => (item.btnorder = index));
 		Ajax({
 			url: `/nccloud/platform/appregister/orderbuttons.do`,
-			data: sortData.appButtonVOs,
+			data: sortData,
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					this.props.setAppData(sortData);
+					this.props.setPageButtonData(sortData);
+				}else{
+					Notice({ status: 'error', msg: data.data.true });
 				}
 			}
 		});
 	};
-	renderColumns(text, record, column) {
+	renderColumns(text, record, column, type = 'input') {
 		record = _.cloneDeep(record);
-		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				onChange={(value) => this.handleChange(value, record, column)}
-			/>
-		);
+		if(type === 'input'){
+			return (
+				<EditableInputCell
+					editable={record.editable}
+					value={text}
+					onChange={(value) => this.handleChange(value, record, column)}
+				/>
+			);
+		}else if(type === 'select'){
+			return (
+				<EditableSelectCell
+					editable={record.editable}
+					value={text}
+					onChange={(value) => this.handleChange(value, record, column)}
+				/>
+			);
+		}
 	}
 	handleChange(value, record, column) {
 		let newData = this.getNewData();
@@ -322,9 +388,12 @@ class PageTable extends Component {
 		}
 	}
 	edit(record) {
-		console.log(record);
-
 		let newData = this.getNewData();
+		const dataList = newData.filter((item) => item.editable === true);
+		if(dataList.length > 0){
+			Notice({ status: 'warning', msg: '请逐条修改按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -360,6 +429,9 @@ class PageTable extends Component {
 						}
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
@@ -407,6 +479,9 @@ class PageTable extends Component {
 							this.setNewData(newData);
 						}
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
@@ -426,28 +501,37 @@ class PageTable extends Component {
 			Notice({ status: 'warning', msg: '请先将页面进行保存！' });
 			return;
 		}
-		let { activeKey } = this.state;
-		let parentId = this.props.nodeData.pk_appregister;
 		let newData = this.getNewData();
+		const target = newData.filter((item) => item.editable === true);
+		if(target.length > 0){
+			Notice({ status: 'warning', msg: '请逐条添加按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
+		let { activeKey } = this.state;
+		let {pk_apppage,pagecode} = this.props.nodeData;
 		if (activeKey === '1') {
 			newData.push({
 				editable: true,
+				btntype:'button_main',
 				btncode: '',
 				btnname: '',
+				parent_code:'',
+				btnarea:'',
 				btndesc: '',
-				parent_id: parentId,
+				parent_id: pk_apppage,
 				isenable: true,
-				pagecode: ''
+				pagecode: pagecode,
+				btnorder: newData.length
 			});
 		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
 				tempstyle: 0,
 				templatename: '',
-				parent_id: parentId,
+				parent_id: pk_apppage,
 				isenable: true,
-				pagecode: ''
+				pagecode: pagecode
 			});
 		}else if(activeKey === '3'){
 			newData.push({
@@ -488,6 +572,7 @@ class PageTable extends Component {
 	creatAddLineBtn = () => {
 		return (
 			<div>
+				{this.state.activeKey === '1'?<span style={{color:'#e14c46'}}>提示：按钮可通过拖拽进行排序！</span>:null}
 				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
 					新增行
 				</Button>
@@ -499,8 +584,13 @@ class PageTable extends Component {
 		return (
 			<Tabs
 				onChange={(activeKey) => {
+					if(activeKey !== '1'){
+						Notice({ status: 'warning', msg: '功能正在开发中。。。' });
+						return;
+					}
 					this.setState({ activeKey });
 				}}
+				activeKey= {this.state.activeKey}
 				type='card'
 				tabBarExtraContent={this.creatAddLineBtn()}
 			>
@@ -508,10 +598,10 @@ class PageTable extends Component {
 					<Table
 						bordered
 						pagination={false}
-						rowKey='num'
+						rowKey='btnorder'
 						components={this.components}
 						dataSource={appButtonVOs.map((item, index) => {
-							item.num = index + 1;
+							item.num = item.btnorder;
 							return item;
 						})}
 						onRow={(record, index) => ({

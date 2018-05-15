@@ -220,7 +220,7 @@ function NCPE() {
     *another way to proxy event handler.
     */
 	this.proxyAction = (func, context, actionName) => (...arg) => {
-		console.log(func);
+		// console.log(func);
 		$NCPE.startAction(actionName);
 		try {
 			func.call(context, ...arg);

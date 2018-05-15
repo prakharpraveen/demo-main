@@ -55,7 +55,7 @@ class AppTable extends Component {
 									<a className='margin-right-5' onClick={() => this.save(record)}>
 										保存
 									</a>
-									<Popconfirm title='确定取消?' onConfirm={() => this.cancel(record)}>
+									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
 										<a className='margin-right-5'>取消</a>
 									</Popconfirm>
 								</span>
@@ -64,7 +64,7 @@ class AppTable extends Component {
 									<a className='margin-right-5' onClick={() => this.edit(record)}>
 										编辑
 									</a>
-									<Popconfirm title='确定删除?' onConfirm={() => this.del(record)}>
+									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
 								</span>
@@ -96,6 +96,11 @@ class AppTable extends Component {
 	}
 	edit(record) {
 		let newData = this.getNewData();
+		const dataList = newData.filter((item) => item.editable === true);
+		if(dataList.length > 0){
+			Notice({ status: 'warning', msg: '请逐条修改按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
@@ -119,6 +124,9 @@ class AppTable extends Component {
 						_.remove(newData, (item) => record.pk_param === item.pk_param);
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
@@ -158,6 +166,9 @@ class AppTable extends Component {
 							this.setNewData(newData);
 						}
 						this.cacheData = _.cloneDeep(newData);
+						Notice({ status: 'success' });
+					}else{
+						Notice({ status: 'error', msg: data.data.true });
 					}
 				}
 			});
@@ -178,6 +189,11 @@ class AppTable extends Component {
 		}
 		let parentId = this.props.nodeData.pk_appregister;
 		let newData = this.getNewData();
+		const target = newData.filter((item) => item.editable === true);
+		if(target.length > 0){
+			Notice({ status: 'warning', msg: '请逐条添加按钮！' });
+			return;
+		}
 		this.cacheData = _.cloneDeep(newData);
 		newData.push({
 			editable: true,

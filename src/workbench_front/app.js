@@ -9,6 +9,7 @@ import { initAppData } from 'Store/appStore/action';
 import { GetQuery } from 'Pub/js/utils';
 import store from './store';
 import Routes from './routes';
+import Notice from 'Components/Notice';
 import 'Pub/css/public.less';
 import './theme/theme.css';
 window.proxyAction = $NCPE.proxyAction;
@@ -22,8 +23,8 @@ class App extends Component {
 	}
 	openNewApp = ({ appOption, type }) => {
 		let { code, name } = appOption;
-		let win = window.open('', '_blank');
 		let { pk_appregister } = appOption;
+		let win = window.open('', '_blank');
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
 			data: {
@@ -33,6 +34,11 @@ class App extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success) {
+						if(data === 'false'){
+							win.close();
+							Notice({ status: 'error', msg: '请确认当前应用是否设置默认页面！' });
+							return;
+						}
 						switch (type) {
 							case 'current':
 								// 浏览器当前页打开
@@ -51,6 +57,8 @@ class App extends Component {
 								win.focus();
 								break;
 						}
+					}else{
+						Notice({ status: 'error', msg: res.error.message });
 					}
 				}
 			}

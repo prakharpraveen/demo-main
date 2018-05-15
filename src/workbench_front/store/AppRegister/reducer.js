@@ -25,7 +25,9 @@ let defaultState = {
 	// 应用类型 1 为 小应用 2 为 小部件
 	appType: 2,
 	// 更新树节点
-	updateTreeData: () => {}
+	updateTreeData: () => {},
+	// 请求树数据
+	reqTReeData: ()=>{}
 };
 // 首页表单数据
 export const AppRegisterData = (state = defaultState, action = {}) => {
@@ -33,6 +35,12 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 		case AppRegister.CLEARDATA:
 			return { ...state,
 				...defaultState
+			};
+		case AppRegister.REQTREEDATA:
+			return { ...state,
+				...{
+					reqTreeData: action.data
+				}
 			};
 		case AppRegister.SETNODEDATA:
 			return { ...state,
