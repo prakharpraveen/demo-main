@@ -57,7 +57,7 @@ class Test extends Component {
 			}
 		});
 	}
-	
+
 	render() {
 		console.log("全部");
 		const contentHeight = 'calc(100vh - 116px)';
@@ -92,4 +92,3 @@ export default connect(
 		updateRelateID
 	}
 )(draDrop);
-	

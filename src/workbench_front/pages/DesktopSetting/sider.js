@@ -255,7 +255,6 @@ class MySider extends Component {
 	}
 	render() {
 		const contentHeight = this.props.contentHeight;
-		console.log("sider");
 		return (
 			<Sider
 				className='nc-workbench-home-sider'

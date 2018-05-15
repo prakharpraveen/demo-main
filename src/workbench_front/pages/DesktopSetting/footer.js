@@ -19,7 +19,7 @@ class MyFooter extends Component {
 		};
 	}
 	//点击删除按钮
-	deleteSelectedCardArr(){
+	deleteSelectedCardArr =()=>{
 		let {groups, selectCardInGroupObj} = this.props;
 		groups = _.cloneDeep(groups);
 		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
@@ -34,7 +34,7 @@ class MyFooter extends Component {
 		this.props.updateGroupList(groups);
 		this.props.updateSelectCardInGroupObj({});
 	}
-	getGroupItemNameRadio(groups) {
+	getGroupItemNameRadio =(groups) => {
 		if (!groups) return;
 		return (
 			<RadioGroup
@@ -55,15 +55,20 @@ class MyFooter extends Component {
 			</RadioGroup>
 		);
 	}
-	setModalVisible(modalVisible) {
+	setModalVisible =(modalVisible)=> {
+		modalVisible = modalVisible?modalVisible:false;
 		this.setState({ modalVisible,selectedValue:0 });
 	}
 	//移动到的弹出框中，组名选择
-	onChangeRadio(e) {
+	onChangeRadio =(e)=> {
 		this.setState({ selectedValue: e.target.value });
 	}
+	showModalVisible = ()=>{
+		this.setModalVisible(true);
+	}
 	//移动到的弹出框中，点击确认
-	onOkMoveDialog(modalVisible) {
+	onOkMoveDialog = () =>{
+		const modalVisible = false;
 		const targetGroupID = this.state.selectedValue;
 		if (targetGroupID === 0) {
 			return;
@@ -112,10 +117,10 @@ class MyFooter extends Component {
 		this.props.updateGroupList(groups);
 		this.setModalVisible(modalVisible);
 	}
-	cancleSave() {
+	cancleSave =() =>{
 		location.reload();
 	}
-	checkInSelectCardInGroupObj(){
+	checkInSelectCardInGroupObj =()=>{
 		const selectCardInGroupObj = this.props.selectCardInGroupObj;
 		let flag = true;
 		_.forEach(selectCardInGroupObj,(c)=>{
@@ -133,17 +138,14 @@ class MyFooter extends Component {
 		tmpDom = (
 			<Button
 				disabled={checked}
-				onClick={() => {
-					fn(true);
-				}}
-			>
+				onClick={fn}>
 				{text}
 			</Button>
 		);
 		return tmpDom;
 	};
 	//保存
-	saveGroupItemAndCard() {
+	saveGroupItemAndCard =() =>{
 		let tmpData = [];
 		_.forEach(this.props.groups, (g,i) => {
 
@@ -184,30 +186,30 @@ class MyFooter extends Component {
 			}
 		});
 	}
+	
 	render() {
-		console.log('footer');
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<div className='nc-workbench-home-footer'>
 				<div className="footer-left">
-					{this.getMoveCardButton('删除', this.deleteSelectedCardArr.bind(this))}
-					{this.getMoveCardButton('移动', this.setModalVisible.bind(this))}
+					{this.getMoveCardButton('删除', this.deleteSelectedCardArr)}
+					{this.getMoveCardButton('移动', this.showModalVisible)}
 				</div>
 				<div className="footer-right">
-					<Button className="right-button" type="primary" onClick={this.saveGroupItemAndCard.bind(this)}>保存</Button>
-					<Button className="right-button" onClick={this.cancleSave.bind(this)}>取消</Button>
+					<Button className="right-button" type="primary" onClick={this.saveGroupItemAndCard}>保存</Button>
+					<Button className="right-button" onClick={this.cancleSave}>取消</Button>
 				</div>
 				<Modal
 					title='移动到'
 					mask= {false}
 					wrapClassName='vertical-center-modal'
 					visible={this.state.modalVisible}
-					onOk={() => this.onOkMoveDialog(false)}
-					onCancel={() => this.setModalVisible(false)}
+					onOk={this.onOkMoveDialog}
+					onCancel={() => this.setModalVisible}
 					footer={[
-						<Button key="submit" disabled={this.state.selectedValue===0} type="primary" onClick={() => this.onOkMoveDialog(false)}>确定</Button>,
-						<Button key="back" onClick={() => this.setModalVisible(false)}>
+						<Button key="submit" disabled={this.state.selectedValue===0} type="primary" onClick={this.onOkMoveDialog}>确定</Button>,
+						<Button key="back" onClick={this.setModalVisible}>
 						  取消
 						</Button>,
 					  ]}
