@@ -73,7 +73,7 @@ module.exports = {
      * source-map 开发模式
      * eval 生产模式
      */
-	devtool: 'source-map',
+	devtool: 'eval-source-map',
 
 	plugins: [
 		new HtmlWebpackPlugin({
