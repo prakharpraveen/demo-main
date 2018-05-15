@@ -7,9 +7,10 @@ import { Button, Layout } from 'antd';
 const { Content } = Layout;
 //自定义组件
 import { layoutCheck } from './collision';
-import { compactLayout } from './compact.js';
+import { compactLayout } from './compact';
 import { checkInContainer } from './correction';
-import GroupItem from './groupItem.js';
+import GroupItem from './groupItem';
+import MyContentAnchor from './anchor';
 
 import { connect } from 'react-redux';
 import { updateShadowCard, updateGroupList, updateSelectCardInGroupObj, updateCurrEditID,updateLayout } from 'Store/test/action';
@@ -262,6 +263,7 @@ class MyContent extends Component {
 		const { groups, contentHeight } = this.props;
 		return (
 			<Content style={{ height: contentHeight }}>
+				<MyContentAnchor/>
 				<div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div>
 			</Content>
 		);

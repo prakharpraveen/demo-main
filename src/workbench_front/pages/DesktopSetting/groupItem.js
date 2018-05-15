@@ -258,7 +258,7 @@ class GroupItem extends Component {
     }
     
     return connectDragSource(connectDropTarget(
-        <div className="group-item" style={{ opacity: opacity}}>
+        <div id={`a${id}`} className="group-item" style={{ opacity: opacity}}>
             <div className="group-item-container" style={{background: isOver ? 'rgb(172, 175, 175)' : '#ccc' }}>
                 {groupItemTitle}
                 <section id="card-container" style={{ height: containerHeight>defaultLayout.containerHeight?containerHeight:defaultLayout.containerHeight}}>
