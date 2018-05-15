@@ -185,6 +185,29 @@ class Home extends Component {
 							{/* {createItem()} */}
 						</div>
 					</Element>
+					<Element name='no2' className='n-col padding-left-70 padding-right-60 padding-bottom-60'>
+						<div className='title'>分组一</div>
+						<div class='grid'>
+							{paths.length > 0 ? (
+								this.createWidgetMountPoint(
+									paths.map((item) => {
+										return item;
+									})
+								)
+							) : (
+								<div
+									className='grid-item app-item widget-container'
+									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
+								>
+									<div className='app-item'>
+										<span className='icon'>loa</span>
+										<span className='title'>loading</span>
+									</div>
+								</div>
+							)}
+							{/* {createItem()} */}
+						</div>
+					</Element>
 					{/* <Element name='no2' className='n-col padding-left-70 padding-right-60'>
 						<div className='title'>分组二</div>
 						<div className='grid'>

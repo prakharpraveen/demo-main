@@ -231,21 +231,21 @@ class PageTable extends Component {
 			},
 			{
 				title: '模板编码',
-				dataIndex: 'templateid',
+				dataIndex: 'code',
 				width: '25%',
-				render: (text, record) => this.renderColumns(text, record, 'templateid')
+				render: (text, record) => this.renderColumns(text, record, 'code')
 			},
 			{
 				title: '模板名称',
-				dataIndex: 'templatename',
+				dataIndex: 'name',
 				width: '15%',
-				render: (text, record) => this.renderColumns(text, record, 'templatename')
+				render: (text, record) => this.renderColumns(text, record, 'name')
 			},
 			{
-				title: '所属模块',
-				width: '10%',
-				dataIndex: 'moduleid',
-				render: (text, record) => this.renderColumns(text, record, 'moduleid')
+				title: '多语文件',
+				dataIndex: 'resid',
+				width: '15%',
+				render: (text, record) => this.renderColumns(text, record, 'resid')
 			},
 			{
 				title: '操作',
@@ -271,6 +271,9 @@ class PageTable extends Component {
 									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
 										<a className='margin-right-5'>删除</a>
 									</Popconfirm>
+									<a className='margin-right-5' onClick={() => this.jumpPage(record)}>
+										设置页面模板
+									</a>
 								</span>
 							)}
 						</div>
@@ -340,6 +343,12 @@ class PageTable extends Component {
 			row: BodyRow
 		}
 	};
+	jumpPage = (record) =>{
+		let win = window.open('', '_blank');
+		// 浏览器当前页打开
+		win.location = `#/Zone?t=${record.pk_page_templet}&n=设置页面模板`;
+		win.focus();
+	}
 	moveRow = (dragIndex, hoverIndex) => {
 		let appButtonVOs = this.props.appButtonVOs;
 		const dragRow = appButtonVOs[dragIndex];
@@ -402,7 +411,7 @@ class PageTable extends Component {
 		}
 	}
 	del(record) {
-		if (record.pk_btn || record.pk_param) {
+		if (record.pk_btn || record.pk_page_templet) {
 			let url, data;
 			let { activeKey } = this.state;
 			let newData = this.getNewData();
@@ -411,10 +420,10 @@ class PageTable extends Component {
 				data = {
 					pk_btn: record.pk_btn
 				};
-			} else {
-				url = `/nccloud/platform/appregister/deleteparam.do`;
+			} else if(activeKey === '2'){
+				url = `/nccloud/platform/templet/deletetemplet.do`;
 				data = {
-					pk_param: record.pk_param
+					templetid: record.pk_page_templet
 				};
 			}
 			Ajax({
@@ -424,8 +433,8 @@ class PageTable extends Component {
 					if (data.success && data.data) {
 						if (record.pk_btn) {
 							_.remove(newData, (item) => record.pk_btn === item.pk_btn);
-						} else {
-							_.remove(newData, (item) => record.pk_param === item.pk_param);
+						} else if(record.pk_page_templet){
+							_.remove(newData, (item) => record.pk_page_templet === item.pk_page_templet);
 						}
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
@@ -443,17 +452,17 @@ class PageTable extends Component {
 		let url, listData;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
-			if (target.pk_btn || target.pk_systemplate) {
+			if (target.pk_btn || target.pk_page_templet) {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/editbutton.do`;
 				} else if(activeKey === '2'){
-					url = `/nccloud/platform/appregister/editsystemplate.do`;
+					url = `/nccloud/platform/templet/edittemplet.do`;
 				}
 			} else {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/insertbutton.do`;
-				} else if(activeKey === '2'){
-					url = `/nccloud/platform/appregister/insertsystemplate.do`;
+				} else if(activeKey === '2'){ 
+					url = `/nccloud/platform/templet/addtemplet.do`;
 				}
 			}
 			listData = {
@@ -465,9 +474,9 @@ class PageTable extends Component {
 				success: ({ data }) => {
 					if (data.success && data.data) {
 						delete target.editable;
-						if (listData.pk_btn || listData.pk_systemplate) {
+						if (listData.pk_btn || listData.pk_page_templet) {
 							newData.map((item, index) => {
-								if (listData.pk_btn === item.pk_btn || listData.pk_systemplate === item.pk_systemplate) {
+								if (listData.pk_btn === item.pk_btn || listData.pk_page_templet === item.pk_page_templet) {
 									return { ...item, ...listData };
 								} else {
 									return item;
@@ -527,16 +536,15 @@ class PageTable extends Component {
 		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
-				tempstyle: 0,
-				templatename: '',
-				parent_id: pk_apppage,
+				name: '',
+				pageid: pk_apppage,
 				isenable: true,
-				pagecode: pagecode
+				resid:'',
+				code: ''
 			});
 		}else if(activeKey === '3'){
 			newData.push({
 				editable: true,
-				tempstyle: 1,
 				templatename: '',
 				parent_id: parentId,
 				isenable: true,
@@ -547,11 +555,11 @@ class PageTable extends Component {
 	}
 	getNewData() {
 		let { activeKey } = this.state;
-		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
+		let { appButtonVOs,pageTemplets,printSystemplateVO } = this.props;
 		if (activeKey === '1') {
 			return _.cloneDeep(appButtonVOs);
 		} else if(activeKey === '2'){
-			return _.cloneDeep(pageSystemplateVO);
+			return _.cloneDeep(pageTemplets);
 		}else if(activeKey === '3'){
 			return _.cloneDeep(printSystemplateVO);
 		}
@@ -580,11 +588,11 @@ class PageTable extends Component {
 		);
 	};
 	render() {
-		let { appButtonVOs,pageSystemplateVO,printSystemplateVO } = this.props;
+		let { appButtonVOs=[],pageTemplets=[],printSystemplateVO=[] } = this.props;
 		return (
 			<Tabs
 				onChange={(activeKey) => {
-					if(activeKey !== '1'){
+					if(activeKey === '3'){
 						Notice({ status: 'warning', msg: '功能正在开发中。。。' });
 						return;
 					}
@@ -617,7 +625,7 @@ class PageTable extends Component {
 						bordered
 						pagination={false}
 						rowKey='num'
-						dataSource={pageSystemplateVO.map((item, index) => {
+						dataSource={pageTemplets.map((item, index) => {
 							item.num = index + 1;
 							return item;
 						})}
@@ -646,7 +654,7 @@ PageTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appButtonVOs: PropTypes.array.isRequired,
-	pageSystemplateVO: PropTypes.array.isRequired,
+	pageTemplets: PropTypes.array.isRequired,
 	printSystemplateVO: PropTypes.array.isRequired,
 	setPageTemplateData: PropTypes.func.isRequired,
 	setPrintTemplateData: PropTypes.func.isRequired,
@@ -660,7 +668,7 @@ export default connect(
 			appType: state.AppRegisterData.appType,
 			billStatus: state.AppRegisterData.billStatus,
 			printSystemplateVO: state.AppRegisterData.printSystemplateVO,
-			pageSystemplateVO: state.AppRegisterData.pageSystemplateVO,
+			pageTemplets: state.AppRegisterData.pageTemplets,
 			appButtonVOs: state.AppRegisterData.appButtonVOs,
 			nodeData: state.AppRegisterData.nodeData
 		};

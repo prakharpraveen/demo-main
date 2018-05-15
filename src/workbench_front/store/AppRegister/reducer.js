@@ -17,7 +17,7 @@ let defaultState = {
 	// 页面按钮数据
 	appButtonVOs:[],
 	// 页面模板数据
-	pageSystemplateVO:[],
+	pageTemplets:[],
 	// 页面打印模板数据
 	printSystemplateVO:[],
 	// 父节点信息
@@ -105,7 +105,7 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 		case AppRegister.PAGETEMPLATEDATA:
 			return { ...state,
 				...{
-					pageSystemplateVO: action.data
+					pageTemplets: action.data
 				}
 			};
 		case AppRegister.PRINTTEMPLATEDATA:
