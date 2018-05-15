@@ -402,7 +402,7 @@ class PageTable extends Component {
 		}
 	}
 	del(record) {
-		if (record.pk_btn || record.pk_param) {
+		if (record.pk_btn || record.pk_page_templet) {
 			let url, data;
 			let { activeKey } = this.state;
 			let newData = this.getNewData();
@@ -411,10 +411,10 @@ class PageTable extends Component {
 				data = {
 					pk_btn: record.pk_btn
 				};
-			} else {
-				url = `/nccloud/platform/appregister/deleteparam.do`;
+			} else if(activeKey === '2'){
+				url = `/nccloud/platform/templet/deletetemplet.do`;
 				data = {
-					pk_param: record.pk_param
+					templetid: record.pk_page_templet
 				};
 			}
 			Ajax({
@@ -424,8 +424,8 @@ class PageTable extends Component {
 					if (data.success && data.data) {
 						if (record.pk_btn) {
 							_.remove(newData, (item) => record.pk_btn === item.pk_btn);
-						} else {
-							_.remove(newData, (item) => record.pk_param === item.pk_param);
+						} else if(record.pk_page_templet){
+							_.remove(newData, (item) => record.pk_page_templet === item.pk_page_templet);
 						}
 						this.setNewData(newData);
 						this.cacheData = _.cloneDeep(newData);
@@ -443,17 +443,17 @@ class PageTable extends Component {
 		let url, listData;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
-			if (target.pk_btn || target.pk_systemplate) {
+			if (target.pk_btn || target.pk_page_templet) {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/editbutton.do`;
 				} else if(activeKey === '2'){
-					url = `/nccloud/platform/appregister/editsystemplate.do`;
+					url = `/nccloud/platform/templet/edittemplet.do`;
 				}
 			} else {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/insertbutton.do`;
-				} else if(activeKey === '2'){
-					url = `/nccloud/platform/appregister/insertsystemplate.do`;
+				} else if(activeKey === '2'){ 
+					url = `/nccloud/platform/templet/addtemplet.do`;
 				}
 			}
 			listData = {
@@ -465,9 +465,9 @@ class PageTable extends Component {
 				success: ({ data }) => {
 					if (data.success && data.data) {
 						delete target.editable;
-						if (listData.pk_btn || listData.pk_systemplate) {
+						if (listData.pk_btn || listData.pk_page_templet) {
 							newData.map((item, index) => {
-								if (listData.pk_btn === item.pk_btn || listData.pk_systemplate === item.pk_systemplate) {
+								if (listData.pk_btn === item.pk_btn || listData.pk_page_templet === item.pk_page_templet) {
 									return { ...item, ...listData };
 								} else {
 									return item;
