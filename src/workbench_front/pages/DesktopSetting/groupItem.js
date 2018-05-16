@@ -159,27 +159,22 @@ class GroupItem extends Component {
     //创建卡片
     createCards(cards, groupID, index) {
         let itemDoms = [];
-        _.forEach(cards, (c) => {
+        _.forEach(cards, (c,i) => {
             itemDoms.push(
-                // <CardData dragCardID={-1} 
-                // type={c.apptype}
-                // name = {c.name}
-                // id={c.pk_appregister}
-                // groupID = {groupID}
-                // groupIndex = {index}
-                // gridx = {c.gridx}
-                // gridy = {c.gridy}
-                // width = {c.width}
-                // height = {c.height}
-                // isShadow = {c.isShadow}
-                // key={`${groupID}_${c.pk_appregister}`}
-                // />
                 <Card dragCardID={-1} 
                 type={c.apptype}
-                {...c} 
+                name = {c.name}
                 id={c.pk_appregister}
                 groupID = {groupID}
-                key={c.pk_appregister}
+                groupIndex = {index}
+                index={i}
+                gridx = {c.gridx}
+                gridy = {c.gridy}
+                width = {c.width}
+                height = {c.height}
+                isShadow = {c.isShadow}
+                isChecked = {c.isChecked}
+                key={`${groupID}_${c.pk_appregister}`}
                 />
             );
         });
@@ -222,7 +217,7 @@ class GroupItem extends Component {
 	//取消编辑组名
 	cancelGroupName = ()=>{
 		this.props.updateCurrEditID("");
-	}
+    }
 
     render() {
     const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,index,length, currEditID,defaultLayout,layout,cards } = this.props;

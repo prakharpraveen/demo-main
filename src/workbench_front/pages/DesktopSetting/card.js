@@ -4,16 +4,11 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList,updateSelectCardInGroupObj } from 'Store/test/action';
+import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
 const noteSource = {
 	beginDrag(props, monitor, component) {
-		//开始抓取时，将该卡片从selectCardInGroupObj删除
-		let {selectCardInGroupObj} = props;
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
-		utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,props.groupID,props.id)
-		props.updateSelectCardInGroupObj(selectCardInGroupObj);
 		//
 		const dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID,  props.id);
 		dragCard.isShadow = true;
@@ -25,7 +20,7 @@ const noteSource = {
 		// props.dragCardID = -1;
 		let groups = props.groups;
 		groups = _.cloneDeep(groups);
-		utilService.setIsShadowForCards(groups, false);
+		utilService.setPropertyValueForCards(groups, 'isShadow', false);
 		props.updateGroupList(groups);
 		props.updateShadowCard({});
 	},
@@ -77,11 +72,20 @@ class Item extends PureComponent {
 		if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
 			return false;
 		}
-		// if(this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy){
-		// 	return true
-		// }
-		// return false;
-		return true;
+		if(this.props.isChecked !== nextProps.isChecked){
+			return true;
+		}
+		if(this.props.layout !== nextProps.layout){
+			return true
+		}
+		if(this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy){
+			return true
+		}
+		if(this.props.isShadow !== nextProps.isShadow){
+			return true
+		}
+		return false;
+		// return true;
 	}
 	//依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
 	componentWillReceiveProps(nextProps) {
@@ -102,7 +106,6 @@ class Item extends PureComponent {
 
 		const x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
 		const y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
-
 		return {
 			x: x,
 			y: y
@@ -117,48 +120,26 @@ class Item extends PureComponent {
 	}
 	//删除卡片
 	deleteCard=()=> {
-		const cardID = this.props.id;
-		let {groups, selectCardInGroupObj, groupID} = this.props;
+		let {groups, groupIndex} = this.props;
 		groups = _.cloneDeep(groups);
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
-
-		utilService.removeCardByGroupIDAndCardID(groups, groupID, cardID)
-		utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,groupID,cardID)
-
+		utilService.removeCardByGroupIndexAndCardID(groups, groupIndex, this.props.id)
 		this.props.updateGroupList(groups);
-		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
 	}
 	//
 	onCheckboxChange=(e) =>{
 		console.log(e.target.checked);
+		let {groups,groupIndex, index} = this.props;
+		groups = _.cloneDeep(groups);
 		const cardID = this.props.id;
-		const groupID = this.props.groupID;
 		const checked = e.target.checked;
-		let selectCardInGroupObj = this.props.selectCardInGroupObj;
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
-		if(checked){
-			if(!selectCardInGroupObj[groupID]){
-				selectCardInGroupObj[groupID]= [];
-			}
-			selectCardInGroupObj[groupID].push(cardID);
-		}else{
-			utilService.removeCardIDInSelectCardInGroupObj(selectCardInGroupObj,groupID,cardID)
-		}
-		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
-	}
-	isChecked(id) {
-		const groupID = this.props.groupID;
-		if (_.indexOf(this.props.selectCardInGroupObj[groupID], id) !== -1) {
-			return true;
-		} else {
-			return false;
-		}
+		groups[groupIndex].apps[index].isChecked = checked
+		this.props.updateGroupList(groups);
 	}
 	render() {
-		const { connectDragSource, isDragging, groupID } = this.props;
-		const { id, name, gridx, gridy, width, height, isShadow } = this.props;
+		const { connectDragSource, isDragging, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked} = this.props;
 		const { x, y } = this.calGridItemPosition(gridx, gridy);
 		const { wPx, hPx } = this.calWHtoPx(width, height);
+		// console.log(name)
 		let cardDom;
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;
@@ -190,7 +171,7 @@ class Item extends PureComponent {
 					<div />
 					<div className='card-footer'>
 						<Checkbox
-							checked={this.isChecked(id)}
+							checked={isChecked}
 							onChange={this.onCheckboxChange}
 						/>
 						<Icon
@@ -219,13 +200,11 @@ const dragDropItem = (DragSource('item', noteSource, collectSource)(Item));
 export default (connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 		shadowCard: state.templateDragData.shadowCard,
         layout: state.templateDragData.layout,
 	}),
 	{
 		updateShadowCard,
 		updateGroupList,
-		updateSelectCardInGroupObj
 	}
 )(dragDropItem))

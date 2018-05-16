@@ -40,13 +40,13 @@ class MySider extends Component {
 		this.setState({ modalVisible});
 	}
 	//搜索框文本改变
-	onInputChange(e) {
+	onInputChange =(e) =>{
 		let _serachText = e.target.value;
 		// console.log(_groupName);
 		this.state.searchValue = _serachText;
 	}
 	//应用名模糊搜索
-	onInputSearch() {
+	onInputSearch=()=> {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			data: {
@@ -64,7 +64,7 @@ class MySider extends Component {
 		console.log(this.state.searchValue, '搜索开始');
 	}
 	//领域模块搜索
-	onCascaderChange(value) {
+	onCascaderChange = (value)=> {
 		let cascaderValueArr = value;
 		if (cascaderValueArr.length === 1) {
 			return;
@@ -95,7 +95,7 @@ class MySider extends Component {
 		console.log(value, '选择', this.state);
 	}
 	//切换搜索状态
-	switchSearch() {
+	switchSearch =()=> {
 		const { showSearch } = this.state;
 		this.setState({ showSearch: !showSearch });
 	}
@@ -108,13 +108,13 @@ class MySider extends Component {
 					<Input
 						placeholder='请输入应用名称'
 						style={{ width: '213px' }}
-						onPressEnter={this.onInputSearch.bind(this)}
-						onChange={this.onInputChange.bind(this)}
+						onPressEnter={this.onInputSearch}
+						onChange={this.onInputChange}
 						addonAfter={
-							<Icon type='search' className='search-input-icon' onClick={this.onInputSearch.bind(this)} />
+							<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />
 						}
 					/>
-					<span className='switch-search-cancel' onClick={this.switchSearch.bind(this)}>
+					<span className='switch-search-cancel' onClick={this.switchSearch}>
 						取消
 					</span>
 				</div>
@@ -126,12 +126,10 @@ class MySider extends Component {
 						className='search-cascader'
 						style={{ width: '213px' }}
 						options={this.state.domainArr}
-						onChange={(value) => {
-							this.onCascaderChange(value);
-						}}
+						onChange={this.onCascaderChange}
 						placeholder='领域-模块'
 					/>
-					<span className='switch-search' onClick={this.switchSearch.bind(this)}>
+					<span className='switch-search' onClick={this.switchSearch}>
 						<Icon type='search' />
 					</span>
 				</div>
@@ -190,7 +188,7 @@ class MySider extends Component {
 	}
 	
 	//所有结果展开/收缩显示
-	allShowOrHide(value) {
+	allShowOrHide =(value)=> {
 		let { appGroupArr, isAllShow } = this.state;
 		_.forEach(appGroupArr, (a) => {
 			a.isShow = value;
@@ -271,7 +269,7 @@ class MySider extends Component {
 							checked={this.state.isAllShow}
 							unCheckedChildren='收缩'
 							className={this.state.appGroupArr.length === 0 ? 'cannot-add' : 'aaa'}
-							onChange={this.allShowOrHide.bind(this)}
+							onChange={this.allShowOrHide}
 						/>,
 						<Icon
 							className={this.hasChechedItem() ? 'add' : 'cannot-add'}

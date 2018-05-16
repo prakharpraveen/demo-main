@@ -49,6 +49,7 @@ class Test extends Component {
 							g.type = "group";
 							_.forEach(g.apps,(a)=>{
 								a.isShadow = false;
+								a.isChecked = false;
 							})
 						});
 						this.props.updateGroupList(data[0].groups);

@@ -15,14 +15,16 @@ const noteSource = {
 			width: props.width,
 			height: props.height,
 			name: props.id,
+			isShadow: true,
+			isChecked:false
 		};
-		props.updateShadowCard({  ...dragCard,"isShadow": true, })
+		props.updateShadowCard(dragCard)
 		return { id: dragCard.pk_appregister,};
 	},
 	endDrag(props, monitor, component) {
 
 		let groups = props.groups;
-		utilService.setIsShadowForCards(groups, false);
+		utilService.setPropertyValueForCards(groups, 'isShadow', false);
 		props.updateShadowCard({})
 	},
 };

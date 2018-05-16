@@ -3,10 +3,10 @@ import _ from 'lodash';
 import { Button, Modal, Radio } from 'antd';
 import Ajax from 'Pub/js/ajax';
 //自定义组件
-import {layoutCheck} from './collision';
-import {compactLayout} from './compact.js';
+import { layoutCheck } from './collision';
+import { compactLayout } from './compact.js';
 import { connect } from 'react-redux';
-import { updateGroupList, updateSelectCardInGroupObj  } from 'Store/test/action';
+import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
 const RadioGroup = Radio.Group;
 
@@ -19,22 +19,15 @@ class MyFooter extends Component {
 		};
 	}
 	//点击删除按钮
-	deleteSelectedCardArr =()=>{
-		let {groups, selectCardInGroupObj} = this.props;
+	deleteSelectedCardArr = () => {
+		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
-
-		_.forEach(selectCardInGroupObj,(value, key)=>{
-			_.forEach(value,(a)=>{
-				utilService.removeCardByGroupIDAndCardID(groups, key, a)
-			})
-		})
+		utilService.removeCheckedCardsInGroups(groups);
 		//todo 自动排版
 
 		this.props.updateGroupList(groups);
-		this.props.updateSelectCardInGroupObj({});
-	}
-	getGroupItemNameRadio =(groups) => {
+	};
+	getGroupItemNameRadio = (groups) => {
 		if (!groups) return;
 		return (
 			<RadioGroup
@@ -42,179 +35,184 @@ class MyFooter extends Component {
 				value={this.state.selectedValue}
 				onChange={this.onChangeRadio.bind(this)}
 			>
-				{
-					groups.map((g, i) => {
-						return (
-							<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
-								{g.groupname}
-							</Radio>
-						)
-
-					})
-				}
+				{groups.map((g, i) => {
+					return (
+						<Radio className='modal-radio' key={g.pk_app_group} value={g.pk_app_group}>
+							{g.groupname}
+						</Radio>
+					);
+				})}
 			</RadioGroup>
 		);
-	}
-	setModalVisible =(modalVisible)=> {
-		modalVisible = modalVisible?modalVisible:false;
-		this.setState({ modalVisible,selectedValue:0 });
-	}
+	};
 	//移动到的弹出框中，组名选择
-	onChangeRadio =(e)=> {
+	onChangeRadio = (e) => {
 		this.setState({ selectedValue: e.target.value });
-	}
-	showModalVisible = ()=>{
+	};
+	showModalVisible = () => {
 		this.setModalVisible(true);
-	}
+	};
+	showModalHidden = ()=>{
+		this.setModalVisible(false);
+	};
+	setModalVisible = (modalVisible) => {
+		this.setState({ modalVisible, selectedValue: 0 });
+	};
 	//移动到的弹出框中，点击确认
-	onOkMoveDialog = () =>{
+	onOkMoveDialog = () => {
 		const modalVisible = false;
 		const targetGroupID = this.state.selectedValue;
 		if (targetGroupID === 0) {
 			return;
 		}
-		let {groups,selectCardInGroupObj} = this.props;
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
+		let { groups} = this.props;
 		groups = _.cloneDeep(groups);
 		//需要重新布局的组，需要把目标组也加进来
-		let sourceGroupIDArr = _.keys(selectCardInGroupObj);
-		if(sourceGroupIDArr.indexOf(targetGroupID) === -1){
-			sourceGroupIDArr.push(targetGroupID)
-		}
+		let sourceGroupIDArr = [];
 		//删掉所有被勾选的卡片，合并到目标组中，并且目标组内去重
 		let moveCardArr = [];
 		let targetGroupIndex = -1;
-		_.forEach(groups,(g,i)=>{
+
+		_.forEach(groups, (g, i) => {
+			let flag = false;
 			if (g.pk_app_group === targetGroupID) {
 				targetGroupIndex = i;
+				sourceGroupIDArr.push(g.pk_app_group)
 				return;
 			}
 			const tmpArr = _.remove(g.apps, (a) => {
-				return _.indexOf(selectCardInGroupObj[g.pk_app_group], a.pk_appregister) !== -1
-			})
+				if(a.isChecked){
+					flag = true;
+				}
+				return a.isChecked;
+			});
+			if(flag && sourceGroupIDArr.indexOf(g.pk_app_group) === -1){
+				sourceGroupIDArr.push(g.pk_app_group);
+			}
 			moveCardArr = _.concat(moveCardArr, tmpArr);
-		})
+		});
 
+		utilService.setPropertyValueForCardsInCards(moveCardArr, 'isChecked', false);
+		//set moveCard grix gridy Max
 		utilService.setGridXGridYMaxInCards(moveCardArr);
-		
-		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps,moveCardArr);
+
+		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, moveCardArr);
 		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		console.log(sourceGroupIDArr)
 		//循环所有改变的组，进行重新布局
-		_.forEach(groups,(g)=>{
-			if(sourceGroupIDArr.indexOf(g.pk_app_group) === -1){
+		_.forEach(groups, (g) => {
+			if (sourceGroupIDArr.indexOf(g.pk_app_group) === -1) {
 				return;
 			}
-			if(g.apps.length === 0){
+			if (g.apps.length === 0) {
 				return;
 			}
 			const firstCard = g.apps[0];
 			const newlayout = layoutCheck(g.apps, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
-			
+
 			const compactedLayout = compactLayout(newlayout);
 			g.apps = compactedLayout;
-		})
-		this.props.updateSelectCardInGroupObj({});
+		});
 		this.props.updateGroupList(groups);
 		this.setModalVisible(modalVisible);
-	}
-	cancleSave =() =>{
+	};
+	cancleSave = () => {
 		location.reload();
-	}
-	checkInSelectCardInGroupObj =()=>{
-		const selectCardInGroupObj = this.props.selectCardInGroupObj;
-		let flag = true;
-		_.forEach(selectCardInGroupObj,(c)=>{
-			if(c.length>0){
-				flag = false;
-				return false;
-			}
-		})
-		return flag;
-	}
+	};
+	hasCheckedCardInGroups = () => {};
 	//抽象方法，参数为显示的button文本和方法体，注意方法提前bind
 	getMoveCardButton = (text, fn) => {
 		let tmpDom;
-		const checked = this.checkInSelectCardInGroupObj();
+		const { groups } = this.props;
+		const isDisabled = utilService.hasCheckedCardInGroups(groups);
 		tmpDom = (
-			<Button
-				disabled={checked}
-				onClick={fn}>
+			<Button disabled={!isDisabled} onClick={fn}>
 				{text}
 			</Button>
 		);
 		return tmpDom;
 	};
 	//保存
-	saveGroupItemAndCard =() =>{
+	saveGroupItemAndCard = () => {
 		let tmpData = [];
-		_.forEach(this.props.groups, (g,i) => {
-
+		_.forEach(this.props.groups, (g, i) => {
 			let tmp = {
-				"groupname": g.groupname,
-				"apps": [],
-				"position": i,
-			}
-			if (g.pk_app_group.indexOf("newGroupItem") === -1) {
-				tmp.pk_app_group = g.pk_app_group
+				groupname: g.groupname,
+				apps: [],
+				position: i
+			};
+			if (g.pk_app_group.indexOf('newGroupItem') === -1) {
+				tmp.pk_app_group = g.pk_app_group;
 			}
 			_.forEach(g.apps, (a) => {
-				if(a.pk_appregister.indexOf('_')!==-1){
+				if (a.pk_appregister.indexOf('_') !== -1) {
 					const tmpIDArr = a.pk_appregister.split('_');
 					a.pk_appregister = tmpIDArr[0];
 				}
 				tmp.apps.push({
-					'pk_appregister': a.pk_appregister,
-					'gridx': a.gridx,
-					'gridy': a.gridy
-				})
-			})
+					pk_appregister: a.pk_appregister,
+					gridx: a.gridx,
+					gridy: a.gridy
+				});
+			});
 			tmpData.push(tmp);
-		})
+		});
 		const saveData = {
-			'relateid': this.props.relateid,
-			'data': tmpData
-		} 
-		console.log(saveData)
+			relateid: this.props.relateid,
+			data: tmpData
+		};
+		console.log(saveData);
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
 			data: saveData,
 			success: (res) => {
 				const { data, success } = res.data;
-					if (success) {
-						// location.reload();
-					}
+				if (success) {
+					// location.reload();
+				}
 			}
 		});
-	}
-	
+	};
+
 	render() {
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
 			<div className='nc-workbench-home-footer'>
-				<div className="footer-left">
+				<div className='footer-left'>
 					{this.getMoveCardButton('删除', this.deleteSelectedCardArr)}
 					{this.getMoveCardButton('移动', this.showModalVisible)}
 				</div>
-				<div className="footer-right">
-					<Button className="right-button" type="primary" onClick={this.saveGroupItemAndCard}>保存</Button>
-					<Button className="right-button" >预览</Button>
-					<Button className="right-button" >恢复默认</Button>
-					<Button className="right-button" onClick={this.cancleSave}>取消</Button>
+				<div className='footer-right'>
+					<Button className='right-button' type='primary' onClick={this.saveGroupItemAndCard}>
+						保存
+					</Button>
+					<Button className='right-button'>预览</Button>
+					<Button className='right-button'>恢复默认</Button>
+					<Button className='right-button' onClick={this.cancleSave}>
+						取消
+					</Button>
 				</div>
 				<Modal
 					title='移动到'
-					mask= {false}
+					mask={false}
 					wrapClassName='vertical-center-modal'
 					visible={this.state.modalVisible}
 					onOk={this.onOkMoveDialog}
-					onCancel={() => this.setModalVisible}
+					onCancel={this.showModalHidden}
 					footer={[
-						<Button key="submit" disabled={this.state.selectedValue===0} type="primary" onClick={this.onOkMoveDialog}>确定</Button>,
-						<Button key="back" onClick={this.setModalVisible}>
-						  取消
+						<Button
+							key='submit'
+							disabled={this.state.selectedValue === 0}
+							type='primary'
+							onClick={this.onOkMoveDialog}
+						>
+							确定
 						</Button>,
-					  ]}
+						<Button key='back' onClick={this.showModalHidden}>
+							取消
+						</Button>
+					]}
 				>
 					{groupNameRadioGroup}
 				</Modal>
@@ -222,17 +220,14 @@ class MyFooter extends Component {
 		);
 	}
 }
-export default (connect(
+export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
-		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj,
 		layout: state.templateDragData.layout,
-		relateid: state.templateDragData.relateid,
+		relateid: state.templateDragData.relateid
 	}),
 	{
-		updateSelectCardInGroupObj,
-		updateGroupList,
-		
+		updateGroupList
 	}
-)(MyFooter))
+)(MyFooter);

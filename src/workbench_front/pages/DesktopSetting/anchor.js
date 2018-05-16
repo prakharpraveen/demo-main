@@ -12,6 +12,7 @@ class AnchorLi extends Component {
 	targetAnchor = () => {
 		const targetID = this.props.id;
 		//id不能以数字开头
+		// document.querySelector(`#a${targetID}`).scrollIntoView({ block: 'start',  behavior: 'smooth' });
 		document.querySelector(`#a${targetID}`).scrollIntoView();
     };
     shouldComponentUpdate(nextProps, nextState) {

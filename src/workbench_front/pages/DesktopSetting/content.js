@@ -12,7 +12,7 @@ import { checkInContainer } from './correction';
 import GroupItem from './groupItem';
 
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateSelectCardInGroupObj, updateCurrEditID,updateLayout } from 'Store/test/action';
+import { updateShadowCard, updateGroupList, updateCurrEditID,updateLayout } from 'Store/test/action';
 import * as utilService from './utilService';
 class MyContent extends Component {
 	constructor(props) {
@@ -191,19 +191,12 @@ class MyContent extends Component {
 	};
 	//删除组
 	deleteGroupItem = (groupID) => {
-		let { groups, selectCardInGroupObj } = this.props;
+		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
-		selectCardInGroupObj = _.cloneDeep(selectCardInGroupObj);
 
 		_.remove(groups, (g) => {
 			return g.pk_app_group === groupID;
 		});
-
-		if (selectCardInGroupObj[groupID]) {
-			selectCardInGroupObj[groupID] = [];
-		}
-
-		this.props.updateSelectCardInGroupObj(selectCardInGroupObj);
 		this.props.updateGroupList(groups);
 	};
 	//添加组
@@ -279,12 +272,10 @@ export default connect(
 		shadowCard: state.templateDragData.shadowCard,
 		layout: state.templateDragData.layout,
 		defaultLayout: state.templateDragData.defaultLayout,
-		selectCardInGroupObj: state.templateDragData.selectCardInGroupObj
 	}),
 	{
 		updateGroupList,
 		updateShadowCard,
-		updateSelectCardInGroupObj,
 		updateCurrEditID,
 		updateLayout
 	}
