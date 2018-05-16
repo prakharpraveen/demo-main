@@ -109,7 +109,7 @@ class Home extends Component {
 					window.openNew(appOption, isOwn ? 'own' : undefined);
 				}}
 			>
-				<div className='app-item' field="app-item" fieldname={name}>
+				<div  field="app-item" fieldname={name} className='app-item'>
 					<span className='title'>{name}</span>
 					<div className='app-content'>
 						{/* <img className='icon' src={image_src} alt={name} /> */}
