@@ -284,7 +284,7 @@ class AppFromCard extends Component {
 				<Form className='from-card'>
 					<Row gutter={24}>{createForm(this.state.DOMDATA, this.props)}</Row>
 				</Form>
-				<div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
+				<div style={{ 'marginTop': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
 					<AppTable />
 				</div>
 			</div>
