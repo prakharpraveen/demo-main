@@ -650,7 +650,7 @@ class PageTable extends Component {
 		);
 	}
 }
-PageTable.PropTypes = {
+PageTable.propTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appButtonVOs: PropTypes.array.isRequired,

@@ -284,7 +284,7 @@ class AppFromCard extends Component {
 				<Form className='from-card'>
 					<Row gutter={24}>{createForm(this.state.DOMDATA, this.props)}</Row>
 				</Form>
-				<div style={{ 'marginTop': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
+				<div style={{ 'marginTop': '16px', background: '#ffffff', padding: '10px', 'borderRadius': '6px' }}>
 					<AppTable />
 				</div>
 			</div>
@@ -292,7 +292,7 @@ class AppFromCard extends Component {
 	}
 }
 AppFromCard = Form.create()(AppFromCard);
-AppFromCard.PropTypes = {
+AppFromCard.propTypes = {
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	getFromDataFunc: PropTypes.func.isRequired,

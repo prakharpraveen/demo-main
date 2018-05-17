@@ -35,8 +35,8 @@ class SideDrawer extends Component {
 		let { sprType } = this.state;
 		return (
 			<div className='nc-workbench-drawer'>
-				<Drawer className='drawer-content' width={430} overlayColor={'none'} drawerStyle={{top:"48px","box-shadow": "3px 6px 8px 0px rgba(74,81,93,0.25)", 
-				"border-radius": "2px 3px 3px 0px" }} open={isOpen} onChange={this.handleDrawerChange}>
+				<Drawer className='drawer-content' width={430} overlayColor={'none'} drawerStyle={{top:"48px","boxShadow": "3px 6px 8px 0px rgba(74,81,93,0.25)", 
+				"borderRadius": "2px 3px 3px 0px" }} open={isOpen} onChange={this.handleDrawerChange}>
 					<div className='drawer-exit'>
 						<i className='iconfont icon-zhuxiao' onClick={this.handleExit}></i>
 					</div>
@@ -90,7 +90,7 @@ class SideDrawer extends Component {
 		);
 	}
 }
-SideDrawer.PropTypes = {
+SideDrawer.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	changeDrawer: PropTypes.func.isRequired
 };

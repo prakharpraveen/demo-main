@@ -400,7 +400,7 @@ const generateTreeData = (data) => {
 		return item;
 	});
 };
-SearchTree.PropTypes = {
+SearchTree.propTypes = {
 	setNodeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,

@@ -96,7 +96,7 @@ class Layout extends Component {
 		);
 	}
 }
-Layout.PropTypes = {
+Layout.propTypes = {
 	appData: PropTypes.object.isRequired,
 	isOpen: PropTypes.bool.isRequired,
 	changeDrawer: PropTypes.func.isRequired

@@ -253,7 +253,7 @@ class AppTable extends Component {
 		);
 	}
 }
-AppTable.PropTypes = {
+AppTable.propTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appParamVOs: PropTypes.array.isRequired,

@@ -137,7 +137,7 @@ class ModuleFromCard extends Component {
 	}
 }
 ModuleFromCard = Form.create()(ModuleFromCard);
-ModuleFromCard.PropTypes = {
+ModuleFromCard.propTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,

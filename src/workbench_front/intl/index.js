@@ -90,7 +90,7 @@ class ChangeLanguage extends Component {
 		);
 	}
 }
-ChangeLanguage.PropTypes = {
+ChangeLanguage.propTypes = {
 	changeIntlData: PropTypes.bool.isRequired
 };
 export default connect((state) => ({}), { changeIntlData })(ChangeLanguage);

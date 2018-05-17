@@ -559,7 +559,7 @@ class AppRegister extends Component {
 		);
 	}
 }
-AppRegister.PropTypes = {
+AppRegister.propTypes = {
 	setTreeData: PropTypes.func.isRequired,
 	optype: PropTypes.string.isRequired,
 	billStatus: PropTypes.object.isRequired,

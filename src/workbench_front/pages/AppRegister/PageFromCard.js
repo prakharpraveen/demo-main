@@ -172,7 +172,7 @@ class PageFormCard extends Component{
                 <Form className='from-card'>
 					<Row gutter={24}>{createForm(this.state.DOMDATA, this.props)}</Row>
 				</Form>
-                <div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'border-radius': '6px' }}>
+                <div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'borderRadius': '6px' }}>
 					<PageTable />
 				</div>
             </div>
@@ -180,7 +180,7 @@ class PageFormCard extends Component{
     }
 }
 PageFormCard = Form.create()(PageFormCard);
-PageFormCard.PropTypes = {
+PageFormCard.propTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,

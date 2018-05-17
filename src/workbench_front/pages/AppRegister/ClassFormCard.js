@@ -79,7 +79,7 @@ class ClassFromCard extends Component {
 	}
 }
 ClassFromCard = Form.create()(ClassFromCard);
-ClassFromCard.PropTypes = {
+ClassFromCard.propTypes = {
 	updateTreeData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	billStatus: PropTypes.object.isRequired,
