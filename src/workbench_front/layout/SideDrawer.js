@@ -4,18 +4,35 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Drawer from 'react-motion-drawer';
 import { changeDrawer } from 'Store/appStore/action';
+import { sprLog } from './spr';
 class SideDrawer extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			sprType: true
+		}
 	}
 	handleDrawerChange = (isOpen) => {
 		this.props.changeDrawer(isOpen);
 	};
+	/**
+	 * 注销操作
+	 */
 	handleExit = ()=>{
 		console.log("退出");
 	}
+	/**
+	 * spr录制
+	 */
+	handleSprClick = ()=>{
+		let { sprType } = this.state;
+		sprType = sprLog(sprType);
+		console.log(sprType);
+		this.setState({ sprType });
+	}
 	render() {
 		let { isOpen } = this.props;
+		let { sprType } = this.state;
 		return (
 			<div className='nc-workbench-drawer'>
 				<Drawer className='drawer-content' width={430} overlayColor={'none'} drawerStyle={{top:"48px","box-shadow": "3px 6px 8px 0px rgba(74,81,93,0.25)", 
@@ -59,6 +76,9 @@ class SideDrawer extends Component {
 							</li>
 							<li>
 								<span>云注册链接</span>
+							</li>
+							<li>
+								<span onClick={this.handleSprClick}>{sprType?`开始录制SPR`:`结束录制SPR`}</span>
 							</li>
 							<li>
 								<span>日志</span>
