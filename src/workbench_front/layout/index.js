@@ -42,7 +42,7 @@ class Layout extends Component {
 		let { isOpen } = this.props;
 		return (
 			<div className='nc-workbench-layout'>
-				<nav  field="nccwb-header" fieldname={nodeName}  className='nc-workbench-nav nccwb-header' style={{ 'z-index': '999' }}>
+				<nav  field="nccwb-header" fieldname={nodeName}  className='nc-workbench-nav nccwb-header' style={{ 'zIndex': '999' }}>
 					<div className='nav-left n-left n-v-middle'>
 						<div
 							className='nc-workbench-hp margin-right-10'
@@ -65,13 +65,13 @@ class Layout extends Component {
 					</div>
 					<div className='nav-right n-right n-v-middle'>
 						<span className='margin-right-10'>
-							<i class='iconfont icon-sousuo' />
+							<i className='iconfont icon-sousuo' />
 						</span>
 						<span className='margin-right-10'>
-							<i class='iconfont icon-quanbuyingyong' />
+							<i className='iconfont icon-quanbuyingyong' />
 						</span>
 						<span className='margin-right-10'>
-							<i class='iconfont icon-xiaoxi' />
+							<i className='iconfont icon-xiaoxi' />
 						</span>
 					</div>
 					{/* <ul className='nc-workbench-menu '>

@@ -16,9 +16,6 @@ import './theme/theme.css';
 window.proxyAction = $NCPE.proxyAction;
 
 class App extends Component {
-	static propTypes = {
-		initAppData: PropTypes.func.isRequired
-	};
 	constructor(props) {
 		super(props);
 	}
@@ -93,6 +90,9 @@ class App extends Component {
 	render() {
 		return <Routes />;
 	}
+}
+App.propTypes = {
+	initAppData: PropTypes.func.isRequired
 }
 const AppStore = connect((state) => ({ ifrData: state.ifrData }), {
 	initAppData
