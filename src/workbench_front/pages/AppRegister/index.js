@@ -544,7 +544,7 @@ class AppRegister extends Component {
 							style={{
 								background: '#fff',
 								width: '500px',
-								'min-height': 'calc(100vh - 64px - 48px)',
+								'minHeight': 'calc(100vh - 64px - 48px)',
 								height: `${this.state.siderHeight}px`,
 								overflowY: 'auto',
 								padding: '20px'
