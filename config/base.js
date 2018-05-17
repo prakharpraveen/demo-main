@@ -57,10 +57,10 @@ module.exports = {
 			]
 		},
 		// 不要遵循/打包这些模块，而是在运行时从环境中请求他们
-		externals: {
-			react: 'React',
-			'react-dom': 'ReactDOM'
-		},
+		// externals: {
+		// 	react: 'React',
+		// 	'react-dom': 'ReactDOM'
+		// },
 		resolve: {
 			extensions: [ '.jsx', '.js' ],
 			alias: {
