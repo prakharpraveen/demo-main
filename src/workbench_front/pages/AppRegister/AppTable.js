@@ -153,7 +153,7 @@ class AppTable extends Component {
 					if (data.success && data.data) {
 						delete target.editable;
 						if (listData.pk_param) {
-							newData.map((item, index) => {
+							newData = newData.map((item, index) => {
 								if (listData.pk_param === item.pk_param) {
 									return { ...item, ...listData };
 								} else {
