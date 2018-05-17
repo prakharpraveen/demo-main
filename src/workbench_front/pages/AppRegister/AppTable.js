@@ -219,7 +219,7 @@ class AppTable extends Component {
 	creatAddLineBtn = () => {
 		return (
 			<div>
-				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
+				<Button onClick={() => this.add()} style={{ 'marginLeft': '8px' }}>
 					新增行
 				</Button>
 			</div>

@@ -63,96 +63,6 @@ class PageFormCard extends Component{
 			]
         }
     }
-    // createDom = (itemInfo, nodeData) => {
-	// 	const { getFieldDecorator } = this.props.form;
-	// 	const { isEdit } = this.props.billStatus;
-	// 	let { lable, type, code,required,check } = itemInfo;
-	// 	switch (type) {
-	// 		case 'select':
-	// 			return isEdit ? (
-	// 				<FormItem label={lable} hasFeedback>
-	// 					{getFieldDecorator(code, {
-	// 						initialValue: nodeData[code],
-	// 						rules: [ { required: required, message: `请选择${lable}` } ]
-	// 					})(<Select placeholder={`请选择${lable}`}>{this.createOption(itemInfo.options)}</Select>)}
-	// 				</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{this.optionShow(itemInfo.options, nodeData[code])}</span>
-	// 				</FormItem>
-	// 			);
-	// 		case 'search':
-	// 			return isEdit ? (
-	// 				<FormItem label={lable} hasFeedback>
-	// 					{getFieldDecorator(code, {
-	// 						initialValue: nodeData[code],
-	// 						rules: [
-	// 							{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-	// 						]
-	// 					})(
-	// 						<Select
-	// 							placeholder={itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}`}
-	// 							mode='combobox'
-	// 							defaultActiveFirstOption={false}
-	// 							showArrow={false}
-	// 							filterOption={false}
-	// 							onChange={this.handleSearch}
-	// 						>
-	// 							{this.createOption(itemInfo.options)}
-	// 						</Select>
-	// 					)}
-	// 				</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 		case 'checkbox':
-	// 			return (
-	// 				<FormItem>
-	// 					{getFieldDecorator(code, {
-	// 						valuePropName: 'checked',
-	// 						initialValue: nodeData[code]
-	// 					})(<Checkbox disabled={!isEdit}>{lable}</Checkbox>)}
-	// 				</FormItem>
-	// 			);
-	// 		case 'chooseImage':
-	// 			return isEdit ? (
-	// 				<FormItem label={lable}>
-	// 						{getFieldDecorator(code, {
-	// 							initialValue: nodeData[code],
-	// 							rules: [
-	// 								{ required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-	// 							],
-	// 						})(<ChooseImageForForm data={imgs} title={'图标选择'}/>)}
-	// 					</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 		default:
-	// 			return isEdit ? (
-	// 				<FormItem label={lable}>
-	// 					{getFieldDecorator(code, {
-	// 						initialValue: nodeData[code],
-	// 						rules: [
-	// 							{
-	// 								required: required,
-	// 								message: `请输入${lable}`
-	// 							},{
-	// 								validator: check?check:null
-	// 							}
-	// 						]
-	// 					})(<Input placeholder={`请输入${lable}`} />)}
-	// 				</FormItem>
-	// 			) : (
-	// 				<FormItem label={lable}>
-	// 					<span className='ant-form-text'>{nodeData[code]}</span>
-	// 				</FormItem>
-	// 			);
-	// 	}
-	// };
 	getFromData = () => {
 		const { getFieldsValue, validateFields } = this.props.form;
 		let flag = false;
@@ -172,7 +82,7 @@ class PageFormCard extends Component{
                 <Form className='from-card'>
 					<Row gutter={24}>{createForm(this.state.DOMDATA, this.props)}</Row>
 				</Form>
-                <div style={{ 'margin-top': '16px', background: '#ffffff', padding: '10px', 'borderRadius': '6px' }}>
+                <div style={{ 'marginTop': '16px', background: '#ffffff', padding: '10px', 'borderRadius': '6px' }}>
 					<PageTable />
 				</div>
             </div>

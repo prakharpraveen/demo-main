@@ -90,13 +90,6 @@ export const setPageTemplateData = (data) => {
 		data
 	};
 };
-// 设置 页面打印模板 数据
-export const setPrintTemplateData = (data) => {
-	return {
-		type: AppRegister.PRINTTEMPLATEDATA,
-		data
-	};
-};
 // 获取表单数据
 export const getFromDataFunc = (getFromData)=>{
 	return {
