@@ -61,7 +61,7 @@ class MyModal extends Component {
 
 		const firstCard = compactedLayout[0];
 
-		compactedLayout = layoutCheck(compactedLayout, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
+		compactedLayout = compactLayout(compactedLayout, firstCard);
 
 		groups[targetGroupIndex].apps = compactedLayout;
 

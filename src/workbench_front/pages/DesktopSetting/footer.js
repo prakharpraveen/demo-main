@@ -93,12 +93,12 @@ class MyFooter extends Component {
 		});
 
 		utilService.setPropertyValueForCardsInCards(moveCardArr, 'isChecked', false);
-		//set moveCard grix gridy Max
+		utilService.setPropertyValueForCardsInCards(groups[targetGroupIndex].apps, 'isChecked', false);
+		//set moveCard grix gridy Max防止放置的元素对目标原卡片组位置影响
 		utilService.setGridXGridYMaxInCards(moveCardArr);
 
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, moveCardArr);
 		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
-		console.log(sourceGroupIDArr)
 		//循环所有改变的组，进行重新布局
 		_.forEach(groups, (g) => {
 			if (sourceGroupIDArr.indexOf(g.pk_app_group) === -1) {
@@ -111,7 +111,7 @@ class MyFooter extends Component {
 
 			const firstCard = compactedLayout[0];
 
-			compactedLayout = layoutCheck(compactedLayout, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
+			compactedLayout = compactLayout(compactedLayout, firstCard);
 
 			g.apps = compactedLayout;
 		});

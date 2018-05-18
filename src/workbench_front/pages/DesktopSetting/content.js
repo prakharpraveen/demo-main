@@ -131,7 +131,7 @@ class MyContent extends Component {
 		let itemDoms = [];
 		if (groups.length === 0) {
 			itemDoms.push(
-				<div className='first-add' id='first-add'>
+				<div key={0} className='first-add' id='first-add'>
 					<Button className='group-item-add' onClick={this.addFirstGroupItem}>
 						{' '}
 						+ 添加分组
@@ -245,7 +245,8 @@ class MyContent extends Component {
         // console.log(clientWidth,calWidth,col);
         layout.calWidth = layout.rowHeight = calWidth;
         layout.col = col;
-        layout.containerWidth = clientWidth;
+		layout.containerWidth = clientWidth;
+		
         this.props.updateLayout(layout);
 	}
 	componentDidMount() {
