@@ -50,7 +50,7 @@ class Item extends Component {
 					<span>{name}</span>
                     <Checkbox checked={checked}  onChange={(e)=>{this.props.onChangeChecked(e,parentIndex,index)}}/>
 				</div>
-                <div className="img" style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}>
+                <div className="img" style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'backgroundSize': 'contain' }}>
                 </div>
 			</div>
 		);

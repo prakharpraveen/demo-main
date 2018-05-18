@@ -4,7 +4,7 @@ import { Button, Modal, Radio } from 'antd';
 import Ajax from 'Pub/js/ajax';
 //自定义组件
 import { layoutCheck } from './collision';
-import { compactLayout } from './compact.js';
+import { compactLayout,compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
 import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
@@ -107,10 +107,12 @@ class MyFooter extends Component {
 			if (g.apps.length === 0) {
 				return;
 			}
-			const firstCard = g.apps[0];
-			const newlayout = layoutCheck(g.apps, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
+			let compactedLayout = compactLayoutHorizontal( g.apps,this.props.col);
 
-			const compactedLayout = compactLayout(newlayout);
+			const firstCard = compactedLayout[0];
+
+			compactedLayout = layoutCheck(compactedLayout, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
+
 			g.apps = compactedLayout;
 		});
 		this.props.updateGroupList(groups);
@@ -224,7 +226,7 @@ export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
-		layout: state.templateDragData.layout,
+		col: state.templateDragData.layout.col,
 		relateid: state.templateDragData.relateid
 	}),
 	{

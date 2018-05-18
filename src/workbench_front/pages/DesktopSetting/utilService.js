@@ -125,20 +125,48 @@ export const calColCount = (defaultCalWidth, containerWidth, containerPadding, m
 		return Math.floor((containerWidth - containerPadding[0] * 2 - margin[0]) / (defaultCalWidth + margin[0]));
 	}
 };
+//
+export const layoutBottom = (layout) => {
+    let max = 0,
+        bottomY;
+    for (let i = 0, len = layout.length; i < len; i++) {
+        bottomY = layout[i].gridy + layout[i].height;
+        if (bottomY > max) max = bottomY;
+    }
+    return max;
+}
+//
+export const layoutHorizontalRowLength= (layout) => {
+    let max = 0,
+        rowX;
+    for (let i = 0, len = layout.length; i < len; i++) {
+        rowX = layout[i].gridx + layout[i].width;
+        if (rowX > max) max = rowX;
+    }
+    return max;
+}
 //计算卡片容器的最大高度
 export const getContainerMaxHeight = (cards, rowHeight, margin) => {
 	//行转列并且分组
-	const rowRes = _.chain(cards).sortBy([ 'gridx', 'gridy' ]).groupBy('gridx').value();
-	//寻找每列最后item的GridY和height的和
-	let endHeight = [];
-	_.forEach(rowRes, (r) => {
-		const temp = r[r.length - 1];
-		endHeight.push(temp.gridy + temp.height);
-	});
-	//获得最大的值
-	const resultRow = _.max(endHeight);
+	const resultRow = layoutBottom(cards)
+	console.log(resultRow);
 	return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
 };
+//计算卡片容器的最大高度
+// export const getContainerMaxHeight = (cards, rowHeight, margin) => {
+// 	//行转列并且分组
+// 	const rowRes = _.chain(cards).sortBy([ 'gridx', 'gridy' ]).groupBy('gridx').value();
+// 	//寻找每列最后item的GridY和height的和
+// 	let endHeight = [];
+// 	_.forEach(rowRes, (r) => {
+// 		const temp = r[r.length - 1];
+// 		endHeight.push(temp.gridy + temp.height);
+// 	});
+// 	//获得最大的值
+// 	const resultRow = _.max(endHeight);
+// 	console.log(resultRow);
+// 	return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
+// };
 //
 export const hasScrolled = (el, direction = 'vertical') => {
 	if (direction === 'vertical') {

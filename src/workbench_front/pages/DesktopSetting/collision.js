@@ -42,7 +42,7 @@ export const layoutCheck = function(){
 					keyArr.push(item.pk_appregister)
 
 					let offsetY = item.gridy + 1;
-
+					// 移动模块位于循环检测方块中
 					if(layoutItem.gridy > item.gridy && layoutItem.gridy < item.gridy + item.height){
 						offsetY = item.gridy;
 					}

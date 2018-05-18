@@ -5,6 +5,7 @@ import Ajax from 'Pub/js/ajax';
 //自定义组件
 import { layoutCheck } from './collision';
 import { compactLayout } from './compact.js';
+import { compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
 import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
@@ -44,8 +45,8 @@ class MyModal extends Component {
 						height: c.height,
 						name: c.value,
 						isShadow: false,
-						gridx: 0,
-						gridy: 9999
+						gridx: 9999,
+						gridy: 0
 					});
 					c.checked = false;
 				}
@@ -56,14 +57,12 @@ class MyModal extends Component {
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, checkedAppList);
 		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
 		//目标组内重新布局
-		const firstCard = groups[targetGroupIndex].apps[0];
-		const newlayout = layoutCheck(
-			groups[targetGroupIndex].apps,
-			firstCard,
-			firstCard.pk_appregister,
-			firstCard.pk_appregister
-		);
-		const compactedLayout = compactLayout(newlayout);
+		let compactedLayout = compactLayoutHorizontal( groups[targetGroupIndex].apps, this.props.col);
+
+		const firstCard = compactedLayout[0];
+
+		compactedLayout = layoutCheck(compactedLayout, firstCard, firstCard.pk_appregister, firstCard.pk_appregister);
+
 		groups[targetGroupIndex].apps = compactedLayout;
 
 		this.props.updateGroupList(groups);
@@ -126,7 +125,8 @@ class MyModal extends Component {
 }
 export default connect(
 	(state) => ({
-		groups: state.templateDragData.groups
+		groups: state.templateDragData.groups,
+		col: state.templateDragData.layout.col,
 	}),
 	{
 		updateGroupList
