@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {Icon,Input,Button,Checkbox } from 'antd';
 import {collision,layoutCheck} from './collision';
 import {compactLayout} from './compact.js';
-import { updateGroupList,updateCurrEditID, updateLayout,updateSelectCardInGroupObj } from 'Store/test/action';
+import { updateCurrEditID} from 'Store/test/action';
 import * as utilService from './utilService';
 
 const groupItemSource ={
@@ -61,10 +61,10 @@ const groupItemTarget ={
         } else {//卡片到组
             // console.log('card');
             const hoverItem = props;
-            const {x,y} = monitor.getClientOffset();
+            const {x,y}= monitor.getClientOffset();
             const groupItemBoundingRect = findDOMNode(component).getBoundingClientRect();
-            const groupItemX = groupItemBoundingRect.x;
-            const groupItemY = groupItemBoundingRect.y;
+            const groupItemX = groupItemBoundingRect.left;
+            const groupItemY = groupItemBoundingRect.top;
             props.moveCardInGroupItem(dragItem, hoverItem, x-groupItemX,y-groupItemY);
         }
     },
@@ -87,19 +87,14 @@ const groupItemTarget ={
     }
 }
 
-function collectSource(connect,monitor){
-	return {
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
-	} 
-}
-
-function collectTarget(connect, monitor){
-    return {
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
-	}
-}
+@DropTarget('item',groupItemTarget,(connect, monitor )=>({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+}))
+@DragSource('item',groupItemSource,(connect, monitor )=>({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+}))
 
 class GroupItem extends Component {
     constructor(props) {
@@ -108,7 +103,7 @@ class GroupItem extends Component {
             groupName:props.groupname
 		}
     }
-
+    //依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
     // componentWillReceiveProps(nextProps) {
     //     console.log(this.props.shadowCard.pk_appregister); 
     //     if(!this.props.shadowCard.pk_appregister){
@@ -221,14 +216,14 @@ class GroupItem extends Component {
 
     render() {
     const {isDragging,connectDragSource,connectDropTarget, isOver, groupname, id,index,length, currEditID,defaultLayout,layout,cards } = this.props;
-    // const cards =  this.props.getCardsByGroupIndex(index)
     const containerHeight = utilService.getContainerMaxHeight(cards, layout.rowHeight, layout.margin);
     const opacity = isDragging ? 0 : 1;
+    // console.log('group')
     let groupItemTitle;
     if(currEditID === id){
         groupItemTitle = (
             <div className="group-item-title-container-no-edit">
-                <div class="title-left">
+                <div className="title-left">
                     <Input size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={this.changeGroupName} onChange={this.getGroupName} />
                     <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={this.changeGroupName} />
                     <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={this.cancelGroupName} />
@@ -238,11 +233,11 @@ class GroupItem extends Component {
     }else{
         groupItemTitle = (
             <div className="group-item-title-container-no-edit" >
-                <div class="title-left">
+                <div className="title-left">
                 {/* <Checkbox checked={}></Checkbox> */}
                     <span>{groupname}</span>
                 </div>
-                <div class="title-right">
+                <div className="title-right">
                     <div className="group-item-title-edit" ><Icon type="edit" title="占位符" className="group-item-icon" onClick={this.editGroupItemName} /></div>
                     <div className={index === 0 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="up-square-o" title="占位符" className="group-item-icon" onClick={this.upGroupItem} /></div>
                     <div className={index === length - 1 ? "group-item-title-not-edit" : "group-item-title-edit"}><Icon type="down-square-o" title="占位符" className="group-item-icon" onClick={this.downGroupItem} /></div>
@@ -269,7 +264,7 @@ class GroupItem extends Component {
     }
 }
 
-const dragDropItem = DropTarget('item',groupItemTarget,collectTarget)(DragSource('item',groupItemSource,collectSource)(GroupItem));
+// const dragDropItem = DropTarget('item',groupItemTarget,collectTarget)(DragSource('item',groupItemSource,collectSource)(GroupItem));
 
 export default (connect(
 	(state) => ({
@@ -279,8 +274,6 @@ export default (connect(
         shadowCard: state.templateDragData.shadowCard,
 	}),
 	{
-        updateGroupList,
-        updateCurrEditID,
-        updateLayout
+        updateCurrEditID
 	}
-)(dragDropItem))
+)(GroupItem))

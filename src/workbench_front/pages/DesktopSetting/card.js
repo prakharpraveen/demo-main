@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
@@ -24,9 +24,9 @@ const noteSource = {
 		props.updateGroupList(groups);
 		props.updateShadowCard({});
 	},
-	isDragging(props, monitor) {
-		// return props.dragCardID = monitor.getItem().id;
-	}
+	// isDragging(props, monitor) {
+	// 	return props.dragCardID = monitor.getItem().id;
+	// }
 };
 
 const noteTarget = {
@@ -48,21 +48,11 @@ const noteTarget = {
 	}
 };
 
-function collectSource(connect, monitor) {
-	return {
-		connectDragSource: connect.dragSource(),
-		isDragging: monitor.isDragging()
-	};
-}
+@DragSource('item', noteSource, (connect)=>({
+	connectDragSource: connect.dragSource()
+}))
 
-function collectTarget(connect, monitor) {
-	return {
-		connectDropTarget: connect.dropTarget(),
-		isOver: monitor.isOver()
-	};
-}
-
-class Item extends PureComponent {
+class Item extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -136,10 +126,10 @@ class Item extends PureComponent {
 		this.props.updateGroupList(groups);
 	}
 	render() {
-		const { connectDragSource, isDragging, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked} = this.props;
+		const { connectDragSource, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked} = this.props;
 		const { x, y } = this.calGridItemPosition(gridx, gridy);
 		const { wPx, hPx } = this.calWHtoPx(width, height);
-		// console.log(name)
+		// console.log('card')
 		let cardDom;
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;
@@ -167,7 +157,7 @@ class Item extends PureComponent {
 						
 					}}
 				>
-					<div style={{ 'padding-left': '10px' }}>{id}</div>
+					<div style={{ 'paddingLeft': '10px' }}>{id}</div>
 					<div />
 					<div className='card-footer'>
 						<Checkbox
@@ -195,7 +185,7 @@ class Item extends PureComponent {
 }
 
 // const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
-const dragDropItem = (DragSource('item', noteSource, collectSource)(Item));
+const dragDropItem = ((Item));
 
 export default (connect(
 	(state) => ({
@@ -207,4 +197,4 @@ export default (connect(
 		updateShadowCard,
 		updateGroupList,
 	}
-)(dragDropItem))
+)(Item))

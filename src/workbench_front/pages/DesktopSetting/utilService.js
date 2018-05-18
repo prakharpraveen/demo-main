@@ -58,20 +58,20 @@ export const removeCardByGroupIndexAndCardID = (groups, groupIndex, cardID) => {
 	return resultCardArr[0];
 };
 //通过GroupID找到某个组，通过CardID找到该组内的卡片对象,并删除该卡片
-export const removeCardByGroupIDAndCardID = (groups, groupID, cardID) => {
-	let tmpGroupIndex;
-	let resultCardArr = [];
-	_.forEach(groups, (g, i) => {
-		if (g.pk_app_group === groupID) {
-			tmpGroupIndex = i;
-			return false;
-		}
-	});
-	resultCardArr = _.remove(groups[tmpGroupIndex].apps, (a) => {
-		return a.pk_appregister === cardID;
-	});
-	return resultCardArr[0];
-};
+// export const removeCardByGroupIDAndCardID = (groups, groupID, cardID) => {
+// 	let tmpGroupIndex;
+// 	let resultCardArr = [];
+// 	_.forEach(groups, (g, i) => {
+// 		if (g.pk_app_group === groupID) {
+// 			tmpGroupIndex = i;
+// 			return false;
+// 		}
+// 	});
+// 	resultCardArr = _.remove(groups[tmpGroupIndex].apps, (a) => {
+// 		return a.pk_appregister === cardID;
+// 	});
+// 	return resultCardArr[0];
+// };
 //
 export const setPropertyValueForCards = (groups, property, value) => {
 	_.forEach(groups, (g, index) => {
@@ -107,14 +107,6 @@ export const getAddedGroupItemCount = (groups) => {
 	return count;
 };
 //
-export const removeCardIDInSelectCardInGroupObj = (selectCardInGroupObj, groupID, cardID) => {
-	if (selectCardInGroupObj[groupID]) {
-		_.remove(selectCardInGroupObj[groupID], (c) => {
-			return c === cardID;
-		});
-	}
-};
-//
 export const setGridXGridYMaxInCards = (cardList) => {
 	_.forEach(cardList, (c) => {
 		c.gridy = 9999;
@@ -122,8 +114,6 @@ export const setGridXGridYMaxInCards = (cardList) => {
 };
 //已知放置格子数量, 计算容器的每一个格子多大
 export const calColWidth = (containerWidth, col, containerPadding, margin) => {
-	// const { containerWidth, col, containerPadding, margin } = this.props.layout;
-
 	if (margin) {
 		return (containerWidth - containerPadding[0] * 2 - margin[0] * (col + 1)) / col;
 	}
@@ -131,9 +121,6 @@ export const calColWidth = (containerWidth, col, containerPadding, margin) => {
 };
 //已知格子大小，计算容器一行放置格子数量
 export const calColCount = (defaultCalWidth, containerWidth, containerPadding, margin) => {
-	// const { calWidth } = this.props.defaultLayout;
-	// const { containerWidth, containerPadding, margin } = this.props.layout;
-
 	if (margin) {
 		return Math.floor((containerWidth - containerPadding[0] * 2 - margin[0]) / (defaultCalWidth + margin[0]));
 	}
@@ -176,6 +163,7 @@ export const hasCheckedCardInGroups = (groups) => {
 	});
 	return flag;
 };
+//
 export const removeCheckedCardsInGroups = (groups) => {
 	_.forEach(groups,(g)=>{
         _.remove(g.apps,(a)=>{

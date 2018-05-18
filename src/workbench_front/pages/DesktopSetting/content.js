@@ -242,7 +242,7 @@ class MyContent extends Component {
         const windowWidth = window.innerWidth - 60*2;
         const col = utilService.calColCount(defaultCalWidth, windowWidth, containerPadding, margin);
         const calWidth = utilService.calColWidth(clientWidth, col, containerPadding, margin);
-        console.log(clientWidth,calWidth,col);
+        // console.log(clientWidth,calWidth,col);
         layout.calWidth = layout.rowHeight = calWidth;
         layout.col = col;
         layout.containerWidth = clientWidth;
@@ -254,13 +254,10 @@ class MyContent extends Component {
 	render() {
 		const { groups, contentHeight, anchorHeight } = this.props;
 		return (
-			<Content style={{ height: contentHeight, 'margin-top':anchorHeight }}>
-				{/* <MyContentAnchor/> */}
+			<Content style={{ height: contentHeight, 'marginTop':anchorHeight }}>
 				<div className='nc-workbench-home-container'>
-				{this.initGroupItem(groups)}
+					{this.initGroupItem(groups)}
 				</div>
-				
-				{/* <div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div> */}
 			</Content>
 		);
 	}

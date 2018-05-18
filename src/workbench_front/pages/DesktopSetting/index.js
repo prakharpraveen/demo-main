@@ -18,6 +18,7 @@ import {GetQuery} from 'Pub/js/utils';
 import { connect } from 'react-redux';
 import { updateGroupList, updateRelateID } from 'Store/test/action';
 
+@DragDropContext(HTML5Backend)
 class Test extends Component {
 	constructor(props) {
 		super(props);
@@ -88,7 +89,7 @@ class Test extends Component {
 	}
 }
 
-const draDrop = DragDropContext(HTML5Backend)(Test);
+// const draDrop = DragDropContext(HTML5Backend)(Test);
 
 export default connect(
 	(state) => ({
@@ -97,4 +98,4 @@ export default connect(
 		updateGroupList,
 		updateRelateID
 	}
-)(draDrop);
+)(Test);
