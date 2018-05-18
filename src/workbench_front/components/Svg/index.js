@@ -6,7 +6,7 @@ class Svg extends Component{
     }
     render() {
         return (
-            <svg class="icon" style={{"width":`${this.props.width}px`,height:`${this.props.height}px`}} aria-hidden="true">
+            <svg className="icon" style={{"width":`${this.props.width}px`,height:`${this.props.height}px`}} aria-hidden="true">
                 <use xlinkHref={this.props.xlinkHref}></use>
             </svg>
         );

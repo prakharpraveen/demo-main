@@ -48,7 +48,7 @@ class ChooseImageForForm extends Component {
         return listData.map((item,index)=>{
             let {name,src,selected} = item;
             return (
-                <li className={selected?'img-selected':''}>
+                <li key={src} className={selected?'img-selected':''}>
                     <div title={name} onClick={()=>{this.handleSelect(item)}}>
                         {src.indexOf('/')===-1?<Svg width={80} height={80} xlinkHref={`#icon-${src}`}></Svg>:<img width='80' src={src} alt={name}/>}
                     </div>

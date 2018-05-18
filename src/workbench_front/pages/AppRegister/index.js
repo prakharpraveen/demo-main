@@ -4,8 +4,7 @@ import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-	setPageTemplateData,
-	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
+	setPageTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import SearchTree from './SearchTree';
 import ModuleFormCard from './ModuleFormCard';
@@ -159,7 +158,6 @@ class AppRegister extends Component {
 				};
 				this.props.setPageButtonData([]);
 				this.props.setPageTemplateData([]);
-				this.props.setPrintTemplateData([]);
 				this.props.setNodeData(pageData);
 				this.props.setOpType('page');
 				this.props.setBillStatus({
@@ -267,30 +265,6 @@ class AppRegister extends Component {
 								}
 								this.props.setNodeData(reqData);
 							}
-							// if (isNew) {
-							// 	if (this.props.optype === 'classify' || this.props.optype === 'app') {
-							// 		let treeData = {
-							// 			moduleid: data.data.pk_appregister,
-							// 			parentcode: this.props.parentData,
-							// 			systypecode: data.data.code,
-							// 			systypename: data.data.name
-							// 		};
-							// 		this.props.addTreeData(treeData);
-							// 	} else if(this.props.optype === 'page'){
-							// 		let treeData = {
-							// 			moduleid: data.data.pk_apppage,
-							// 			parentcode: this.props.parentData,
-							// 			systypecode: data.data.pagecode,
-							// 			systypename: data.data.pagename
-							// 		}
-							// 		this.props.addTreeData(treeData);
-							// 	} else {
-							// 		this.props.addTreeData(reqData);
-							// 	}
-							// 	this.props.setNodeData(data.data);
-							// } else {
-								
-							// }
 						} else {
 							Notice({ status: 'error', msg: res.error.message });
 						}
@@ -403,7 +377,7 @@ class AppRegister extends Component {
 		let { name, isShow, type } = btnObj;
 		if (isShow) {
 			return (
-				<Button className='margin-left-10' type={type} onClick={this.handleClick.bind(this, name)}>
+				<Button key={name} className='margin-left-10' type={type} onClick={this.handleClick.bind(this, name)}>
 					{name}
 				</Button>
 			);
@@ -544,7 +518,7 @@ class AppRegister extends Component {
 							style={{
 								background: '#fff',
 								width: '500px',
-								'min-height': 'calc(100vh - 64px - 48px)',
+								'minHeight': 'calc(100vh - 64px - 48px)',
 								height: `${this.state.siderHeight}px`,
 								overflowY: 'auto',
 								padding: '20px'
@@ -560,17 +534,15 @@ class AppRegister extends Component {
 	}
 }
 AppRegister.propTypes = {
-	setTreeData: PropTypes.func.isRequired,
 	optype: PropTypes.string.isRequired,
 	billStatus: PropTypes.object.isRequired,
-	setBillStatus: PropTypes.object.isRequired,
+	setBillStatus: PropTypes.func.isRequired,
 	parentData: PropTypes.string.isRequired,
 	setOpType: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
 	setAppParamData: PropTypes.func.isRequired,
 	setPageButtonData: PropTypes.func.isRequired,
 	setPageTemplateData: PropTypes.func.isRequired,
-	setPrintTemplateData: PropTypes.func.isRequired,
 	getFromData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
@@ -597,7 +569,6 @@ export default connect(
 		setAppParamData,
 		setPageButtonData,
 		setPageTemplateData,
-		setPrintTemplateData,
 		setParentData
 	}
 )(AppRegister);

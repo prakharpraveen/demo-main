@@ -27,7 +27,7 @@ class TabsLink extends Component {
 		return tabs.map((item, index) => {
 			let { anchor, text } = item;
 			return (
-				<li>
+				<li key={anchor}>
 					<Link activeClass='active' to={anchor} offset={-40} spy={true} smooth={true} duration={500}>
 						{text}
 					</Link>

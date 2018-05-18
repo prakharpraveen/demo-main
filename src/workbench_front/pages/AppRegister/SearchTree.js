@@ -15,7 +15,6 @@ import {
 	setAppParamData,
 	setPageButtonData,
 	setPageTemplateData,
-	setPrintTemplateData,
 	delTreeData,
 	reqTreeData
 } from 'Store/AppRegister/action';
@@ -208,7 +207,7 @@ class SearchTree extends Component {
 		if (key === '0') {
 			this.props.setNodeData('');
 			this.props.setOpType('');
-			this.props.setParentData(null);
+			this.props.setParentData('');
 		} else {
 			let {
 				treeDataArray
@@ -261,11 +260,9 @@ class SearchTree extends Component {
 								apppageVO,
 								appButtonVOs,
 								pageTemplets,
-								printSystemplateVO,
 							} = data.data;
 							this.props.setPageButtonData(appButtonVOs);
 							this.props.setPageTemplateData(pageTemplets);
-							this.props.setPrintTemplateData(printSystemplateVO);
 							this.props.setNodeData(apppageVO);
 						}
 					}
@@ -278,7 +275,7 @@ class SearchTree extends Component {
 			if (selectedNodeData.parentcode) {
 				this.props.setParentData(selectedNodeData.parentcode);
 			} else {
-				this.props.setParentData(null);
+				this.props.setParentData('');
 			}
 			this.props.setNodeData(selectedNodeData);
 			this.props.updateTreeData(this.updateNodeData);
@@ -409,7 +406,6 @@ SearchTree.propTypes = {
 	setAppParamData: PropTypes.func.isRequired,
 	setPageButtonData: PropTypes.func.isRequired,
 	setPageTemplateData: PropTypes.func.isRequired,
-	setPrintTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
 	reqTreeData: PropTypes.func.isRequired
@@ -426,7 +422,6 @@ export default connect(
 		setAppParamData,
 		setPageButtonData,
 		setPageTemplateData,
-		setPrintTemplateData,
 		addTreeData,
 		delTreeData,
 		reqTreeData

@@ -6,7 +6,7 @@ import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash';
-import { setPageButtonData,setPageTemplateData,setPrintTemplateData } from 'Store/AppRegister/action';
+import { setPageButtonData,setPageTemplateData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const Option = Select.Option;
@@ -281,61 +281,6 @@ class PageTable extends Component {
 				}
 			}
 		];
-		this.columnsPt = [
-			{
-				title: '序号',
-				dataIndex: 'num',
-				width: '5%'
-			},
-			{
-				title: '模板编码',
-				dataIndex: 'templateid',
-				width: '25%',
-				render: (text, record) => this.renderColumns(text, record, 'templateid')
-			},
-			{
-				title: '模板名称',
-				dataIndex: 'templatename',
-				width: '15%',
-				render: (text, record) => this.renderColumns(text, record, 'templatename')
-			},
-			{
-				title: '所属模块',
-				width: '10%',
-				dataIndex: 'moduleid',
-				render: (text, record) => this.renderColumns(text, record, 'moduleid')
-			},
-			{
-				title: '操作',
-				dataIndex: 'operation',
-				render: (text, record) => {
-					const { editable } = record;
-					return (
-						<div className='editable-row-operations'>
-							{editable ? (
-								<span>
-									<a className='margin-right-5' onClick={() => this.save(record)}>
-										保存
-									</a>
-									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
-										<a className='margin-right-5'>取消</a>
-									</Popconfirm>
-								</span>
-							) : (
-								<span>
-									<a className='margin-right-5' onClick={() => this.edit(record)}>
-										编辑
-									</a>
-									<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
-										<a className='margin-right-5'>删除</a>
-									</Popconfirm>
-								</span>
-							)}
-						</div>
-					);
-				}
-			}
-		];
 		this.cacheData;
 	}
 	components = {
@@ -499,7 +444,6 @@ class PageTable extends Component {
 	cancel(record) {
 		let newData = this.getNewData();
 		const target = newData.filter((item) => record.num === item.num)[0];
-
 		if (target) {
 			delete target.editable;
 			this.setNewData(this.cacheData);
@@ -542,26 +486,16 @@ class PageTable extends Component {
 				resid:'',
 				code: ''
 			});
-		}else if(activeKey === '3'){
-			newData.push({
-				editable: true,
-				templatename: '',
-				parent_id: parentId,
-				isenable: true,
-				pagecode: ''
-			});
 		}
 		this.setNewData(newData);
 	}
 	getNewData() {
 		let { activeKey } = this.state;
-		let { appButtonVOs,pageTemplets,printSystemplateVO } = this.props;
+		let { appButtonVOs,pageTemplets } = this.props;
 		if (activeKey === '1') {
 			return _.cloneDeep(appButtonVOs);
 		} else if(activeKey === '2'){
 			return _.cloneDeep(pageTemplets);
-		}else if(activeKey === '3'){
-			return _.cloneDeep(printSystemplateVO);
 		}
 	}
 	setNewData(newData) {
@@ -570,8 +504,6 @@ class PageTable extends Component {
 			this.props.setPageButtonData(newData);
 		} else if(activeKey === '2'){
 			this.props.setPageTemplateData(newData);
-		} else if(activeKey === '3'){
-			this.props.setPrintTemplateData(newData);
 		}
 	}
 	/**
@@ -581,14 +513,14 @@ class PageTable extends Component {
 		return (
 			<div>
 				{this.state.activeKey === '1'?<span style={{color:'#e14c46'}}>提示：按钮可通过拖拽进行排序！</span>:null}
-				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
+				<Button onClick={() => this.add()} style={{ 'marginLeft': '8px' }}>
 					新增行
 				</Button>
 			</div>
 		);
 	};
 	render() {
-		let { appButtonVOs=[],pageTemplets=[],printSystemplateVO=[] } = this.props;
+		let { appButtonVOs=[],pageTemplets=[] } = this.props;
 		return (
 			<Tabs
 				onChange={(activeKey) => {
@@ -633,19 +565,6 @@ class PageTable extends Component {
 						size='middle'
 					/>
 				</TabPane>
-				<TabPane tab='打印模板注册' key='3'>
-					<Table
-						bordered
-						pagination={false}
-						rowKey='num'
-						dataSource={printSystemplateVO.map((item, index) => {
-							item.num = index + 1;
-							return item;
-						})}
-						columns={this.columnsSt}
-						size='middle'
-					/>
-				</TabPane>
 			</Tabs>
 		);
 	}
@@ -655,9 +574,7 @@ PageTable.propTypes = {
 	billStatus: PropTypes.object.isRequired,
 	appButtonVOs: PropTypes.array.isRequired,
 	pageTemplets: PropTypes.array.isRequired,
-	printSystemplateVO: PropTypes.array.isRequired,
 	setPageTemplateData: PropTypes.func.isRequired,
-	setPrintTemplateData: PropTypes.func.isRequired,
 	setPageButtonData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired
 };
@@ -667,11 +584,10 @@ export default connect(
 		return {
 			appType: state.AppRegisterData.appType,
 			billStatus: state.AppRegisterData.billStatus,
-			printSystemplateVO: state.AppRegisterData.printSystemplateVO,
 			pageTemplets: state.AppRegisterData.pageTemplets,
 			appButtonVOs: state.AppRegisterData.appButtonVOs,
 			nodeData: state.AppRegisterData.nodeData
 		};
 	},
-	{ setPageButtonData,setPageTemplateData,setPrintTemplateData }
+	{ setPageButtonData,setPageTemplateData }
 )(DragFromeTable);

@@ -1,3 +1,4 @@
+import React,{Component} from 'react';
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import ChooseImageForForm from 'Components/ChooseImageForForm';
 const FormItem = Form.Item;
@@ -42,7 +43,7 @@ const imgs = [
  */
 const createOption = (options) => {
     return options.map((item, index) => {
-        return <Option value={item.value}>{item.text}</Option>;
+        return <Option key={item.value} value={item.value}>{item.text}</Option>;
     });
 };
 /**

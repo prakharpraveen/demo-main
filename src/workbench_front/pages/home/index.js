@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeIntlData, saveImg, clearData } from 'Store/home/action';
 import Masonry from 'masonry-layout';
 import Ajax from 'Pub/js/ajax';
 import { Link as TabLink, Element } from 'react-scroll';
@@ -103,6 +102,7 @@ class Home extends Component {
 		return (
 			<div
 				className='grid-item'
+				key = {pk_appregister}
 				id={mountid}
 				style={{ width: domWidth, height: domHeight }}
 				onClick={() => {
@@ -117,7 +117,7 @@ class Home extends Component {
 								<Svg width={100} height={100} xlinkHref={`#icon-${image_src}`}></Svg>
 							</div>):(<div
 							className='icon'
-							style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'background-size': 'contain' }}
+							style={{ background: `url(${image_src}) no-repeat 0px 0px`, 'backgroundSize': 'contain' }}
 						/>)}
 					</div>
 				</div>
@@ -167,7 +167,7 @@ class Home extends Component {
 				<div className='nc-workbench-home-container'>
 					<Element name='no1' className='n-col padding-left-70 padding-right-60'>
 						<div className='title'>分组一</div>
-						<div class='grid'>
+						<div className='grid'>
 							{paths.length > 0 ? (
 								this.createWidgetMountPoint(
 									paths.map((item) => {
@@ -227,20 +227,6 @@ const scrollToAnchor = (anchorName) => {
 	}
 };
 
-Home.PropTypes = {
-	formData: PropTypes.object.isRequired,
-	changeIntlData: PropTypes.func.isRequired,
-	saveImg: PropTypes.func.isRequired,
-	clearData: PropTypes.func.isRequired
+Home.propTypes = {
 };
-export default connect(
-	(state) => ({
-		formData: state.formData,
-		proData: state.proData
-	}),
-	{
-		changeIntlData,
-		saveImg,
-		clearData
-	}
-)(Home);
+export default connect((state) => ({}),{})(Home);

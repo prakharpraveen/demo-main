@@ -2,7 +2,7 @@ import * as AppRegister from './action-type';
 
 let defaultState = {
 	// 树节点对象
-	nodeData: '',
+	nodeData: {},
 	// 	节点类型 模块、应用分类、应用
 	optype: '',
 	// 页面当前状态
@@ -18,8 +18,6 @@ let defaultState = {
 	appButtonVOs:[],
 	// 页面模板数据
 	pageTemplets:[],
-	// 页面打印模板数据
-	printSystemplateVO:[],
 	// 父节点信息
 	parentData: '',
 	// 应用类型 1 为 小应用 2 为 小部件
@@ -27,7 +25,13 @@ let defaultState = {
 	// 更新树节点
 	updateTreeData: () => {},
 	// 请求树数据
-	reqTReeData: ()=>{}
+	reqTreeData: ()=>{},
+	// 获取表单数据
+	getFromData: ()=>{},
+	// 添加树节点
+	addTreeData: ()=>{},
+	// 删除树节点
+	delTreeData: ()=>{}
 };
 // 首页表单数据
 export const AppRegisterData = (state = defaultState, action = {}) => {

@@ -23,10 +23,6 @@ const Test = Loadable({
 	loader: () => import('Pages/test'),
 	loading: Loading
 });
-const Performance = Loadable({
-	loader: () => import('Pages/performance'),
-	loading: Loading
-});
 const Drag = Loadable({
 	loader: () => import('Pages/drag'),
 	loading: Loading
@@ -56,10 +52,6 @@ const routes = [
 	{
 		path: '/test',
 		component: Test
-	},
-	{
-		path: '/pf',
-		component: Performance
 	},
 	{
 		path: '/drag',
