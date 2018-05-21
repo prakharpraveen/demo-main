@@ -10,6 +10,9 @@ import { withRouter } from 'react-router';
 import { changeDrawer } from 'Store/appStore/action';
 import IntlCom from './../intl';
 import SideDrawer from './SideDrawer';
+import Breadcrumb from 'Components/Breadcrumb';
+// 工作桌面单页通用布局
+import TabsLink from 'Components/TabsLink';
 import './index.less';
 const Option = Select.Option;
 /**
@@ -22,12 +25,13 @@ class Layout extends Component {
 			nodeName: '首页'
 		};
 	}
-
+	
 	handleChange = (value) => {
 		console.log(`selected ${value}`);
 	};
 
 	componentWillMount() {
+		console.log(this.props.location.pathname);
 		let { n } = GetQuery(this.props.location.search);
 		if (n) {
 			let nodeName = decodeURIComponent(n);
@@ -42,54 +46,44 @@ class Layout extends Component {
 		let { isOpen } = this.props;
 		return (
 			<div className='nc-workbench-layout'>
-				<nav  field="nccwb-header" fieldname={nodeName}  className='nc-workbench-nav nccwb-header' style={{ 'zIndex': '999' }}>
-					<div className='nav-left n-left n-v-middle'>
-						<div
-							className='nc-workbench-hp margin-right-10'
-							onClick={() => {
-								this.props.changeDrawer(!isOpen);
-							}}
-						>
-							<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
+				<div className='nc-workbench-top-container  nccwb-header' style={{ 'zIndex': '999' }}>
+					<nav  field="nccwb-header" fieldname={nodeName}  className='nc-workbench-nav'>
+						<div className='nav-left n-left n-v-middle'>
+							<div
+								className='nc-workbench-hp margin-right-10'
+								onClick={() => {
+									this.props.changeDrawer(!isOpen);
+								}}
+							>
+								<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
+							</div>
+							<div>
+								<Select defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
+									<Option value='yonyou'>用友网络科技股份有限公司</Option>
+									<Option value='yyjr'>用友（yonyou）</Option>
+								</Select>
+							</div>
 						</div>
-						<div>
-							<Select defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
-								<Option value='yonyou'>用友网络科技股份有限公司</Option>
-								<Option value='yyjr'>用友（yonyou）</Option>
-							</Select>
+						<div className='nav-middle'>
+							{/* <Link to='/'>首页</Link> */}
+							<span>{nodeName}</span>
 						</div>
+						<div className='nav-right n-right n-v-middle'>
+							<span className='margin-right-10'>
+								<i className='iconfont icon-sousuo' />
+							</span>
+							<span className='margin-right-10'>
+								<i className='iconfont icon-quanbuyingyong' />
+							</span>
+							<span className='margin-right-10'>
+								<i className='iconfont icon-xiaoxi' />
+							</span>
+						</div>
+					</nav>
+					<div className='nccwb-header-info'>
+						{this.props.location.pathname === '/'?<TabsLink />:<Breadcrumb/>}
 					</div>
-					<div className='nav-middle'>
-						{/* <Link to='/'>首页</Link> */}
-						<span>{nodeName}</span>
-					</div>
-					<div className='nav-right n-right n-v-middle'>
-						<span className='margin-right-10'>
-							<i className='iconfont icon-sousuo' />
-						</span>
-						<span className='margin-right-10'>
-							<i className='iconfont icon-quanbuyingyong' />
-						</span>
-						<span className='margin-right-10'>
-							<i className='iconfont icon-xiaoxi' />
-						</span>
-					</div>
-					{/* <ul className='nc-workbench-menu '>
-						<li>
-							<Link to='/'>Home</Link>
-						</li>
-						<li>
-							<span onClick={openNew.bind(this, 'http://www.china.com.cn/', 'new')}>打开新页签</span>
-						</li>
-						<li>
-							<span onClick={openNew.bind(this, 'http://www.baidu.com/')}>在当前页打开</span>
-						</li>
-						<li>
-							<IntlCom />
-						</li>
-						<li>{intl.get('hello')}</li>
-					</ul> */}
-				</nav>
+				</div>
 				<div className='nc-workbench-container'>{this.props.children}</div>
 				<SideDrawer />
 			</div>

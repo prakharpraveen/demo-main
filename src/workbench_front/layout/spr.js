@@ -2,7 +2,7 @@ import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 import moment from 'moment';
 let resTime;
-export const sprLog =(type)=>{
+export const sprLog =(type,callback)=>{
     if(type){
         Ajax({
             url:'/nccloud/platform/spr/start.do',
@@ -14,6 +14,7 @@ export const sprLog =(type)=>{
                 let {data} = res.data;
                 if(data){
                     resTime = data;
+                    callback(!type);
                 }else{
                     Notice({ status: 'error', msg: res.error.message });
                 }
@@ -30,6 +31,7 @@ export const sprLog =(type)=>{
             success:(res)=>{
                 let {data} = res.data;
                 if(data){
+                    callback(!type);
                     win.location.href = data;
                     win.focus();
                 }else{
@@ -39,5 +41,4 @@ export const sprLog =(type)=>{
             }
         });
     }
-    return !type;
 }

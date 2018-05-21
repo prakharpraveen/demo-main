@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import Masonry from 'masonry-layout';
 import Ajax from 'Pub/js/ajax';
 import { Link as TabLink, Element } from 'react-scroll';
-// 工作桌面单页通用布局
-import TabsLink from 'Components/TabsLink';
 import Svg from 'Components/Svg';
 import './index.less';
 
@@ -163,9 +161,31 @@ class Home extends Component {
 		let { paths } = this.state;
 		return (
 			<div className='nc-workbench-home-page'>
-				<TabsLink />
 				<div className='nc-workbench-home-container'>
 					<Element name='no1' className='n-col padding-left-70 padding-right-60'>
+						<div className='title'>分组一</div>
+						<div className='grid'>
+							{paths.length > 0 ? (
+								this.createWidgetMountPoint(
+									paths.map((item) => {
+										return item;
+									})
+								)
+							) : (
+								<div
+									className='grid-item app-item widget-container'
+									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
+								>
+									<div className='app-item'>
+										<span className='icon'>loa</span>
+										<span className='title'>loading</span>
+									</div>
+								</div>
+							)}
+							{/* {createItem()} */}
+						</div>
+					</Element>
+					<Element name='no2' className='n-col padding-left-70 padding-right-60'>
 						<div className='title'>分组一</div>
 						<div className='grid'>
 							{paths.length > 0 ? (

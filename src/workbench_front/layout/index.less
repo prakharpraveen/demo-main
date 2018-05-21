@@ -1,69 +1,81 @@
 #ncc .nc-workbench-layout {
-    .nc-workbench-nav {
+    .nc-workbench-top-container{
         width: 100%;
-        height: 48px;
+        height: 80px;
         position: fixed;
         top: 0;
         left: 0;
-        border-bottom: 1px solid #eaeaea;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        span {
-            cursor: pointer;
-        }
-        .nav-left {
-            padding: 0 15px;
-            width: 310px;
-            .nc-workbench-hp {
-                background-image: linear-gradient(-180deg, #b4bfc5 3%, #dbe1e4 98%);
-                background: #bec1c8;
-                border: 1px solid #fff;
-                border-radius: 100px;
-                color: #fff;
-                overflow: hidden;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                img {
+        flex-direction: column;
+        border-bottom: 1px solid #eaeaea;
+        .nc-workbench-nav { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 48px;
+            span {
+                cursor: pointer;
+            }
+            .nav-left {
+                padding: 0 15px;
+                width: 310px;
+                .nc-workbench-hp {
+                    background-image: linear-gradient(-180deg, #b4bfc5 3%, #dbe1e4 98%);
+                    background: #bec1c8;
+                    border: 1px solid #fff;
+                    border-radius: 100px;
+                    color: #fff;
+                    overflow: hidden;
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
+                    img {
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .nav-middle {
+            }
+            .nav-right {
+                width: 310px;
+                padding: 0 15px;
+            }
+            .nc-workbench-menu {
+                margin: 0;
+                height: 48px;
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                li {
+                    list-style-type: none;
+                    margin-right: 15px;
+                    a {
+                        text-decoration: none;
+                    }
+                    span {
+                        cursor: pointer;
+                    }
                 }
             }
         }
-        .nav-middle {
-        }
-        .nav-right {
-            width: 310px;
-            padding: 0 15px;
-        }
-        .nc-workbench-menu {
-            margin: 0;
-            height: 48px;
+        .nccwb-header-info{
             width: 100%;
+            height: 32px;
+            padding: 0 32px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            li {
-                list-style-type: none;
-                margin-right: 15px;
-                a {
-                    text-decoration: none;
-                }
-                span {
-                    cursor: pointer;
-                }
-            }
         }
     }
-
     .nc-workbench-container {
         flex: 1;
         // margin-top: 40px;
         .nc-workbench-iframe {
-            margin-top: 48px;
-            height: calc(100vh - 53px);
+            margin-top: 80px;
+            height: calc(100vh - 85px);
             iframe {
                 width: 100%;
                 height: 100%;
@@ -72,7 +84,7 @@
     }
     .nc-workbench-drawer {
 		&>div{
-			height: calc(100% - 48px) !important;
+			height: calc(100% - 80px) !important;
 			top: 48px !important;
 		}
         .drawer-content {

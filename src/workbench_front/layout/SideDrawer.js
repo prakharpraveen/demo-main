@@ -26,9 +26,7 @@ class SideDrawer extends Component {
 	 */
 	handleSprClick = ()=>{
 		let { sprType } = this.state;
-		sprType = sprLog(sprType);
-		console.log(sprType);
-		this.setState({ sprType });
+		sprType = sprLog(sprType,(sprType)=>{this.setState({ sprType })});
 	}
 	render() {
 		let { isOpen } = this.props;
@@ -54,7 +52,7 @@ class SideDrawer extends Component {
 						<div className='setting-content'>
 							<div className='setting-btn'>
 								<i className="iconfont icon-bianji"></i>
-								<span>个人设置</span>
+								<Link to={`ds?n=个人设置`}>个人设置</Link>
 							</div>
 							<div className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>

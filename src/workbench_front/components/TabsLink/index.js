@@ -6,10 +6,10 @@ const tabs = [
 		anchor: 'no1',
 		text: '分组一'
 	},
-	// {
-	// 	anchor: 'no2',
-	// 	text: '分组二'
-	// },
+	{
+		anchor: 'no2',
+		text: '分组二'
+	},
 	// {
 	// 	anchor: 'no3',
 	// 	text: '分组三'
@@ -28,7 +28,7 @@ class TabsLink extends Component {
 			let { anchor, text } = item;
 			return (
 				<li key={anchor}>
-					<Link activeClass='active' to={anchor} offset={-40} spy={true} smooth={true} duration={500}>
+					<Link activeClass='active' to={anchor} offset={-40} hashSpy={true} spy={true} smooth={true} duration={500}>
 						{text}
 					</Link>
 				</li>
