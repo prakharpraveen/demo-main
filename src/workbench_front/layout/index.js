@@ -78,7 +78,7 @@ class Layout extends Component {
 								<i className='iconfont icon-sousuo' />
 							</span>
 							<span className='margin-right-10'>
-								<i className='iconfont icon-quanbuyingyong' />
+								<Link to={`all`}><i className='iconfont icon-quanbuyingyong' /></Link>
 							</span>
 							<span className='margin-right-10'>
 								<i className='iconfont icon-xiaoxi' />

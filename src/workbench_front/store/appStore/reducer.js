@@ -4,7 +4,8 @@ let defaultState = {
 	lang: 'zh-CN',
 	userInfo: 'xxx',
 	intlDone: false,
-	isOpen: false
+	isOpen: false,
+	userID:'0001Z51000000005I123'
 };
 // 首页表单数据
 export const appData = (state = defaultState, action = {}) => {

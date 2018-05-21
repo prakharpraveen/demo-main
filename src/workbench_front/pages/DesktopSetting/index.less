@@ -46,6 +46,10 @@
 					background: rgba(244, 245, 247, 1);
 					.result-header-name {
 						cursor: pointer;
+						i{
+							font-size: 12px;
+							color: rgba(0,0,0,.25);
+						}
 					}
 				}
 				.result-app-list {
@@ -60,6 +64,7 @@
 							.list-item-content {
 								padding: 3px 4px;
 								border: 1px solid rgba(204, 204, 204, 1);
+								border-radius: 4px ; 
 								.title {
 									display: flex;
 									justify-content: space-between;
@@ -78,16 +83,17 @@
 	}
 }
 .content-anchor{
-	display: flex;
-	left: 300px;
-    top: 68px;
+	padding-top: 2px;
+    display: flex;
+    left: 300px;
+    top: 80px;
     position: fixed;
     height: 48px;
-	width: calc(100vw - 330px);
-	overflow-x: auto;
+    width: calc(100vw - 330px);
+    overflow-x: auto;
     overflow-y: hidden;
-	margin-left: 10px;
-	border-bottom: 1px solid #ccc;
+    margin-left: 10px;
+    border-bottom: 1px solid #ccc;
 	li{
 		margin-left:5px;
 		margin-bottom: 5px; 

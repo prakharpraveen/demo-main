@@ -160,7 +160,7 @@ class MyFooter extends Component {
 			tmpData.push(tmp);
 		});
 		const saveData = {
-			relateid: this.props.relateid,
+			relateid: this.props.relateidObj.data,
 			data: tmpData
 		};
 		console.log(saveData);
@@ -226,8 +226,7 @@ export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
-		col: state.templateDragData.layout.col,
-		relateid: state.templateDragData.relateid
+		col: state.templateDragData.layout.col
 	}),
 	{
 		updateGroupList

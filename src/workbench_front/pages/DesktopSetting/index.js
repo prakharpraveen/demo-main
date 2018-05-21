@@ -16,13 +16,18 @@ import MyFooter from './footer';
 import MyContent from './content';
 import {GetQuery} from 'Pub/js/utils';
 import { connect } from 'react-redux';
-import { updateGroupList, updateRelateID } from 'Store/test/action';
+import * as utilService from './utilService';
+import { updateGroupList } from 'Store/test/action';
 
 @DragDropContext(HTML5Backend)
 class Test extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		const urlRequestObj = GetQuery(this.props.location.search);
+		const relateidObj = utilService.getRelateidObj(urlRequestObj.pk_responsibility, this.props.userID)
+		this.state = {
+			relateidObj:relateidObj
+		};
 	}
 
 	componentWillMount() {
@@ -30,31 +35,26 @@ class Test extends Component {
 	}
 
 	componentDidMount() {
-		const urlRequestObj = GetQuery(this.props.location.search);
-		let relateid;
-		if(urlRequestObj.pk_responsibility){
-			relateid = urlRequestObj.pk_responsibility;
-		}
+		
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			data: {
-				// 'cuserid': '0001Z5100000000396E0'
-				relateid: relateid
+				relateid: this.state.relateidObj.data
 			},
 			success: (res) => {
 				if (res) {
-					
 					let { data, success } = res.data;
-					if (success && data && data.length > 0) {
-						_.forEach(data[0].groups, (g) => {
-							g.type = "group";
-							_.forEach(g.apps,(a)=>{
-								a.isShadow = false;
-								a.isChecked = false;
-							})
-						});
-						this.props.updateGroupList(data[0].groups);
-						this.props.updateRelateID(relateid)
+					if (success && data ) {
+						if(data.length > 0){
+							_.forEach(data[0].groups, (g) => {
+								g.type = "group";
+								_.forEach(g.apps,(a)=>{
+									a.isShadow = false;
+									a.isChecked = false;
+								})
+							});
+							this.props.updateGroupList(data[0].groups);
+						}
 					}
 				}
 			}
@@ -63,27 +63,23 @@ class Test extends Component {
 
 	render() {
 		console.log("全部");
-		//header 48px,breadcrumb 20px, footer 48px, anchor 48px;
+		//header 80px, footer 48px, anchor 48px;
+		const contentHeight = 'calc(100vh - 176px)';
+		const siderHeight = 'calc(100vh - 80px)';
 		const anchorHeight = '48px';
-		const contentHeight = 'calc(100vh - 164px)';
-		const siderHeight = 'calc(100vh - 68px)';
 		return (
 			<Layout>
 				{/* Header占位符 */}
-				<Header style={{ height: '48px' }}></Header>
-
-				<div className="bread-crumb" style={{height:'20px'}}>
-				面包屑
-				</div>
+				<Header style={{ height: '80px' }}></Header>
 
 				<MyContentAnchor />
 			
 				<Layout>
-					<MySider contentHeight={siderHeight}/>
+					<MySider contentHeight={siderHeight} relateidObj={this.state.relateidObj}/>
 					<MyContent contentHeight = {contentHeight}  anchorHeight={anchorHeight}/>
 				</Layout>
 
-				<MyFooter />
+				<MyFooter relateidObj={this.state.relateidObj}/>
 			</Layout>
 		);
 	}
@@ -93,9 +89,9 @@ class Test extends Component {
 
 export default connect(
 	(state) => ({
+		userID : state.appData.userID
 	}),
 	{
-		updateGroupList,
-		updateRelateID
+		updateGroupList
 	}
 )(Test);

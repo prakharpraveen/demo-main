@@ -3,10 +3,11 @@ import _ from 'lodash';
 import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal, Switch } from 'antd';
 import SiderCard from './siderCard.js';
 import { connect } from 'react-redux';
-import {collision,layoutCheck} from './collision';
-import {compactLayout} from './compact';
+import { collision, layoutCheck } from './collision';
+import { compactLayout } from './compact';
 import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
+import {GetQuery} from 'Pub/js/utils';
 import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
@@ -24,7 +25,8 @@ class MySider extends Component {
 		};
 	}
 	componentDidMount() {
-		Ajax({
+		const relateidObj = this.props.relateidObj;
+		let ajaxObj = {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			success: (res) => {
 				if (res) {
@@ -34,26 +36,34 @@ class MySider extends Component {
 					}
 				}
 			}
-		});
+		};
+		if(relateidObj.type === 'userID'){
+			ajaxObj.data = { userid: relateidObj.data }
+		}
+		Ajax(ajaxObj);
 	}
-	setModalVisible=(modalVisible) => {
-		this.setState({ modalVisible});
-	}
+	showModalVisible = () => {
+		this.setModalVisible(true);
+	};
+	setModalVisible = (modalVisible) => {
+		this.setState({ modalVisible });
+	};
 	//搜索框文本改变
-	onInputChange =(e) =>{
+	onInputChange = (e) => {
 		let _serachText = e.target.value;
 		// console.log(_groupName);
 		this.state.searchValue = _serachText;
-	}
+	};
 	//应用名模糊搜索
-	onInputSearch=()=> {
+	onInputSearch = () => {
+		const relateidObj = this.props.relateidObj;
+		const ajaxData =
+			relateidObj.type === 'userID'
+				? { search_content: this.state.searchValue, userid: relateidObj.data }
+				: { search_content: this.state.searchValue };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
-			data: {
-				search_content: this.state.searchValue,
-				userid: '1111Z510000000039689'
-				// search_content:'采购'
-			},
+			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
@@ -62,20 +72,22 @@ class MySider extends Component {
 			}
 		});
 		console.log(this.state.searchValue, '搜索开始');
-	}
+	};
 	//领域模块搜索
-	onCascaderChange = (value)=> {
+	onCascaderChange = (value) => {
 		let cascaderValueArr = value;
 		if (cascaderValueArr.length === 1) {
 			return;
 		}
+		const relateidObj = this.props.relateidObj;
 		const ownModuleID = cascaderValueArr[1];
+		const ajaxData =
+			relateidObj.type === 'userID'
+				? { own_module: ownModuleID, userid: relateidObj.data }
+				: { own_module: ownModuleID };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
-			data: {
-				own_module: ownModuleID
-				// search_content:'采购'
-			},
+			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
@@ -93,12 +105,12 @@ class MySider extends Component {
 			}
 		});
 		console.log(value, '选择', this.state);
-	}
+	};
 	//切换搜索状态
-	switchSearch =()=> {
+	switchSearch = () => {
 		const { showSearch } = this.state;
 		this.setState({ showSearch: !showSearch });
-	}
+	};
 	//获取sider上方的搜索框
 	getSearchDom() {
 		let itemDom;
@@ -110,9 +122,7 @@ class MySider extends Component {
 						style={{ width: '213px' }}
 						onPressEnter={this.onInputSearch}
 						onChange={this.onInputChange}
-						addonAfter={
-							<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />
-						}
+						addonAfter={<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />}
 					/>
 					<span className='switch-search-cancel' onClick={this.switchSearch}>
 						取消
@@ -141,7 +151,7 @@ class MySider extends Component {
 	getResultDom() {
 		return this.state.appGroupArr.map((item, index) => {
 			return (
-				<div className='result-group-list'>
+				<div className='result-group-list' key={index}>
 					<h4 className='result-header'>
 						<Checkbox
 							checked={item.checkedAll}
@@ -150,20 +160,22 @@ class MySider extends Component {
 								this.onCheckAllChange(e, index);
 							}}
 						/>
+						<strong>
 						<span
 							className='result-header-name'
 							onClick={() => {
 								this.onChangeShowHide(index);
 							}}
 						>
-							{item.label}
+							&nbsp;{item.label}&nbsp;
 							{item.isShow ? <Icon type='down' /> : <Icon type='right' />}
 						</span>
+						</strong>
 					</h4>
 					<div className='result-app-list' style={{ display: item.isShow ? 'flex' : 'none' }}>
 						{item.children.map((child, i) => {
 							return (
-								<div className='app-col'>
+								<div className='app-col' key={i}>
 									<div className='list-item'>
 										<SiderCard
 											id={child.value}
@@ -186,15 +198,15 @@ class MySider extends Component {
 			);
 		});
 	}
-	
+
 	//所有结果展开/收缩显示
-	allShowOrHide =(value)=> {
+	allShowOrHide = (value) => {
 		let { appGroupArr, isAllShow } = this.state;
 		_.forEach(appGroupArr, (a) => {
 			a.isShow = value;
 		});
 		this.setState({ appGroupArr, isAllShow: value });
-	}
+	};
 	//单个结果展开/收缩展示
 	onChangeShowHide(index) {
 		let { appGroupArr } = this.state;
@@ -275,23 +287,23 @@ class MySider extends Component {
 							className={this.hasChechedItem() ? 'add' : 'cannot-add'}
 							type='plus-circle-o'
 							title='占位符'
-							onClick={() => {
-								this.setModalVisible(true);
-							}}
+							onClick={this.showModalVisible}
 						/>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 				</div>
-				<MyModal appGroupArr={this.state.appGroupArr} setModalVisible={this.setModalVisible}  modalVisible={this.state.modalVisible} />
-				
+				<MyModal
+					appGroupArr={this.state.appGroupArr}
+					setModalVisible={this.setModalVisible}
+					modalVisible={this.state.modalVisible}
+				/>
 			</Sider>
 		);
 	}
 }
 export default connect(
 	(state) => ({
+		userID : state.appData.userID
 	}),
-	{
-	
-	}
+	{}
 )(MySider);

@@ -157,7 +157,7 @@ class Item extends Component {
 						
 					}}
 				>
-					<div style={{ 'paddingLeft': '10px' }}>{id}</div>
+					<div style={{ 'paddingLeft': '10px' }}>{name}</div>
 					<div />
 					<div className='card-footer'>
 						<Checkbox

@@ -149,7 +149,6 @@ export const layoutHorizontalRowLength= (layout) => {
 export const getContainerMaxHeight = (cards, rowHeight, margin) => {
 	//行转列并且分组
 	const resultRow = layoutBottom(cards)
-	console.log(resultRow);
 	return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
 };
 //计算卡片容器的最大高度
@@ -199,3 +198,18 @@ export const removeCheckedCardsInGroups = (groups) => {
         })
     })
 };
+export const getRelateidObj = (pk_responsibility, userID)=>{
+	let relateidObj;
+	if(pk_responsibility){
+		relateidObj ={
+			data:pk_responsibility,
+			type:'responsibility'
+		}
+	}else{
+		relateidObj ={
+			data:userID,
+			type:'userID'
+		}
+	}
+	return relateidObj;
+}

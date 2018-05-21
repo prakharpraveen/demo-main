@@ -35,6 +35,10 @@ const AppRegister = Loadable({
 	loader: () => import('Pages/AppRegister'),
 	loading: Loading
 });
+const AllApps = Loadable({
+	loader: () => import('Pages/AllApps'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -65,6 +69,10 @@ const routes = [
 		path: '/ar',
 		exact: true,
 		component: AppRegister
+	},
+	{
+		path: '/all',
+		component: AllApps
 	},
 ];
 const RouteWithSubRoutes = (route) => (

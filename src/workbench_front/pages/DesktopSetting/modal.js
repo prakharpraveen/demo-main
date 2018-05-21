@@ -18,14 +18,16 @@ class MyModal extends Component {
 			selectedValue: 0,
 		};
 	}
-
-	//设置模态框显示与否
-	setModalVisible =(modalVisible) => {
+	showModalHidden = ()=>{
+		this.setModalVisible(false);
+	};
+	setModalVisible = (modalVisible) => {
 		this.setState({ selectedValue: 0 })
 		this.props.setModalVisible(modalVisible);
-	}
+	};
 	//移动到的弹出框中，点击确认
-	onOkMoveDialog(modalVisible) {
+	onOkMoveDialog=()=> {
+		const modalVisible = false;
 		const targetGroupID = this.state.selectedValue;
 		let { appGroupArr } = this.props;
 		let { groups } = this.props;
@@ -102,18 +104,18 @@ class MyModal extends Component {
 				mask={false}
 				wrapClassName='vertical-center-modal'
 				visible={this.props.modalVisible}
-				onOk={() => this.onOkMoveDialog(false)}
-				onCancel={() => this.setModalVisible(false)}
+				onOk={this.onOkMoveDialog}
+				onCancel={this.showModalHidden}
 				footer={[
 					<Button
 						key='submit'
 						disabled={this.state.selectedValue === 0}
 						type='primary'
-						onClick={() => this.onOkMoveDialog(false)}
+						onClick={this.onOkMoveDialog}
 					>
 						确定
 					</Button>,
-					<Button key='back' onClick={() => this.setModalVisible(false)}>
+					<Button key='back' onClick={this.showModalHidden}>
 						取消
 					</Button>
 				]}

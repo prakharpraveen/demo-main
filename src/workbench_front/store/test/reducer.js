@@ -1,7 +1,6 @@
 import * as templateStore from './action-type';
 
 let defaultState = {
-	relateid: '',
 	shadowCard: {},
 	groups: [],
 	selectCardInGroupObj: {},
@@ -41,8 +40,6 @@ export const templateDragData = (state = defaultState, action = {}) => {
 			return { ...state, ...{ currEditID: action.currEditID } };
 		case templateStore.UPDATELAYOUT:
 			return { ...state, ...{ layout: action.layout } };
-		case templateStore.UPDATERELATEID:
-			return { ...state, ...{ relateid: action.relateid } };
 		default:
 			return state;
 	}
