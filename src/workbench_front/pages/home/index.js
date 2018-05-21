@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Masonry from 'masonry-layout';
+import { animateScroll, scrollSpy } from 'react-scroll';
 import Ajax from 'Pub/js/ajax';
-import { Link as TabLink, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import Svg from 'Components/Svg';
 import './index.less';
 
@@ -20,6 +21,7 @@ class Home extends Component {
 			paths: []
 		};
 	}
+	
 	componentDidMount() {
 		let { paths } = this.state;
 		Ajax({
@@ -38,6 +40,8 @@ class Home extends Component {
 								gutter: 10
 							});
 						}
+						animateScroll.scrollTo(0);
+						scrollSpy.update();
 					}
 				}
 			}
@@ -186,7 +190,7 @@ class Home extends Component {
 						</div>
 					</Element>
 					<Element name='no2' className='n-col padding-left-70 padding-right-60'>
-						<div className='title'>分组一</div>
+						<div className='title'>分组二</div>
 						<div className='grid'>
 							{paths.length > 0 ? (
 								this.createWidgetMountPoint(

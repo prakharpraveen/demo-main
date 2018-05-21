@@ -41,6 +41,11 @@ class Layout extends Component {
 		}
 	}
 
+	componentDidMount() {
+		
+	}
+	
+
 	render() {
 		let { nodeName } = this.state;
 		let { isOpen } = this.props;

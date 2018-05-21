@@ -23,13 +23,15 @@ class TabsLink extends Component {
 	constructor(props, context) {
 		super(props, context);
 	}
+	
 	createTabsLink = () => {
 		return tabs.map((item, index) => {
 			let { anchor, text } = item;
 			return (
 				<li key={anchor}>
-					<Link activeClass='active' to={anchor} offset={-40} hashSpy={true} spy={true} smooth={true} duration={500}>
+					<Link activeClass ='active' to={anchor} offset={-40} spy={true} smooth={true} duration={500}>
 						{text}
+						<span></span>
 					</Link>
 				</li>
 			);
