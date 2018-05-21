@@ -13,7 +13,7 @@ const noteSource = {
 			pk_appregister: props.id,
 			width: props.width,
 			height: props.height,
-			name: props.id,
+			name: props.name,
 			isShadow: true,
 			isChecked:false
 		};

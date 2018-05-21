@@ -189,7 +189,7 @@ class MyFooter extends Component {
 					<Button className='right-button' type='primary' onClick={this.saveGroupItemAndCard}>
 						保存
 					</Button>
-					<Button className='right-button'>预览</Button>
+					{/* <Button className='right-button'>预览</Button> */}
 					<Button className='right-button'>恢复默认</Button>
 					<Button className='right-button' onClick={this.cancleSave}>
 						取消

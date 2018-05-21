@@ -45,7 +45,7 @@ class MyModal extends Component {
 						pk_appregister: c.value,
 						width: c.width,
 						height: c.height,
-						name: c.value,
+						name: c.label,
 						isShadow: false,
 						gridx: 9999,
 						gridy: 0

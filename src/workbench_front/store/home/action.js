@@ -6,3 +6,10 @@ export const clearData = () => {
 		type: home.CLEARDATA
 	};
 };
+
+export const updateGroupList = (groups) => {
+	return {
+		type: home.UPDATEGROUPLIST,
+		groups: groups
+	};
+};

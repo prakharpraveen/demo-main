@@ -9,6 +9,7 @@ import { Element } from 'react-scroll';
 import Svg from 'Components/Svg';
 import './index.less';
 
+import { updateGroupList } from 'Store/home/action';
 const UNIT = 175;
 /**
  * 工作桌面 首页 页面
@@ -18,28 +19,28 @@ class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			paths: []
+			layout:{
+				margin: [ 10, 10 ],
+				containerPadding: [ 0, 0 ],
+				rowHeight:175,
+				calWidth:175
+			},
+			groups:[]
 		};
 	}
 	
 	componentDidMount() {
-		let { paths } = this.state;
 		Ajax({
-			url: `/nccloud/platform/appregister/query.do`,
+			url: `/nccloud/platform/appregister/queryapp.do`,
+			data: {
+				relateid: this.props.userID
+			},
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
-						this.setState({ paths: data }, this.createScript);
-						let grid = document.querySelectorAll('.grid');
-						for (let index = 0; index < grid.length; index++) {
-							const element = grid[index];
-							new Masonry(element, {
-								itemSelector: '.grid-item',
-								columnWidth: 177,
-								gutter: 10
-							});
-						}
+						this.setState({groups:data[0].groups});
+						this.props.updateGroupList(data[0].groups);
 						animateScroll.scrollTo(0);
 						scrollSpy.update();
 					}
@@ -49,7 +50,7 @@ class Home extends Component {
 	}
 
 	createScript = () => {
-		let { paths } = this.state;
+		let { groups } = this.state;
 		let scripts = document.getElementsByTagName('script');
 		// 将 HTMLCollection 类数组对象转换成真正的数组
 		let scriptsArray = Array.prototype.slice.call(scripts, 0);
@@ -62,36 +63,56 @@ class Home extends Component {
 			}
 		});
 		// paths 后台返回的当前用户首页所有小部件相关内容
-		paths.map((item, index) => {
-			let { path, apptype } = item;
-			if (apptype === '2') {
-				let scriptPath = path;
-				// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
-				let flag = scriptsArray.find((scriptsSrc) => {
-					return scriptsSrc === scriptPath;
-				});
-				// 如果没有，进行 script 标签创建及加载指定 js 文件
-				if (typeof flag === 'undefined') {
-					let script = document.createElement('script');
-					script.type = 'text/javascript';
-					script.src = path;
-					bodyDOM.appendChild(script);
-				} else {
-					for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
-						const element = scripts[scriptIndex];
-						if (element.attributes.src && element.attributes.src.value === flag) {
-							bodyDOM.removeChild(element);
-							let script = document.createElement('script');
-							script.type = 'text/javascript';
-							script.src = flag;
-							bodyDOM.appendChild(script);
+		groups.map((group, i) => {
+			group.apps.map((item,index)=>{
+				let { path, apptype } = item;
+				if (apptype === '2') {
+					let scriptPath = path;
+					// 查找后台提供的小部件 js 路径是否已经加载到 dom 中
+					let flag = scriptsArray.find((scriptsSrc) => {
+						return scriptsSrc === scriptPath;
+					});
+					// 如果没有，进行 script 标签创建及加载指定 js 文件
+					if (typeof flag === 'undefined') {
+						let script = document.createElement('script');
+						script.type = 'text/javascript';
+						script.src = path;
+						bodyDOM.appendChild(script);
+					} else {
+						for (let scriptIndex = 0; scriptIndex < scripts.length; scriptIndex++) {
+							const element = scripts[scriptIndex];
+							if (element.attributes.src && element.attributes.src.value === flag) {
+								bodyDOM.removeChild(element);
+								let script = document.createElement('script');
+								script.type = 'text/javascript';
+								script.src = flag;
+								bodyDOM.appendChild(script);
+							}
 						}
 					}
 				}
-			}
+			})
 		});
 	};
 
+	calGridItemPosition(gridx, gridy) {
+		const { margin, rowHeight, calWidth } = this.state.layout;
+
+		const x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
+		const y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
+		return {
+			x: x,
+			y: y
+		};
+	}
+	//宽和高计算成为px
+	calWHtoPx(w, h) {
+		const { margin, calWidth, rowHeight } = this.state.layout;
+		const wPx = Math.round(w * calWidth + (w - 1) * margin[0]);
+		const hPx = Math.round(h * rowHeight + (h - 1) * margin[1]);
+		return { wPx, hPx };
+	}
+	
 	/**
 	 * 动态创建小应用
 	 * @param {Object} appOption // 小部件类型 
@@ -100,16 +121,25 @@ class Home extends Component {
 	 * @param {Boolean} isOwn //是否为系统预置应用 默认为 false 非系统预置应用
 	 */
 	createApp = (appOption, domWidth, domHeight, isOwn = false) => {
+		const { x, y } = this.calGridItemPosition(appOption.gridx, appOption.gridy);
+		const { wPx, hPx } = this.calWHtoPx(appOption.width, appOption.height);
+		console.log(x,y,wPx,hPx)
 		const { image_src, name, mountid, target_path, pk_appregister } = appOption;
 		return (
 			<div
 				className='grid-item'
 				key = {pk_appregister}
 				id={mountid}
-				style={{ width: domWidth, height: domHeight }}
+				style={{
+					width: wPx,
+					height: hPx,
+					transform: `translate(${x}px, ${y}px)`,
+					
+				}}
 				onClick={() => {
 					window.openNew(appOption, isOwn ? 'own' : undefined);
 				}}
+
 			>
 				<div  field="app-item" fieldname={name} className='app-item'>
 					<span className='title'>{name}</span>
@@ -161,64 +191,40 @@ class Home extends Component {
 		});
 	};
 
+	layoutBottom = (layout) => {
+		let max = 0,
+			bottomY;
+		for (let i = 0, len = layout.length; i < len; i++) {
+			bottomY = layout[i].gridy + layout[i].height;
+			if (bottomY > max) max = bottomY;
+		}
+		return max;
+	}
+	//计算卡片容器的最大高度
+	getContainerMaxHeight = (cards, rowHeight, margin) => {
+		//行转列并且分组
+		const resultRow = this.layoutBottom(cards)
+		return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
+	};
+
 	render() {
-		let { paths } = this.state;
+		let { groups,layout } = this.state;
 		return (
 			<div className='nc-workbench-home-page'>
 				<div className='nc-workbench-home-container'>
-					<Element name='no1' className='n-col padding-left-70 padding-right-60'>
-						<div className='title'>分组一</div>
-						<div className='grid'>
-							{paths.length > 0 ? (
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										return item;
-									})
-								)
-							) : (
-								<div
-									className='grid-item app-item widget-container'
-									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
-								>
-									<div className='app-item'>
-										<span className='icon'>loa</span>
-										<span className='title'>loading</span>
+					{
+						groups.map((g,index)=>{
+							const containerHeight = this.getContainerMaxHeight(g.apps, layout.rowHeight, layout.margin);
+							return(
+								<Element name={g.pk_app_group} key={index} className='n-col padding-left-70 padding-right-60'>
+									<div className='title'>{g.groupname}</div>
+									<div className='grid' style={{height: containerHeight}} >
+										{this.createWidgetMountPoint(g.apps)}
 									</div>
-								</div>
-							)}
-							{/* {createItem()} */}
-						</div>
-					</Element>
-					<Element name='no2' className='n-col padding-left-70 padding-right-60'>
-						<div className='title'>分组二</div>
-						<div className='grid'>
-							{paths.length > 0 ? (
-								this.createWidgetMountPoint(
-									paths.map((item) => {
-										return item;
-									})
-								)
-							) : (
-								<div
-									className='grid-item app-item widget-container'
-									style={{ width: `${UNIT}px`, height: `${UNIT}px` }}
-								>
-									<div className='app-item'>
-										<span className='icon'>loa</span>
-										<span className='title'>loading</span>
-									</div>
-								</div>
-							)}
-							{/* {createItem()} */}
-						</div>
-					</Element>
-					{/* <Element name='no2' className='n-col padding-left-70 padding-right-60'>
-						<div className='title'>分组二</div>
-						<div className='grid'>
-							{this.createWidgetMountPoint(paths)}
-							{createItem()}
-						</div>
-					</Element> */}
+								</Element>
+							)
+						})
+					}
 				</div>
 			</div>
 		);
@@ -253,4 +259,8 @@ const scrollToAnchor = (anchorName) => {
 
 Home.propTypes = {
 };
-export default connect((state) => ({}),{})(Home);
+export default connect((state) => ({
+	userID : state.appData.userID
+}),{
+	updateGroupList
+})(Home);

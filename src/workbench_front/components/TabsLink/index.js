@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-scroll';
+import { connect } from 'react-redux';
 import './index.less';
-const tabs = [
-	{
-		anchor: 'no1',
-		text: '分组一'
-	},
-	{
-		anchor: 'no2',
-		text: '分组二'
-	},
-	// {
-	// 	anchor: 'no3',
-	// 	text: '分组三'
-	// },
-	// {
-	// 	anchor: 'no4',
-	// 	text: '分组四'
-	// }
-];
+
 class TabsLink extends Component {
 	constructor(props, context) {
 		super(props, context);
 	}
 	
 	createTabsLink = () => {
-		return tabs.map((item, index) => {
-			let { anchor, text } = item;
+		return this.props.groups.map((item, index) => {
+			let { pk_app_group, groupname } = item;
 			return (
-				<li key={anchor}>
-					<Link activeClass ='active' to={anchor} offset={-40} spy={true} smooth={true} duration={500}>
-						{text}
+				<li key={pk_app_group}>
+					<Link activeClass ='active' to={pk_app_group} offset={-40} spy={true} smooth={true} duration={500}>
+						{groupname}
 						<span></span>
 					</Link>
 				</li>
@@ -38,7 +22,13 @@ class TabsLink extends Component {
 		});
 	};
 	render() {
+		console.log("1212121");
 		return <ul className='n-tabs'>{this.createTabsLink()}</ul>;
 	}
 }
-export default TabsLink;
+export default connect(
+		(state) => ({
+			groups: state.homeData.groups
+		}),
+		{ }
+	)(TabsLink)
