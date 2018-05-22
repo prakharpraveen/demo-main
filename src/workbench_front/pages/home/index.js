@@ -9,11 +9,14 @@ import Svg from 'Components/Svg';
 import './index.less';
 
 import { updateGroupList } from 'Store/home/action';
-import { getContainerMaxHeight, calWHtoPx, calGridItemPosition } from 'Pages/DesktopSetting/utilService';
+import { compactLayout, compactLayoutHorizontal } from 'Pages/DesktopSetting/compact';
+import { getContainerMaxHeight, calWHtoPx, calGridItemPosition, calColCount } from 'Pages/DesktopSetting/utilService';
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
  */
+let resizeWaiter = false;
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -28,7 +31,37 @@ class Home extends Component {
 		};
 	}
 
+	handleHomeLoad = ()=>{
+		if (!resizeWaiter) {
+			resizeWaiter = true;
+			setTimeout(()=>{
+				console.info('resize！');
+				resizeWaiter = false;
+				let { groups, layout } = this.state;
+				const windowWidth = window.innerWidth - 60 * 2;
+				const col = calColCount(layout.calWidth, windowWidth, layout.containerPadding, layout.margin);
+				
+				_.forEach(groups, (g) => {
+					let compactedLayout = compactLayoutHorizontal(g.apps, col);
+
+					const firstCard = compactedLayout[0];
+
+					compactedLayout = compactLayout(compactedLayout, firstCard);
+					g.apps = compactedLayout;
+				});
+
+				this.setState({groups, layout});
+			}, 500);
+		}
+	}
+
+	componentWillUnmount(){
+		window.removeEventListener('resize', this.handleHomeLoad);
+		console.log("移除window中resize fn")
+	}
+
 	componentDidMount() {
+		window.addEventListener('resize', this.handleHomeLoad);
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			info:{
@@ -44,6 +77,8 @@ class Home extends Component {
 					if (success && data && data.length > 0) {
 						this.setState({ groups: data[0].groups });
 						this.props.updateGroupList(data[0].groups);
+						
+						this.handleHomeLoad();
 						animateScroll.scrollTo(0);
 						scrollSpy.update();
 					}

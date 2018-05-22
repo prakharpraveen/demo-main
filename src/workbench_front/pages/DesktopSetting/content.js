@@ -6,12 +6,12 @@ import './index.less';
 import { Button } from 'antd';
 //自定义组件
 import { layoutCheck } from './collision';
-import { compactLayout } from './compact';
+import { compactLayout, compactLayoutHorizontal } from './compact';
 import { checkInContainer } from './correction';
 import GroupItem from './groupItem';
 
 import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateCurrEditID,updateLayout } from 'Store/test/action';
+import { updateShadowCard, updateGroupList, updateCurrEditID, updateLayout } from 'Store/test/action';
 import * as utilService from './utilService';
 
 import MyContentAnchor from './anchor';
@@ -41,7 +41,7 @@ class MyContent extends Component {
 		let groups = this.props.groups;
 		let shadowCard = this.props.shadowCard;
 		const { GridX, GridY } = this.calGridXY(x, y, shadowCard.width);
-		if(GridX=== shadowCard.gridx && GridY=== shadowCard.gridy){
+		if (GridX === shadowCard.gridx && GridY === shadowCard.gridy) {
 			return;
 		}
 		shadowCard = _.cloneDeep(shadowCard);
@@ -143,30 +143,30 @@ class MyContent extends Component {
 					</Button>
 				</div>
 			);
-		}else{
+		} else {
 			itemDoms = groups.map((g, i) => {
-					return (
-							<GroupItem
-								key={g.pk_app_group}
-								id={g.pk_app_group}
-								type={g.type}
-								index={i}
-								cards={g.apps}
-								length={groups.length}
-								groupname={g.groupname}
-								moveCardInGroupItem={this.moveCardInGroupItem}
-								onDrop={this.onDrop}
-								moveGroupItem={this.moveGroupItem}
-								upGroupItem={this.upGroupItem}
-								downGroupItem={this.downGroupItem}
-								deleteGroupItem={this.deleteGroupItem}
-								addGroupItem={this.addGroupItem}
-								changeGroupName={this.changeGroupName}
-								getCardsByGroupIndex={this.getCardsByGroupIndex}
-								handleLoad={this.handleLoad}
-							/>
-					)
-				})
+				return (
+					<GroupItem
+						key={g.pk_app_group}
+						id={g.pk_app_group}
+						type={g.type}
+						index={i}
+						cards={g.apps}
+						length={groups.length}
+						groupname={g.groupname}
+						moveCardInGroupItem={this.moveCardInGroupItem}
+						onDrop={this.onDrop}
+						moveGroupItem={this.moveGroupItem}
+						upGroupItem={this.upGroupItem}
+						downGroupItem={this.downGroupItem}
+						deleteGroupItem={this.deleteGroupItem}
+						addGroupItem={this.addGroupItem}
+						changeGroupName={this.changeGroupName}
+						getCardsByGroupIndex={this.getCardsByGroupIndex}
+						handleLoad={this.handleLoad}
+					/>
+				);
+			});
 		}
 		return itemDoms;
 	}
@@ -232,56 +232,65 @@ class MyContent extends Component {
 		return groups[groupIndex].apps;
 	};
 	//当页面加载完成，获得卡片容器宽度
-	handleLoad =() => {
-		if(!resizeWaiter){
+	handleLoad = () => {
+		if (!resizeWaiter) {
 			resizeWaiter = true;
-			setTimeout(function(){
-				console.info("resize！");
+			setTimeout(()=>{
+				console.info('resize！');
 				resizeWaiter = false;
+				let clientWidth;
+				const containerDom = document.querySelector('#card-container');
+				if (containerDom) {
+					clientWidth = containerDom.clientWidth;
+				} else {
+					const firstAddButton = document.querySelector('#first-add');
+					if (firstAddButton) {
+						clientWidth = firstAddButton.clientWidth - 10;
+					} else {
+						return;
+					}
+				}
+				const defaultCalWidth = this.props.defaultLayout.calWidth;
+				const { containerPadding, margin } = this.props.layout;
+				let layout = _.cloneDeep(this.props.layout);
+				const windowWidth = window.innerWidth - 60 * 2;
+				const col = utilService.calColCount(defaultCalWidth, windowWidth, containerPadding, margin);
+				const calWidth = utilService.calColWidth(clientWidth, col, containerPadding, margin);
+				// console.log(clientWidth,calWidth,col);
+
+				let { groups } = this.props;
+				groups = _.cloneDeep(groups);
+				_.forEach(groups, (g) => {
+					let compactedLayout = compactLayoutHorizontal(g.apps, col);
+
+					const firstCard = compactedLayout[0];
+
+					compactedLayout = compactLayout(compactedLayout, firstCard);
+					g.apps = compactedLayout;
+				});
+
+				layout.calWidth = layout.rowHeight = calWidth;
+				layout.col = col;
+				layout.containerWidth = clientWidth;
+				this.props.updateGroupList(groups);
+				this.props.updateLayout(layout);
 			}, 500);
 		}
-		let clientWidth;
-		const containerDom = document.querySelector("#card-container");
-		if(containerDom){
-			clientWidth = containerDom.clientWidth;
-		}else{
-			const firstAddButton = document.querySelector("#first-add");
-			if(firstAddButton){
-				clientWidth = firstAddButton.clientWidth -10 ;
-			}else{
-				console.log("reload")
-				return ;
-			}
-		}
-		const defaultCalWidth= this.props.defaultLayout.calWidth;
-	    const { containerPadding, margin } = this.props.layout;
-        let layout = _.cloneDeep(this.props.layout);
-        const windowWidth = window.innerWidth - 60*2;
-        const col = utilService.calColCount(defaultCalWidth, windowWidth, containerPadding, margin);
-        const calWidth = utilService.calColWidth(clientWidth, col, containerPadding, margin);
-        // console.log(clientWidth,calWidth,col);
-        layout.calWidth = layout.rowHeight = calWidth;
-        layout.col = col;
-		layout.containerWidth = clientWidth;
-		
-        this.props.updateLayout(layout);
-	}
-	componentWillUnmount(){
+	};
+	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleLoad);
-		console.log("移除window中resize fn")
+		console.log('移除window中resize fn');
 	}
 	componentDidMount() {
 		window.addEventListener('resize', this.handleLoad);
-	 }
+	}
 	render() {
-		const { groups,relateidObj } = this.props;
+		const { groups, relateidObj } = this.props;
 		return (
-			<div className="nc-desktop-setting-content">
+			<div className='nc-desktop-setting-content'>
 				<MyContentAnchor />
-				<div className='nc-workbench-home-container'>
-					{this.initGroupItem(groups)}
-				</div>
-				<MyFooter relateidObj={ relateidObj }/>
+				<div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div>
+				<MyFooter relateidObj={relateidObj} />
 			</div>
 		);
 	}
@@ -292,7 +301,7 @@ export default connect(
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
 		layout: state.templateDragData.layout,
-		defaultLayout: state.templateDragData.defaultLayout,
+		defaultLayout: state.templateDragData.defaultLayout
 	}),
 	{
 		updateGroupList,
