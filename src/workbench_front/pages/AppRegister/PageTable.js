@@ -472,7 +472,7 @@ class PageTable extends Component {
 				parent_code:'',
 				btnarea:'',
 				btndesc: '',
-				parent_id: pk_apppage,
+				appid: pk_apppage,
 				isenable: true,
 				pagecode: pagecode,
 				btnorder: newData.length
