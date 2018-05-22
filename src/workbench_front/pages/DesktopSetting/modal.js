@@ -61,9 +61,9 @@ class MyModal extends Component {
 		//目标组内重新布局
 		let compactedLayout = compactLayoutHorizontal( groups[targetGroupIndex].apps, this.props.col);
 
-		const firstCard = compactedLayout[0];
+		// const firstCard = compactedLayout[0];
 
-		compactedLayout = compactLayout(compactedLayout, firstCard);
+		// compactedLayout = compactLayout(compactedLayout, firstCard);
 
 		groups[targetGroupIndex].apps = compactedLayout;
 

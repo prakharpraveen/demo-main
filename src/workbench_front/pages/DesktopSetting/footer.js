@@ -23,8 +23,12 @@ class MyFooter extends Component {
 		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
 		utilService.removeCheckedCardsInGroups(groups);
-		//todo 自动排版
+		_.forEach(groups,(g)=>{
+			let compactedLayout = compactLayoutHorizontal( g.apps,this.props.col);
 
+			g.apps = compactedLayout;
+		})
+		
 		this.props.updateGroupList(groups);
 	};
 	getGroupItemNameRadio = (groups) => {
@@ -109,9 +113,9 @@ class MyFooter extends Component {
 			}
 			let compactedLayout = compactLayoutHorizontal( g.apps,this.props.col);
 
-			const firstCard = compactedLayout[0];
+			// const firstCard = compactedLayout[0];
 
-			compactedLayout = compactLayout(compactedLayout, firstCard);
+			// compactedLayout = compactLayout(compactedLayout, firstCard);
 
 			g.apps = compactedLayout;
 		});

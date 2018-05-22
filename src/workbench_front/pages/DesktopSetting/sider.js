@@ -62,12 +62,18 @@ class MySider extends Component {
 				? { search_content: this.state.searchValue, userid: relateidObj.data }
 				: { search_content: this.state.searchValue };
 		Ajax({
-			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			url: `/nccloud/platform/appregister/searchapp.do`,
 			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
-				if (success && data && data.length > 0) {
-					console.log(data);
+				if (success && data ) {
+					data.isShow = true;
+					data.checkedAll = false;
+					data.indeterminate = false;
+					_.forEach(data.children, (c) => {
+						c.checked = false;
+					});
+					this.setState({ appGroupArr: [data], isAllShow: true });
 				}
 			}
 		});

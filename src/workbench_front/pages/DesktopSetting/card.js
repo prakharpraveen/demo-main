@@ -4,6 +4,7 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
 import { connect } from 'react-redux';
+import { compactLayout,compactLayoutHorizontal } from './compact.js';
 import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
@@ -17,10 +18,15 @@ const noteSource = {
 		return {id: props.id, type: props.type} ;
 	},
 	endDrag(props, monitor, component) {
-		// props.dragCardID = -1;
-		let groups = props.groups;
+		let {groups, groupIndex} = props;
 		groups = _.cloneDeep(groups);
 		utilService.setPropertyValueForCards(groups, 'isShadow', false);
+
+		// let compactedLayout = compactLayoutHorizontal( groups[groupIndex].apps, props.layout.col);
+		// const firstCard = compactedLayout[0];
+		// compactedLayout = compactLayout(compactedLayout, firstCard);
+		// groups[groupIndex].apps = compactedLayout;
+
 		props.updateGroupList(groups);
 		props.updateShadowCard({});
 	},
@@ -29,24 +35,24 @@ const noteSource = {
 	// }
 };
 
-const noteTarget = {
-	hover(targetProps, monitor, component) {
-		return;
-	},
-	drop(props, monitor, component) {
-		//获取结果来判断是否冒泡,有结果时为冒泡
-		if (!_.isNull(monitor.getDropResult())) {
-			return;
-		}
-		const dragItem = monitor.getItem();
-		const dropItem = props;
-		if (dragItem.type === 'group') {
-			// console.log('group in dropCard');
-		} else {
-			// console.log('card in dropCard');
-		}
-	}
-};
+// const noteTarget = {
+// 	hover(targetProps, monitor, component) {
+// 		return;
+// 	},
+// 	drop(props, monitor, component) {
+// 		//获取结果来判断是否冒泡,有结果时为冒泡
+// 		if (!_.isNull(monitor.getDropResult())) {
+// 			return;
+// 		}
+// 		const dragItem = monitor.getItem();
+// 		const dropItem = props;
+// 		if (dragItem.type === 'group') {
+// 			// console.log('group in dropCard');
+// 		} else {
+// 			// console.log('card in dropCard');
+// 		}
+// 	}
+// };
 
 @DragSource('item', noteSource, (connect)=>({
 	connectDragSource: connect.dragSource()
@@ -95,6 +101,12 @@ class Item extends Component {
 		let {groups, groupIndex} = this.props;
 		groups = _.cloneDeep(groups);
 		utilService.removeCardByGroupIndexAndCardID(groups, groupIndex, this.props.id)
+
+		let compactedLayout = compactLayoutHorizontal( groups[groupIndex].apps,this.props.layout.col);
+		// const firstCard = compactedLayout[0];
+		// compactedLayout = compactLayout(compactedLayout, firstCard);
+
+		groups[groupIndex].apps = compactedLayout;
 		this.props.updateGroupList(groups);
 	}
 	//

@@ -263,9 +263,9 @@ class MyContent extends Component {
 				_.forEach(groups, (g) => {
 					let compactedLayout = compactLayoutHorizontal(g.apps, col);
 
-					const firstCard = compactedLayout[0];
+					// const firstCard = compactedLayout[0];
 
-					compactedLayout = compactLayout(compactedLayout, firstCard);
+					// compactedLayout = compactLayout(compactedLayout, firstCard);
 					g.apps = compactedLayout;
 				});
 
