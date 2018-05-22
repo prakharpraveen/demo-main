@@ -151,6 +151,21 @@ export const getContainerMaxHeight = (cards, rowHeight, margin) => {
 	const resultRow = layoutBottom(cards)
 	return resultRow * rowHeight + (resultRow - 1) * margin[1] + 2 * margin[1];
 };
+//给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px
+export const calGridItemPosition = (gridx, gridy, margin, rowHeight, calWidth)=> {
+	const x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
+	const y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
+	return {
+		x: x,
+		y: y
+	};
+};
+//宽和高计算成为px
+export const calWHtoPx = (w, h, margin, rowHeight, calWidth)=> {
+	const wPx = Math.round(w * calWidth + (w - 1) * margin[0]);
+	const hPx = Math.round(h * rowHeight + (h - 1) * margin[1]);
+	return { wPx, hPx };
+}
 //计算卡片容器的最大高度
 // export const getContainerMaxHeight = (cards, rowHeight, margin) => {
 // 	//行转列并且分组

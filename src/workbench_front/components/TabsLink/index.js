@@ -22,7 +22,6 @@ class TabsLink extends Component {
 		});
 	};
 	render() {
-		console.log("1212121");
 		return <ul className='n-tabs'>{this.createTabsLink()}</ul>;
 	}
 }

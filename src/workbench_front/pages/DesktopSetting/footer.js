@@ -119,7 +119,8 @@ class MyFooter extends Component {
 		this.setModalVisible(modalVisible);
 	};
 	cancleSave = () => {
-		location.reload();
+		self.opener=null;
+            self.close();
 	};
 	hasCheckedCardInGroups = () => {};
 	//抽象方法，参数为显示的button文本和方法体，注意方法提前bind
