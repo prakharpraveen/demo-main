@@ -1,6 +1,8 @@
 import Axios from 'axios';
 import { Alert } from 'antd';
 import Notice from 'Components/Notice';
+import moment from 'moment';
+import Gzip from './gzip';
 // createAlertDom = ()=>{
 // 	let alertDom = document.createElement('div');
 // 	alertDom.id = 'alertDom';
@@ -8,17 +10,38 @@ import Notice from 'Components/Notice';
 // }
 const Ajax = ({
 	url,
-	data,
+	data = '',
 	method = 'post',
 	alert = false,
+	info = {name:'',action:''},
 	success = (res) => {
 		cosnole.log(res);
 	}
 }) => {
+	let gziptools = new Gzip();
+	// data = {
+	// 	busiParamJson: data,
+	// 	sysParamJson: {
+	// 		busiaction: `应用:${info.name},操作:${info.action}`,
+	// 		ts: moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
+	// 	}
+	// }
 	Axios({
 		url,
 		data,
-		method
+		method,
+		// transformRequest : [function (data) {
+		// 	//Do whatever you want to transform the data
+		// 	let gData = gziptools.zip(JSON.stringify(data));
+		// 	console.log(data)
+		// 	return gData;
+		// }],
+		// transformResponse: [function (data) {
+		// 	// 对 data 进行任意转换处理
+		// 	let resData =  gziptools.unzip(data);	
+		// 	console.log(resData)
+		// 	return resData;
+		// }]
 	}).then((res) => {
 		if (res.data.success) {
 			// if (alert) {

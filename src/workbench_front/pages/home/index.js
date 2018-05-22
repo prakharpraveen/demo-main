@@ -31,6 +31,10 @@ class Home extends Component {
 	componentDidMount() {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
+			info:{
+				name:'首页',
+				action:'首页加载'
+			},
 			data: {
 				relateid: this.props.userID
 			},

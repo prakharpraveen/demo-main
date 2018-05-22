@@ -35,6 +35,7 @@ const AppRegister = Loadable({
 	loader: () => import('Pages/AppRegister'),
 	loading: Loading
 });
+// 
 const AllApps = Loadable({
 	loader: () => import('Pages/AllApps'),
 	loading: Loading
