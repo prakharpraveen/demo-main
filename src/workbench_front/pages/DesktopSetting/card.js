@@ -90,24 +90,6 @@ class Item extends Component {
 
 		}
 	}
-	//给予一个grid的位置，算出元素具体的在容器中位置在哪里，单位是px
-	calGridItemPosition(gridx, gridy) {
-		const { margin, rowHeight, calWidth } = this.props.layout;
-
-		const x = Math.round(gridx * calWidth + margin[0] * (gridx + 1));
-		const y = Math.round(gridy * rowHeight + margin[1] * (gridy + 1));
-		return {
-			x: x,
-			y: y
-		};
-	}
-	//宽和高计算成为px
-	calWHtoPx(w, h) {
-		const { margin, calWidth, rowHeight } = this.props.layout;
-		const wPx = Math.round(w * calWidth + (w - 1) * margin[0]);
-		const hPx = Math.round(h * rowHeight + (h - 1) * margin[1]);
-		return { wPx, hPx };
-	}
 	//删除卡片
 	deleteCard=()=> {
 		let {groups, groupIndex} = this.props;
@@ -127,8 +109,10 @@ class Item extends Component {
 	}
 	render() {
 		const { connectDragSource, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked} = this.props;
-		const { x, y } = this.calGridItemPosition(gridx, gridy);
-		const { wPx, hPx } = this.calWHtoPx(width, height);
+		
+		const { margin, rowHeight, calWidth } = this.props.layout;
+		const { x, y } = utilService.calGridItemPosition(gridx, gridy,margin, rowHeight, calWidth);
+		const { wPx, hPx } = utilService.calWHtoPx(width, height,margin, rowHeight, calWidth);
 		// console.log('card')
 		let cardDom;
 		// if (isDragging && this.props.dragCardID === id) {

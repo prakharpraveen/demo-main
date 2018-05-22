@@ -251,6 +251,7 @@ class MyContent extends Component {
 	}
 	componentDidMount() {
 		window.addEventListener('resize', this.handleLoad);
+		window.addEventListener('load', ()=>{console.log("load")});
 	 }
 	render() {
 		const { groups, contentHeight, anchorHeight } = this.props;
