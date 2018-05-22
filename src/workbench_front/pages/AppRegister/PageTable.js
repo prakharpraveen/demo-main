@@ -462,7 +462,7 @@ class PageTable extends Component {
 		}
 		this.cacheData = _.cloneDeep(newData);
 		let { activeKey } = this.state;
-		let {pk_apppage,pagecode} = this.props.nodeData;
+		let {parent_id,pk_apppage,pagecode} = this.props.nodeData;
 		if (activeKey === '1') {
 			newData.push({
 				editable: true,
@@ -472,7 +472,7 @@ class PageTable extends Component {
 				parent_code:'',
 				btnarea:'',
 				btndesc: '',
-				appid: pk_apppage,
+				appid: parent_id,
 				isenable: true,
 				pagecode: pagecode,
 				btnorder: newData.length
