@@ -30,7 +30,6 @@ const groupItemTarget ={
 
         // console.log(props);
         if (dragItem.type === "group") {//组hover到组
-            console.log('group');
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
 
@@ -167,6 +166,7 @@ class GroupItem extends Component {
                 gridy = {c.gridy}
                 width = {c.width}
                 height = {c.height}
+                haspower = {c.haspower}
                 isShadow = {c.isShadow}
                 isChecked = {c.isChecked}
                 key={`${groupID}_${c.pk_appregister}`}

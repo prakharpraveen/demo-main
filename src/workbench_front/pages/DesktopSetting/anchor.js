@@ -36,7 +36,7 @@ class MyContentAnchor extends Component {
 		this.state = {};
     }
 	render() {
-		const { groups, contentHeight } = this.props;
+		const { groups} = this.props;
 		return (
 			<ul className='content-anchor'>
 				{groups.map((g, i) => {

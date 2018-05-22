@@ -108,7 +108,7 @@ class Item extends Component {
 		this.props.updateGroupList(groups);
 	}
 	render() {
-		const { connectDragSource, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked} = this.props;
+		const { connectDragSource, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked, haspower} = this.props;
 		
 		const { margin, rowHeight, calWidth } = this.props.layout;
 		const { x, y } = utilService.calGridItemPosition(gridx, gridy,margin, rowHeight, calWidth);
@@ -131,14 +131,16 @@ class Item extends Component {
 				</div>
 			)
 		}else{
+			
+			const opacity = haspower === false ? 0.6: 1;
 			cardDom = (
 				<div
 					className='card'
 					style={{
 						width: wPx,
 						height: hPx,
+						opacity : opacity,
 						transform: `translate(${x}px, ${y}px)`,
-						
 					}}
 				>
 					<div style={{ 'paddingLeft': '10px' }}>{name}</div>

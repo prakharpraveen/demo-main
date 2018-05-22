@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import card from './card';
 //
 export const getGroupByGroupID = (groups, groupID) => {
 	let tmpGroup = {};
@@ -109,7 +108,7 @@ export const getAddedGroupItemCount = (groups) => {
 //
 export const setGridXGridYMaxInCards = (cardList) => {
 	_.forEach(cardList, (c) => {
-		c.gridy = 9999;
+		c.gridy = 999;
 	});
 };
 //已知放置格子数量, 计算容器的每一个格子多大

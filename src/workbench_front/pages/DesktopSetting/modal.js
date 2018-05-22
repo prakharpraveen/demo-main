@@ -47,8 +47,8 @@ class MyModal extends Component {
 						height: c.height,
 						name: c.label,
 						isShadow: false,
-						gridx: 9999,
-						gridy: 0
+						gridx: 999,
+						gridy: 999
 					});
 					c.checked = false;
 				}

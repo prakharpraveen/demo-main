@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import './index.less';
 //ant
-import { Button, Layout } from 'antd';
-const { Content } = Layout;
+import { Button } from 'antd';
 //自定义组件
 import { layoutCheck } from './collision';
 import { compactLayout } from './compact';
@@ -14,6 +13,12 @@ import GroupItem from './groupItem';
 import { connect } from 'react-redux';
 import { updateShadowCard, updateGroupList, updateCurrEditID,updateLayout } from 'Store/test/action';
 import * as utilService from './utilService';
+
+import MyContentAnchor from './anchor';
+import MyFooter from './footer';
+
+let resizeWaiter = false;
+
 class MyContent extends Component {
 	constructor(props) {
 		super(props);
@@ -228,13 +233,25 @@ class MyContent extends Component {
 	};
 	//当页面加载完成，获得卡片容器宽度
 	handleLoad =() => {
+		if(!resizeWaiter){
+			resizeWaiter = true;
+			setTimeout(function(){
+				console.info("resize！");
+				resizeWaiter = false;
+			}, 500);
+		}
 		let clientWidth;
 		const containerDom = document.querySelector("#card-container");
 		if(containerDom){
 			clientWidth = containerDom.clientWidth;
 		}else{
 			const firstAddButton = document.querySelector("#first-add");
-			clientWidth = firstAddButton.clientWidth -10 ;
+			if(firstAddButton){
+				clientWidth = firstAddButton.clientWidth -10 ;
+			}else{
+				console.log("reload")
+				return ;
+			}
 		}
 		const defaultCalWidth= this.props.defaultLayout.calWidth;
 	    const { containerPadding, margin } = this.props.layout;
@@ -249,18 +266,23 @@ class MyContent extends Component {
 		
         this.props.updateLayout(layout);
 	}
+	componentWillUnmount(){
+		window.removeEventListener('resize', this.handleLoad);
+		console.log("移除window中resize fn")
+	}
 	componentDidMount() {
 		window.addEventListener('resize', this.handleLoad);
-		window.addEventListener('load', ()=>{console.log("load")});
 	 }
 	render() {
-		const { groups, contentHeight, anchorHeight } = this.props;
+		const { groups,relateidObj } = this.props;
 		return (
-			<Content style={{ height: contentHeight, 'marginTop':anchorHeight }}>
+			<div className="nc-desktop-setting-content">
+				<MyContentAnchor />
 				<div className='nc-workbench-home-container'>
 					{this.initGroupItem(groups)}
 				</div>
-			</Content>
+				<MyFooter relateidObj={ relateidObj }/>
+			</div>
 		);
 	}
 }

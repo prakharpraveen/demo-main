@@ -6,13 +6,8 @@ import './index.less';
 // drag && drop
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-//ant
-import { Layout } from 'antd';
-const { Header } = Layout;
 //自定义组件
-import MyContentAnchor from './anchor';
 import MySider from './sider';
-import MyFooter from './footer';
 import MyContent from './content';
 import {GetQuery} from 'Pub/js/utils';
 import { connect } from 'react-redux';
@@ -62,25 +57,14 @@ class Test extends Component {
 	}
 
 	render() {
-		console.log("全部");
 		//header 80px, footer 48px, anchor 48px;
-		const contentHeight = 'calc(100vh - 176px)';
-		const siderHeight = 'calc(100vh - 80px)';
-		const anchorHeight = '48px';
 		return (
-			<Layout>
-				{/* Header占位符 */}
-				<Header style={{ height: '80px' }}></Header>
-
-				<MyContentAnchor />
-			
-				<Layout>
-					<MySider contentHeight={siderHeight} relateidObj={this.state.relateidObj}/>
-					<MyContent contentHeight = {contentHeight}  anchorHeight={anchorHeight}/>
-				</Layout>
-
-				<MyFooter relateidObj={this.state.relateidObj}/>
-			</Layout>
+			<div className="nc-desktop-setting">
+					<MySider relateidObj={this.state.relateidObj}/>
+					
+					<MyContent relateidObj={this.state.relateidObj}/>
+					
+			</div>
 		);
 	}
 }
