@@ -4,7 +4,7 @@ import React, {
 import {
 	connect
 } from 'react-redux';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { setZoneData } from 'Store/ZoneSetting/action';
 
 import _ from 'lodash';
@@ -27,18 +27,11 @@ class SearchTree extends React.Component {
 	onCheck = (checkedKeys, info) => {
 		let zoneArr;
 		console.log('onCheck', checkedKeys, info);
-	//	info && info.node && console.log(info.node.isLeaf())
 		zoneArr = info.checkedNodes.filter((v, i) => {
 			return !v.props.children
 		})  
 		this.setState({ zoneArr});
-		
-		
-	/* 	console.log( info.checkedNodes.filter((v, i) => {
-			return !v.props.children
-})  ) */
 	}
-	debugger;
 	// 确定添加元数据到列表 
 	handleAdd = () => {
 		debugger;
@@ -49,7 +42,7 @@ class SearchTree extends React.Component {
 	render() {
 		return (
 			<div>
-				<span class='add' onClick={()=> this.handleAdd()}>增加</span>
+				<span className='add' onClick={()=> this.handleAdd()}>增加</span>
 				<Tree
 					checkable
 					defaultExpandedKeys={['0-0-0', '0-0-1']}
@@ -133,20 +126,9 @@ const generateTreeData = (data) => {
 		return item;
 	});
 };
-SearchTree.PropTypes = {
-	setNodeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired,
-	setOpType: PropTypes.func.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
-	setPrintTemplateData: PropTypes.func.isRequired,
-	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
-};
+/* SearchTree.propTypes = {
+	setNodeData: propTypes.func.isRequired,
+}; */
 export default connect(
 	(state) => {
 		return { zoneArr: state.zoneSettingData.zoneArray};

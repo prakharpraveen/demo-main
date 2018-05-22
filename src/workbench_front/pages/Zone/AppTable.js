@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs, Button, Table, Input, Popconfirm, Select } from 'antd';
+// import { Tabs, Button, Table, Input, Popconfirm, Select } from 'antd';
+import { Table, Input, Icon, Button, Popconfirm, Select} from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
-import _ from 'lodash';
+import _ from 'lodash'; 
 import { setZoneParamData, setZoneTempletid } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
-const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const EditableInputCell = ({ editable, value, type, onChange }) => (
 	<div>
@@ -78,313 +78,162 @@ const switchType = (value) => {
 			break; */
 	}
 }
-class AppTable extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			activeKey: '1'
-		};
-		this.columnsPar = [
-			{
-				title: '序号',
-				dataIndex: 'num',
-				width: '10%',
-			//	render: (text, record) => this.renderColumns(text, record, 'code')
-			},
-			{
-				title: '区域编码',
-				dataIndex: 'code',
-				width: '20%',
-				render: (text, record) => this.renderColumns(text, record, 'code')
-			},
-			{
-				title: '区域名称',
-				dataIndex: 'name',
-				width: '20%',
-				render: (text, record) => this.renderColumns(text, record, 'name')
-			},
-			{
-				title: '区域类型',
-				dataIndex: 'areatype',
-				width: '20%',
-				render: (text, record) => this.renderColumns(text, record, 'areatype', 'select_1')
-			},
-			{
-				title: '关联元数据',
-				dataIndex: 'metaid',
-				width: '20%',
-				render: (text, record) => this.renderColumns(text, record, 'metaid', 'select_2')
-			},
-			{
-				title: '操作',
-				dataIndex: 'operation',
-				render: (text, record) => {
-					const { editable } = record;
-					return (
-						<div className='editable-row-operations'>
-							{editable ? (
-								<span>
-									<a className='margin-right-5' onClick={() => this.save(record)}>
-										保存
-									</a>
-									<Popconfirm title='确定取消?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.cancel(record)}>
-										<a className='margin-right-5'>取消</a>
-									</Popconfirm>
-								</span>
-							) : (
-									<span>
-									{/* 	<a className='margin-right-5' onClick={() => this.edit(record)}>
-											编辑
-									</a> */}
-										<Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={() => this.del(record)}>
-											<a className='margin-right-5'>删除</a>
-										</Popconfirm>
-									{/* 	<a className='margin-right-5' onClick={() => this.edit(record)}>
-											设置页面区域
-									</a> */}
-									</span>
-								)}
-						</div>
-					);
-				}
-			}
-		];
-		this.cacheData;
-	}
-    // 获取当前接口的数据 
-	componentDidMount(){
-			let url, data,templetid;
-		//	let newData = this.getNewData();
-			url = `/nccloud/platform/templet/queryallarea.do`;
-			data = {
-				templetid:'1009Z0100000000WWW11'  // todo 从url上取 
-			};
-			Ajax({
-				url: url,
-				data: data,
-				success: ({ data }) => {
-					if (data.success && data.data) {
-					/* 	_.remove(newData, (item) => record.pk_param === item.pk_param);
-						this.setNewData(newData); */
-					//	this.cacheData = _.cloneDeep(newData);
-						this.props.setZoneParamData(data.data);
-						templetid = data.data && data.data[0] && data.data[0].templetid;
-						this.props.setZoneTempletid(templetid);
-						console.log(this.props.zone,111);
-						Notice({ status: 'success' });
-					} else {
-						Notice({ status: 'error', msg: data.data.true });
-					}
-				}
-			});
-	}
-	renderColumns(text, record, column, type = 'input') {
-		record = _.cloneDeep(record);
-		if (type === 'input') {
-			return (
-				<EditableInputCell
-					editable={record.editable}
-					value={text}
-					column={column}
-					onChange={(value) => this.handleChange(value, record, column)}
-				/>
-			);
-		} else if (type === 'select_1') {
-			return (
-				<EditableSelectCell
-					editable={record.editable}
-					value={text}
-					type = {1}
-					column={column}
-					onChange={(value) => this.handleChange(value, record, column)}
-				/>
-			);
-		} else if (type === 'select_2') {
-			return (
-				<EditableSelectCell
-					editable={record.editable}
-					value={text}
-					type={2}
-					column={column}
-					onChange={(value) => this.handleChange(value, record, column)}
-				/>
-			);
-		}
-	}
-	handleChange(value, record, column) {
-		let newData = this.getNewData(); //
-		const target = newData.filter((item) => record.pk_area === item.pk_area)[0];
-		if (target) {
-			target[column] = value;
-			this.setNewData(newData); //
-		}
-	}
-	edit(record) {
-		let newData = this.getNewData();  // 
-		const dataList = newData.filter((item) => item.editable === true);
-		if (dataList.length > 0) {
-			Notice({ status: 'warning', msg: '请逐条修改按钮！' });
-			return;
-		}
-		this.cacheData = _.cloneDeep(newData);
-		const target = newData.filter((item) => record.pk_area === item.pk_area)[0];
-		if (target) {
-			target.editable = true;
-			this.setNewData(newData); // 
-		}
-	}
-	del(record) {
-	//	if (record.pk_area) { 
-			let url, data;
-			let newData = this.getNewData();
-			url = `/nccloud/platform/templet/deletearea.do`;
-			data = { 
-				areaid: record.pk_area
-			};
-			_.remove(newData, (item) => record.pk_area === item.pk_area);
-			this.setNewData(newData);
-			this.cacheData = _.cloneDeep(newData);
-			Notice({ status: 'success' });
-		/* 	Ajax({
-				url: url,
-				data: data,
-				success: ({ data }) => {
-					if (data.success && data.data) {
-						_.remove(newData, (item) => record.pk_area === item.pk_area);
-						this.setNewData(newData);
-						this.cacheData = _.cloneDeep(newData);
-						Notice({ status: 'success' });
-					} else {
-						Notice({ status: 'error', msg: data.data.true });
-					}
-				}
-			}); */
-	//	}
-	}
-	save(record) {
-		let newData = this.getNewData();
-		let url, listData;
-		const target = newData.filter((item) => record.pk_area === item.pk_area)[0];
-		if (target) {
-			if (target.pk_area) {
-				url = `/nccloud/platform/templet/editarea.do`;
-			} else {
-				url = `/nccloud/platform/templet/addarea.do`;
-			}
-			
-			listData = {
-				...target
-			};
-			delete target.editable;
-			this.setNewData(newData);
 
-		/* 	Ajax({
-				url: url,
-				data: listData,
-				success: ({ data }) => {
-					if (data.success && data.data) {
-						delete target.editable;
-						if (listData.pk_area) {
-							 newData.map((item, index) => {
-								if (listData.pk_area === item.pk_area) {
-									return { ...item, ...listData };
-								} else {
-									return item;
-								}
-							});
-							this.setNewData(newData);
-						} else {
-							newData[newData.length - 1] = data.data;
-							this.setNewData(newData);
-						}
-						this.cacheData = _.cloneDeep(newData);
-						Notice({ status: 'success' });
-					} else {
-						Notice({ status: 'error', msg: data.data.true });
-					}
-				}
-			}); */
+// 可编辑表格一个单项 
+class EditableCell extends React.Component {
+	state = {
+		value: this.props.value,
+		editable: false,
+	}
+	handleChange = (e) => {
+		const value = e.target.value;
+		this.setState({ value });
+	}
+	check = () => {
+		this.setState({ editable: false });
+		if (this.props.onChange) {
+			this.props.onChange(this.state.value);
 		}
 	}
-	cancel(record) {
-		let newData = this.getNewData();
-		const target = newData.filter((item) => record.pk_area === item.pk_area)[0];
-		if (target) {
-			delete target.editable;
-			this.setNewData(this.cacheData);
-		}
+	edit = () => {
+		this.setState({ editable: true });
 	}
-	add() {
-		/* if (this.props.billStatus.isNew) {
-			Notice({ status: 'warning', msg: '请先将应用进行保存！' });
-			return;
-		} */
-		let templetid = this.props.templetid;
-		let newData = this.getNewData();
-		const target = newData.filter((item) => item.editable === true);
-		if (target.length > 0) {
-			Notice({ status: 'warning', msg: '请逐条添加按钮！' });
-			return;
-		}
-		this.cacheData = _.cloneDeep(newData);
-		newData.push({
-			editable: true,
-			areatype: '',
-			name: '',
-			metadata:'',
-			templetid: templetid
-		});
-		this.setNewData(newData);
-	}
-	getNewData() {
-	//	let { activeKey } = this.state;
-		let zone = this.props.zone;
-		return _.cloneDeep(zone);
-	}
-	setNewData(newData) {
-	//	let { activeKey } = this.state;
-	//	let zone = this.props.zone;
-		this.props.setZoneParamData(newData);
-	}
-	/**
-     * 创建按钮
-     */
-	creatAddLineBtn = () => {
-		return (
-			<div>
-				<Button onClick={() => this.add()} style={{ 'margin-left': '8px' }}>
-					新增
-				</Button>
-			</div>
-		);
-	};
 	render() {
-		let zone = this.props.zone;
+		const { value, editable } = this.state;
 		return (
-			<div>
-				{this.creatAddLineBtn()}
-					<Table
-						bordered
-						pagination={false}
-						rowKey='num'
-					    dataSource={zone.map((item, index) => {
-						item.num = index + 1;
-						return item;
-						})}
-						columns={this.columnsPar}
-						size='middle'
-					/>
-			</div>		
+			<div className="editable-cell">
+				{
+					editable ?
+						<div className="editable-cell-input-wrapper">
+							<Input
+								value={value}
+								onChange={this.handleChange}
+								onPressEnter={this.check}
+							/>
+							<Icon
+								type="check"
+								className="editable-cell-icon-check"
+								onClick={this.check}
+							/>
+						</div>
+						:
+						<div className="editable-cell-text-wrapper">
+							{value || ' '}
+							<Icon
+								type="edit"
+								className="editable-cell-icon"
+								onClick={this.edit}
+							/>
+						</div>
+				}
+			</div>
 		);
 	}
 }
-AppTable.PropTypes = {
+
+// 可编辑的表格 
+class AppTable extends React.Component {
+	constructor(props) {
+		super(props);
+		this.columns = [{
+			title: 'name',
+			dataIndex: 'name',
+			width: '30%',
+			render: (text, record) => (
+				<EditableCell
+					value={text}
+					onChange={this.onCellChange(record.key, 'name')}
+				/>
+			),
+		}, {
+			title: 'age',
+			dataIndex: 'age',
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'age')}
+					/>
+				),
+		}, {
+			title: 'address',
+			dataIndex: 'address',
+		}, {
+			title: 'operation',
+			dataIndex: 'operation',
+			render: (text, record) => {
+				return (
+					this.state.dataSource.length > 1 ?
+						(
+							<Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+								<a href="javascript:;">Delete</a>
+							</Popconfirm>
+						) : null
+				);
+			},
+		}];
+
+		this.state = {
+			dataSource: [{
+				key: '0',
+				name: 'Edward King 0',
+				age: '32',
+				address: 'London, Park Lane no. 0',
+			}, {
+				key: '1',
+				name: 'Edward King 1',
+				age: '32',
+				address: 'London, Park Lane no. 1',
+			}],
+			count: 2,
+		};
+	}
+	onCellChange = (key, dataIndex) => {
+		return (value) => {
+			const dataSource = [...this.state.dataSource];
+			const target = dataSource.find(item => item.key === key);
+			if (target) {
+				target[dataIndex] = value;
+				this.setState({ dataSource });
+			}
+		};
+	}
+	onDelete = (key) => {
+		const dataSource = [...this.state.dataSource];
+		this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+	}
+	handleAdd = () => {
+		const { count, dataSource } = this.state;
+		const newData = {
+			key: count,
+			name: `Edward King ${count}`,
+			age: 32,
+			address: `London, Park Lane no. ${count}`,
+		};
+		this.setState({
+			dataSource: [...dataSource, newData],
+			count: count + 1,
+		});
+	}
+	render() {
+		const { dataSource } = this.state;
+		const columns = this.columns;
+		return (
+			<div>
+				<Button className="editable-add-btn" onClick={this.handleAdd}>新增</Button>
+				<Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+			</div>
+		);
+	}
+}
+
+
+/* AppTable.PropTypes = {
 	appType: PropTypes.number.isRequired,
 	billStatus: PropTypes.object.isRequired,
 	appParamVOs: PropTypes.array.isRequired,
 	setAppParamData: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired
-};
+}; */
 let DragFromeTable = DragDropContext(HTML5Backend)(AppTable);
 export default connect(
 	(state) => {

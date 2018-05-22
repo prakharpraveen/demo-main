@@ -7,7 +7,7 @@ import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 
 import Notice from 'Components/Notice';
-import { window } from '_rxjs@5.5.10@rxjs/operator/window';
+ //import { window } from '_rxjs@5.5.10@rxjs/operator/window';
 
 const { Header } = Layout;
 /**
@@ -38,13 +38,12 @@ class Myheight extends Component {
 	// 初始化设置按钮的状态 
 	componentDidMount(){
 		console.log('ddd');
-		
 	//	this.props.setZoneState('browse');
 	}
 	// 根据不同的状态 生成不同的按钮 
 	creatBtns(Btns){
 	return	Btns && Btns.map((item,index) =>{
-			return (<Button className='margin-left-10' type={item.type} onClick={this.handleClick.bind(this, item.name)}>
+			return (<Button key={index} className='margin-left-10' type={item.type} onClick={this.handleClick.bind(this, item.name)}>
 				{item.name}
 			</Button>)
 		})
@@ -52,9 +51,8 @@ class Myheight extends Component {
 	}
 	// 处理按钮的事件  
 	handleClick(name){
-		debugger;
 		switch (name){
-			case '保存': console.log(1);
+			case '保存': 
 				let fromData = this.props.getFromData();
 				console.log(fromData);
 				if (!fromData) {

@@ -13,7 +13,7 @@ class TabsLink extends Component {
 			let { pk_app_group, groupname } = item;
 			return (
 				<li key={pk_app_group}>
-					<Link activeClass ='active' to={pk_app_group} offset={-40} spy={true} smooth={true} duration={500}>
+					<Link activeClass ='active' to={pk_app_group} offset={-48} spy={true} smooth={true} duration={500}>
 						{groupname}
 						<span></span>
 					</Link>
