@@ -15,16 +15,16 @@ const Ifr = Loadable({
 	loader: () => import('Pages/ifr'),
 	loading: Loading
 });
+const drag = Loadable({
+	loader: () => import('Pages/drag'),
+	loading: Loading
+});
 const NotFound = Loadable({
 	loader: () => import('Pages/404'),
 	loading: Loading
 });
 const Test = Loadable({
 	loader: () => import('Pages/test'),
-	loading: Loading
-});
-const Drag = Loadable({
-	loader: () => import('Pages/drag'),
 	loading: Loading
 });
 const DesktopSetting = Loadable({
@@ -35,9 +35,12 @@ const AppRegister = Loadable({
 	loader: () => import('Pages/AppRegister'),
 	loading: Loading
 });
-// 
-const AllApps = Loadable({
-	loader: () => import('Pages/AllApps'),
+const Zone = Loadable({
+	loader: () => import('Pages/Zone'),
+	loading: Loading
+});
+const ZoneSetting = Loadable({
+	loader: () => import('Pages/ZoneSetting'),
 	loading: Loading
 });
 const routes = [
@@ -59,10 +62,6 @@ const routes = [
 		component: Test
 	},
 	{
-		path: '/drag',
-		component: Drag
-	},
-	{
 		path: '/ds',
 		component: DesktopSetting
 	},
@@ -72,9 +71,17 @@ const routes = [
 		component: AppRegister
 	},
 	{
-		path: '/all',
-		component: AllApps
+		path: '/drag',
+		component: drag
 	},
+	{
+		path: '/Zone',
+		component: Zone
+	},
+	{
+		path: '/ZoneSetting',
+		component: ZoneSetting
+	}
 ];
 const RouteWithSubRoutes = (route) => (
 	<Route
@@ -85,6 +92,7 @@ const RouteWithSubRoutes = (route) => (
 		)}
 	/>
 );
+
 const RouteConfig = () => (
 	<Router>
 		<Layout>

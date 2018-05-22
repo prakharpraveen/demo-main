@@ -1,4 +1,5 @@
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
+import React from 'react';
 import ChooseImageForForm from 'Components/ChooseImageForForm';
 const FormItem = Form.Item;
 const Option = Select.Option;
