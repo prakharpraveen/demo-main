@@ -178,6 +178,7 @@ class MyFooter extends Component {
 	};
 
 	render() {
+		console.log('footer');
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (
