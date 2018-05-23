@@ -52,7 +52,7 @@ class SideDrawer extends Component {
 						<div className='setting-content'>
 							<div className='setting-btn'>
 								<i className="iconfont icon-bianji"></i>
-								<Link to={`ds?n=个人设置`}>个人设置</Link>
+								<Link to={`ds?n=个人设置`}>个人配置</Link>
 							</div>
 							<div className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
