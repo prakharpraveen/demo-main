@@ -6,6 +6,10 @@ export const sprLog =(type,callback)=>{
     if(type){
         Ajax({
             url:'/nccloud/platform/spr/start.do',
+            info:{
+				name:'spr',
+				action:'开启'
+			},
             data:{
                 oprtime:moment().format('YYYY-MM-DD HH:mm:SS'),
                 userid:'1001A4100000000055NR'
@@ -24,6 +28,10 @@ export const sprLog =(type,callback)=>{
         let win = window.open('','_blank');
         Ajax({
             url:'/nccloud/platform/spr/end.do',
+            info:{
+				name:'spr',
+				action:'结束'
+			},
             data:{
                 oprtime:resTime,
                 userid:'1001A4100000000055NR'

@@ -33,6 +33,10 @@ class Test extends Component {
 		
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
+			info: {
+				name:'应用',
+				action:'查询'
+			},
 			data: {
 				relateid: this.state.relateidObj.data
 			},

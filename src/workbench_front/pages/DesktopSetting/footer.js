@@ -171,6 +171,10 @@ class MyFooter extends Component {
 		console.log(saveData);
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
+			info: {
+				name:'应用摄者',
+				action:'保存'
+			},
 			data: saveData,
 			success: (res) => {
 				const { data, success } = res.data;

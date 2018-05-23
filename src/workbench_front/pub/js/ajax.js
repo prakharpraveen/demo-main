@@ -19,13 +19,13 @@ const Ajax = ({
 	}
 }) => {
 	let gziptools = new Gzip();
-	// data = {
-	// 	busiParamJson: data,
-	// 	sysParamJson: {
-	// 		busiaction: `应用:${info.name},操作:${info.action}`,
-	// 		ts: moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-	// 	}
-	// }
+	data = {
+		busiParamJson: data,
+		sysParamJson: {
+			busiaction: `应用:${info.name},操作:${info.action}`,
+			ts: moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
+		}
+	}
 	Axios({
 		url,
 		data,

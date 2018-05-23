@@ -25,6 +25,10 @@ class App extends Component {
 		let win = window.open('', '_blank');
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
+			info:{
+				name:name,
+				action:'打开'
+			},
 			data: {
 				pk_appregister: pk_appregister
 			},

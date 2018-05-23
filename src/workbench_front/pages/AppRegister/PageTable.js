@@ -303,6 +303,10 @@ class PageTable extends Component {
 		sortData.map((item, index) => (item.btnorder = index));
 		Ajax({
 			url: `/nccloud/platform/appregister/orderbuttons.do`,
+			info : {
+				name:'页面按钮',
+				action:'排序'
+			},
 			data: sortData,
 			success: ({ data }) => {
 				if (data.success && data.data) {
@@ -357,7 +361,7 @@ class PageTable extends Component {
 	}
 	del(record) {
 		if (record.pk_btn || record.pk_page_templet) {
-			let url, data;
+			let url, data, info;
 			let { activeKey } = this.state;
 			let newData = this.getNewData();
 			if (activeKey === '1') {
@@ -365,14 +369,23 @@ class PageTable extends Component {
 				data = {
 					pk_btn: record.pk_btn
 				};
+				info = {
+					name:'页面按钮',
+					action:'删除'
+				};
 			} else if(activeKey === '2'){
 				url = `/nccloud/platform/templet/deletetemplet.do`;
 				data = {
 					templetid: record.pk_page_templet
 				};
+				info = {
+					name:'页面模板',
+					action:'删除'
+				};
 			}
 			Ajax({
 				url: url,
+				info : info,
 				data: data,
 				success: ({ data }) => {
 					if (data.success && data.data) {
@@ -394,20 +407,36 @@ class PageTable extends Component {
 	save(record) {
 		let { activeKey } = this.state;
 		let newData = this.getNewData();
-		let url, listData;
+		let url, listData , info;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
 			if (target.pk_btn || target.pk_page_templet) {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/editbutton.do`;
+					info = {
+						name:'页面按钮',
+						action:'编辑'
+					};
 				} else if(activeKey === '2'){
 					url = `/nccloud/platform/templet/edittemplet.do`;
+					info = {
+						name:'页面模板',
+						action:'编辑'
+					};
 				}
 			} else {
 				if (activeKey === '1') {
 					url = `/nccloud/platform/appregister/insertbutton.do`;
+					info = {
+						name:'页面按钮',
+						action:'新增'
+					};
 				} else if(activeKey === '2'){ 
 					url = `/nccloud/platform/templet/addtemplet.do`;
+					info = {
+						name:'页面模板',
+						action:'新增'
+					};
 				}
 			}
 			listData = {
@@ -415,6 +444,7 @@ class PageTable extends Component {
 			};
 			Ajax({
 				url: url,
+				info: info,
 				data: listData,
 				success: ({ data }) => {
 					if (data.success && data.data) {

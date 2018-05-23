@@ -64,6 +64,10 @@ class SearchTree extends Component {
 	reqTreeData = () => {
 		Ajax({
 			url: `/nccloud/platform/appregister/querymodules.do`,
+			info: {
+				name:'应用注册模块',
+				action:'查询'
+			},
 			success: ({
 				data
 			}) => {
@@ -223,6 +227,10 @@ class SearchTree extends Component {
 				// 查询应用分类 及 应用数据
 				Ajax({
 					url: `/nccloud/platform/appregister/query.do`,
+					info: {
+						name:'应用注册应用',
+						action:'查询'
+					},
 					data: {
 						pk_appregister: key
 					},
@@ -249,6 +257,10 @@ class SearchTree extends Component {
 				// 查询页面数据
 				Ajax({
 					url: `/nccloud/platform/appregister/querypagedetail.do`,
+					info: {
+						name:'应用注册页面',
+						action:'查询'
+					},
 					data: {
 						pk_apppage: key
 					},

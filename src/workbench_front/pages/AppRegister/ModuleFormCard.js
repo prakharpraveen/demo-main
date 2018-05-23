@@ -93,6 +93,10 @@ class ModuleFromCard extends Component {
 		let { DOMDATA } = this.state;
 		Ajax({
 			url: `/nccloud/platform/appregister/queryorgtype.do`,
+			info : {
+				name:'组织类型',
+				action:'查询'
+			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
 					let options = data.data.rows;

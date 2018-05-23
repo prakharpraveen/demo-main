@@ -19,6 +19,10 @@ class AllApps extends Component {
 	componentDidMount() {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			info:{
+				name:'所有应用',
+				action:'查询'
+			},
 			data: {
 				userid: this.props.userID
 			},
@@ -35,6 +39,10 @@ class AllApps extends Component {
 		this.setState({isSelectModuleID:moduleID});
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			info:{
+				name:'所有应用',
+				action:'查询'
+			},
 			data: {
 				own_module: moduleID,
 				userid: this.props.userID

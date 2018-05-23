@@ -172,7 +172,7 @@ class AppRegister extends Component {
 				}
 
 				let isNew = this.props.billStatus.isNew;
-				let reqData;
+				let reqData,info;
 				/**
 				 * @param {Number} this.actionType
 				 * 
@@ -185,8 +185,16 @@ class AppRegister extends Component {
 					case 1:
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertmodule.do`;
+							info = {
+								name:'模块',
+								action:'新增'
+							};
 						} else {
 							url = `/nccloud/platform/appregister/editmodule.do`;
+							info = {
+								name:'模块',
+								action:'编辑'
+							};
 						}
 						if (this.props.parentData) {
 							fromData.parentcode = this.props.parentData;
@@ -196,8 +204,16 @@ class AppRegister extends Component {
 					case 2:
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertapp.do`;
+							info = {
+								name:'应用',
+								action:'新增'
+							};
 						} else {
 							url = `/nccloud/platform/appregister/editapp.do`;
+							info = {
+								name:'应用',
+								action:'编辑'
+							};
 						}
 						if (this.optype === 'module') {
 							fromData.parent_id = this.nodeData.moduleid;
@@ -209,8 +225,16 @@ class AppRegister extends Component {
 					case 3:
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertapp.do`;
+							info = {
+								name:'应用',
+								action:'新增'
+							};
 						} else {
 							url = `/nccloud/platform/appregister/editapp.do`;
+							info = {
+								name:'应用',
+								action:'编辑'
+							};
 						}
 						fromData.parent_id = this.props.parentData;
 						reqData = { ...this.props.nodeData, ...fromData };
@@ -218,8 +242,16 @@ class AppRegister extends Component {
 					case 4:
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertpage.do`;
+							info = {
+								name:'页面',
+								action:'新增'
+							};
 						} else {
 							url = `/nccloud/platform/appregister/editpage.do`;
+							info = {
+								name:'页面',
+								action:'编辑'
+							};
 						}
 						fromData.parent_id = this.props.parentData;
 						reqData = { ...this.props.nodeData, ...fromData };
@@ -230,6 +262,7 @@ class AppRegister extends Component {
 				Ajax({
 					url: url,
 					data: reqData,
+					info: info,
 					alert: true,
 					success: ({data}) => {
 						if (data.success && data.data) {
@@ -287,6 +320,10 @@ class AppRegister extends Component {
 				switch (this.props.optype) {
 					case 'module':
 						url = `/nccloud/platform/appregister/deletemodule.do`;
+						info = {
+							name:'模块',
+							action:'删除'
+						};
 						data = {
 							moduleid: this.props.nodeData.moduleid
 						};
@@ -294,6 +331,10 @@ class AppRegister extends Component {
 						break;
 					case 'classify':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
+						info = {
+							name:'应用',
+							action:'删除'
+						};
 						data = {
 							pk_appregister: pk_appregister
 						};
@@ -306,6 +347,10 @@ class AppRegister extends Component {
 						break;
 					case 'app':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
+						info = {
+							name:'应用',
+							action:'删除'
+						};
 						data = {
 							pk_appregister: pk_appregister
 						};
@@ -318,6 +363,10 @@ class AppRegister extends Component {
 						break;
 					case 'page':
 						url = `/nccloud/platform/appregister/deletepage.do`;
+						info = {
+							name:'页面',
+							action:'删除'
+						};
 						data = {
 							pk_apppage: this.props.nodeData.pk_apppage
 						};
@@ -334,6 +383,7 @@ class AppRegister extends Component {
 				Ajax({
 					url: url,
 					data: data,
+					info: info,
 					success: ({ data }) => {
 						if (data.success && data.data) {
 							Notice({ status: 'success', msg: data.data.true });

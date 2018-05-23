@@ -119,6 +119,10 @@ class AppTable extends Component {
 			Ajax({
 				url: url,
 				data: data,
+				info:{
+					name:'应用参数',
+					action:'删除'
+				},
 				success: ({ data }) => {
 					if (data.success && data.data) {
 						_.remove(newData, (item) => record.pk_param === item.pk_param);
@@ -135,19 +139,28 @@ class AppTable extends Component {
 	save(record) {
 		let { activeKey } = this.state;
 		let newData = this.getNewData();
-		let url, listData;
+		let url, listData,info;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {
 			if (target.pk_param) {
 				url = `/nccloud/platform/appregister/editparam.do`;
+				info = {
+					name:'应用参数',
+					action:'编辑'
+				};
 			} else {
 				url = `/nccloud/platform/appregister/insertparam.do`;
+				info = {
+					name:'应用参数',
+					action:'新增'
+				};
 			}
 			listData = {
 				...target
 			};
 			Ajax({
 				url: url,
+				info:info,
 				data: listData,
 				success: ({ data }) => {
 					if (data.success && data.data) {

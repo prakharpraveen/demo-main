@@ -24,6 +24,10 @@ function fetch(value, callback) {
 	function fake() {
 		Ajax({
 			url: `/nccloud/platform/appregister/querymdid.do`,
+			info:{
+				name:'元数据ID',
+				action:'查询'
+			},
 			data: { search_content: value },
 			success: ({ data }) => {
 				if (data.success && data.data) {
@@ -200,16 +204,25 @@ class AppFromCard extends Component {
 	 */
 	getOptionsData = (code) => {
 		let { DOMDATA } = this.state;
-		let url,data;
+		let url,data,info;
 		if(code === 'target_path'){
 			url = `/nccloud/platform/appregister/querypagesel.do`;
 			data = { pk_appregister: this.props.nodeData.moduleid };
+			info={
+				name:'默认页面',
+				action:'查询'
+			};
 		}else{
 			url = `/nccloud/platform/appregister/queryorgtype.do`;
+			info={
+				name:'组织类型',
+				action:'查询'
+			};
 		}
 		Ajax({
 			url: url,
 			data: data,
+			info: info,
 			success: ({ data }) => {
 				if (data.success && data.data) {
 					let options;
