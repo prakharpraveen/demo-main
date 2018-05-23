@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import {setZoneData } from 'Store/Zone/action';
+import { setZoneData, setZoneTempletid } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import ModuleFromCard from './ModuleFromCard';
 import PageLayout from 'Components/PageLayout';
 import Notice from 'Components/Notice';
-import AppTable from './AppTable';
+import ZoneTable from './ZoneTable';
 import MyBtns from './MyBtns';
 import Myhead from './Myhead';
 import './index.less';
@@ -41,8 +41,9 @@ class ZoneRegister extends Component {
 	/** 
 	* 获取页面具体数据 
 	*/
-	componentDidMount() {
+	componentDidMount() { 
 		let param = getUrlParam('t');
+		this.props.setZoneTempletid(param);
 		let url, data;
 		url = '/nccloud/platform/templet/queryallarea.do';
 		data = {
@@ -72,7 +73,7 @@ class ZoneRegister extends Component {
 						<Content style={{ padding: '20px', minHeight: 280 }}>
 							<ModuleFromCard/>
 							<div className='gap'></div>	
-								<AppTable  />
+								<ZoneTable  />
 						</Content>
 					</Layout> 
 				</Layout>
@@ -85,6 +86,6 @@ export default connect(
 	(state) => ({
 	}),
 	{
-		setZoneData
+		setZoneData, setZoneTempletid
 	}
 )(ZoneRegister);

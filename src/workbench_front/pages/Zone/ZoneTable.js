@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { Tabs, Button, Table, Input, Popconfirm, Select } from 'antd';
 import { Table, Input, Icon, Button, Popconfirm, Select} from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -45,21 +44,6 @@ const EditableSelectCell = ({ editable, value, type, column, onChange }) => (
 	</div>
 );
 
-//获取页面参数
-const getUrlParam = (pop) => {
-	if (!pop) return;
-	let result;
-	let params = window.location.hash.split('?');
-	if (params) {
-		params = params[1].split('&');
-		params.find((item) => {
-			if (item.indexOf(pop) != -1) {
-				result = item.split('=')[1];
-			}
-		});
-		return result;
-	}
-};
 
 /**
  * 按钮类型选择
@@ -137,7 +121,6 @@ class EditableSelect extends React.Component {
 		editable: false,
 	}
 	handleChange = (value) => {
-		debugger;
 	//	const value = e.target.value;
 		this.setState({ value });
 	}
@@ -169,7 +152,7 @@ class EditableSelect extends React.Component {
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
-							{(value && switchType(value)) || ' '}
+							{(switchType(value)) || ' '}
 							<Icon
 								type="edit"
 								className="editable-cell-icon"
@@ -191,12 +174,6 @@ class ZoneTable extends React.Component {
 				title: '序号',
 				dataIndex: 'num',
 				width: '10%',
-				/* render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'name')}
-					/>
-				), */
 			},
 			{
 			title: '区域编码',
@@ -308,20 +285,17 @@ class ZoneTable extends React.Component {
 	}
 }
 
-/* ZoneTable.propTypes = {
-	appType: PropTypes.number.isRequired,
-	billStatus: PropTypes.object.isRequired,
-	appParamVOs: PropTypes.array.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	nodeData: PropTypes.object.isRequired
-}; */
+ZoneTable.propTypes = {
+	zoneDatas: PropTypes.object.isRequired,
+//	templetid: PropTypes.string.isRequired,
+};
 let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
 export default connect(
 	(state) => {
 		return {
 			zone: state.zoneRegisterData.zoneParamdata,
 			templetid: state.zoneRegisterData.templetid,
-			zoneDatas: state.zoneRegisterData.templetid,
+			zoneDatas: state.zoneRegisterData.zoneDatas,
 		};
 	},
 	{ setZoneParamData, setZoneTempletid }
