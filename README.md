@@ -1,4 +1,4 @@
-11# NC Cloud 工作台 &middot; ![node version] // (https://img.shields.io/badge/node-8.10.0-brightgreen.svg) ![npm version](https://img.shields.io/badge/npm-5.6.0-blue.svg)  ![webpack version](https://img.shields.io/badge/webpack-4.1.1-blue.svg)
+# NC Cloud 工作台 &middot; ![node version] // (https://img.shields.io/badge/node-8.10.0-brightgreen.svg) ![npm version](https://img.shields.io/badge/npm-5.6.0-blue.svg)  ![webpack version](https://img.shields.io/badge/webpack-4.1.1-blue.svg)
 ## demo
 ![demo drag](http://op3cmr9ix.bkt.clouddn.com/demo-main/drag%20%282%29.gif)
 ## 浏览器兼容
