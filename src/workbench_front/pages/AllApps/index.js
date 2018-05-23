@@ -21,7 +21,7 @@ class AllApps extends Component {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info:{
 				name:'所有应用',
-				action:'查询'
+				action:'查询一二级领域模块'
 			},
 			data: {
 				userid: this.props.userID
@@ -41,7 +41,7 @@ class AllApps extends Component {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info:{
 				name:'所有应用',
-				action:'查询'
+				action:'查询模块下应用'
 			},
 			data: {
 				own_module: moduleID,

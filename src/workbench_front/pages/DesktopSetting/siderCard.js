@@ -4,7 +4,7 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { updateShadowCard } from 'Store/test/action';
+import { updateShadowCard,updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 const noteSource = {
 	beginDrag(props, monitor, component) {
@@ -23,8 +23,11 @@ const noteSource = {
 	endDrag(props, monitor, component) {
 
 		let groups = props.groups;
+		groups = _.cloneDeep(groups);
 		utilService.setPropertyValueForCards(groups, 'isShadow', false);
-		props.updateShadowCard({})
+
+		props.updateShadowCard({});
+		props.updateGroupList(groups);
 	},
 };
 
@@ -66,6 +69,7 @@ export default (connect(
 		groups: state.templateDragData.groups
 	}),
 	{
-		updateShadowCard
+		updateShadowCard,
+		updateGroupList
 	}
 )(dragDropItem))

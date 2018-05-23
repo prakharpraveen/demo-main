@@ -28,6 +28,10 @@ class MySider extends Component {
 		const relateidObj = this.props.relateidObj;
 		let ajaxObj = {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			info: {
+				name:'工作桌面配置',
+				action:'查询一二级领域模块'
+			},
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
@@ -63,10 +67,14 @@ class MySider extends Component {
 				: { search_content: this.state.searchValue };
 		Ajax({
 			url: `/nccloud/platform/appregister/searchapp.do`,
+			info: {
+				name:'工作桌面配置',
+				action:'模糊搜索应用和部件'
+			},
 			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
-				if (success && data ) {
+				if (success && data && data.children &&data.children.length>0) {
 					data.isShow = true;
 					data.checkedAll = false;
 					data.indeterminate = false;
@@ -93,6 +101,10 @@ class MySider extends Component {
 				: { own_module: ownModuleID };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
+			info: {
+				name:'工作桌面配置',
+				action:'查询模块下应用和部件'
+			},
 			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
@@ -271,6 +283,7 @@ class MySider extends Component {
 	}
 	render() {
 		const contentHeight = this.props.contentHeight;
+		console.log("sider");
 		return (
 			<Sider
 				className='nc-workbench-home-sider'

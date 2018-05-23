@@ -23,12 +23,10 @@ const noteSource = {
 		utilService.setPropertyValueForCards(groups, 'isShadow', false);
 
 		// let compactedLayout = compactLayoutHorizontal( groups[groupIndex].apps, props.layout.col);
-		// const firstCard = compactedLayout[0];
-		// compactedLayout = compactLayout(compactedLayout, firstCard);
 		// groups[groupIndex].apps = compactedLayout;
 
-		props.updateGroupList(groups);
 		props.updateShadowCard({});
+	    props.updateGroupList(groups);
 	},
 	// isDragging(props, monitor) {
 	// 	return props.dragCardID = monitor.getItem().id;
@@ -65,9 +63,14 @@ class Item extends Component {
 	//依靠前后props中shadowCard状态（前为空对象，后为有对象，）来判断是否为beginDrag状态，来阻止dom刷新，从而使dragLayer不会变化
 	shouldComponentUpdate(nextProps, nextState) {
 		const thisProps = this.props || {}, thisState = this.state || {};
-		if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
-			return false;
-		}
+		// if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
+		// 	return false;
+		// }
+		// //拖拽结束
+		// if (!_.isEmpty(this.props.shadowCard) && _.isEmpty(nextProps.shadowCard)&& this.props.shadowCard.id === this.props.id) {
+		// 	console.log("true")
+		// 	return true;
+		// }
 		if(this.props.isChecked !== nextProps.isChecked){
 			return true;
 		}
@@ -125,7 +128,6 @@ class Item extends Component {
 		const { margin, rowHeight, calWidth } = this.props.layout;
 		const { x, y } = utilService.calGridItemPosition(gridx, gridy,margin, rowHeight, calWidth);
 		const { wPx, hPx } = utilService.calWHtoPx(width, height,margin, rowHeight, calWidth);
-		// console.log('card')
 		let cardDom;
 		// if (isDragging && this.props.dragCardID === id) {
 		// 	return null;

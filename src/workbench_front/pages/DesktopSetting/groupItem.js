@@ -118,6 +118,7 @@ class GroupItem extends Component {
 	// 		// console.log("groupItem leave");
 	// 	}
     // }
+
     componentDidMount() {
         let clientWidth;
         const containerDom = document.querySelector("#card-container")
@@ -271,7 +272,7 @@ export default (connect(
         layout: state.templateDragData.layout,
         defaultLayout: state.templateDragData.defaultLayout,
         currEditID: state.templateDragData.currEditID,
-        shadowCard: state.templateDragData.shadowCard,
+        // shadowCard: state.templateDragData.shadowCard,
 	}),
 	{
         updateCurrEditID

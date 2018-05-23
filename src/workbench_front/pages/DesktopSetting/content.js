@@ -44,7 +44,7 @@ class MyContent extends Component {
 		if (GridX === shadowCard.gridx && GridY === shadowCard.gridy) {
 			return;
 		}
-		shadowCard = _.cloneDeep(shadowCard);
+		// shadowCard = _.cloneDeep(shadowCard);
 		let groupIndex = hoverItem.index;
 		//先判断组内有没有相同的appID
 		const pk_appregister = shadowCard.pk_appregister;
@@ -53,18 +53,19 @@ class MyContent extends Component {
 		if (isContain) {
 			return;
 		}
+
 		_.forEach(groups, (g, index) => {
 			_.remove(g.apps, (a) => {
 				return a.isShadow === true;
 			});
 		});
 
-		groups[groupIndex].apps.push(shadowCard);
 
 		// console.log(GridX, GridY);
-		// shadowCard = { ...shadowCard, gridx: GridX, gridy: GridY };
-		shadowCard.gridx = GridX;
-		shadowCard.gridy = GridY;
+		shadowCard = { ...shadowCard, gridx: GridX, gridy: GridY };
+		
+		groups[groupIndex].apps.push(shadowCard);
+
 		const newlayout = layoutCheck(
 			groups[groupIndex].apps,
 			shadowCard,

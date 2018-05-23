@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import intl from 'react-intl-universal';
-import { Select } from 'antd';
+import { Select, AutoComplete } from 'antd';
 import Drawer from 'react-motion-drawer';
 import PropTypes from 'prop-types';
 import { GetQuery } from 'Pub/js/utils';
@@ -14,7 +14,10 @@ import Breadcrumb from 'Components/Breadcrumb';
 // 工作桌面单页通用布局
 import TabsLink from 'Components/TabsLink';
 import './index.less';
+import Ajax from 'Pub/js/ajax';
 const Option = Select.Option;
+
+let resizeWaiter = false;
 /**
  * 工作桌面整体布局组件
  */
@@ -22,7 +25,9 @@ class Layout extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			nodeName: '首页'
+			nodeName: '首页',
+			isShowSearch: false,
+			dataSource: []
 		};
 	}
 	/**
@@ -58,13 +63,76 @@ class Layout extends Component {
 		window.removeEventListener('hashchange',this.handleUpdateTitleName);
 	}
 
+	changeSearchInput = () => {
+		const { isShowSearch } = this.state;
+		this.setState({ isShowSearch: !isShowSearch });
+	};
+
+	onSelect = (value)=> {
+		console.log('onSelect', value);
+	};
+	handleSearch = (value) => {
+		if (!resizeWaiter) {
+			resizeWaiter = true;
+			setTimeout(()=>{
+				resizeWaiter = false;
+				Ajax({
+					url: `/nccloud/platform/appregister/searchapp.do`,
+					info: {
+						name:'应用搜索',
+						action:'模糊搜索应用'
+					},
+					data: {
+						search_content: value,
+						userid: this.props.appData.userID,
+						apptype: "1"
+					},
+					success: (res) => {
+						const { data, success } = res.data;
+						if (success && data && data.children &&data.children.length>0) {
+							const dataSource = [];
+							data.children.map((c)=>{
+								dataSource.push({
+									value: c.value,
+									text: c.label
+								});
+							})
+							this.setState({ dataSource});
+						}
+					}
+				});
+			}, 300);
+		}
+	  };
+	getSearchDom = () => {
+		const { isShowSearch } = this.state;
+		if (isShowSearch) {
+			const { dataSource } = this.state;
+			return (
+				<span className='margin-right-10 autocomplete'>
+					<AutoComplete dataSource={dataSource} style={{ width: 200, height: 30 }} 
+					onSelect={this.onSelect}
+					onSearch={this.handleSearch}
+					placeholder='请输入应用名称' />
+					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+				</span>
+			);
+		} else {
+			return (
+				<span className='margin-right-10'>
+					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+				</span>
+			);
+		}
+	};
+
 	render() {
 		let { nodeName } = this.state;
 		let { isOpen } = this.props;
 		return (
 			<div className='nc-workbench-layout'>
-				<div className='nc-workbench-top-container  nccwb-header' style={{ 'zIndex': '999' }}>
-					<nav  field="nccwb-header" fieldname={nodeName}  className='nc-workbench-nav'>
+				<div className='nc-workbench-top-container  nccwb-header' style={{ zIndex: '1' }}>
+					<nav field='nccwb-header' fieldname={nodeName} className='nc-workbench-nav'>
 						<div className='nav-left n-left n-v-middle'>
 							<div
 								className='nc-workbench-hp margin-right-10'
@@ -86,11 +154,11 @@ class Layout extends Component {
 							<span>{nodeName}</span>
 						</div>
 						<div className='nav-right n-right n-v-middle'>
+							{this.getSearchDom()}
 							<span className='margin-right-10'>
-								<i className='iconfont icon-sousuo' />
-							</span>
-							<span className='margin-right-10'>
-								<Link to={`all`}><i className='iconfont icon-quanbuyingyong' /></Link>
+								<Link to={`all`}>
+									<i className='iconfont icon-quanbuyingyong' />
+								</Link>
 							</span>
 							<span className='margin-right-10'>
 								<i className='iconfont icon-xiaoxi' />
@@ -98,7 +166,7 @@ class Layout extends Component {
 						</div>
 					</nav>
 					<div className='nccwb-header-info'>
-						{this.props.location.pathname === '/'?<TabsLink />:<Breadcrumb/>}
+						{this.props.location.pathname === '/' ? <TabsLink /> : <Breadcrumb />}
 					</div>
 				</div>
 				<div className='nc-workbench-container'>{this.props.children}</div>

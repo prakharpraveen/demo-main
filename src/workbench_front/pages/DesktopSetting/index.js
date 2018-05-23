@@ -34,8 +34,8 @@ class Test extends Component {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			info: {
-				name:'应用',
-				action:'查询'
+				name:'工作桌面配置',
+				action:'工作桌面查询'
 			},
 			data: {
 				relateid: this.state.relateidObj.data
@@ -43,8 +43,7 @@ class Test extends Component {
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
-					if (success && data ) {
-						if(data.length > 0){
+					if (success && data&& data.length > 0 ) {
 							_.forEach(data[0].groups, (g) => {
 								g.type = "group";
 								_.forEach(g.apps,(a)=>{
@@ -54,7 +53,6 @@ class Test extends Component {
 							});
 							this.props.updateGroupList(data[0].groups);
 						}
-					}
 				}
 			}
 		});

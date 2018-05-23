@@ -172,7 +172,7 @@ class MyFooter extends Component {
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
 			info: {
-				name:'应用摄者',
+				name:'工作桌面配置',
 				action:'保存'
 			},
 			data: saveData,
@@ -235,7 +235,6 @@ class MyFooter extends Component {
 export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		shadowCard: state.templateDragData.shadowCard,
 		col: state.templateDragData.layout.col
 	}),
 	{
