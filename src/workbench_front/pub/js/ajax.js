@@ -30,18 +30,23 @@ const Ajax = ({
 		url,
 		data,
 		method,
-		// transformRequest : [function (data) {
-		// 	//Do whatever you want to transform the data
-		// 	let gData = gziptools.zip(JSON.stringify(data));
-		// 	console.log(data)
-		// 	return gData;
-		// }],
-		// transformResponse: [function (data) {
-		// 	// 对 data 进行任意转换处理
-		// 	let resData =  gziptools.unzip(data);	
-		// 	console.log(resData)
-		// 	return resData;
-		// }]
+		transformRequest : [function (data) {
+			// 不压缩
+			let gData = JSON.stringify(data);
+			//Do whatever you want to transform the data
+			// 启动压缩
+			// let gData = gziptools.zip(JSON.stringify(data));
+			// console.log(data)
+			return gData;
+		}],
+		transformResponse: [function (data) {
+			let gData = JSON.parse(data);
+			// 对 data 进行任意转换处理
+			// 启动压缩
+			// let resData =  gziptools.unzip(data);	
+			// console.log(gData)
+			return gData;
+		}]
 	}).then((res) => {
 		if (res.data.success) {
 			// if (alert) {

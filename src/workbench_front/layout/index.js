@@ -25,11 +25,16 @@ class Layout extends Component {
 			nodeName: '首页'
 		};
 	}
-	
+	/**
+	 * 组织切换
+	 * @param {String} value 选中组织的value值
+	 */
 	handleChange = (value) => {
 		console.log(`selected ${value}`);
 	};
-
+	/**
+	 * 更新标题名称
+	 */
 	handleUpdateTitleName = () =>{
 		let { n } = GetQuery(this.props.location.search);
 		if (n) {
@@ -45,6 +50,7 @@ class Layout extends Component {
 	}
 
 	componentDidMount() {
+		this.handleUpdateTitleName();
 		window.addEventListener('hashchange',this.handleUpdateTitleName)
 	};
 
