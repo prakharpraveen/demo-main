@@ -3,7 +3,6 @@ import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer } = high;
 
-
 class Customize extends Component{
     constructor(props) {
         super(props);
