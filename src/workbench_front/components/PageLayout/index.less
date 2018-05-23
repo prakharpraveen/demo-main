@@ -6,6 +6,29 @@
 		.nc-workbench-ownpage {
 			min-width: 900px;
 		}
+		.nc-workbench-ownpage-all {
+			display: flex;
+			justify-content: flex-start;
+		}
+		.nc-workbench-ownpage-left {
+			position: relative;
+			min-height: 200px;
+			min-width: 200px;
+			.layout-drag-block {
+				position: absolute;
+				right: 0;
+				z-index: 1;
+				top: 50%;
+				transform: translate(0 -50%);
+				display: block;
+				width: 8px;
+				height: 88px;
+				background: #000000;
+			}
+		}
+		.nc-workbench-ownpage-right {
+			flex: 1;
+		}
 	}
 	@media screen and (min-width: 1280px) {
 		.nc-workbench-page {
