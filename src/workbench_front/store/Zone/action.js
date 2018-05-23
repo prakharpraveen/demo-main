@@ -7,6 +7,15 @@ export const setZoneParamData = (data) => {
 		data
 	};
 };
+// 设置 区域数据 
+export const setZoneData = (data) => {
+	return {
+		type: ZoneRegister.SETZONEDATA,
+		data
+	};
+};
+
+
 // 设置 区域对应的模板id 
 export const setZoneTempletid = (data) => {
 	return {

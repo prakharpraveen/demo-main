@@ -15,26 +15,26 @@ class ModuleFromCard extends Component {
 				{
 					lable: '模板编码',
 					type: 'input',
-					code: 'systypecode',
+					code: 'code',
 					required: true,
 				},
 				{
 					lable: '模板名称',
 					type: 'input',
-					code: 'moduleid',
+					code: 'name',
 					required: true,
-					check: (rule, value, callback) => {
-						if (value === this.props.parentData) {
-							callback('不能与父节点编码重复');
-						} else {
-							callback();
-						}
-					}
+					// check: (rule, value, callback) => {
+					// 	if (value === this.props.parentData) {
+					// 		callback('不能与父节点编码重复');
+					// 	} else {
+					// 		callback();
+					// 	}
+					// }
 				},
 				{
 					lable: '模板描述',
 					type: 'input',
-					code: 'devmodule',
+					code: 'description',
 					required: false
 				}
 			]
@@ -44,31 +44,7 @@ class ModuleFromCard extends Component {
 	 * 获取组织类型 下拉数据
 	 * @param {String} code 
 	 */
-	getOptionsData = (code) => {
-		let { DOMDATA } = this.state;
-		Ajax({
-			url: `/nccloud/platform/appregister/queryorgtype.do`,
-			success: ({ data }) => {
-				if (data.success && data.data) {
-					let options = data.data.rows;
-					options = options.map((option, i) => {
-						return {
-							value: option.refpk,
-							text: option.refname
-						};
-					});
-					DOMDATA.map((item, index) => {
-						if (item.code === code) {
-							item.options = options;
-						}
-						return item;
-					});
-					this.setState({ DOMDATA });
-				}
-			}
-		});
-	};
-	getFromData = () => {
+	/* getFromData = () => {
 		const { getFieldsValue, validateFields } = this.props.form;
 		let flag = false;
 		validateFields((err, values) => {
@@ -77,10 +53,10 @@ class ModuleFromCard extends Component {
 			}
 		});
 		return flag ? getFieldsValue() : null;
-	};
+	}; */
 	componentDidMount() {
 		this.props.getFromDataFunc(this.getFromData);
-		this.getOptionsData('orgtypecode');
+	//	this.getOptionsData('orgtypecode');
 	}
 
 	render() {
@@ -101,9 +77,10 @@ ModuleFromCard.PropTypes = {
 };
 export default connect(
 	(state) => {
-		let { zoneArr} = state.zoneSettingData.zoneArray
-		let { nodeData, updateTreeData, billStatus, parentData } = state.AppRegisterData;
-		return { nodeData, updateTreeData, billStatus, parentData, zoneArr };
+		let { zoneArr} = state.zoneSettingData.zoneArray;
+		let { zoneDatas } = state.zoneRegisterData;
+		//let { nodeData, updateTreeData, billStatus, parentData } = state.AppRegisterData;
+		return { zoneArr, zoneDatas };
 	},
 	{
 		getFromDataFunc

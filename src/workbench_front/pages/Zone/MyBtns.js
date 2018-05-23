@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
-
 import Notice from 'Components/Notice';
- //import { window } from '_rxjs@5.5.10@rxjs/operator/window';
+
 
 const { Header } = Layout;
 /**
@@ -27,7 +26,7 @@ const Btns = [
 		type: 'primary'
 	}
 ];
-class Myheight extends Component {
+class MyBtns extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -80,9 +79,8 @@ class Myheight extends Component {
 					</div>
 					<div>{this.creatBtns(Btns)}</div>
 				</div>			
-	   </Header>
-			   );
-	     }
+	   </Header> );
+   }
 }
 
 export default connect(
@@ -93,4 +91,4 @@ export default connect(
 	{
 		setZoneState
 	}
-)(Myheight);
+)(MyBtns);

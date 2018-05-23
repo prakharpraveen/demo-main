@@ -5,6 +5,7 @@ let defaultState = {
 	zoneParamdata:[],
 	templatid:'',
 	zoneState:'',
+	zoneDatas:{},
 };
 // 首页表单数据
 export const zoneRegisterData = (state = defaultState, action = {}) => {
@@ -27,6 +28,13 @@ export const zoneRegisterData = (state = defaultState, action = {}) => {
 				...state,
 				...{
 					zoneState: action.data
+				}
+			};
+		case ZoneRegister.SETZONEDATA:
+			return {
+				...state,
+				...{
+					zoneDatas: action.data
 				}
 			};
 		default:
