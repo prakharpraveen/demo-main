@@ -47,6 +47,10 @@ const AllApps = Loadable({
 	loader: () => import('Pages/AllApps'),
 	loading: Loading
 });
+const Customize = Loadable({
+	loader: () => import('Pages/Customize'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -89,6 +93,10 @@ const routes = [
 	{
 		path: '/all',
 		component: AllApps
+	},
+	{
+		path: '/c',
+		component: Customize
 	},
 ];
 const RouteWithSubRoutes = (route) => (

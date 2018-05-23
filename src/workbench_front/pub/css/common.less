@@ -1,0 +1,297 @@
+//@import './variable.less';
+////@import './checkbox.less';
+//@import './scrollbar.less';
+//@import './singlefieldform.less';
+//@import './tree_card_table.less';
+//@import './singletable.less';
+//@import './body.less';
+//
+//// 边框的基本配置
+//.border {
+//  border-bottom: 1px solid @border-color;
+//}
+//
+//// 头部
+//.header {
+//  clear: both;
+//  &:extend(.border);
+//  height: 60px;
+//  padding: 0px;
+//  padding-left: 20px;
+//  padding-right: 20px;
+//
+//  display: flex;
+//  align-items: center;
+//  position: fixed;
+//  top: 0;
+//  z-index: 1;
+//  width: 100%;
+//
+//  border-bottom: 1px solid #D9D9D9;
+//  background-color: @color-white;
+//  // 头部标题
+//  .title {
+//    //margin-right: 30px;
+//    font-size: 16px;//字号
+//    font-family:'PingFangHK';//字体
+//    font-weight: 500;//字重  Medium
+//    text-align: left;//左对齐
+//    display: inline;
+//  }
+//  // 头部按钮组
+//  .btn-group {
+//    display: inline-block;
+//    margin-right: 10px;
+//    margin-left: auto;
+//    .button-component {
+//      margin-right: 10px;//按钮间距10px
+//      &:last-child {
+//        margin-right: 0;
+//      }
+//    }
+//  }
+//
+//
+//  // 头部简单搜索框
+//  .search-box {
+//    width: 240px;
+//    height: 30px;
+//    margin-left: 20px;
+//    //margin-right: 20px;
+//    input {
+//      margin-left: 0;
+//    }
+//    .u-form-control{
+//      border-radius:1px;
+//      font-size: 13px;
+//      font-family: 'PingFangHK';
+//    }
+//  }
+//  // 显示停用复选框	
+//  .showOff {
+//    margin-left: 20px;
+//    .u-checkbox-label {
+//      margin: 0px;
+//      font-size: 13px;
+//      font-family:'PingFangHK';//字体
+//      color: @font-color;
+//      &::before,
+//      &::after {
+//        top: 0;
+//      }
+//    }
+//  }
+//}
+//
+//// 查询条件的更多按钮
+//.more {
+//  text-decoration: none;
+//  font-size: 14px;
+//  color: @color-primary;
+//  &:hover {
+//    color: @color-primary;
+//    text-decoration: none;
+//  }
+//  margin-right: 20px;
+//  user-select: none;
+//  text-decoration: none;
+//}
+//
+//
+//// 主要按钮，彩色  加类名btn-color 	
+//.u-button.btn-color {
+//  background-color: @color-primary;
+//  color: @color-white;
+//  &:hover {
+//    background-color: @color-primary-hover;
+//  }
+//  &:active {
+//    background-color: @color-primary-active;
+//  }
+//  &:disabled {
+//    background-color: @color-disabled;
+//    color: @font-disabled-color;
+//  }
+//}
+//button {
+//  user-select: none;
+//}
+//
+//// 次要按钮，灰色  加类名 btn-gray
+//.u-button.btn-gray{
+//  background-color: @color-secondary;
+//  color: @font-color;
+//  &:hover{
+//    background-color: @color-secondary;
+//  }
+//  &:active{
+//    background-color:@color-secondary-active;
+//    color: @color-secondary-active-font;
+//  }
+//  &:disabled {
+//    background-color: @color-disabled;
+//    color: @font-disabled-color;
+//  }
+//}
+//
+//
+//// 查询区
+//.search-area {
+//  &:extend(.border);
+//
+//  height: 50px;
+//  padding: 5px 15px 5px 15px ;
+//
+//  position: fixed;
+//  top: 60px;
+//  z-index: 1;
+//  width: 100%;
+//  background-color: @color-white;
+//  .search-component-resetSearchBtn{
+//    color:#474d54;
+//    margin-left: 30px;
+//    font-size: 13px;
+//  }
+//  .search-component-resetSearchBtn:hover{
+//    color:red;
+//  }
+//  .showMoreSearch{
+//    color:#474d54;
+//  }
+//  .showMoreSearch:hover{
+//    color:red;
+//  }
+//
+//}
+//// 表单区域
+//.form-area {
+//  &:extend(.border);
+//  padding: 20px 0;
+//}
+//// 表格区域
+//.table-area {
+//  &:extend(.border);
+//
+//  //margin-top: 120px;
+//  .table-header {
+//    &:extend(.header);
+//    .title {
+//      font-size: 13px;
+//    }
+//  }
+//  .u-table-thead{
+//    background-color: #F4F5F7;
+//  }
+//  /** 表格滚动条样式 **/
+//  .u-table-body::-webkit-scrollbar{/*整个滚动条区域的宽度*/
+//    width:8px;
+//    height:8px;//保证纵向滚动条和横向滚动条一致
+//  }
+//  .u-table-body::-webkit-scrollbar-button{/*滚动条上下两边的按钮*/
+//    display:none;
+//  }
+//  .u-table-body::-webkit-scrollbar-thumb{/*真滚动条样式*/
+//    //-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+//    background:rgba(0,0,0,0.54);
+//    border-radius: 100px ;
+//  }
+//  .u-table-body::-webkit-scrollbar-track {/*滚动条滚动的轨道*/
+//    display: none;
+//  }
+//  /***列表操作列样式***/
+//  .operator{
+//    cursor: pointer;
+//  }
+//  .operator:hover{
+//    color:#E14D47;
+//  }
+//  .sperator{
+//    width:2px;
+//    height:8px;
+//    border:1px solid #D9D9D9;
+//    margin:0px;
+//    padding:0px;
+//  }
+//}
+//
+//.table-area-hase-search-area{
+//  position: relative;
+//  top: 110px;
+//}
+//// a 标签样式
+//a {
+//  color: @link-color;
+//  &:hover {
+//    color: @link-hover;
+//  }
+//}
+//
+//// 覆盖 平台组件样式
+//.lightapp-component-form {
+//  border: none;
+//}
+//.lightapp-component-affix {
+//  border: none;
+//  width: 100%;
+//  padding: 0;
+//  left: 0;
+//  top: 0;
+//}
+//.u-button.button-component.btn-color {
+//  background-color: @color-primary;
+//  color: @color-white;
+//  &:hover {
+//    background-color: @color-primary-hover;
+//  }
+//  &:active {
+//    background-color: @color-primary-active;
+//  }
+//  &:disabled {
+//    background-color: @color-disabled;
+//    color: @font-disabled-color;
+//  }
+//}
+//
+//.u-button.button-component.btn-gray{
+//  background-color: @color-secondary;
+//  color: @font-color;
+//  &:hover{
+//    background-color: @color-secondary;
+//  }
+//  &:active{
+//    background-color:@color-secondary-active;
+//    color: @color-secondary-active-font;
+//  }
+//  &:disabled {
+//    background-color: @color-disabled;
+//    color: @font-disabled-color;
+//  }
+//}
+//
+//
+//.nc-input.u-form-control{
+//  border-color: @input-border-color;
+//  border-radius: 2px;
+//  &:focus{
+//    border-color: @color-primary;
+//  }
+//}
+//.table-area {
+//  border: none;
+//  .lightapp-component-editTable {
+//
+//    padding: 0;
+//    .u-table-content .u-table-body table {
+//      border-top: none;
+//    }
+//
+//  }
+//
+//}
+//
+//.u-tabs.u-tabs-top.u-tabs-simple.lightapp-component-tabs {
+//  padding: 0;
+//  border-bottom: none;
+//}
+//
+//// tinper组件样式覆盖
