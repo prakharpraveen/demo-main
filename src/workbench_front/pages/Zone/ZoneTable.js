@@ -6,7 +6,7 @@ import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
-import { setZoneParamData, setZoneTempletid } from 'Store/Zone/action'; 
+import { setZoneListData, setZoneTempletid } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const Option = Select.Option;
@@ -169,6 +169,10 @@ class EditableSelect extends React.Component {
 class ZoneTable extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			dataSource: [],
+			count: null,
+		};
 		this.columns = [
 			{
 				title: '序号',
@@ -203,7 +207,7 @@ class ZoneTable extends React.Component {
 					onChange={this.onCellChange(record.key, 'areatype')}
 					/>
 				),
-		},
+			},
 			{
 				title: '关联元数据',
 				dataIndex: 'metaid', 
@@ -228,28 +232,18 @@ class ZoneTable extends React.Component {
 				);
 			},
 		}];
-
-		this.state = {
-			dataSource: [{
-				key: '0',
-				name: 'Edward King 0',
-				age: '32',
-				address: 'London, Park Lane no. 0',
-			}, {
-				key: '1',
-				name: 'Edward King 1',
-				age: '32',
-				address: 'London, Park Lane no. 1',
-			}],
-			count: 2,
-		};
+	}
+	// 组件更新
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			dataSource: nextProps.zoneDatas.areaList && nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
+			count: nextProps.zoneDatas.areaList && nextProps.zoneDatas.areaList.length,})
 	}
 	onCellChange = (key, dataIndex) => {
 		return (value) => {
 			const dataSource = [...this.state.dataSource];
 			const target = dataSource.find(item => item.key === key);
 			if (target) {
-				debugger;
 				target[dataIndex] = value;
 				this.setState({ dataSource });
 			}
@@ -257,7 +251,10 @@ class ZoneTable extends React.Component {
 	}
 	onDelete = (key) => {
 		const dataSource = [...this.state.dataSource];
-		this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+		this.setState({ dataSource: dataSource.filter(item => item.key !== key) },
+		() =>{}
+	);
+
 	}
 	handleAdd = () => {
 		const { count, dataSource } = this.state;
@@ -274,7 +271,7 @@ class ZoneTable extends React.Component {
 	}
 	render() {
 		let { dataSource } = this.state;
-		dataSource.map((v,i) => {v.num = i+1})
+		dataSource && dataSource.map((v, i) =>{ v.num = i+1})
 		const columns = this.columns;
 		return (
 			<div>
@@ -298,5 +295,5 @@ export default connect(
 			zoneDatas: state.zoneRegisterData.zoneDatas,
 		};
 	},
-	{ setZoneParamData, setZoneTempletid }
+	{ setZoneListData, setZoneTempletid }
 )(DragFromeTable);
