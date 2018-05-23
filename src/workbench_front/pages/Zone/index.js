@@ -6,7 +6,7 @@ import propTypes from 'prop-types';
 import { setZoneData, setZoneTempletid } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import ModuleFromCard from './ModuleFromCard';
-import PageLayout from 'Components/PageLayout';
+import { PageLayout } from 'Components/PageLayout';
 import Notice from 'Components/Notice';
 import ZoneTable from './ZoneTable';
 import MyBtns from './MyBtns';
@@ -15,17 +15,18 @@ import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
 
 //获取页面参数
-const getUrlParam = (pop) => { 
+const getUrlParam = (pop) => {
 	if (!pop) return;
 	let result;
 	let params = window.location.hash && window.location.hash.split('?');
 	if (params) {
 		params = params[1] && params[1].split('&');
-		params && params.find((item) => {
-			if (item.indexOf(pop) != -1) {
-				result = item.split('=')[1];
-			}
-		});
+		params &&
+			params.find((item) => {
+				if (item.indexOf(pop) != -1) {
+					result = item.split('=')[1];
+				}
+			});
 		return result;
 	}
 };
@@ -41,7 +42,7 @@ class ZoneRegister extends Component {
 	/** 
 	* 获取页面具体数据 
 	*/
-	componentDidMount() { 
+	componentDidMount() {
 		let param = getUrlParam('t');
 		this.props.setZoneTempletid(param);
 		let url, data;
@@ -52,9 +53,9 @@ class ZoneRegister extends Component {
 		Ajax({
 			url: url,
 			data: data,
-			info:{
-				name:'区域设置',
-				action:'传递区域数值'
+			info: {
+				name: '区域设置',
+				action: '传递区域数值'
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
@@ -65,31 +66,28 @@ class ZoneRegister extends Component {
 			}
 		});
 	}
-	
+
 	render() {
 		return (
-			<PageLayout className='nc-workbench-ZoneRegister'>
+			<PageLayout className="nc-workbench-ZoneRegister">
 				<Layout>
-					<Myhead/>
+					<Myhead />
 					<Layout>
 						<MyBtns />
-					<Layout height={'100%'}>
-						<Content style={{ padding: '20px', minHeight: 280 }}>
-							<ModuleFromCard/>
-							<div className='gap'></div>	
-								<ZoneTable  />
-						</Content>
-					</Layout> 
+						<Layout height={'100%'}>
+							<Content style={{ padding: '20px', minHeight: 280 }}>
+								<ModuleFromCard />
+								<div className="gap" />
+								<ZoneTable />
+							</Content>
+						</Layout>
+					</Layout>
 				</Layout>
-			</Layout>
 			</PageLayout>
 		);
 	}
 }
-export default connect(
-	(state) => ({
-	}),
-	{
-		setZoneData, setZoneTempletid
-	}
-)(ZoneRegister);
+export default connect((state) => ({}), {
+	setZoneData,
+	setZoneTempletid
+})(ZoneRegister);

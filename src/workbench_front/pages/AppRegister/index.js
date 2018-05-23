@@ -3,15 +3,22 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-	setPageTemplateData,setParentData } from 'Store/AppRegister/action';
+import {
+	setNodeData,
+	setBillStatus,
+	setOpType,
+	setAppParamData,
+	setPageButtonData,
+	setPageTemplateData,
+	setParentData
+} from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import SearchTree from './SearchTree';
 import ModuleFormCard from './ModuleFormCard';
 import ClassFormCard from './ClassFormCard';
 import AppFormCard from './AppFormCard';
 import PageFromCard from './PageFromCard';
-import PageLayout from 'Components/PageLayout';
+import { PageLayout } from 'Components/PageLayout';
 import Notice from 'Components/Notice';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
@@ -172,7 +179,7 @@ class AppRegister extends Component {
 				}
 
 				let isNew = this.props.billStatus.isNew;
-				let reqData,info;
+				let reqData, info;
 				/**
 				 * @param {Number} this.actionType
 				 * 
@@ -186,14 +193,14 @@ class AppRegister extends Component {
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertmodule.do`;
 							info = {
-								name:'模块',
-								action:'新增'
+								name: '模块',
+								action: '新增'
 							};
 						} else {
 							url = `/nccloud/platform/appregister/editmodule.do`;
 							info = {
-								name:'模块',
-								action:'编辑'
+								name: '模块',
+								action: '编辑'
 							};
 						}
 						if (this.props.parentData) {
@@ -205,14 +212,14 @@ class AppRegister extends Component {
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertapp.do`;
 							info = {
-								name:'应用',
-								action:'新增'
+								name: '应用',
+								action: '新增'
 							};
 						} else {
 							url = `/nccloud/platform/appregister/editapp.do`;
 							info = {
-								name:'应用',
-								action:'编辑'
+								name: '应用',
+								action: '编辑'
 							};
 						}
 						if (this.optype === 'module') {
@@ -226,14 +233,14 @@ class AppRegister extends Component {
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertapp.do`;
 							info = {
-								name:'应用',
-								action:'新增'
+								name: '应用',
+								action: '新增'
 							};
 						} else {
 							url = `/nccloud/platform/appregister/editapp.do`;
 							info = {
-								name:'应用',
-								action:'编辑'
+								name: '应用',
+								action: '编辑'
 							};
 						}
 						fromData.parent_id = this.props.parentData;
@@ -243,14 +250,14 @@ class AppRegister extends Component {
 						if (isNew) {
 							url = `/nccloud/platform/appregister/insertpage.do`;
 							info = {
-								name:'页面',
-								action:'新增'
+								name: '页面',
+								action: '新增'
 							};
 						} else {
 							url = `/nccloud/platform/appregister/editpage.do`;
 							info = {
-								name:'页面',
-								action:'编辑'
+								name: '页面',
+								action: '编辑'
 							};
 						}
 						fromData.parent_id = this.props.parentData;
@@ -264,37 +271,37 @@ class AppRegister extends Component {
 					data: reqData,
 					info: info,
 					alert: true,
-					success: ({data}) => {
+					success: ({ data }) => {
 						if (data.success && data.data) {
 							Notice({ status: 'success' });
 							this.props.setBillStatus({
 								isEdit: false,
 								isNew: false
 							});
-							if(isNew){
+							if (isNew) {
 								this.props.reqTreeData();
 								this.props.setNodeData(data.data);
-							}else{
+							} else {
 								if (this.props.optype === 'classify' || this.props.optype === 'app') {
 									let treeData = {
 										moduleid: reqData.pk_appregister,
 										parentcode: this.props.parentData,
 										systypecode: reqData.code,
 										systypename: reqData.name,
-										flag:'1'
+										flag: '1'
 									};
 									this.props.updateTreeData(treeData);
-								} else if(this.props.optype === 'page'){
+								} else if (this.props.optype === 'page') {
 									let treeData = {
 										moduleid: data.data.pk_apppage,
 										parentcode: this.props.parentData,
 										systypecode: data.data.pagecode,
 										systypename: data.data.pagename,
-										flag:'2'
-									}
+										flag: '2'
+									};
 									this.props.updateTreeData(treeData);
 								} else {
-									this.props.updateTreeData({...reqData,flag:'0'});
+									this.props.updateTreeData({ ...reqData, flag: '0' });
 								}
 								this.props.setNodeData(reqData);
 							}
@@ -321,8 +328,8 @@ class AppRegister extends Component {
 					case 'module':
 						url = `/nccloud/platform/appregister/deletemodule.do`;
 						info = {
-							name:'模块',
-							action:'删除'
+							name: '模块',
+							action: '删除'
 						};
 						data = {
 							moduleid: this.props.nodeData.moduleid
@@ -332,8 +339,8 @@ class AppRegister extends Component {
 					case 'classify':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
 						info = {
-							name:'应用',
-							action:'删除'
+							name: '应用',
+							action: '删除'
 						};
 						data = {
 							pk_appregister: pk_appregister
@@ -348,8 +355,8 @@ class AppRegister extends Component {
 					case 'app':
 						url = `/nccloud/platform/appregister/deleteapp.do`;
 						info = {
-							name:'应用',
-							action:'删除'
+							name: '应用',
+							action: '删除'
 						};
 						data = {
 							pk_appregister: pk_appregister
@@ -364,8 +371,8 @@ class AppRegister extends Component {
 					case 'page':
 						url = `/nccloud/platform/appregister/deletepage.do`;
 						info = {
-							name:'页面',
-							action:'删除'
+							name: '页面',
+							action: '删除'
 						};
 						data = {
 							pk_apppage: this.props.nodeData.pk_apppage
@@ -427,7 +434,7 @@ class AppRegister extends Component {
 		let { name, isShow, type } = btnObj;
 		if (isShow) {
 			return (
-				<Button key={name} className='margin-left-10' type={type} onClick={this.handleClick.bind(this, name)}>
+				<Button key={name} className="margin-left-10" type={type} onClick={this.handleClick.bind(this, name)}>
 					{name}
 				</Button>
 			);
@@ -460,7 +467,7 @@ class AppRegister extends Component {
 				if (isEdit) {
 					isShow = false;
 				} else {
-					if (optype === '' || optype === 'module'&& !parentData) {
+					if (optype === '' || (optype === 'module' && !parentData)) {
 						isShow = true;
 					} else {
 						isShow = false;
@@ -471,9 +478,7 @@ class AppRegister extends Component {
 				if (isEdit) {
 					isShow = false;
 				} else {
-					if (
-						(optype === 'module' && parentData && parentData.length === 2)
-					) {
+					if (optype === 'module' && parentData && parentData.length === 2) {
 						isShow = true;
 					} else {
 						isShow = false;
@@ -495,7 +500,7 @@ class AppRegister extends Component {
 				if (isEdit) {
 					isShow = false;
 				} else {
-					if ( optype === 'app') {
+					if (optype === 'app') {
 						isShow = true;
 					} else {
 						isShow = false;
@@ -553,7 +558,7 @@ class AppRegister extends Component {
 
 	render() {
 		return (
-			<PageLayout className='nc-workbench-appRegister'>
+			<PageLayout className="nc-workbench-appRegister">
 				<Layout>
 					<Header>
 						{Btns.map((item, index) => {
@@ -568,7 +573,7 @@ class AppRegister extends Component {
 							style={{
 								background: '#fff',
 								width: '500px',
-								'minHeight': 'calc(100vh - 64px - 48px)',
+								minHeight: 'calc(100vh - 64px - 48px)',
 								height: `${this.state.siderHeight}px`,
 								overflowY: 'auto',
 								padding: '20px'
@@ -598,7 +603,7 @@ AppRegister.propTypes = {
 	delTreeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired,
+	reqTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => ({

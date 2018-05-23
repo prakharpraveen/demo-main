@@ -3,12 +3,19 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
+import {
+	setNodeData,
+	setBillStatus,
+	setOpType,
+	setAppParamData,
+	setPageButtonData,
 	setPageTemplateData,
-	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
+	setPrintTemplateData,
+	setParentData
+} from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 
-import PageLayout from 'Components/PageLayout';
+import { PageLayout } from 'Components/PageLayout';
 import Notice from 'Components/Notice';
 import ModuleFromCard from './ModuleFromCard';
 import SearchTree from './SearchTree';
@@ -35,25 +42,23 @@ class AppRegister extends Component {
 
 	render() {
 		return (
-			<PageLayout className='nc-workbench-appRegister'>
+			<PageLayout className="nc-workbench-appRegister">
 				<Layout>
 					<Sider
 						style={{
 							background: '#fff',
 							width: '500px',
-							'minHeight': 'calc(100vh - 64px - 48px)',
+							minHeight: 'calc(100vh - 64px - 48px)',
 							height: `${this.state.siderHeight}px`,
-							overflowY: 'auto',
-						//	padding: '20px'
+							overflowY: 'auto'
+							//	padding: '20px'
 						}}
 					>
-						<SearchTree/>
-					</Sider> 
+						<SearchTree />
+					</Sider>
 					<Layout height={'100%'}>
-						<Content style={{ padding: '20px', minHeight: 280 }}>
-							
-						</Content>
-					</Layout> 
+						<Content style={{ padding: '20px', minHeight: 280 }} />
+					</Layout>
 				</Layout>
 			</PageLayout>
 		);
