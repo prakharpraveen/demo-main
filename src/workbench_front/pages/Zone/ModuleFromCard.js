@@ -34,7 +34,7 @@ class ModuleFromCard extends Component {
 				{
 					lable: '模板描述',
 					type: 'input',
-					code: 'description',
+					code: 'templetdesc',
 					required: false
 				}
 			]

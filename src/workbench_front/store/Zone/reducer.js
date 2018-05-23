@@ -6,6 +6,7 @@ let defaultState = {
 	templatid:'',
 	zoneState:'',
 	zoneDatas:{},
+	newListData:[],
 };
 // 首页表单数据
 export const zoneRegisterData = (state = defaultState, action = {}) => {
@@ -35,6 +36,13 @@ export const zoneRegisterData = (state = defaultState, action = {}) => {
 				...state,
 				...{
 					zoneDatas: action.data
+				}
+			};
+		case ZoneRegister.SETNEWLIST:
+			return {
+				...state,
+				...{
+					newListData: action.data
 				}
 			};
 		default:

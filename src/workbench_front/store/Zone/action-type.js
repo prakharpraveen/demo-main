@@ -8,3 +8,5 @@ export const ZONETEMPLATID = 'ZONETEMPLATID';
 export const ZONESTATE = 'ZONESTATE';
 // 设置区域数据
 export const SETZONEDATA = 'SETZONEDATA';
+// 设置区域列表数据
+export const SETNEWLIST = 'SETNEWLIST';

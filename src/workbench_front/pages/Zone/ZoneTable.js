@@ -6,7 +6,7 @@ import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
-import { setZoneListData, setZoneTempletid } from 'Store/Zone/action'; 
+import { setZoneListData, setZoneTempletid, setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const Option = Select.Option;
@@ -124,7 +124,7 @@ class EditableSelect extends React.Component {
 	//	const value = e.target.value;
 		this.setState({ value });
 	}
-	check = () => {
+	check = () => { 
 		this.setState({ editable: false });
 		if (this.props.onChange) {
 			this.props.onChange(this.state.value);
@@ -234,27 +234,30 @@ class ZoneTable extends React.Component {
 		}];
 	}
 	// 组件更新
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			dataSource: nextProps.zoneDatas.areaList && nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
-			count: nextProps.zoneDatas.areaList && nextProps.zoneDatas.areaList.length,})
+	componentWillReceiveProps(nextProps) { 
+		if (nextProps.zoneDatas.areaList){
+			this.setState({
+				dataSource: nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
+				count: nextProps.zoneDatas.areaList.length,
+			})
+		}
 	}
+
 	onCellChange = (key, dataIndex) => {
 		return (value) => {
 			const dataSource = [...this.state.dataSource];
 			const target = dataSource.find(item => item.key === key);
 			if (target) {
 				target[dataIndex] = value;
-				this.setState({ dataSource });
+				this.setState({ dataSource }, () => { this.props.setNewList(this.state.dataSource)});
 			}
 		};
 	}
 	onDelete = (key) => {
 		const dataSource = [...this.state.dataSource];
 		this.setState({ dataSource: dataSource.filter(item => item.key !== key) },
-		() =>{}
+			() => { this.props.setNewList(this.state.dataSource)}
 	);
-
 	}
 	handleAdd = () => {
 		const { count, dataSource } = this.state;
@@ -295,5 +298,5 @@ export default connect(
 			zoneDatas: state.zoneRegisterData.zoneDatas,
 		};
 	},
-	{ setZoneListData, setZoneTempletid }
+	{ setZoneListData, setZoneTempletid, setNewList }
 )(DragFromeTable);

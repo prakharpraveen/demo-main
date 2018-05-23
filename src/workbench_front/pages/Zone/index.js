@@ -18,10 +18,10 @@ const { Header, Footer, Sider, Content } = Layout;
 const getUrlParam = (pop) => { 
 	if (!pop) return;
 	let result;
-	let params = window.location.hash.split('?');
+	let params = window.location.hash && window.location.hash.split('?');
 	if (params) {
-		params = params[1].split('&');
-		params.find((item) => {
+		params = params[1] && params[1].split('&');
+		params && params.find((item) => {
 			if (item.indexOf(pop) != -1) {
 				result = item.split('=')[1];
 			}
@@ -52,6 +52,10 @@ class ZoneRegister extends Component {
 		Ajax({
 			url: url,
 			data: data,
+			info:{
+				name:'区域设置',
+				action:'传递区域数值'
+			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
 					this.props.setZoneData(data.data);

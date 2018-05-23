@@ -1,24 +1,23 @@
 import * as ZoneRegister from './action-type';
 
 // 设置 区域参数信息 数据
-export const setZoneParamData = (data) => {
+export const setZoneListData = (data) => {
 	return {
 		type: ZoneRegister.ZONEPARAMDATA,
 		data
 	};
 };
 // 设置 区域数据 
-export const setZoneData = (data) => {
+export const setZoneData = (data) => { 
 	return {
 		type: ZoneRegister.SETZONEDATA,
 		data
 	};
 };
 
-
 // 设置 区域对应的模板id 
 export const setZoneTempletid = (data) => {
-	return {
+	return { 
 		type: ZoneRegister.ZONETEMPLATID ,
 		data
 	};
@@ -27,6 +26,14 @@ export const setZoneTempletid = (data) => {
 export const setZoneState= (data) => {
 	return {
 		type: ZoneRegister.ZONESTATE,
+		data
+	};
+};
+
+// 设置 区域单据的模板状态 
+export const setNewList = (data) => {
+	return {
+		type: ZoneRegister.SETNEWLIST,
 		data
 	};
 };
