@@ -2,26 +2,7 @@ import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import React from 'react';
 import ChooseImageForForm from 'Components/ChooseImageForForm';
 const FormItem = Form.Item;
-const Option = Select.Option;
 
-/**
- * 创建 下拉内容
- */
-const createOption = (options) => {
-    return options.map((item, index) => {
-        return <Option value={item.value}>{item.text}</Option>;
-    });
-};
-/**
- * 下拉数据浏览态展示
- * 
- */
-const optionShow = (options, value) => {
-    let option = options.find((item) => item.value === value);
-    if (option) {
-        return option.text;
-    }
-};
 /**
  * 创建表单
  * @param {*} propsData 
@@ -39,7 +20,7 @@ export const createForm =(DOMDATA,propsData)=>{
 			);
         });
        
-    return children.filter((item) => { console.log(item.props.children); return item.props.children });
+    return children.filter((item) => { return item.props.children });
 }
 /**
  * 创建表单
@@ -47,7 +28,7 @@ export const createForm =(DOMDATA,propsData)=>{
  * @param {*} itemInfo 
  */
 const createFormItem = (props,itemInfo) => {
-    let nodeData = props.nodeData;
+    let nodeData = props.zoneDatas;
     const { getFieldDecorator } = props.form;
     let { lable, type, code,required,check,search } = itemInfo;
     switch (type) {

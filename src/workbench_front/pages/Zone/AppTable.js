@@ -45,7 +45,6 @@ const EditableSelectCell = ({ editable, value, type, column, onChange }) => (
 	</div>
 );
 
-
 //获取页面参数
 const getUrlParam = (pop) => {
 	if (!pop) return;
@@ -240,6 +239,7 @@ export default connect(
 		return {
 			zone: state.zoneRegisterData.zoneParamdata,
 			templetid: state.zoneRegisterData.templetid,
+			zoneDatas: state.zoneRegisterData.templetid,
 		};
 	},
 	{ setZoneParamData, setZoneTempletid }

@@ -6,3 +6,5 @@ export const ZONEPARAMDATA = 'ZONEPARAMDATA';
 export const ZONETEMPLATID = 'ZONETEMPLATID';
 // 设置区域状态 
 export const ZONESTATE = 'ZONESTATE';
+// 设置区域数据
+export const SETZONEDATA = 'SETZONEDATA';
