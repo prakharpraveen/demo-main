@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { Alert } from 'antd';
 import Notice from 'Components/Notice';
-import moment from 'moment';
+// import moment from 'moment';
 import Gzip from './gzip';
 // createAlertDom = ()=>{
 // 	let alertDom = document.createElement('div');
@@ -19,13 +19,13 @@ const Ajax = ({
 	}
 }) => {
 	let gziptools = new Gzip();
-	data = {
-		busiParamJson: data,
-		sysParamJson: {
-			busiaction: `应用:${info.name},操作:${info.action}`,
-			ts: moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-		}
-	}
+	// data = {
+	// 	busiParamJson: JSON.stringify(data),
+	// 	sysParamJson: {
+	// 		busiaction: `应用:${info.name},操作:${info.action}`,
+	// 		ts: Date.parse(new Date())
+	// 	}
+	// }
 	Axios({
 		url,
 		data,
