@@ -27,6 +27,8 @@ class PageLayout extends Component {
 			} else {
 				layoutLeft.style.width = `${w}px`;
 			}
+		} else {
+			return;
 		}
 	};
 	render() {
