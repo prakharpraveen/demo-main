@@ -30,21 +30,27 @@ class Layout extends Component {
 		console.log(`selected ${value}`);
 	};
 
-	componentWillMount() {
-		console.log(this.props.location.pathname);
+	handleUpdateTitleName = () =>{
 		let { n } = GetQuery(this.props.location.search);
 		if (n) {
 			let nodeName = decodeURIComponent(n);
 			this.setState({
 				nodeName
 			});
+		}else{
+			this.setState({
+				nodeName: '首页'
+			});
 		}
 	}
 
 	componentDidMount() {
-		
+		window.addEventListener('hashchange',this.handleUpdateTitleName)
+	};
+
+	componentWillUnmount(){
+		window.removeEventListener('hashchange',this.handleUpdateTitleName);
 	}
-	
 
 	render() {
 		let { nodeName } = this.state;

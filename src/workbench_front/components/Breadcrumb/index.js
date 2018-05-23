@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Breadcrumb as Bc } from 'antd';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import './index.less';
 class Breadcrumb extends Component{
     constructor(props) {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Drawer from 'react-motion-drawer';
+import { withRouter } from 'react-router-dom';
 import { changeDrawer } from 'Store/appStore/action';
 import { sprLog } from './spr';
 class SideDrawer extends Component {
@@ -15,6 +16,16 @@ class SideDrawer extends Component {
 	handleDrawerChange = (isOpen) => {
 		this.props.changeDrawer(isOpen);
 	};
+	/**
+	 * 侧边栏当前页跳转页面
+	 * 采用单页路由方式
+	 * @param {String} target 跳转目标页面路由
+	 */
+	handeleSkipPage = (target) =>{
+		let {isOpen} = this.props;
+		this.props.history.push(target);
+		this.props.changeDrawer(!isOpen);
+	}
 	/**
 	 * 注销操作
 	 */
@@ -52,7 +63,7 @@ class SideDrawer extends Component {
 						<div className='setting-content'>
 							<div className='setting-btn'>
 								<i className="iconfont icon-bianji"></i>
-								<Link to={`ds?n=个人设置`}>个人配置</Link>
+								<span onClick={()=>{this.handeleSkipPage('/ds?n=个人配置')}}>个人配置</span>
 							</div>
 							<div className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
@@ -99,4 +110,4 @@ export default connect(
 	{
 		changeDrawer
 	}
-)(SideDrawer);
+)(withRouter(SideDrawer));

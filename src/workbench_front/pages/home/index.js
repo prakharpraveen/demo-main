@@ -50,7 +50,10 @@ class Home extends Component {
 					g.apps = compactedLayout;
 				});
 
-				this.setState({groups, layout});
+				this.setState({groups, layout},()=>{
+					animateScroll.scrollTo(0);
+					scrollSpy.update();
+				});
 			}, 500);
 		}
 	}
@@ -77,10 +80,8 @@ class Home extends Component {
 					if (success && data && data.length > 0) {
 						this.setState({ groups: data[0].groups });
 						this.props.updateGroupList(data[0].groups);
-						
 						this.handleHomeLoad();
-						animateScroll.scrollTo(0);
-						scrollSpy.update();
+						
 					}
 				}
 			}
