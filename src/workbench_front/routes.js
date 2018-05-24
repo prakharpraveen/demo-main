@@ -51,6 +51,10 @@ const Customize = Loadable({
 	loader: () => import('Pages/Customize'),
 	loading: Loading
 });
+const Customize1 = Loadable({
+	loader: () => import('Pages/Customize/index.1.js'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -97,6 +101,10 @@ const routes = [
 	{
 		path: '/c',
 		component: Customize
+	},
+	{
+		path: '/c1',
+		component: Customize1
 	},
 ];
 const RouteWithSubRoutes = (route) => (

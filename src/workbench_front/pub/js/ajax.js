@@ -22,7 +22,7 @@ const Ajax = ({
 	// data = {
 	// 	busiParamJson: JSON.stringify(data),
 	// 	sysParamJson: {
-	// 		busiaction: `应用:${info.name},操作:${info.action}`,
+	// 		busiaction: `${info.name}-${info.action}`,
 	// 		ts: Date.parse(new Date())
 	// 	}
 	// }

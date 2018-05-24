@@ -7,23 +7,28 @@
 			min-width: 900px;
 		}
 		.nc-workbench-ownpage-all {
+			height: 100%;
 			display: flex;
 			justify-content: flex-start;
+			background: #ffffff;
+			user-select:none;
 		}
 		.nc-workbench-ownpage-left {
 			position: relative;
-			min-height: 200px;
-			min-width: 200px;
+			height: 100%;
+			min-width: 280px;
+			border-right: 1px solid #D9D9D9;
 			.layout-drag-block {
 				position: absolute;
-				right: 0;
+				right: 3px;
 				z-index: 1;
 				top: 50%;
 				transform: translate(0 -50%);
 				display: block;
 				width: 8px;
 				height: 88px;
-				background: #000000;
+				background: rgba(0, 0, 0, 0.54);
+				border-radius: 3px;
 			}
 		}
 		.nc-workbench-ownpage-right {

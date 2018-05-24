@@ -274,6 +274,9 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.jumpPage(record)}>
 										设置页面模板
 									</a>
+									<a className='margin-right-5' onClick={() => this.setDefault(record)}>
+										设置默认模板
+									</a>
 								</span>
 							)}
 						</div>
@@ -293,6 +296,10 @@ class PageTable extends Component {
 		// 浏览器当前页打开
 		win.location = `#/Zone?t=${record.pk_page_templet}&n=设置页面模板`;
 		win.focus();
+	}
+	setDefault = (record) =>{
+		record.isdefault = true;
+		console.log(record);
 	}
 	moveRow = (dragIndex, hoverIndex) => {
 		let appButtonVOs = this.props.appButtonVOs;
@@ -510,6 +517,7 @@ class PageTable extends Component {
 		} else if(activeKey === '2'){
 			newData.push({
 				editable: true,
+				isdefault: false,
 				name: '',
 				pageid: pk_apppage,
 				isenable: true,
