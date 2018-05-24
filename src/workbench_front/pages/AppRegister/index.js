@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Layout } from 'antd';
+import { Modal, Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -22,6 +22,7 @@ import { PageLayout } from 'Components/PageLayout';
 import Notice from 'Components/Notice';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
+const confirm = Modal.confirm;
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -59,6 +60,7 @@ const Btns = [
 		type: 'primary'
 	}
 ];
+
 class AppRegister extends Component {
 	constructor(props) {
 		super(props);
@@ -322,85 +324,99 @@ class AppRegister extends Component {
 				});
 				break;
 			case '删除':
-				let data, nodeData;
-				let { pk_appregister, code, name } = this.props.nodeData;
-				switch (this.props.optype) {
-					case 'module':
-						url = `/nccloud/platform/appregister/deletemodule.do`;
-						info = {
-							name: '模块',
-							action: '删除'
-						};
-						data = {
-							moduleid: this.props.nodeData.moduleid
-						};
-						nodeData = this.props.nodeData;
-						break;
-					case 'classify':
-						url = `/nccloud/platform/appregister/deleteapp.do`;
-						info = {
-							name: '应用',
-							action: '删除'
-						};
-						data = {
-							pk_appregister: pk_appregister
-						};
-						nodeData = {
-							moduleid: pk_appregister,
-							parentcode: this.props.parentData,
-							systypecode: code,
-							systypename: name
-						};
-						break;
-					case 'app':
-						url = `/nccloud/platform/appregister/deleteapp.do`;
-						info = {
-							name: '应用',
-							action: '删除'
-						};
-						data = {
-							pk_appregister: pk_appregister
-						};
-						nodeData = {
-							moduleid: pk_appregister,
-							parentcode: this.props.parentData,
-							systypecode: code,
-							systypename: name
-						};
-						break;
-					case 'page':
-						url = `/nccloud/platform/appregister/deletepage.do`;
-						info = {
-							name: '页面',
-							action: '删除'
-						};
-						data = {
-							pk_apppage: this.props.nodeData.pk_apppage
-						};
-						nodeData = {
-							moduleid: this.props.nodeData.pk_apppage,
-							parentcode: this.props.parentData,
-							systypecode: this.props.nodeData.pagecode,
-							systypename: this.props.nodeData.pagename
-						};
-						break;
-					default:
-						break;
-				}
-				Ajax({
-					url: url,
-					data: data,
-					info: info,
-					success: ({ data }) => {
-						if (data.success && data.data) {
-							Notice({ status: 'success', msg: data.data.true });
-							this.props.delTreeData(nodeData);
-							this.props.setOpType(null);
-						} else {
-							Notice({ status: 'error', msg: data.data.true });
+				let _this = this;
+				confirm({
+					title: '是否要删除?',
+					content: '',
+					okText: '确认',
+					okType: 'danger',
+					cancelText: '取消',
+					onOk() {
+						let data, nodeData;
+						let { pk_appregister, code, name } = _this.props.nodeData;
+						switch (_this.props.optype) {
+							case 'module':
+								url = `/nccloud/platform/appregister/deletemodule.do`;
+								info = {
+									name: '模块',
+									action: '删除'
+								};
+								data = {
+									moduleid: _this.props.nodeData.moduleid
+								};
+								nodeData = _this.props.nodeData;
+								break;
+							case 'classify':
+								url = `/nccloud/platform/appregister/deleteapp.do`;
+								info = {
+									name: '应用',
+									action: '删除'
+								};
+								data = {
+									pk_appregister: pk_appregister
+								};
+								nodeData = {
+									moduleid: pk_appregister,
+									parentcode: _this.props.parentData,
+									systypecode: code,
+									systypename: name
+								};
+								break;
+							case 'app':
+								url = `/nccloud/platform/appregister/deleteapp.do`;
+								info = {
+									name: '应用',
+									action: '删除'
+								};
+								data = {
+									pk_appregister: pk_appregister
+								};
+								nodeData = {
+									moduleid: pk_appregister,
+									parentcode: _this.props.parentData,
+									systypecode: code,
+									systypename: name
+								};
+								break;
+							case 'page':
+								url = `/nccloud/platform/appregister/deletepage.do`;
+								info = {
+									name: '页面',
+									action: '删除'
+								};
+								data = {
+									pk_apppage: _this.props.nodeData.pk_apppage
+								};
+								nodeData = {
+									moduleid: _this.props.nodeData.pk_apppage,
+									parentcode: _this.props.parentData,
+									systypecode: _this.props.nodeData.pagecode,
+									systypename: _this.props.nodeData.pagename
+								};
+								break;
+							default:
+								break;
 						}
-					}
+						Ajax({
+							url: url,
+							data: data,
+							info: info,
+							success: ({ data }) => {
+								if (data.success && data.data) {
+									Notice({ status: 'success', msg: data.data.true });
+									_this.props.delTreeData(nodeData);
+									_this.props.setOpType(null);
+								} else {
+									Notice({ status: 'error', msg: data.data.true });
+								}
+							}
+						});
+					},
+					onCancel() {
+						console.log('Cancel');
+					},
 				});
+				
 				break;
 			case '修改':
 				this.nodeData = this.props.nodeData;
