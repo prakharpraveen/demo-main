@@ -19,13 +19,13 @@ const Ajax = ({
 	}
 }) => {
 	let gziptools = new Gzip();
-	// data = {
-	// 	busiParamJson: JSON.stringify(data),
-	// 	sysParamJson: {
-	// 		busiaction: `${info.name}-${info.action}`,
-	// 		ts: Date.parse(new Date())
-	// 	}
-	// }
+	data = {
+		busiParamJson: JSON.stringify(data),
+		sysParamJson: {
+			busiaction: `${info.name}-${info.action}`,
+			ts: Date.parse(new Date())
+		}
+	}
 	Axios({
 		url,
 		data,
