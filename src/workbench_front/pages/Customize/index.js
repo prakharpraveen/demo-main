@@ -2,23 +2,33 @@ import React, { Component } from 'react';
 import { PageLayout, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
 import MenuList from './MenuList';
 import { high } from 'nc-lightapp-front';
+import Loadable from 'react-loadable';
+import Loading from 'Components/Loading';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import './index.less';
 const { Refer } = high;
-
+const DefaultSetting = Loadable({
+	loader: () => import('./DefaultSetting'),
+	loading: Loading
+});
+const ApproveLanguage = Loadable({
+	loader: () => import('./ApproveLanguage'),
+	loading: Loading
+});
 class Customize extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			activeKey:'default',
 			listArray:[
 				{
 					name:'默认设置',
 					active:true,
-					code:'1'
+					code:'default'
 				},
 				{
 					name:'审批语设置',
-					code:'2'
+					code:'approveLanguage'
 				},
 				{
 					name:'常用数据',
@@ -43,6 +53,10 @@ class Customize extends Component {
 			]
 		};
 	}
+	/**
+	 * 个性化页面页面
+	 * @param {String} key 菜单标识
+	 */
 	hanleMenuListClick = (key)=>{
 		let { listArray } = this.state;
 		// 为选中list 项添加 活跃标识
@@ -53,12 +67,25 @@ class Customize extends Component {
 			}
 			return item;
 		});
-		this.setState({listArray});
+		this.setState({listArray,activeKey:key});
 		switch (key) {
 			case 'value':
 				
 				break;
 		
+			default:
+				break;
+		}
+	}
+	/**
+	 * 
+	 */
+	loadCom = (key)=>{
+		switch (key) {
+			case 'default':
+				return <DefaultSetting title={'默认设置'}/>;
+			case 'approveLanguage':
+				return <ApproveLanguage title={'审批语设置'}/>;
 			default:
 				break;
 		}
@@ -70,7 +97,9 @@ class Customize extends Component {
 				<PageLayoutLeft>
 					<MenuList onClick ={this.hanleMenuListClick} listArray = {listArray}></MenuList>
 				</PageLayoutLeft>
-				<PageLayoutRight>222</PageLayoutRight>
+				<PageLayoutRight>
+					{this.loadCom(this.state.activeKey)}
+				</PageLayoutRight>
 			</PageLayout>
 		);
 	}
