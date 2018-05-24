@@ -11,11 +11,9 @@ import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
-import Mymodal from 'Components/Mymodal';
 const { Refer } = high;
 
 const Option = Select.Option;
-
 
 /**
  * 按钮类型选择
@@ -165,8 +163,28 @@ class EditableCell_1 extends React.Component {
 				{
 					editable ?
 						<div className="editable-cell-input-wrapper">
-							
-
+							<Refer
+								placeholder={'单选树表'}
+								refName={'交易类型'}
+								refCode={'cont'}
+								refType={'gridTree'}
+								queryTreeUrl={'nccloud/platform/templet/querymetatree.do'}
+								queryGridUrl={'nccloud/platform/templet/querymetatree.do'}
+								value={this.state.currency5}
+								onChange={(val) => {
+									console.log(val);
+									this.setState({
+										currency5: val
+									});
+								}}
+								columnConfig={[
+									{
+										name: ['编码', '名称'],
+										code: ['refcode', 'refname']
+									}
+								]}
+								isMultiSelectedEnabled={false}
+							/>
 							<Icon
 								type="check"
 								className="editable-cell-icon-check"
@@ -244,14 +262,14 @@ class ZoneTable extends React.Component {
 				),
 			},  
 			{
-			title: 'operation',
+			title: '操作',
 			dataIndex: 'operation',
 			render: (text, record) => {
 				return (
 					this.state.dataSource.length > 1 ?
 						(
 							<Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-								<a href="javascript:;">Delete</a>
+								<a href="javascript:;">删除</a>
 							</Popconfirm>
 						) : null
 				);
@@ -307,29 +325,6 @@ class ZoneTable extends React.Component {
 		const columns = this.columns;
 		return (
 			<div>
-				<Mymodal visible={this.state.show} >ddddd</Mymodal>
-				<Refer
-				placeholder={'单选树表'}
-				refName={'交易类型'}
-				refCode={'cont'}
-				refType={'gridTree'}
-				queryTreeUrl={'nccloud/platform/templet/querymetatree.do'}
-				queryGridUrl={'nccloud/platform/templet/querymetatree.do'}
-				value={this.state.currency5}
-				onChange={(val) => {
-					console.log(val);
-					this.setState({
-						currency5: val
-					});
-				}}
-				columnConfig={[
-					{
-						name: ['编码', '名称'],
-						code: ['refcode', 'refname']
-					}
-				]}
-				isMultiSelectedEnabled={false}
-			/>
 				<Button className="editable-add-btn" onClick={this.handleAdd}>新增</Button>
 				<Table bordered dataSource={dataSource} columns={columns} pagination={false} />
 			</div>
