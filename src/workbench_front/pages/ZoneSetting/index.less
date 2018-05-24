@@ -1,32 +1,186 @@
-body {
-	background-color: #f0f2f5;
-}
-.nc-workbench-appRegister {
-	.ant-layout {
-		background: #ffffff;
-	}
-	.add{
-		float: right;
-		background: lightcoral;
-		color: white;
-		padding:2px;
-	}
-	& > .ant-layout {
-		border: 1px solid #edecec;
-		border-radius: 4px;
-	}
-    .ant-btn{
-		float: right;
-		margin-bottom: 10px;
-		z-index: 100;
-		&:hover{
-			color: lightcoral;
-			background: lightcoral;
-			cursor: pointer;
+.template-setting-page {
+	margin-top: 90px;
+	.template-setting-steps {
+		margin-left: 20%;
+		margin-right: 20%;
+		height: 50px;
+		.ant-steps-item-process .ant-steps-item-title:after {
+			background-color: rgba(204, 204, 204, 1);
 		}
 	}
-	.ant-layout-sider {
-		border-right: 1px solid #edecec;
+	.template-setting-header {
+		height: 60px;
+		margin-left: 10%;
+		margin-right: 10%;
+		padding-left: 20px;
+		padding-right: 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background: #fff;
+		.header-name {
+			font-family: 'PingFangSC-Regular', 'PingFang SC';
+			font-weight: 400;
+			font-style: normal;
+			font-size: 16px;
+		}
+		button {
+			margin-right: 10px;
+		}
 	}
+	.template-setting-container {
+		display: flex;
+		flex-flow: row;
+		margin-left: 10%;
+		margin-right: 10%;
+		// .template-setting-sider {
+		// 	border-width: 1px;
+		// 	border-style: solid;
+		// 	border-color: rgba(204, 204, 204, 1);
+		// 	border-radius: 4px;
+		// 	.sider-content {
+		// 		margin: 10px;
+		// 		.sider-search {
+		// 			text-align: center;
+		// 			input {
+		// 				border-top: none;
+		// 				border-right: none;
+		// 				border-left: none;
+		// 			}
+		// 			input:hover {
+		// 				box-shadow: none;
+		// 			}
+		// 			input:focus {
+		// 				box-shadow: none;
+		// 			}
+		// 			span.ant-input-group-addon {
+		// 				cursor: pointer;
+		// 				background: #fff;
+		// 				border: 1px solid #d9d9d9;
+		// 				border-radius: 16px;
+		// 				padding: 0 8px;
+		// 			}
+		// 			span.ant-input-group-addon:hover {
+		// 				border-color: #40a9ff;
+		// 			}
+		// 		}
+		// 		.sider-tab {
+		// 			text-align: center;
+		// 		}
+		// 	}
+		// }
+		
+		.template-setting-content {
+			flex: 1;
+			.area-item {
+				background: #fff;
+				margin-top: 10px;
+				border-radius: 4px;
+				.area-item-header {
+					display: flex;
+					justify-content: space-between;
+					height: 40px;
+					padding: 5px 5px 0;
+					.area-item-name {
+						font-family: 'PingFangSC-Regular', 'PingFang SC';
+						font-weight: 400;
+						font-size: 16px;
+					}
+					.area-item-button {
+						button {
+							margin-right: 5px;
+						}
+					}
+				}
+				.area-item-content {
+					padding: 0 5px;
+					.property-item {
+						transition: all .2s ease-out;
+						position: relative;
+						padding: 0 5px;
+						margin-top: 5px;
+						margin-bottom: 5px;
+						width: 25%;
+						border-radius: 4px;
+						display: inline-block;
+						line-height: 32px;
+						div {
+							transition: all .2s ease-out;
+							color: #474d54;
+							cursor: move;
+							background-color: rgba(9, 44, 66, .08);
+							.delete-card {
+								position: absolute;
+								right: 0px;
+								top: -5px;
+								width: 20px;
+								height: 20px;
+								line-height: 20px;
+								text-align: center;
+								border-radius: 10px;
+								display: inline-block;
+								color: #fff;
+								background-color: rgba(204, 204, 204, 1);
+								cursor: pointer;
+							}
+						}
+					}
+				}
+			}
+		}
+		.template-setting-right-sider {
+			width: 300px;
+			background: #fff;
+			.basic-property {
+				display: flex;
+				flex-wrap: wrap;
+				li {
+					list-style-type: none;
+					width: 50%;
+					display: inline-block;
+				}
+			}
+		}
+	}
+}
+.template-setting-left-sider {
+	// height: calc(100vh - 90px - 50px - 60px);
+	background: #fff;
+}
 
+.template-setting-sider {
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgba(204, 204, 204, 1);
+	border-radius: 4px;
+	.sider-content {
+		margin: 10px;
+		.sider-search {
+			text-align: center;
+			input {
+				border-top: none;
+				border-right: none;
+				border-left: none;
+			}
+			input:hover {
+				box-shadow: none;
+			}
+			input:focus {
+				box-shadow: none;
+			}
+			span.ant-input-group-addon {
+				cursor: pointer;
+				background: #fff;
+				border: 1px solid #d9d9d9;
+				border-radius: 16px;
+				padding: 0 8px;
+			}
+			span.ant-input-group-addon:hover {
+				border-color: #40a9ff;
+			}
+		}
+		.sider-tab {
+			text-align: center;
+		}
+	}
 }

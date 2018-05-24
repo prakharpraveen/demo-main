@@ -180,13 +180,13 @@ class MyFooter extends Component {
 				const { data, success } = res.data;
 				if (success) {
 					// location.reload();
+					alert("保存成功");
 				}
 			}
 		});
 	};
 
 	render() {
-		console.log('footer');
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
 		return (

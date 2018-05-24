@@ -24,7 +24,13 @@ class MyContent extends Component {
 								{c.children.map((child, i) => {
 									return (
 										<div className='item-app' key={i}>
-											<a href="#"> {child.label}
+											<a href="javascript:void(0);" onClick={()=>{
+                                                window.openNew({
+                                                    code: child.code,
+                                                    pk_appregister: child.pk_appregister,
+                                                    name: child.name
+                                                });
+                                            }} > {child.label}
                                             </a>
 										</div>
 									);

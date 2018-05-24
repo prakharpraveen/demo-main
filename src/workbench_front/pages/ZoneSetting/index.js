@@ -1,108 +1,48 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-	setNodeData,
-	setBillStatus,
-	setOpType,
-	setAppParamData,
-	setPageButtonData,
-	setPageTemplateData,
-	setPrintTemplateData,
-	setParentData
-} from 'Store/AppRegister/action';
+// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
+// 	setPageTemplateData,
+// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 
-import { PageLayout } from 'Components/PageLayout';
-import Notice from 'Components/Notice';
-import ModuleFromCard from './ModuleFromCard';
-import SearchTree from './SearchTree';
 import './index.less';
-const { Header, Footer, Sider, Content } = Layout;
+import MyHeader from './header';
+import MyLeftSider from './leftSider';
+import MyContent from './content';
+import MyRightSider from './rightSider';
+import { Steps } from 'antd';
+const Step = Steps.Step;
 /**
  * 工作桌面 配置模板区域
  */
-class AppRegister extends Component {
+class ZoneSetting extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			siderHeight: '280'
-		};
+		this.state = {};
 	}
 
-	componentDidMount() {
-		// 样式处理
-		window.onresize = () => {
-			let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
-			this.setState({ siderHeight });
-		};
-	}
+	componentDidMount() {}
 
 	render() {
 		return (
-			<PageLayout className="nc-workbench-appRegister">
-				<Layout>
-					<Sider
-						style={{
-							background: '#fff',
-							width: '500px',
-							minHeight: 'calc(100vh - 64px - 48px)',
-							height: `${this.state.siderHeight}px`,
-							overflowY: 'auto'
-							//	padding: '20px'
-						}}
-					>
-						<SearchTree />
-					</Sider>
-					<Layout height={'100%'}>
-						<Content style={{ padding: '20px', minHeight: 280 }} />
-					</Layout>
-				</Layout>
-			</PageLayout>
+			<div className='template-setting-page'>
+				<div className='template-setting-steps'>
+					<Steps size='small' current={1}>
+						<Step title='设置页面基本信息' description='完成' />
+						<Step title='配置模板区域' description='进行中' />
+						<Step title='配置完成' description='' />
+					</Steps>
+				</div>
+				<MyHeader />
+				<div className='template-setting-container'>
+					{/* <MyLeftSider /> */}
+					<MyContent />
+					<MyRightSider />
+				</div>
+			</div>
 		);
 	}
 }
-/* AppRegister.PropTypes = {
-	setTreeData: PropTypes.func.isRequired,
-	optype: PropTypes.string.isRequired,
-	billStatus: PropTypes.object.isRequired,
-	setBillStatus: PropTypes.object.isRequired,
-	parentData: PropTypes.string.isRequired,
-	setOpType: PropTypes.func.isRequired,
-	nodeData: PropTypes.object.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
-	setPrintTemplateData: PropTypes.func.isRequired,
-	getFromData: PropTypes.func.isRequired,
-	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired,
-}; */
-export default connect(
-	(state) => ({
-		optype: state.AppRegisterData.optype,
-		billStatus: state.AppRegisterData.billStatus,
-		parentData: state.AppRegisterData.parentData,
-		nodeData: state.AppRegisterData.nodeData,
-		getFromData: state.AppRegisterData.getFromData,
-		addTreeData: state.AppRegisterData.addTreeData,
-		delTreeData: state.AppRegisterData.delTreeData,
-		updateTreeData: state.AppRegisterData.updateTreeData,
-		reqTreeData: state.AppRegisterData.reqTreeData
-	}),
-	{
-		setNodeData,
-		setBillStatus,
-		setOpType,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
-		setPrintTemplateData,
-		setParentData
-	}
-)(AppRegister);
+export default connect((state) => ({}), {})(ZoneSetting);

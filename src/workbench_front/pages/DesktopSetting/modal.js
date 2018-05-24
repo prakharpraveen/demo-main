@@ -96,7 +96,6 @@ class MyModal extends Component {
 		);
 	}
 	render() {
-		console.log('modal')
 		const groupNameRadioGroup = this.getGroupItemNameRadio();
 		return (
 			<Modal

@@ -69,7 +69,18 @@ class Layout extends Component {
 	};
 
 	onSelect = (value)=> {
-		console.log('onSelect', value);
+		const { dataSource } = this.state;
+		let targetApp = {};
+		dataSource.map((d)=>{
+			if( d.value ===  value){
+				targetApp = d;
+			}
+		})
+		window.openNew({
+			code: child.code,
+			pk_appregister: child.pk_appregister,
+			name: child.name
+		});
 	};
 	handleSearch = (value) => {
 		if (!resizeWaiter) {
@@ -94,7 +105,8 @@ class Layout extends Component {
 							data.children.map((c)=>{
 								dataSource.push({
 									value: c.value,
-									text: c.label
+									text: c.label,
+									code: c.code
 								});
 							})
 							this.setState({ dataSource});

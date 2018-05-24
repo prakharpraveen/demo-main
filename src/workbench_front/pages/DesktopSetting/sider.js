@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Layout, Cascader, Input, Icon, Checkbox, Button, Radio, Modal, Switch } from 'antd';
+import { Layout, Cascader, Input, Icon, Checkbox, Switch } from 'antd';
 import SiderCard from './siderCard.js';
 import { connect } from 'react-redux';
 import { collision, layoutCheck } from './collision';
@@ -11,7 +11,6 @@ import {GetQuery} from 'Pub/js/utils';
 import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
-const RadioGroup = Radio.Group;
 
 class MySider extends Component {
 	constructor(props) {
@@ -283,7 +282,6 @@ class MySider extends Component {
 	}
 	render() {
 		const contentHeight = this.props.contentHeight;
-		console.log("sider");
 		return (
 			<Sider
 				className='nc-workbench-home-sider'
