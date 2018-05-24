@@ -9,40 +9,12 @@ import _ from 'lodash';
 import { setZoneListData, setZoneTempletid, setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
+import { high } from 'nc-lightapp-front';
+import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+import Mymodal from 'Components/Mymodal';
+const { Refer } = high;
+
 const Option = Select.Option;
-const EditableInputCell = ({ editable, value, type, onChange }) => (
-	<div>
-		{ editable ? (
-			<Input style={{ margin: '-5px 0' }} value={value} onChange={(e) => onChange(e.target.value)} />
-		) : (
-				value
-			)}
-		{/* {editable ? (
-			<Input style={{ margin: '-5px 0' }} value={value} onChange={(e) => onChange(e.target.value)} />
-		) : (
-				value
-			)} */}
-	</div>
-);
-const EditableSelectCell = ({ editable, value, type, column, onChange }) => (
-	<div>
-		{editable ? (
-			type ==1?
-				<Select showSearch optionFilterProp="children"  value={value} style={{ width: 120 }} onChange={(selected) => onChange(selected)} filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-					<Option value={0}>查询区</Option>
-					<Option value={1}>非查询区</Option>
-				</Select> : 
-				<Select value={value} style={{ width: 120 }} onChange={(selected) => onChange(selected)}>
-					<Option value="button_main">主要按钮</Option>
-					<Option value="button_secondary">次要按钮</Option>
-					<Option value="buttongroup">按钮组</Option>
-					<Option value="dropdown">下拉按钮</Option>
-					<Option value="divider">分割下拉按钮</Option>
-					<Option value="more">更多按钮</Option>
-				</Select>		
-		) : (switchType(value))}
-	</div>
-);
 
 
 /**
@@ -165,6 +137,57 @@ class EditableSelect extends React.Component {
 	}
 }
 
+// li 
+// 可编辑表格下拉框 
+class EditableCell_1 extends React.Component {
+	state = {
+		value: this.props.value,
+		editable: false,
+		currency5:{}
+	}
+	handleChange = (value) => {
+		//	const value = e.target.value;
+		this.setState({ value });
+	}
+	check = () => {
+		this.setState({ editable: false });
+		if (this.props.onChange) {
+			this.props.onChange(this.state.value);
+		}
+	}
+	edit = () => {
+		this.setState({ editable: true });
+	}
+	render() {
+		const { value, editable } = this.state;
+		return (
+			<div className="editable-cell">
+				{
+					editable ?
+						<div className="editable-cell-input-wrapper">
+							
+
+							<Icon
+								type="check"
+								className="editable-cell-icon-check"
+								onClick={this.check}
+							/>
+						</div>
+						:
+						<div className="editable-cell-text-wrapper">
+							{(switchType(value)) || ' '}
+							<Icon
+								type="edit"
+								className="editable-cell-icon"
+								onClick={this.edit}
+							/>
+						</div>
+				}
+			</div>
+		);
+	}
+}
+
 // 可编辑的表格 
 class ZoneTable extends React.Component {
 	constructor(props) {
@@ -172,6 +195,8 @@ class ZoneTable extends React.Component {
 		this.state = {
 			dataSource: [],
 			count: null,
+			currency5:{},
+			show:true,
 		};
 		this.columns = [
 			{
@@ -212,7 +237,7 @@ class ZoneTable extends React.Component {
 				title: '关联元数据',
 				dataIndex: 'metaid', 
 				render: (text, record) => (
-					<EditableCell
+					<EditableCell_1
 					value={text}
 					onChange={this.onCellChange(record.key, 'metaid')}
 					/>
@@ -260,12 +285,16 @@ class ZoneTable extends React.Component {
 	);
 	}
 	handleAdd = () => {
+		const { templetid } = this.props;
 		const { count, dataSource } = this.state;
 		const newData = {
 			key: count,
-			name: `Edward King ${count}`,
-			age: 32,
-			address: `London, Park Lane no. ${count}`,
+			name: '',
+			templetid,
+			code: '',
+			metaid: '',
+			metaname:'',
+			areatype:1,
 		};
 		this.setState({
 			dataSource: [...dataSource, newData],
@@ -278,6 +307,29 @@ class ZoneTable extends React.Component {
 		const columns = this.columns;
 		return (
 			<div>
+				<Mymodal visible={this.state.show} >ddddd</Mymodal>
+				<Refer
+				placeholder={'单选树表'}
+				refName={'交易类型'}
+				refCode={'cont'}
+				refType={'gridTree'}
+				queryTreeUrl={'nccloud/platform/templet/querymetatree.do'}
+				queryGridUrl={'nccloud/platform/templet/querymetatree.do'}
+				value={this.state.currency5}
+				onChange={(val) => {
+					console.log(val);
+					this.setState({
+						currency5: val
+					});
+				}}
+				columnConfig={[
+					{
+						name: ['编码', '名称'],
+						code: ['refcode', 'refname']
+					}
+				]}
+				isMultiSelectedEnabled={false}
+			/>
 				<Button className="editable-add-btn" onClick={this.handleAdd}>新增</Button>
 				<Table bordered dataSource={dataSource} columns={columns} pagination={false} />
 			</div>
