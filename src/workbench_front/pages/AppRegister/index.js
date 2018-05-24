@@ -324,7 +324,7 @@ class AppRegister extends Component {
 				});
 				break;
 			case '删除':
-			let _this = this;
+				let _this = this;
 				confirm({
 					title: '是否要删除?',
 					content: '',
