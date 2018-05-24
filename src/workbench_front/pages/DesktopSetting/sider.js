@@ -25,12 +25,17 @@ class MySider extends Component {
 	}
 	componentDidMount() {
 		const relateidObj = this.props.relateidObj;
-		let ajaxObj = {
+		const ajaxData =
+			relateidObj.type === 'userID'
+				? { userid: relateidObj.data }
+				: { pk_responsibility: relateidObj.data }
+		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
 				name:'工作桌面配置',
 				action:'查询一二级领域模块'
 			},
+			data: ajaxData,
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
@@ -39,11 +44,7 @@ class MySider extends Component {
 					}
 				}
 			}
-		};
-		if(relateidObj.type === 'userID'){
-			ajaxObj.data = { userid: relateidObj.data }
-		}
-		Ajax(ajaxObj);
+		});
 	}
 	showModalVisible = () => {
 		this.setModalVisible(true);
@@ -63,7 +64,7 @@ class MySider extends Component {
 		const ajaxData =
 			relateidObj.type === 'userID'
 				? { search_content: this.state.searchValue, userid: relateidObj.data }
-				: { search_content: this.state.searchValue };
+				: { search_content: this.state.searchValue, pk_responsibility: relateidObj.data };
 		Ajax({
 			url: `/nccloud/platform/appregister/searchapp.do`,
 			info: {
@@ -97,7 +98,7 @@ class MySider extends Component {
 		const ajaxData =
 			relateidObj.type === 'userID'
 				? { own_module: ownModuleID, userid: relateidObj.data }
-				: { own_module: ownModuleID };
+				: { own_module: ownModuleID, pk_responsibility: relateidObj.data };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
