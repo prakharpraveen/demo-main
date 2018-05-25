@@ -37,3 +37,11 @@ export const setNewList = (data) => {
 		data
 	};
 };
+
+// 传递 区域 form 的区域值 
+export const setZoneDataFun = (getFromData) => {
+	return {
+		type: ZoneRegister.ZONEDATAFUN,
+		getFromData
+	};
+};

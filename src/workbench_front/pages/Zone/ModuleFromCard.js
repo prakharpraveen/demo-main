@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Form } from 'antd';
-import { updateTreeData, getFromDataFunc } from 'Store/AppRegister/action';
-import { setZoneData} from 'Store/ZoneSetting/action';
+import { setZoneData,setZoneDataFun} from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import { createForm } from './CreatForm';
 
@@ -23,13 +22,6 @@ class ModuleFromCard extends Component {
 					type: 'input',
 					code: 'name',
 					required: true,
-					// check: (rule, value, callback) => {
-					// 	if (value === this.props.parentData) {
-					// 		callback('不能与父节点编码重复');
-					// 	} else {
-					// 		callback();
-					// 	}
-					// }
 				},
 				{
 					lable: '模板描述',
@@ -41,10 +33,9 @@ class ModuleFromCard extends Component {
 		};
 	}
 	/**
-	 * 获取组织类型 下拉数据
-	 * @param {String} code 
+	 * 传递 表单的值  
 	 */
-	/* getFromData = () => {
+	getFromData = () => {
 		const { getFieldsValue, validateFields } = this.props.form;
 		let flag = false;
 		validateFields((err, values) => {
@@ -53,10 +44,9 @@ class ModuleFromCard extends Component {
 			}
 		});
 		return flag ? getFieldsValue() : null;
-	}; */
+	};
 	componentDidMount() {
-		this.props.getFromDataFunc(this.getFromData);
-	//	this.getOptionsData('orgtypecode');
+		this.props.setZoneDataFun(this.getFromData);
 	}
 
 	render() {
@@ -78,11 +68,10 @@ ModuleFromCard.PropTypes = {
 export default connect(
 	(state) => {
 		let { zoneArr} = state.zoneSettingData.zoneArray;
-		let { zoneDatas } = state.zoneRegisterData;
-		//let { nodeData, updateTreeData, billStatus, parentData } = state.AppRegisterData;
-		return { zoneArr, zoneDatas };
+		let { zoneDatas, zoneFormData } = state.zoneRegisterData;
+		return { zoneArr, zoneDatas, zoneFormData };
 	},
 	{
-		getFromDataFunc
+		setZoneDataFun
 	}
 )(ModuleFromCard);

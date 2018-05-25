@@ -52,7 +52,7 @@ class MyBtns extends Component {
 	handleClick(name){
 		switch (name){
 			case '保存': 
-				let fromData = this.props.getFromData();
+				let fromData = this.props.zoneFormData();
 				console.log(fromData);
 				if (!fromData) {
 					return;
@@ -84,10 +84,13 @@ class MyBtns extends Component {
 }
 
 export default connect(
-	(state) => ({
-		zoneState: state.AppRegisterData.zoneState,
-		getFromData: state.AppRegisterData.getFromData,
-	}),
+	(state) => {
+		let { zoneFormData } = state.zoneRegisterData;
+		return {
+			zoneFormData
+		}
+		
+	},
 	{
 		setZoneState
 	}

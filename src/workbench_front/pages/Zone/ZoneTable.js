@@ -143,14 +143,24 @@ class EditableCell_1 extends React.Component {
 		editable: false,
 		currency5:{}
 	}
+	// 组件更新 
+	componentWillReceiveProps(nextProps) {
+	//	if (nextProps.zoneDatas.areaList) {
+			this.setState({
+				value: nextProps.value,
+			})
+//		}
+	}
+
 	handleChange = (value) => {
 		//	const value = e.target.value;
 		this.setState({ value });
 	}
 	check = () => {
+
 		this.setState({ editable: false });
 		if (this.props.onChange) {
-			this.props.onChange(this.state.value);
+			this.props.onChange(this.state.currency5);
 		}
 	}
 	edit = () => {
@@ -253,11 +263,11 @@ class ZoneTable extends React.Component {
 			},
 			{
 				title: '关联元数据',
-				dataIndex: 'metaid', 
+				dataIndex: 'metaname', 
 				render: (text, record) => (
 					<EditableCell_1
 					value={text}
-					onChange={this.onCellChange(record.key, 'metaid')}
+						onChange={this.onCellChange(record.key, 'metaname')}
 					/>
 				),
 			},  
@@ -291,11 +301,13 @@ class ZoneTable extends React.Component {
 			const dataSource = [...this.state.dataSource];
 			const target = dataSource.find(item => item.key === key);
 			if (target) {
-				target[dataIndex] = value;
+				debugger;
+				target[dataIndex] = value && value.refname;
 				this.setState({ dataSource }, () => { this.props.setNewList(this.state.dataSource)});
 			}
 		};
 	}
+
 	onDelete = (key) => {
 		const dataSource = [...this.state.dataSource];
 		this.setState({ dataSource: dataSource.filter(item => item.key !== key) },
@@ -334,7 +346,6 @@ class ZoneTable extends React.Component {
 
 ZoneTable.propTypes = {
 	zoneDatas: PropTypes.object.isRequired,
-//	templetid: PropTypes.string.isRequired,
 };
 let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
 export default connect(

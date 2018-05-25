@@ -7,6 +7,7 @@ let defaultState = {
 	zoneState:'',
 	zoneDatas:{},
 	newListData:[],
+	zoneFormData:()=>{},
 };
 // 首页表单数据
 export const zoneRegisterData = (state = defaultState, action = {}) => {
@@ -43,6 +44,13 @@ export const zoneRegisterData = (state = defaultState, action = {}) => {
 				...state,
 				...{
 					newListData: action.data
+				}
+			};
+		case ZoneRegister.ZONEDATAFUN:
+			return {
+				...state,
+				...{
+					zoneFormData: action.getFromData
 				}
 			};
 		default:

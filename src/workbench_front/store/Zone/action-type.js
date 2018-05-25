@@ -10,3 +10,5 @@ export const ZONESTATE = 'ZONESTATE';
 export const SETZONEDATA = 'SETZONEDATA';
 // 设置区域列表数据
 export const SETNEWLIST = 'SETNEWLIST';
+// 区域单据 函数 
+export const ZONEDATAFUN = 'ZONEDATAFUN';
