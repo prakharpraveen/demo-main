@@ -1,12 +1,5 @@
 import * as ZoneRegister from './action-type';
 
-// 设置 区域参数信息 数据
-export const setZoneListData = (data) => {
-	return {
-		type: ZoneRegister.ZONEPARAMDATA,
-		data
-	};
-};
 // 设置 区域数据 
 export const setZoneData = (data) => { 
 	return {
@@ -30,10 +23,18 @@ export const setZoneState= (data) => {
 	};
 };
 
-// 设置 区域单据的模板状态 
+// 传递 区域单据的模板数组 
 export const setNewList = (data) => {
 	return {
 		type: ZoneRegister.SETNEWLIST,
 		data
+	};
+};
+
+// 传递 区域 form 的区域值 
+export const setZoneDataFun = (getFromData) => {
+	return {
+		type: ZoneRegister.ZONEDATAFUN,
+		getFromData
 	};
 };

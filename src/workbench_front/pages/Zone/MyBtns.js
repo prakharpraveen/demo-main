@@ -36,7 +36,7 @@ class MyBtns extends Component {
 	}
 	// 初始化设置按钮的状态 
 	componentDidMount(){
-		console.log('ddd');
+		
 	//	this.props.setZoneState('browse');
 	}
 	// 根据不同的状态 生成不同的按钮 
@@ -48,16 +48,55 @@ class MyBtns extends Component {
 		})
 	
 	}
+	// 保存 区域数据 
+	saveZoneData(list,form){
+		let url, data;
+		url = '/nccloud/platform/templet/settempletarea.do';
+		let { zoneDatas } = this.props;
+		//if (zoneDatas && zoneDatas.pk_page_templet){
+			// 修改 
+			data = { 
+				pk_page_templet: zoneDatas.pk_page_templet,
+				pageid: zoneDatas.pageid,
+				areaList:list,
+				...form,
+			}
+	//	}
+		
+		Ajax({
+			url: url,
+			data: data,
+			info: {
+				name: '保存区域',
+				action: '保存区域设置'
+			},
+			success: ({ data }) => {
+				if (data.success && data.data) {
+					//this.props.setZoneData(data.data);
+					// 下一步 
+				} else {
+					Notice({ status: 'error', msg: data.data.true });
+				}
+			}
+		});
+	} 
+
 	// 处理按钮的事件  
 	handleClick(name){
 		switch (name){
 			case '保存': 
-				let fromData = this.props.getFromData();
+				let fromData = this.props.zoneFormData();
 				console.log(fromData);
 				if (!fromData) {
 					return;
 				}
-				console.log(fromData,'result')
+				console.log(fromData,'result');
+				// 保存 操作 
+				let { newListData } = this.props;
+				console.log(newListData, fromData);
+				this.saveZoneData(newListData, fromData);
+				debugger;
+
 			break;
 			case '下一步':
 				break; 
@@ -84,10 +123,14 @@ class MyBtns extends Component {
 }
 
 export default connect(
-	(state) => ({
-		zoneState: state.AppRegisterData.zoneState,
-		getFromData: state.AppRegisterData.getFromData,
-	}),
+	(state) => {
+		let { zoneFormData, newListData, zoneDatas } = state.zoneRegisterData;
+
+		return {
+			zoneFormData, newListData, zoneDatas
+		}
+		
+	},
 	{
 		setZoneState
 	}
