@@ -304,7 +304,7 @@ class MySider extends Component {
 							unCheckedChildren='收缩'
 							className={this.state.appGroupArr.length === 0 ? 'cannot-add' : 'aaa'}
 							onChange={this.allShowOrHide}
-						/>,
+						/>
 						<Icon
 							className={this.hasChechedItem() ? 'add' : 'cannot-add'}
 							type='plus-circle-o'
