@@ -10,7 +10,7 @@ import Gzip from './gzip';
 // }
 const Ajax = ({
 	url,
-	data = '',
+	data,
 	method = 'post',
 	alert = false,
 	info = {name:'',action:''},

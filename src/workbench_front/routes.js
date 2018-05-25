@@ -55,6 +55,14 @@ const Customize1 = Loadable({
 	loader: () => import('Pages/Customize/index.1.js'),
 	loading: Loading
 });
+const MenuRegister = Loadable({
+	loader: () => import('Pages/MenuRegister'),
+	loading: Loading
+});
+const MenuItem = Loadable({
+	loader: () => import('Pages/MenuItem'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -105,6 +113,14 @@ const routes = [
 	{
 		path: '/c1',
 		component: Customize1
+	},
+	{
+		path: '/mr',
+		component: MenuRegister
+	},
+	{
+		path: '/mi',
+		component: MenuItem
 	},
 ];
 const RouteWithSubRoutes = (route) => (

@@ -1,0 +1,32 @@
+.nc-workbench-menuregister{
+    height: 100%;
+    background: #ffffff;
+    .menuregister-list{
+        .menugister-list-title{
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 16px;
+            color: #474D54;
+            font-weight: 600;
+        }
+        .menugister-list-table{
+            .menugister-list-action{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                span{
+                    margin-right: 10px;
+                    cursor: pointer; 
+                }
+            }
+            .ant-table-tbody>tr:hover>td{
+                .menugister-list-action{
+                    color:#007ACE;
+                }
+            }
+        }
+    }
+}

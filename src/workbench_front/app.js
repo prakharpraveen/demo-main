@@ -22,7 +22,7 @@ class App extends Component {
 	openNewApp = (appOption) => {
 		let { code, name } = appOption;
 		let type;
-		if(name === '应用注册'){
+		if(name === '应用注册'||name === '菜单注册'){
 			type = 'own';
 		}
 		let { pk_appregister } = appOption;
