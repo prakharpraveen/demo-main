@@ -59,11 +59,10 @@ class ModuleFromCard extends Component {
 }
 ModuleFromCard = Form.create()(ModuleFromCard); // 必须要包装才能用form的方法 
 ModuleFromCard.PropTypes = {
-	updateTreeData: PropTypes.func.isRequired,
-	nodeData: PropTypes.object.isRequired,
-	billStatus: PropTypes.object.isRequired,
-	getFromDataFunc: PropTypes.func.isRequired,
-	parentData: PropTypes.string.isRequired
+	zoneArr: PropTypes.object.isRequired,
+	zoneDatas: PropTypes.object.isRequired,
+	zoneFormData: PropTypes.object.isRequired,
+	setZoneDataFun: PropTypes.func.isRequired,
 };
 export default connect(
 	(state) => {

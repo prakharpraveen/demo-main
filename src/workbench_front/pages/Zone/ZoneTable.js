@@ -6,7 +6,7 @@ import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
-import { setZoneListData, setZoneTempletid, setNewList } from 'Store/Zone/action'; 
+import {setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 import { high } from 'nc-lightapp-front';
@@ -21,12 +21,12 @@ const Option = Select.Option;
  */
 const switchType = (value) => {
 	switch (value) {
-		case 1:
+		case '1':
 			return '非查询区'
-		case 0:
+		case '0':
 			return '查询区'
 		default:
-			return value;	
+			return typeof(value ==='object')? (value.metaname): value;	
 	/* 	default:
 			break; */
 	}
@@ -91,7 +91,6 @@ class EditableSelect extends React.Component {
 		editable: false,
 	}
 	handleChange = (value) => {
-	//	const value = e.target.value;
 		this.setState({ value });
 	}
 	check = () => { 
@@ -111,8 +110,8 @@ class EditableSelect extends React.Component {
 					editable ?
 						<div className="editable-cell-input-wrapper">
 							<Select showSearch optionFilterProp="children" value={value} style={{ width: 120 }} onChange={(selected) =>this.handleChange(selected)} filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-								<Option value={0}>查询区</Option>
-								<Option value={1}>非查询区</Option>
+								<Option value={'0'}>查询区</Option>
+								<Option value={'1'}>非查询区</Option>
 							</Select>
 							<Icon
 								type="check"
@@ -135,32 +134,28 @@ class EditableSelect extends React.Component {
 	}
 }
 
-// li 
-// 可编辑表格下拉框 
-class EditableCell_1 extends React.Component {
+// 可编辑表格参照
+class EditableRefer extends React.Component {
 	state = {
 		value: this.props.value,
 		editable: false,
-		currency5:{}
+		metaObj: { refname: this.props.value.metaname, refpk: this.props.value.metaid}
 	}
+	
 	// 组件更新 
 	componentWillReceiveProps(nextProps) {
-	//	if (nextProps.zoneDatas.areaList) {
+		if (nextProps.value !== this.props.value) {
 			this.setState({
 				value: nextProps.value,
+				metaObj: { refname: nextProps.value.metaname, refpk: nextProps.value.metaid }
 			})
-//		}
+		}
 	}
 
-	handleChange = (value) => {
-		//	const value = e.target.value;
-		this.setState({ value });
-	}
 	check = () => {
-
 		this.setState({ editable: false });
 		if (this.props.onChange) {
-			this.props.onChange(this.state.currency5);
+			this.props.onChange(this.state.metaObj);
 		}
 	}
 	edit = () => {
@@ -174,19 +169,19 @@ class EditableCell_1 extends React.Component {
 					editable ?
 						<div className="editable-cell-input-wrapper">
 							<Refer
-								placeholder={'单选树表'}
+								placeholder={'关联元数据'}
 								refName={'交易类型'}
 								refCode={'cont'}
 								refType={'gridTree'}
 								queryTreeUrl={'nccloud/platform/templet/querymetatree.do'}
-								queryGridUrl={'nccloud/platform/templet/querymetatree.do'}
-								value={this.state.currency5}
+								queryGridUrl={'nccloud/platform/templet/querymetasearch.do'}
+								value={this.state.metaObj}
 								onChange={(val) => {
 									console.log(val);
 									this.setState({
-										currency5: val
+										metaObj: val
 									});
-								}}
+								}}    
 								columnConfig={[
 									{
 										name: ['编码', '名称'],
@@ -223,7 +218,6 @@ class ZoneTable extends React.Component {
 		this.state = {
 			dataSource: [],
 			count: null,
-			currency5:{},
 			show:true,
 		};
 		this.columns = [
@@ -265,8 +259,8 @@ class ZoneTable extends React.Component {
 				title: '关联元数据',
 				dataIndex: 'metaname', 
 				render: (text, record) => (
-					<EditableCell_1
-					value={text}
+					<EditableRefer
+						value={record}
 						onChange={this.onCellChange(record.key, 'metaname')}
 					/>
 				),
@@ -292,17 +286,23 @@ class ZoneTable extends React.Component {
 			this.setState({
 				dataSource: nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
 				count: nextProps.zoneDatas.areaList.length,
-			})
+			});
+			// 设置初始 table数组 
+			this.props.setNewList(nextProps.zoneDatas.areaList)
 		}
 	}
-
+    // 闭包 只对具体的单元格修改 
 	onCellChange = (key, dataIndex) => {
 		return (value) => {
 			const dataSource = [...this.state.dataSource];
 			const target = dataSource.find(item => item.key === key);
 			if (target) {
-				debugger;
-				target[dataIndex] = value && value.refname;
+				if (dataIndex ==='metaname'){
+					target[dataIndex] = value && value.refname;
+					target['metaid'] = value && value.refpk;
+				}else{
+					target[dataIndex] = value
+				}
 				this.setState({ dataSource }, () => { this.props.setNewList(this.state.dataSource)});
 			}
 		};
@@ -324,12 +324,12 @@ class ZoneTable extends React.Component {
 			code: '',
 			metaid: '',
 			metaname:'',
-			areatype:1,
+			areatype:'1',
 		};
 		this.setState({
 			dataSource: [...dataSource, newData],
 			count: count + 1,
-		});
+		}, () => { this.props.setNewList(this.state.dataSource) });
 	}
 	render() {
 		let { dataSource } = this.state;
@@ -351,10 +351,10 @@ let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
 export default connect(
 	(state) => {
 		return {
-			zone: state.zoneRegisterData.zoneParamdata,
-			templetid: state.zoneRegisterData.templetid,
-			zoneDatas: state.zoneRegisterData.zoneDatas,
+		
+			templetid: state.zoneRegisterData.templetid, // 当前区域上级模板id 
+			zoneDatas: state.zoneRegisterData.zoneDatas, // 后台返回的数据 
 		};
 	},
-	{ setZoneListData, setZoneTempletid, setNewList }
+	{  setNewList }
 )(DragFromeTable);
