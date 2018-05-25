@@ -40,11 +40,7 @@ class PageLayout extends Component {
 				<div
 					onMouseMove={this.handleMouseMove}
 					onMouseUp={this.handleMouseUp}
-					className={`nc-workbench-ownpage ${this.props.children.length === 2 &&
-					this.props.children.find((item) => item.type.name === 'PageLayoutLeft') &&
-					this.props.children.find((item) => item.type.name === 'PageLayoutRight')
-						? 'nc-workbench-ownpage-all'
-						: ''} ${this.props.className}`}
+					className={`nc-workbench-ownpage ${this.props.children.length === 2? 'nc-workbench-ownpage-all': ''} ${this.props.className}`}
 				>
 					{this.props.children}
 				</div>
