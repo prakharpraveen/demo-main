@@ -77,9 +77,9 @@ class Layout extends Component {
 			}
 		})
 		window.openNew({
-			code: child.code,
-			pk_appregister: child.pk_appregister,
-			name: child.name
+			code: targetApp.code,
+			pk_appregister: child.value,
+			name: child.text
 		});
 	};
 	handleSearch = (value) => {

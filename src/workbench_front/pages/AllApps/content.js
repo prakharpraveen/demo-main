@@ -27,8 +27,8 @@ class MyContent extends Component {
 											<a href="javascript:void(0);" onClick={()=>{
                                                 window.openNew({
                                                     code: child.code,
-                                                    pk_appregister: child.pk_appregister,
-                                                    name: child.name
+                                                    pk_appregister: child.value,
+                                                    name: child.label
                                                 });
                                             }} > {child.label}
                                             </a>

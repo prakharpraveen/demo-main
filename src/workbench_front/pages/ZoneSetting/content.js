@@ -23,7 +23,7 @@ class MyContent extends Component {
 		super(props);
 		this.state = {
 			areaList: [],
-			modalVisible: false,
+			modalVisible: true,
 			metaTree: [],
 			targetAreaID: ''
 		};

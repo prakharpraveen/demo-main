@@ -5,17 +5,62 @@ import { connect } from 'react-redux';
 import { Input, Icon, Tree, Modal, Button } from 'antd';
 import * as utilService from './utilService';
 const TreeNode = Tree.TreeNode;
+
+const treeData = [
+	{
+		title: '0-0',
+		key: '0-0',
+		children: [
+			{
+				title: '0-0-0',
+				key: '0-0-0',
+				children: [
+					{ title: '0-0-0-0', key: '0-0-0-0' },
+					{ title: '0-0-0-1', key: '0-0-0-1' },
+					{ title: '0-0-0-2', key: '0-0-0-2' }
+				]
+			},
+			{
+				title: '0-0-1',
+				key: '0-0-1',
+				children: [
+					{ title: '0-0-1-0', key: '0-0-1-0' },
+					{ title: '0-0-1-1', key: '0-0-1-1' },
+					{ title: '0-0-1-2', key: '0-0-1-2' }
+				]
+			},
+			{
+				title: '0-0-2',
+				key: '0-0-2'
+			}
+		]
+	},
+	{
+		title: '0-1',
+		key: '0-1',
+		children: [
+			{ title: '0-1-0-0', key: '0-1-0-0' },
+			{ title: '0-1-0-1', key: '0-1-0-1' },
+			{ title: '0-1-0-2', key: '0-1-0-2' }
+		]
+	},
+	{
+		title: '0-2',
+		key: '0-2'
+	}
+];
+
 class TreeModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedValue: 0,
-            checkedKeys: [],
-            searchValue:''
+			checkedKeys: [],
+			searchValue: ''
 		};
 	}
 	showModalHidden = () => {
-        utilService.setPropertyValueForItemInItemList(this.props.metaTree)
+		utilService.setPropertyValueForItemInItemList(this.props.metaTree);
 		this.setModalVisible(false);
 	};
 	setModalVisible = (modalVisible) => {
@@ -25,27 +70,27 @@ class TreeModal extends Component {
 	//移动到的弹出框中，点击确认
 	onOkMoveDialog = () => {
 		const modalVisible = false;
-        let cardList = [];
-        const {metaTree}=this.props;
-        metaTree.map((item)=>{
-            item.isShow = true;
-            if(checkedKeys.indexOf(item.key)  !== -1){
-                cardList.push(item);
-            }
-        })
-        this.props.addCard(cardList);
+		let cardList = [];
+		const { metaTree } = this.props;
+		metaTree.map((item) => {
+			item.isShow = true;
+			if (checkedKeys.indexOf(item.key) !== -1) {
+				cardList.push(item);
+			}
+		});
+		this.props.addCard(cardList);
 		this.setModalVisible(modalVisible);
 	};
-    //关于搜索框的方法;
+	//关于搜索框的方法;
 	onInputSearch = () => {
-        console.log(this.state.searchValue, '搜索开始');
-        const {metaTree}=this.props;
+		console.log(this.state.searchValue, '搜索开始');
+		const { metaTree } = this.props;
 
-        metaTree.map((item)=>{
-            if(checkedKeys.indexOf(item.key)  !== -1){
-                cardList.push(item);
-            }
-        })
+		metaTree.map((item) => {
+			if (checkedKeys.indexOf(item.key) !== -1) {
+				cardList.push(item);
+			}
+		});
 
 		this.setModalVisible(modalVisible);
 	};
@@ -58,13 +103,38 @@ class TreeModal extends Component {
 
 	//关于树的方法
 	//选中
-	onCheck = (checkedKeys) => {
-		console.log('onCheck', checkedKeys);
-		this.setState({ checkedKeys });
-    };
+    onCheck = (checkedKeys, info) => {
+        console.log("onCheck", checkedKeys, info);
+        _.forEach(info.checkedNodes,(v,i)=>{
+            _.forEach(v.props.children,(c,index)=>{
+                if(checkedKeys.checked.indexOf(c.key)===-1){
+                    checkedKeys.checked.push(c.key);
+                }
+            })
+           
+        })
+        this.setState({ checkedKeys: checkedKeys });
+      };
+      onSelect = (selectedKeys, info) => {
+        console.log("onSelect", selectedKeys);
+        this.setState({ selectedKeys });
+      };
     
+    renderTreeNodes = data => {
+        return data.map(item => {
+          if (item.children) {
+            return (
+              <TreeNode title={item.title} key={item.key} dataRef={item}>
+                {this.renderTreeNodes(item.children)}
+              </TreeNode>
+            );
+          }
+          return <TreeNode {...item} />;
+        });
+    };
+
 	getContentDom = () => {
-        const { metaTree } = this.props;
+		const { metaTree } = this.props;
 		return (
 			<div className='template-setting-left-sider template-setting-sider'>
 				<div className='sider-content'>
@@ -81,22 +151,17 @@ class TreeModal extends Component {
 					</div>
 
 					<div className='sider-tree'>
-						<Tree checkable onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}>
-							{
-                                
-                                metaTree.map((item) => {
-                                    // if (item.children) {
-                                    //   return (
-                                    //     <TreeNode title={item.title} key={item.key} dataRef={item}>
-                                    //       {this.renderTreeNodes(item.children)}
-                                    //     </TreeNode>
-                                    //   );
-                                    // }
-                                    if (item.isShow) {
-                                        return <TreeNode {...item} />;
-                                    }
-                                })
-                            }
+						<Tree
+                        showLine={true}
+							checkStrictly={true}
+							multiple={true}
+							checkable
+							onCheck={this.onCheck}
+							checkedKeys={this.state.checkedKeys}
+							onSelect={this.onSelect}
+							selectedKeys={this.state.selectedKeys}
+						>
+							 {this.renderTreeNodes(treeData)}
 						</Tree>
 					</div>
 				</div>
