@@ -60,6 +60,9 @@ class MySider extends Component {
 	};
 	//应用名模糊搜索
 	onInputSearch = () => {
+		if(this.state.searchValue === ''){
+			return;
+		}
 		const relateidObj = this.props.relateidObj;
 		const ajaxData =
 			relateidObj.type === 'userID'
@@ -91,6 +94,9 @@ class MySider extends Component {
 	};
 	//领域模块搜索
 	onCascaderChange = (value) => {
+		if(value && value.length===0){
+			return;
+		}
 		let cascaderValueArr = value;
 		if (cascaderValueArr.length === 1) {
 			return;
