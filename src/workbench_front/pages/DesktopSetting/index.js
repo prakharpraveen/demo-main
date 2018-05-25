@@ -54,7 +54,6 @@ class Test extends Component {
 									a.gridy = Number(a.gridy);
 									a.height = Number(a.height);
 									a.width = Number(a.width);
-									a.haspower = Boolean(a.haspower);
 								})
 							});
 							this.props.updateGroupList(data[0].groups);
