@@ -46,8 +46,8 @@ class SideDrawer extends Component {
 			<div className='nc-workbench-drawer'>
 				<Drawer className='drawer-content' width={430} overlayColor={'none'} drawerStyle={{top:"48px","border":"1px solid rgba(78, 89, 104, 0.19)","boxShadow": "3px 6px 8px 0px rgba(74,81,93,0.25)", 
 				"borderRadius": "2px 3px 3px 0px" }} open={isOpen} onChange={this.handleDrawerChange}>
-					<div field="logout" fieldname="注销"  className='drawer-exit'>
-						<i className='iconfont icon-zhuxiao' onClick={this.handleExit}></i>
+					<div className='drawer-exit'>
+						<i field="logout" fieldname="注销" className='iconfont icon-zhuxiao' onClick={this.handleExit}></i>
 					</div>
 					<div className='drawer-info'>
 						<div className='info'>
@@ -61,17 +61,17 @@ class SideDrawer extends Component {
 					</div>
 					<div className='drawer-setting'>
 						<div className='setting-content'>
-							<div field="setting" fieldname="个人配置" onClick={()=>{this.handeleSkipPage('/ds?n=个人配置')}} className='setting-btn' >
+							<div onClick={()=>{this.handeleSkipPage('/ds?n=个人配置')}} className='setting-btn' >
 								<i className="iconfont icon-bianji"></i>
-								<span >个人配置</span>
+								<span field="setting" fieldname="个人配置">个人配置</span>
 							</div>
-							<div field="account" fieldname="账户设置"  className='setting-btn'>
+							<div  className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
-								<span >账户设置</span>
+								<span field="account" fieldname="账户设置">账户设置</span>
 							</div>
-							<div field="customize" fieldname="个性化设置" onClick={()=>{this.handeleSkipPage('/c?n=个性化设置')}} className='setting-btn'>
-								<i className="iconfont icon-shezhi"></i>
-								<span >个性化设置</span>
+							<div  onClick={()=>{this.handeleSkipPage('/c?n=个性化设置')}} className='setting-btn'>
+								<i field="logout" fieldname="注销" className="iconfont icon-shezhi"></i>
+								<span field="customize" fieldname="个性化设置">个性化设置</span>
 							</div>
 						</div>
 					</div>

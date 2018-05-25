@@ -129,13 +129,13 @@ class Layout extends Component {
 					onSelect={this.onSelect}
 					onSearch={this.handleSearch}
 					placeholder='请输入应用名称' />
-					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+					<i field="search" fieldname="查询" className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
 				</span>
 			);
 		} else {
 			return (
 				<span className='margin-right-10'>
-					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+					<i field="search" fieldname="查询" className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
 				</span>
 			);
 		}
@@ -166,17 +166,17 @@ class Layout extends Component {
 						</div>
 						<div className='nav-middle'>
 							{/* <Link to='/'>首页</Link> */}
-							<span>{nodeName}</span>
+							<span >{nodeName}</span>
 						</div>
 						<div className='nav-right n-right n-v-middle'>
 							{this.getSearchDom()}
 							<span className='margin-right-10'>
 								<Link to={`all`}>
-									<i className='iconfont icon-quanbuyingyong' />
+									<i field="application" fieldname="全部应用" className='iconfont icon-quanbuyingyong' />
 								</Link>
 							</span>
 							<span className='margin-right-10'>
-								<i className='iconfont icon-xiaoxi' />
+								<i field="message" fieldname="消息" className='iconfont icon-xiaoxi' />
 							</span>
 						</div>
 					</nav>
