@@ -118,7 +118,7 @@ class Layout extends Component {
 				});
 			}, 300);
 		}
-	  };
+	};
 	getSearchDom = () => {
 		const { isShowSearch } = this.state;
 		if (isShowSearch) {
@@ -129,13 +129,13 @@ class Layout extends Component {
 					onSelect={this.onSelect}
 					onSearch={this.handleSearch}
 					placeholder='请输入应用名称' />
-					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+					<i field="search" fieldname="查询" className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
 				</span>
 			);
 		} else {
 			return (
 				<span className='margin-right-10'>
-					<i className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
+					<i field="search" fieldname="查询" className='iconfont icon-sousuo' onClick={this.changeSearchInput} />
 				</span>
 			);
 		}
@@ -155,9 +155,9 @@ class Layout extends Component {
 									this.props.changeDrawer(!isOpen);
 								}}
 							>
-								<img src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
+								<img field="logo" fieldname="标识" src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 							</div>
-							<div>
+							<div field="ant-select" fieldname="下拉框">
 								<Select defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
 									<Option value='yonyou'>用友网络科技股份有限公司</Option>
 									<Option value='yyjr'>用友（yonyou）</Option>
@@ -166,17 +166,17 @@ class Layout extends Component {
 						</div>
 						<div className='nav-middle'>
 							{/* <Link to='/'>首页</Link> */}
-							<span>{nodeName}</span>
+							<span >{nodeName}</span>
 						</div>
 						<div className='nav-right n-right n-v-middle'>
 							{this.getSearchDom()}
 							<span className='margin-right-10'>
 								<Link to={`all`}>
-									<i className='iconfont icon-quanbuyingyong' />
+									<i field="application" fieldname="全部应用" className='iconfont icon-quanbuyingyong' />
 								</Link>
 							</span>
 							<span className='margin-right-10'>
-								<i className='iconfont icon-xiaoxi' />
+								<i field="message" fieldname="消息" className='iconfont icon-xiaoxi' />
 							</span>
 						</div>
 					</nav>

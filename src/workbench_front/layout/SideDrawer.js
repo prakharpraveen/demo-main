@@ -47,7 +47,7 @@ class SideDrawer extends Component {
 				<Drawer className='drawer-content' width={430} overlayColor={'none'} drawerStyle={{top:"48px","border":"1px solid rgba(78, 89, 104, 0.19)","boxShadow": "3px 6px 8px 0px rgba(74,81,93,0.25)", 
 				"borderRadius": "2px 3px 3px 0px" }} open={isOpen} onChange={this.handleDrawerChange}>
 					<div className='drawer-exit'>
-						<i className='iconfont icon-zhuxiao' onClick={this.handleExit}></i>
+						<i field="logout" fieldname="注销" className='iconfont icon-zhuxiao' onClick={this.handleExit}></i>
 					</div>
 					<div className='drawer-info'>
 						<div className='info'>
@@ -61,36 +61,36 @@ class SideDrawer extends Component {
 					</div>
 					<div className='drawer-setting'>
 						<div className='setting-content'>
-							<div className='setting-btn'>
+							<div onClick={()=>{this.handeleSkipPage('/ds?n=个人配置')}} className='setting-btn' >
 								<i className="iconfont icon-bianji"></i>
-								<span onClick={()=>{this.handeleSkipPage('/ds?n=个人配置')}}>个人配置</span>
+								<span field="setting" fieldname="个人配置">个人配置</span>
 							</div>
-							<div className='setting-btn'>
+							<div  className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
-								<span>账户设置</span>
+								<span field="account" fieldname="账户设置">账户设置</span>
 							</div>
-							<div className='setting-btn'>
-								<i className="iconfont icon-shezhi"></i>
-								<span onClick={()=>{this.handeleSkipPage('/c?n=个性化设置')}}>个性化设置</span>
+							<div  onClick={()=>{this.handeleSkipPage('/c?n=个性化设置')}} className='setting-btn'>
+								<i field="logout" fieldname="注销" className="iconfont icon-shezhi"></i>
+								<span field="customize" fieldname="个性化设置">个性化设置</span>
 							</div>
 						</div>
 					</div>
 					<div className='drawer-link'>
 						<ul className='link'>
 							<li>
-								<span>帮助</span>
+								<span  field="help" fieldname="帮助">帮助</span>
 							</li>
 							<li>
-								<span>联系用友服务人员</span>
+								<span  field="contact" fieldname="联系用友服务人员">联系用友服务人员</span>
 							</li>
 							<li>
-								<span>云注册链接</span>
+								<span  field="register" fieldname="云注册链接">云注册链接</span>
 							</li>
 							<li>
-								<span onClick={this.handleSprClick}>{sprType?`开始录制SPR`:`结束录制SPR`}</span>
+								<span  field="spr" fieldname="录制SPR" onClick={this.handleSprClick}>{sprType?`开始录制SPR`:`结束录制SPR`}</span>
 							</li>
 							<li>
-								<span>日志</span>
+								<span  field="log" fieldname="日志">日志</span>
 							</li>
 						</ul>
 					</div>

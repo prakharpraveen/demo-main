@@ -414,6 +414,20 @@ class PageTable extends Component {
 	save(record) {
 		let { activeKey } = this.state;
 		let newData = this.getNewData();
+		console.log(newData);
+		if(activeKey === '1'){
+			let arrayBtn = newData.filter((item) => record.btncode === item.btncode);
+			if(arrayBtn.length>1){
+				Notice({ status: 'error', msg: '按钮编码重复，请再次确认！' });
+				return;
+			}
+		}else{
+			let arrayTmp = newData.filter((item) => record.code === item.code);
+			if(arrayTmp.length>1){
+				Notice({ status: 'error', msg: '模板编码重复，请再次确认！'  });
+				return;
+			}
+		}
 		let url, listData , info;
 		const target = newData.filter((item) => record.num === item.num)[0];
 		if (target) {

@@ -168,7 +168,7 @@ class Home extends Component {
 					transform: `translate(${x}px, ${y}px)`
 				}}
 				onClick={() => {
-					window.openNew(appOption, isOwn ? 'own' : undefined);
+					window.openNew(appOption);
 				}}
 			>
 				<div field='app-item' fieldname={name} className='app-item'>
