@@ -6,6 +6,9 @@ import './index.less';
  * @param {Number} height 距离浏览器顶部的距离
  */
 let isMouseDown = false;
+/**
+ * 单页基本布局容器
+ */
 class PageLayout extends Component {
 	static defaultProps = {
 		className: ''
@@ -49,7 +52,9 @@ class PageLayout extends Component {
 		);
 	}
 }
-
+/**
+ * 单页左侧基本布局容器
+ */
 class PageLayoutLeft extends Component {
 	static defaultProps = {
 		className: ''
@@ -70,7 +75,9 @@ class PageLayoutLeft extends Component {
 		);
 	}
 }
-
+/**
+ * 单页右侧基本布局容器
+ */
 class PageLayoutRight extends Component {
 	static defaultProps = {
 		className: ''

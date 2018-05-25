@@ -71,7 +71,7 @@ class SideDrawer extends Component {
 							</div>
 							<div className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
-								<span>个性化设置</span>
+								<span onClick={()=>{this.handeleSkipPage('/c?n=个性化设置')}}>个性化设置</span>
 							</div>
 						</div>
 					</div>
