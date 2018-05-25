@@ -80,6 +80,8 @@ class MySider extends Component {
 					data.indeterminate = false;
 					_.forEach(data.children, (c) => {
 						c.checked = false;
+						c.height = Number(c.height);
+						c.width = Number(c.width);
 					});
 					this.setState({ appGroupArr: [data], isAllShow: true });
 				}
@@ -116,6 +118,8 @@ class MySider extends Component {
 						d.indeterminate = false;
 						_.forEach(d.children, (c) => {
 							c.checked = false;
+							c.height = Number(c.height);
+							c.width = Number(c.width);
 						});
 					});
 					this.setState({ appGroupArr: data, isAllShow: true });

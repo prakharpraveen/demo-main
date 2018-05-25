@@ -49,6 +49,12 @@ class Test extends Component {
 								_.forEach(g.apps,(a)=>{
 									a.isShadow = false;
 									a.isChecked = false;
+									a.apptype = Number(a.apptype);
+									a.gridx = Number(a.gridx);
+									a.gridy = Number(a.gridy);
+									a.height = Number(a.height);
+									a.width = Number(a.width);
+									a.haspower = Boolean(a.haspower);
 								})
 							});
 							this.props.updateGroupList(data[0].groups);

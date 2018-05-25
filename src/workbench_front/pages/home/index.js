@@ -7,7 +7,7 @@ import { animateScroll, scrollSpy, Element } from 'react-scroll';
 import Ajax from 'Pub/js/ajax';
 import Svg from 'Components/Svg';
 import './index.less';
-
+import _ from 'lodash';
 import { updateGroupList } from 'Store/home/action';
 import { compactLayout, compactLayoutHorizontal } from 'Pages/DesktopSetting/compact';
 import { getContainerMaxHeight, calWHtoPx, calGridItemPosition, calColCount } from 'Pages/DesktopSetting/utilService';
@@ -78,6 +78,15 @@ class Home extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
+						_.forEach(data[0].groups, (g) => {
+							g.type = "group";
+							_.forEach(g.apps,(a)=>{
+								a.gridx = Number(a.gridx);
+								a.gridy = Number(a.gridy);
+								a.height = Number(a.height);
+								a.width = Number(a.width);
+							})
+						});
 						this.setState({ groups: data[0].groups });
 						this.props.updateGroupList(data[0].groups);
 						this.handleHomeLoad();
