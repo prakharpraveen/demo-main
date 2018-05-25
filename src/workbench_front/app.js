@@ -19,8 +19,12 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 	}
-	openNewApp = ({ appOption, type }) => {
+	openNewApp = (appOption) => {
 		let { code, name } = appOption;
+		let type;
+		if(name === '应用注册'){
+			type = 'own';
+		}
 		let { pk_appregister } = appOption;
 		let win = window.open('', '_blank');
 		Ajax({
@@ -76,11 +80,11 @@ class App extends Component {
 		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
-		window.openNew = (appOption, type) => {
+		window.openNew = (appOption) => {
 			let { code, name } = appOption;
 			window.peData.nodeName = name;
 			window.peData.nodeCode = code;
-			proxyAction(this.openNewApp, this, '打开应用')({ appOption, type });
+			proxyAction(this.openNewApp, this, '打开应用')(appOption);
 		};
 	}
 	componentDidMount() {
