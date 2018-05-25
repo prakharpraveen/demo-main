@@ -78,8 +78,8 @@ class Layout extends Component {
 		})
 		window.openNew({
 			code: targetApp.code,
-			pk_appregister: child.value,
-			name: child.text
+			pk_appregister: targetApp.value,
+			name: targetApp.text
 		});
 	};
 	handleSearch = (value) => {
