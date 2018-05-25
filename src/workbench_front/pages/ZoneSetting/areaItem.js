@@ -26,10 +26,13 @@ class AreaItem extends Component {
     }
     addMetaInArea = ()=>{
         this.props.addMetaInArea(this.props.metaid, this.props.id)
-    }
+	}
+	selectThisCard = (cardIndex)=>{
+		this.props.selectThisCard(cardIndex, this.props.index)
+	}
 	render() {
         console.log("areaItem")
-        const {areaItem} = this.props;
+        const {areaItem, selectCard} = this.props;
 		return (
             <div className='area-item' >
 					<div className='area-item-header'>
@@ -46,7 +49,14 @@ class AreaItem extends Component {
 					<ul className='area-item-content'>
 						{areaItem.queryPropertyList.map((q,index) => {
 							return (
-								<MyCard index={index} key={index} id={q.pk_query_property} name={q.label} moveCard={this.moveCard} deleteCard={this.deleteCard}/>  
+								<MyCard index={index} 
+								key={index} 
+								id={q.pk_query_property} 
+								name={q.label} 
+								// selectCard = {selectCard}
+								selectThisCard = {this.selectThisCard}
+								moveCard={this.moveCard}
+								 deleteCard={this.deleteCard}/>  
 							);
 						})}
 					</ul>

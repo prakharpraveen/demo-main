@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
+import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
 import { DragDropContext } from 'react-dnd';
@@ -22,10 +20,9 @@ class MyContent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			areaList: [],
 			modalVisible: true,
 			metaTree: [],
-			targetAreaID: ''
+			targetAreaID: '',
 		};
 	}
 
@@ -68,14 +65,11 @@ class MyContent extends Component {
 							status: '0',
 							m_isDirty: false
 						});
-						this.setState({ areaList: data });
+						this.props.updateAreaList(data)
 					}
 				}
 			}
 		});
-	}
-	getAreaDom() {
-		const { areaList } = this.state;
 	}
 	addMetaInArea = (metaid, targetAreaID) => {
 		Ajax({
@@ -110,11 +104,12 @@ class MyContent extends Component {
 	};
 
 	updateAreaList = (areaList) => {
-		this.setState({ areaList: areaList });
+		this.props.updateAreaList(areaList)
 	};
 
 	addCard = (addCardList) => {
-        let {targetAreaID, areaList} = this.state;
+		let {targetAreaID } = this.state;
+		let {areaList} = this.props;
         areaList = _.cloneDeep(areaList);
         let targetArea = {};
         _.forEach(areaList ,(a)=>{
@@ -124,39 +119,49 @@ class MyContent extends Component {
             }
         })
         targetArea.queryPropertyList.connect(addCardList);
-        this.setState({areaList})
+        this.props.updateAreaList(areaList)
     };
 
 	moveCard = (dragIndex, hoverIndex, areaItemIndex) => {
-		let { areaList } = this.state;
+		let { areaList } = this.props;
 		areaList = _.cloneDeep(areaList);
 		const cards = areaList[areaItemIndex].queryPropertyList;
 
 		const dragCard = cards[dragIndex];
 		cards.splice(dragIndex, 1);
 		cards.splice(hoverIndex, 0, dragCard);
-		this.setState({ areaList: areaList });
+		this.props.updateAreaList(areaList)
+		this.props.updateSelectCard({})
 	};
 
 	deleteCard = (cardIndex, areaItemIndex) => {
-		let { areaList } = this.state;
+		let { areaList } = this.props;
 		areaList = _.cloneDeep(areaList);
 
 		const cards = areaList[areaItemIndex].queryPropertyList;
 
 		cards.splice(cardIndex, 1);
 
-		this.setState({ areaList: areaList });
+		this.props.updateAreaList(areaList)
+		this.props.updateSelectCard({})
 	};
 
 	setModalVisible = (modalVisible) => {
 		this.setState({ modalVisible });
 	};
 
+
+	selectThisCard =(cardIndex, areaItemIndex)=>{
+		let { areaList } = this.props;
+		let card = areaList[areaItemIndex].queryPropertyList[cardIndex];
+		// this.setState({ selectCard: card });
+		this.props.updateSelectCard(card)
+	};
+
 	render() {
 		return (
 			<div className='template-setting-content'>
-				{this.state.areaList.map((a, i) => {
+				{this.props.areaList.map((a, i) => {
 					return (
 						<AreaItem
 							areaItem={a}
@@ -164,9 +169,11 @@ class MyContent extends Component {
                             id={a.pk_area}
 							index={i}
 							metaid={a.metaid}
+							// selectCard = {this.props.selectCard}
 							moveCard={this.moveCard}
 							deleteCard={this.deleteCard}
 							addMetaInArea={this.addMetaInArea}
+							selectThisCard = {this.selectThisCard}
 						/>
 					);
 				})}
@@ -181,4 +188,10 @@ class MyContent extends Component {
 		);
 	}
 }
-export default connect((state) => ({}), {})(MyContent);
+export default connect((state) => ({
+	areaList: state.zoneSettingData.areaList,
+	// selectCard: state.zoneSettingData.selectCard
+}), {
+	updateAreaList,
+	updateSelectCard
+})(MyContent);

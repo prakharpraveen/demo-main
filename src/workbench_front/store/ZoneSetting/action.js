@@ -7,3 +7,15 @@ export const setZoneData = (data) => {
 		data
 	};
 };
+export const updateSelectCard = (selectCard) => {
+	return {
+		type: zonesetting.UPDATESELECTCARD,
+		selectCard: selectCard
+	};
+};
+export const updateAreaList = (areaList) => {
+	return {
+		type: zonesetting.UPDATEAREALIST,
+		areaList: areaList
+	};
+};

@@ -39,4 +39,6 @@ class MyRightSider extends Component {
 		);
 	}
 }
-export default connect((state) => ({}), {})(MyRightSider);
+export default connect((state) => ({
+	
+}), {})(MyRightSider);

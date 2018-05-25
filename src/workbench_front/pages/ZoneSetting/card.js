@@ -82,17 +82,22 @@ class MyCard extends Component {
 		this.state = {};
 	}
 
-	deleteCard = () => {
+	deleteCard = (e) => {
+		e.stopPropagation();
 		this.props.deleteCard(this.props.index);
 	};
 
+	selectThisCard=()=>{
+		this.props.selectThisCard(this.props.index);
+	}
+
 	render() {
-		const { index, name, id, key, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const { index, name, id, key,selectCard, isDragging, connectDragSource, connectDropTarget } = this.props;
 		const opacity = isDragging ? 0 : 1;
 		return connectDragSource(
 			connectDropTarget(
-				<li className='property-item' key={key} style={{ opacity: opacity }}>
-					<div>
+				<li className='property-item' key={key} style={{ opacity: opacity }} onClick={this.selectThisCard}>
+					<div className={selectCard.pk_query_property=== id ?'select-card':''}>
 						&nbsp;{name}
 						<span className='delete-card' onClick={this.deleteCard}>
 							X
@@ -103,4 +108,6 @@ class MyCard extends Component {
 		);
 	}
 }
-export default connect((state) => ({}), {})(MyCard);
+export default connect((state) => ({
+	selectCard: state.zoneSettingData.selectCard
+}), {})(MyCard);
