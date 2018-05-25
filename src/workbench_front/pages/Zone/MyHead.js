@@ -7,6 +7,8 @@ import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const { Header } = Layout;
+import { Steps } from 'antd';
+const Step = Steps.Step;
 /**
  * 工作桌面 完成步骤 
  */
@@ -19,17 +21,19 @@ class MyHead extends Component {
 			state:'browse'
 		};
 	}
-	// 初始化设置按钮的状态 
-	componentDidMount(){
-		
-	//	this.props.setZoneState('browse');
-	}
-
 
 	render() {
 		return ( 
 		<Header>
-				<div className='step'>
+				<div className='template-setting-steps'>
+					<Steps size='small' current={0}>
+						<Step title='设置页面基本信息' description='完成' />
+						<Step title='配置模板区域' description='进行中' />
+						<Step title='配置完成' description='' />
+					</Steps>
+				</div>
+
+				{/* <div className='step'>
 					<div>
 						第一步
 					</div>
@@ -39,7 +43,7 @@ class MyHead extends Component {
 					<div>
 						第三步
 					</div>
-				</div>			
+				</div>			 */}
 	   </Header>
 			   );
 	     }
