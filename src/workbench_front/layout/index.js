@@ -83,6 +83,9 @@ class Layout extends Component {
 		});
 	};
 	handleSearch = (value) => {
+		if(value === ""){
+			return;
+		}
 		if (!resizeWaiter) {
 			resizeWaiter = true;
 			setTimeout(()=>{
