@@ -39,6 +39,8 @@ class TreeTable extends Component {
 		return (
 			<Table
 				rowKey={this.props.rowKey}
+				pagination={false}
+				size="middle"
 				columns={this.columns}
 				rowSelection={this.props.rowSelection}
 				dataSource={this.props.treeTableData}
