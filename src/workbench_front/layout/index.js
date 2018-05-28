@@ -6,7 +6,7 @@ import { Select, AutoComplete } from 'antd';
 import Drawer from 'react-motion-drawer';
 import PropTypes from 'prop-types';
 import { GetQuery } from 'Pub/js/utils';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { changeDrawer } from 'Store/appStore/action';
 import IntlCom from './../intl';
 import SideDrawer from './SideDrawer';
