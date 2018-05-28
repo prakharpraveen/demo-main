@@ -147,7 +147,7 @@ class MySider extends Component {
 				<div className='sider-search'>
 					<Input
 						placeholder='请输入应用名称'
-						style={{ width: '213px' }}
+						style={{ width: '230px' }}
 						onPressEnter={this.onInputSearch}
 						onChange={this.onInputChange}
 						addonAfter={<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />}
@@ -162,7 +162,7 @@ class MySider extends Component {
 				<div className='sider-search'>
 					<Cascader
 						className='search-cascader'
-						style={{ width: '213px' }}
+						style={{ width: '230px' }}
 						options={this.state.domainArr}
 						onChange={this.onCascaderChange}
 						placeholder='领域-模块'
@@ -296,8 +296,6 @@ class MySider extends Component {
 		return (
 			<Sider
 				className='nc-workbench-home-sider'
-				breakpoint='lg'
-				collapsedWidth='200'
 				width='300'
 				style={{ height: contentHeight }}
 			>

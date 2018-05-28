@@ -116,7 +116,7 @@ class Layout extends Component {
 						}
 					}
 				});
-			}, 300);
+			}, 100);
 		}
 	};
 	getSearchDom = () => {
