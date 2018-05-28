@@ -69,7 +69,7 @@
 		// 		}
 		// 	}
 		// }
-		
+
 		.template-setting-content {
 			flex: 1;
 			.area-item {
@@ -104,8 +104,8 @@
 						border-radius: 4px;
 						display: inline-block;
 						line-height: 32px;
-						.select-card{
-							border-color:red;
+						.select-card {
+							background-color: rgba(0, 153, 255, 0.349019607843137);
 						}
 						div {
 							border: 1px solid #fff;
@@ -128,6 +128,9 @@
 								cursor: pointer;
 							}
 						}
+						.normal-card:hover{
+							background-color: rgba(0, 153, 255, 0.149019607843137)
+						}
 					}
 				}
 			}
@@ -144,8 +147,8 @@
 					width: 50%;
 					display: inline-block;
 					line-height: 44px;
-    /* border-color: rgba(235, 235, 235, 1); */
-    border-bottom: 1px solid rgba(235, 235, 235, 1);
+					/* border-color: rgba(235, 235, 235, 1); */
+					border-bottom: 1px solid rgba(235, 235, 235, 1);
 				}
 			}
 		}
@@ -189,6 +192,15 @@
 		}
 		.sider-tab {
 			text-align: center;
+		}
+	}
+}
+.add-not-meta-data {
+	.ant-modal-body {
+		display: flex;
+		align-items: center;
+		input {
+			width: 300px;
 		}
 	}
 }

@@ -15,6 +15,10 @@ class BasicProperty extends Component {
 	componentDidMount() {}
 	changeValue = (e, propertyKey)=>{
 		let {selectCard} = this.props;
+		if(_.isEmpty(selectCard)){
+			console.log("empty");
+			return;
+		}
 		console.log(e.target.value, propertyKey)
 		selectCard = {...selectCard}
 		selectCard[propertyKey] = e.target.value
@@ -22,6 +26,10 @@ class BasicProperty extends Component {
 	}
 	updateCardInArea = (e, propertyKey)=>{
 		let {areaList, selectCard} = this.props;
+		if(_.isEmpty(selectCard)){
+			console.log("empty");
+			return;
+		}
 		let targetAreaIndex = 0;
 		let targetCardIndex = 0;
 		areaList = _.cloneDeep(areaList);
@@ -37,22 +45,12 @@ class BasicProperty extends Component {
 		areaList[targetAreaIndex].queryPropertyList[targetCardIndex][propertyKey] = selectCard[propertyKey]
 		this.props.updateAreaList(areaList);
 	}
-	getMyInput(placeholder, property){
-		return (
-			<Input placeholder={placeholder} 
-				value={this.props.selectCard[property]} 
-				onChange={(e)=>{this.changeValue(e,property)}}
-				onBlur = {(e)=>{this.updateCardInArea(e,property)}}
-				/>
-		)
-	}
-	getMyCheckbox=(property)=>{
-		return (
-			<Checkbox checked={Boolean(Number(this.props.selectCard[property])) } onChange={(e)=>{this.changeCheckboxValue(e,property)}} />
-		)
-	}
 	changeCheckboxValue=(e,property)=>{
 		let {selectCard} = this.props;
+		if(_.isEmpty(selectCard)){
+			console.log("empty");
+			return;
+		}
 		selectCard = {...selectCard};
 		let targetValue = -1;
 		if(e.target.checked){
@@ -64,6 +62,25 @@ class BasicProperty extends Component {
 		this.asyncUpdateSelectCard(selectCard).then(()=>{
 			this.updateCardInArea(e,property)
 		});
+	}
+	onPressEnter = (e,property)=>{
+		this[`${property}input`].blur();
+	}
+	getMyInput(placeholder, property){
+		return (
+			<Input placeholder={placeholder} 
+				value={this.props.selectCard[property]} 
+				onChange={(e)=>{this.changeValue(e,property)}}
+				onBlur = {(e)=>{this.updateCardInArea(e,property)}}
+				ref={(input) =>  this[`${property}input`] = input}
+				onPressEnter={(e)=>{this.onPressEnter(e,property)}}
+				/>
+		)
+	}
+	getMyCheckbox=(property)=>{
+		return (
+			<Checkbox checked={Boolean(Number(this.props.selectCard[property])) } onChange={(e)=>{this.changeCheckboxValue(e,property)}} />
+		)
 	}
 	async asyncUpdateSelectCard (selectCard){
 		let user = await this.props.updateSelectCard(selectCard);

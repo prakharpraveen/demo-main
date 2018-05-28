@@ -10,6 +10,7 @@ import Ajax from 'Pub/js/ajax';
 import './index.less';
 import MyCard from './card';
 import BatchSettingModal from './batchSettingModal';
+import AddNotMetaDataModal from './addNotMetaDataModal';
 /**
  * 工作桌面 配置模板区域
  */
@@ -17,7 +18,8 @@ class AreaItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			batchSettingModalVisibel : false
+			batchSettingModalVisibel : false,
+			addDataModalVisibel:false
 		};
     }
     
@@ -39,6 +41,12 @@ class AreaItem extends Component {
 	setModalVisibel = (visibel)=>{
 		this.setState({batchSettingModalVisibel:visibel})
 	}
+	openAddNotMetaInArea = ()=>{
+		this.setAddDataModalVisibel(true);
+	}
+	setAddDataModalVisibel = (visibel)=>{
+		this.setState({addDataModalVisibel:visibel})
+	}
 	render() {
         console.log("areaItem")
         const {areaItem, selectCard} = this.props;
@@ -51,7 +59,7 @@ class AreaItem extends Component {
                         </span>
 						<span className='area-item-button'>
 							<Button onClick={this.addMetaInArea}>新增元数据</Button>
-							<Button>新增非元数据</Button>
+							<Button onClick={this.openAddNotMetaInArea}>新增非元数据</Button>
 							<Button onClick={this.openBatchSetting}>批量设置</Button>
 						</span>
 					</div>
@@ -74,6 +82,10 @@ class AreaItem extends Component {
 					areaIndex = { this.props.index}
 					setModalVisibel = {this.setModalVisibel}
 					/>
+					<AddNotMetaDataModal 
+					addDataModalVisibel= {this.state.addDataModalVisibel}
+					areaIndex = { this.props.index}
+					setAddDataModalVisibel = {this.setAddDataModalVisibel} />
 		    </div>
         )
 	}
