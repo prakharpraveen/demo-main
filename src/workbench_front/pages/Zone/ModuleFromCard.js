@@ -66,9 +66,9 @@ ModuleFromCard.PropTypes = {
 };
 export default connect(
 	(state) => {
-		let { zoneArr} = state.zoneSettingData.zoneArray;
+	//	let { zoneArr} = state.zoneSettingData.zoneArray;
 		let { zoneDatas, zoneFormData } = state.zoneRegisterData;
-		return { zoneArr, zoneDatas, zoneFormData };
+		return { zoneDatas, zoneFormData };
 	},
 	{
 		setZoneDataFun
