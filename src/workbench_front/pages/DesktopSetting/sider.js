@@ -296,7 +296,7 @@ class MySider extends Component {
 		return (
 			<Sider
 				className='nc-workbench-home-sider'
-				width='300'
+				width= {300}
 				style={{ height: contentHeight }}
 			>
 				<div className='sider-content'>
