@@ -97,7 +97,7 @@ class MyCard extends Component {
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' key={key} style={{ opacity: opacity }} onClick={this.selectThisCard}>
-					<div className={selectCard.pk_query_property=== id ?'select-card':''}>
+					<div className={selectCard.pk_query_property=== id ?'select-card':'normal-card'}>
 						&nbsp;{name}
 						<span className='delete-card' onClick={this.deleteCard}>
 							X
