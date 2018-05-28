@@ -1,6 +1,9 @@
 import React,{Component} from 'react';
 import { Button,Table,Switch,Icon,Popconfirm  } from 'antd';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {updateMenuItemData} from 'Store/MenuRegister/action';
 import Ajax from 'Pub/js/ajax';
 import {PageLayout} from 'Components/PageLayout';
 import Notice from 'Components/Notice';
@@ -74,7 +77,8 @@ class MenuRegister extends Component{
     handleListClick=(key,record)=>{
         switch (key) {
             case 'edit':
-                this.props.history.push('/mi?n=菜单注册&c=102202MENU')
+                this.props.updateMenuItemData(record);
+                this.props.history.push(`/mi?n=菜单注册&c=102202MENU`)
                 break;
             case 'del':
                 if(record.isdefault){
@@ -212,4 +216,7 @@ class MenuRegister extends Component{
         );
     }
 }
-export default withRouter(MenuRegister);
+MenuRegister.propTypes = {
+	updateMenuItemData: PropTypes.func.isRequired,
+};
+export default withRouter(connect((state)=>{return {}},{updateMenuItemData})(MenuRegister));

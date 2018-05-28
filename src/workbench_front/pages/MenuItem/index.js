@@ -1,41 +1,44 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import { Button, Table, Switch, Icon, Popconfirm } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import TreeTable from './TreeTable';
 import Ajax from 'Pub/js/ajax.js';
 import { createTree } from 'Pub/js/createTree.js';
-import TreeData from './data.json';
 import './index.less';
-console.log(TreeData);
 
 class MenuItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			treeDataArray: [],
+			menuItemData:{},
 			treeTableData: []
 		};
 	}
 	componentDidMount = () => {
-		let treeTableData = createTree(TreeData.data, 'menuitemcode', 'parentcode');
-		console.log(treeTableData);
-		this.setState({ treeTableData });
-		// Ajax({
-		// 	url: `/nccloud/platform/appregister/queryappmenus.do`,
-		// 	info: {
-		// 		name: '菜单注册',
-		// 		action: '应用树查询'
-		// 	},
-		// 	data: '',
-		// 	success: (res) => {
-		// 		let { success, data } = res.data;
-		// 		if (success && data) {
-		// 			let treeTableData = createTree(data);
-		// 			this.setState({ treeTableData });
-		// 		}
-		// 	}
-		// });
+		Ajax({
+			url: `/nccloud/platform/appregister/queryappmenus.do`,
+			info: {
+				name: '菜单注册',
+				action: '应用树查询'
+			},
+			data: {
+				pk_menu:this.props.menuItemData.pk_menu
+			},
+			success: (res) => {
+				let { success, data } = res.data;
+				if (success && data) {
+					this.setState({ treeDataArray: data},()=>{this.updateTreeData(data)});
+				}
+			}
+		});
 	};
-
+	updateTreeData = (data)=>{
+		let treeTableData = createTree(data, 'menuitemcode', 'parentcode');
+		this.setState({ treeTableData });
+	}
 	render() {
 		let { treeTableData } = this.state;
 		return (
@@ -54,4 +57,11 @@ class MenuItem extends Component {
 		);
 	}
 }
-export default MenuItem;
+MenuItem.propTypes = {
+	menuItemData: PropTypes.object.isRequired,
+};
+export default connect((state)=>{
+	return {
+		menuItemData:state.menuRegisterData.menuItemData
+	}
+},{})(MenuItem);
