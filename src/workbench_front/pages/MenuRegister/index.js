@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {updateMenuItemData} from 'Store/MenuRegister/action';
+import EditableTable from './EditableTable';
+import EditableCell from 'Components/EditableCell';
 import Ajax from 'Pub/js/ajax';
 import {PageLayout} from 'Components/PageLayout';
 import Notice from 'Components/Notice';
@@ -12,73 +14,150 @@ class MenuRegister extends Component{
     constructor(props) {
         super(props);
         this.state={
+            isedit:false,
             listData:[]
         },
-        this.columns = [{
+        this.columns = [
+            {
             title: '序号',
             dataIndex: 'num',
             key: 'num',
-        }, {
-            title: '菜单编码',
-            dataIndex: 'menucode',
-            key: 'menucode',
-        }, {
-            title: '菜单名称',
-            dataIndex: 'menuname',
-            key: 'menuname',
-        }, {
-            title: '菜单描述',
-            dataIndex: 'menudesc',
-            key: 'menudesc',
-        }, {
-            title: '是否启用',
-            dataIndex: 'isenable',
-            key: 'isenable',
-            render:(text, record)=>(
-                <Switch onChange={(checked)=>{this.handleChange(checked,record)}} checkedChildren={<Icon type="check" />} unCheckedChildren={<Icon type="cross" />} checked={text} />
-            )
-        }, {
-            title: '是否系统内置',
-            dataIndex: 'isdefault',
-            key: 'isdefault',
-            render:(text, record)=>(
-                <Switch disabled checkedChildren={<Icon type="check" />} unCheckedChildren={<Icon type="cross" />} checked={text} />
-            )
-        }, {
-            title: '创建人',
-            dataIndex: 'creator',
-            key: 'creator',
-        }, {
-            title: '创建时间',
-            dataIndex: 'creationtime',
-            key: 'creationtime',
-        }, {
-            title: '最后修改人',
-            dataIndex: 'modifier',
-            key: 'modifier',
-        }, {
-            title: '最后修改时间',
-            dataIndex: 'modifiedtime',
-            key: 'modifiedtime',
-        }, {
-            title: '操作',
-            key: 'action',
-            render: (text, record) => (
-                <div className='menugister-list-action'>
-                    <span onClick={()=>{this.handleListClick('edit',record)}}>修改</span>
-                    <Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={()=>{this.handleListClick('del',record)}}>
-                        <span>删除</span>
-					</Popconfirm>
-                    <span onClick={()=>{this.handleListClick('copy',record)}}>复制</span>
-                </div>
-            ),
-        }];
+            }, {
+                title: '菜单编码',
+                dataIndex: 'menucode',
+                key: 'menucode',
+                render:(text, record)=>{
+                    if(this.state.isedit){
+                        return <EditableCell 
+                            value = {text}
+                            onChange = {this.onCellChange(record.menucode, 'menucode')}
+                        />
+                    }else{
+                        return <div>{text}</div>
+                    }
+                }
+            }, {
+                title: '菜单名称',
+                dataIndex: 'menuname',
+                key: 'menuname',
+                render:(text, record)=>{
+                    if(this.state.isedit){
+                        return <EditableCell 
+                            value = {text}
+                            onChange = {this.onCellChange(record.menucode, 'menuname')}
+                        />
+                    }else{
+                        return <div>{text}</div>
+                    }
+                }
+            }, {
+                title: '菜单描述',
+                dataIndex: 'menudesc',
+                key: 'menudesc',
+                render:(text, record)=>{
+                    if(this.state.isedit){
+                        return <EditableCell 
+                            value = {text}
+                            onChange = {this.onCellChange(record.menucode, 'menudesc')}
+                        />
+                    }else{
+                        return <div>{text}</div>
+                    }
+                }
+            }, {
+                title: '是否启用',
+                dataIndex: 'isenable',
+                key: 'isenable',
+                render:(text, record)=>(
+                    <Switch disabled={this.state.isedit} onChange={(checked)=>{this.handleChange(checked,record)}} checkedChildren={<Icon type="check" />} unCheckedChildren={<Icon type="cross" />} checked={text} />
+                )
+            }, {
+                title: '是否系统内置',
+                dataIndex: 'isdefault',
+                key: 'isdefault',
+                render:(text, record)=>(
+                    <Switch disabled checkedChildren={<Icon type="check" />} unCheckedChildren={<Icon type="cross" />} checked={text} />
+                )
+            }, {
+                title: '创建人',
+                dataIndex: 'creator',
+                key: 'creator',
+            }, {
+                title: '创建时间',
+                dataIndex: 'creationtime',
+                key: 'creationtime',
+            }, {
+                title: '最后修改人',
+                dataIndex: 'modifier',
+                key: 'modifier',
+            }, {
+                title: '最后修改时间',
+                dataIndex: 'modifiedtime',
+                key: 'modifiedtime',
+            }, {
+                title: '操作',
+                key: 'action',
+                render: (text, record) => (
+                    <div className='menugister-list-action'>
+                        <span onClick={()=>{this.handleListClick('edit',record)}}>修改</span>
+                        <Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={()=>{this.handleListClick('del',record)}}>
+                            <span>删除</span>
+                        </Popconfirm>
+                        <span onClick={()=>{this.handleListClick('copy',record)}}>复制</span>
+                        {
+                            this.state.isedit?'':<span onClick={()=>{this.handleListClick('menuitem',record)}}>菜单项</span>
+                        }
+                    </div>
+                ),
+            }
+        ];
+        this.btnList = [
+            {
+                name:'新增',
+                code:'add',
+                type:'primary',
+                isedit:true
+            },
+            {
+                name:'修改',
+                code:'edit',
+                type:'primary',
+                isedit:false
+            },
+            {
+                name:'取消',
+                code:'cancle',
+                type:'',
+                isedit:true
+            }
+        ]
     }
+    /**
+     * 单元格编辑事件
+     */
+    onCellChange = (key, dataIndex) => {
+        return (value) => {
+            const listData = [...this.state.listData];
+            const target = listData.find(item => item.key === key);
+            if (target) {
+                target[dataIndex] = value;
+                this.setState({
+                    listData
+                });
+            }
+        };
+    }
+    /**
+     * 列表行操作事件
+     */
     handleListClick=(key,record)=>{
         switch (key) {
-            case 'edit':
+            case 'menuitem':
                 this.props.updateMenuItemData(record);
                 this.props.history.push(`/mi?n=菜单注册&c=102202MENU`)
+                break;
+            case 'edit':
+                
                 break;
             case 'del':
                 if(record.isdefault){
@@ -173,6 +252,42 @@ class MenuRegister extends Component{
             }
         });
     }
+    handleAdd = () => {
+        const {
+            count,
+            listData
+        } = this.state;
+        const newData = {
+            "menucode": "",
+            "menuname": "",
+            "menudesc": "",
+            "isenable": false,
+            "isdefault": false,
+            "creationtime": "",
+            "modifiedtime": ""
+        };
+        this.setState({
+            listData: [...listData, newData],
+            count: count + 1,
+        });
+    }
+    creatBtn = ()=>{
+        return this.btnList.map((item,index)=>{
+            if(this.state.isedit){
+                if(item.isedit){
+                    return <Button key={item.code} type='primary' onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
+                }else{
+                    return null;
+                }   
+            }else{
+                if(item.isedit){
+                    return null;
+                }else{
+                    return <Button key={item.code} type='primary' onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
+                }  
+            }
+        });
+    }
     componentDidMount() {
         Ajax({
             url:`/nccloud/platform/appregister/queryappmenus.do`,
@@ -183,6 +298,8 @@ class MenuRegister extends Component{
             success:(res)=>{
                 let {data,success} = res.data;
                 if(success){
+                    console.log(data);
+                    
                     this.setState({listData:data});
                 }
             }
@@ -196,13 +313,13 @@ class MenuRegister extends Component{
                 <div className='menuregister-list'>
                     <div className='menugister-list-title'>
                         菜单注册
+                        <div>
+                            {this.creatBtn()}
+                        </div>
                     </div>
                     <div className='menugister-list-table'>
-                        <Table 
-                            bordered
-                            pagination={false} 
-                            rowKey={'pk_menu'} 
-                            size="middle" 
+                        <EditableTable 
+                            rowKey={'pk_menu'}  
                             columns={this.columns} 
                             dataSource={
                                 listData.map((item,index)=>{
