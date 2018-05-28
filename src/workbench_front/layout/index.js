@@ -157,8 +157,8 @@ class Layout extends Component {
 							>
 								<img field="logo" fieldname="标识" src='http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg' alt='logo' />
 							</div>
-							<div field="ant-select" fieldname="下拉框">
-								<Select defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
+							<div field="group-switch" fieldname="集团切换">
+								<Select dropdownClassName='field_group-switch' defaultValue='yonyou' style={{ width: 234 }} onChange={this.handleChange}>
 									<Option value='yonyou'>用友网络科技股份有限公司</Option>
 									<Option value='yyjr'>用友（yonyou）</Option>
 								</Select>

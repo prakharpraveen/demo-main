@@ -274,9 +274,11 @@ class PageTable extends Component {
 									<a className='margin-right-5' onClick={() => this.jumpPage(record)}>
 										设置页面模板
 									</a>
-									<a className='margin-right-5' onClick={() => this.setDefault(record)}>
-										设置默认模板
-									</a>
+									{
+										record.isdefault?null:<a className='margin-right-5' onClick={() => this.setDefault(record)}>
+										设置为默认模板
+										</a>
+									}
 								</span>
 							)}
 						</div>
@@ -298,8 +300,34 @@ class PageTable extends Component {
 		win.focus();
 	}
 	setDefault = (record) =>{
-		record.isdefault = true;
-		console.log(record);
+		
+		Ajax({
+			url:`/nccloud/platform/templet/setdefaulttemplet.do`,
+			info:{
+				name:'应用注册',
+				action:'设置默认模板'
+			},
+			data:{
+				pageid:record.pageid,
+				templetid:record.pk_page_templet
+			},
+			success:(res)=>{
+				let { success, data } = res.data;
+				if(success&&data){
+					let newPageTemplets = this.props.pageTemplets.map((item,index)=>{
+						item.isdefault = false;
+						if (item.pk_page_templet === record.pk_page_templet) {
+							item.isdefault = true;
+						}
+						return item;
+					});
+					this.props.setPageTemplateData(newPageTemplets);
+					Notice({ status: 'success', msg: data });
+				}else{
+					Notice({ status: 'error', msg: data.data.true });
+				}
+			}
+		});
 	}
 	moveRow = (dragIndex, hoverIndex) => {
 		let appButtonVOs = this.props.appButtonVOs;
