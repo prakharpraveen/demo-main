@@ -165,30 +165,41 @@ class templateSetting extends Component {
 			);
 		}
 	};
-	componentDidMount = () => {
-		Ajax({
-			url: `/nccloud/platform/appregister/queryappmenus.do`,
-			info: {
-				name: '菜单注册',
-				action: '应用树查询'
-			},
-			data: {
-				pk_menu:this.props.menuItemData.pk_menu
-			},
-			success: (res) => {
-				let { success, data } = res.data;
-				if (success && data) {
-					this.setState({ treeDataArray: data},()=>{this.updateTreeData(data)});
+	handleClick = (btnName) => {
+		let url, Obj;
+		switch (btnName) {
+			case '增加模块':
+				this.actionType = 1;
+				this.nodeData = this.props.nodeData;
+				if (!this.props.parentData) {
+					this.props.setParentData(this.nodeData.moduleid);
 				}
+				this.optype = this.props.optype;
+				let moduleData = {
+					systypecode: '',
+					moduleid: '',
+					systypename: '',
+					orgtypecode: undefined,
+					appscope: undefined,
+					isaccount: false,
+					supportcloseaccbook: false,
+					resid: '',
+					dr: 0
+				};
+				this.props.setNodeData(moduleData);
+				this.props.setOpType('module');
+				this.props.setBillStatus({
+					isEdit: true,
+					isNew: true
+				});
+				break;
+			default:
+				break;
 			}
-		});
+		}
+	componentDidMount = () => {
 	};
-	updateTreeData = (data)=>{
-		let treeTableData = createTree(data, 'menuitemcode', 'parentcode');
-		this.setState({ treeTableData });
-	}
 	render() {
-		let { treeTableData } = this.state;
 		return (
 			<PageLayout className="nc-workbench-templateSetting">
 					<Layout height={'100%'}>
@@ -217,52 +228,39 @@ class templateSetting extends Component {
 		);
 	}
 }
-
 templateSetting.propTypes = {
-	menuItemData: PropTypes.object.isRequired,
+	optype: PropTypes.string.isRequired,
+	billStatus: PropTypes.object.isRequired,
+	setBillStatus: PropTypes.func.isRequired,
+	parentData: PropTypes.string.isRequired,
+	setOpType: PropTypes.func.isRequired,
+	nodeData: PropTypes.object.isRequired,
+	setPageButtonData: PropTypes.func.isRequired,
+	setPageTemplateData: PropTypes.func.isRequired,
+	addTreeData: PropTypes.func.isRequired,
+	delTreeData: PropTypes.func.isRequired,
+	updateTreeData: PropTypes.func.isRequired,
+	setParentData: PropTypes.func.isRequired,
+	reqTreeData: PropTypes.func.isRequired
 };
-export default connect((state)=>{
-	return {
-		menuItemData:state.menuRegisterData.menuItemData
+export default connect(
+	(state) => ({
+		optype: state.AppRegisterData.optype,
+		billStatus: state.AppRegisterData.billStatus,
+		parentData: state.AppRegisterData.parentData,
+		nodeData: state.AppRegisterData.nodeData,
+		addTreeData: state.AppRegisterData.addTreeData,
+		delTreeData: state.AppRegisterData.delTreeData,
+		updateTreeData: state.AppRegisterData.updateTreeData,
+		reqTreeData: state.AppRegisterData.reqTreeData
+	}),
+	{
+		setNodeData,
+		setBillStatus,
+		setOpType,
+		setAppParamData,
+		setPageButtonData,
+		setPageTemplateData,
+		setParentData
 	}
-},{})(templateSetting);
-
-// templateSetting.propTypes = {
-// 	optype: PropTypes.string.isRequired,
-// 	billStatus: PropTypes.object.isRequired,
-// 	setBillStatus: PropTypes.func.isRequired,
-// 	parentData: PropTypes.string.isRequired,
-// 	setOpType: PropTypes.func.isRequired,
-// 	nodeData: PropTypes.object.isRequired,
-// 	setAppParamData: PropTypes.func.isRequired,
-// 	setPageButtonData: PropTypes.func.isRequired,
-// 	setPageTemplateData: PropTypes.func.isRequired,
-// 	getFromData: PropTypes.func.isRequired,
-// 	addTreeData: PropTypes.func.isRequired,
-// 	delTreeData: PropTypes.func.isRequired,
-// 	updateTreeData: PropTypes.func.isRequired,
-// 	setParentData: PropTypes.func.isRequired,
-// 	reqTreeData: PropTypes.func.isRequired
-// };
-// export default connect(
-// 	(state) => ({
-// 		optype: state.AppRegisterData.optype,
-// 		billStatus: state.AppRegisterData.billStatus,
-// 		parentData: state.AppRegisterData.parentData,
-// 		nodeData: state.AppRegisterData.nodeData,
-// 		getFromData: state.AppRegisterData.getFromData,
-// 		addTreeData: state.AppRegisterData.addTreeData,
-// 		delTreeData: state.AppRegisterData.delTreeData,
-// 		updateTreeData: state.AppRegisterData.updateTreeData,
-// 		reqTreeData: state.AppRegisterData.reqTreeData
-// 	}),
-// 	{
-// 		setNodeData,
-// 		setBillStatus,
-// 		setOpType,
-// 		setAppParamData,
-// 		setPageButtonData,
-// 		setPageTemplateData,
-// 		setParentData
-// 	}
-// )(templateSetting);
+)(templateSetting);
