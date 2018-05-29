@@ -20,7 +20,7 @@ class MyContent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			modalVisible: true,
+			modalVisible: false,
 			metaTree: [],
 			targetAreaID: '',
 		};
@@ -40,31 +40,6 @@ class MyContent extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
-						console.log(data);
-						data[0].queryPropertyList.push({
-							pk_query_property: '1009Z0100000000XXXX2',
-							areaid: '1009Z0100000000WWWX8',
-							label: '用户233',
-							metapath: 'user_name',
-							maxlength: '20',
-							opersign: 'like',
-							dr: '0',
-							code: 'user_name',
-							status: '0',
-							m_isDirty: false
-						});
-						data[0].queryPropertyList.push({
-							pk_query_property: '1009Z0100000000XXXX4',
-							areaid: '1009Z0100000000WWWX8',
-							label: '用户666',
-							metapath: 'user_name',
-							maxlength: '20',
-							opersign: 'like',
-							dr: '0',
-							code: 'user_name',
-							status: '0',
-							m_isDirty: false
-						});
 						this.props.updateAreaList(data)
 					}
 				}
@@ -73,7 +48,7 @@ class MyContent extends Component {
 	}
 	addMetaInArea = (metaid, targetAreaID) => {
 		Ajax({
-			url: `/nccloud/platform/templet/querymetaproperty.do`,
+			url: `/nccloud/platform/templet/querymetapro.do`,
 			info: {
 				name: '单据模板设置',
 				action: '元数据树结构查询'
@@ -87,15 +62,16 @@ class MyContent extends Component {
 					let { data, success } = res.data;
 					if (success && data && data.rows && data.rows.length > 0) {
 						let metaTree = [];
-						data.rows.map((r) => {
+						data.rows.map((r,index) => {
 							metaTree.push({
 								...r,
 								title: r.refname,
-								key: r.refpk,
-								isShow: true
+								key: `${r.refcode}`,
+								myUniqID: `${r.refcode}`,
+								isLeaf:r.isleaf
 							});
 						});
-						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID });
+						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID});
 						this.setModalVisible(true);
 					}
 				}
@@ -103,22 +79,26 @@ class MyContent extends Component {
 		});
 	};
 
-	updateAreaList = (areaList) => {
-		this.props.updateAreaList(areaList)
-	};
+	updateMetaTreeData = (metaTree)=>{
+		this.setState({metaTree:metaTree});
+	}
 
 	addCard = (addCardList) => {
 		let {targetAreaID } = this.state;
 		let {areaList} = this.props;
         areaList = _.cloneDeep(areaList);
-        let targetArea = {};
-        _.forEach(areaList ,(a)=>{
+        let targetAreaIndex = -1;
+        _.forEach(areaList ,(a,i)=>{
             if(targetAreaID === a.pk_area){
-                targetArea = a;
+                targetAreaIndex = i;
                 return false;
             }
         })
-        targetArea.queryPropertyList.connect(addCardList);
+		areaList[targetAreaIndex].queryPropertyList = _.uniqBy(areaList[targetAreaIndex].queryPropertyList.concat(addCardList),'pk_query_property');
+
+		_.forEach(areaList[targetAreaIndex].queryPropertyList,(q,i)=>{
+			q.position = i+1;
+		});
         this.props.updateAreaList(areaList)
     };
 
@@ -130,6 +110,9 @@ class MyContent extends Component {
 		const dragCard = cards[dragIndex];
 		cards.splice(dragIndex, 1);
 		cards.splice(hoverIndex, 0, dragCard);
+		_.forEach(cards,(q,i)=>{
+			q.position = i+1;
+		});
 		this.props.updateAreaList(areaList)
 		this.props.updateSelectCard({})
 	};
@@ -181,8 +164,11 @@ class MyContent extends Component {
 				<TreeModal
                     metaTree={this.state.metaTree}
 					modalVisible={this.state.modalVisible}
+					targetAreaID = {this.state.targetAreaID}
+					targetAreaCardLength = {this.state.targetAreaCardLength}
 					setModalVisible={this.setModalVisible}
-                    addCard = {this.addCard}
+					addCard = {this.addCard}
+					updateMetaTreeData = {this.updateMetaTreeData}
 				/>
 			</div>
 		);

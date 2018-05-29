@@ -48,11 +48,11 @@ class ModuleFromCard extends Component {
 					required: false,
 					options: [
 						{
-							value: 0,
+							value: '0',
 							text: '全局'
 						},
 						{
-							value: 1,
+							value: '1',
 							text: '集团'
 						}
 					]

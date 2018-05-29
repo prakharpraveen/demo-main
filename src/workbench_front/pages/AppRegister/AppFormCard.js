@@ -76,19 +76,19 @@ class AppFromCard extends Component {
 					required: true,
 					options: [
 						{
-							value: 0,
+							value: '0',
 							text: '业务类应用'
 						},
 						{
-							value: 1,
+							value: '1',
 							text: '管理类应用'
 						},
 						{
-							value: 2,
+							value: '2',
 							text: '系统类应用'
 						},
 						{
-							value: 3,
+							value: '3',
 							text: '管理+业务类应用'
 						}
 					]
@@ -100,11 +100,11 @@ class AppFromCard extends Component {
 					required: true,
 					options: [
 						{
-							value: 1,
+							value: '1',
 							text: '小应用'
 						},
 						{
-							value: 2,
+							value: '2',
 							text: '小部件'
 						}
 					]
