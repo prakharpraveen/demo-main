@@ -74,7 +74,7 @@ class EditableCheck extends React.Component {
 }
 
 // 可编辑的表格 
-class BatchTable extends React.Component {
+class BatchSearchTable extends React.Component {
 	constructor(props) {
 		super(props);
 		let {areaList, areaIndex}  = this.props;
@@ -452,7 +452,7 @@ class BatchTable extends React.Component {
 	}
 }
 
-BatchTable.propTypes = {
+BatchSearchTable.propTypes = {
 //	zoneDatas: PropTypes.object.isRequired,
 };
 
@@ -460,4 +460,4 @@ export default connect((state) => ({
     areaList: state.zoneSettingData.areaList,
 }), {
    // updateAreaList,
-})(BatchTable);
+	})(BatchSearchTable);

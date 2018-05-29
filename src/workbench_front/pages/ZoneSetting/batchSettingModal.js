@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { Input, Icon, Modal, Button } from 'antd';
 import * as utilService from './utilService';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
-import BatchTable from './BatchTable';
+import BatchSearchTable from './batchSearchTable';
+import BatchNoSearchTable from './batchNoSearchTable';
 
 class BatchSettingModal extends Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class BatchSettingModal extends Component {
 		<div className='myZoneModal'>
 			<Modal
 				title='批量设置-卡片区'
-			//	mask={false}
+				mask={false}
 				wrapClassName='myModal'
 				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
@@ -55,7 +56,9 @@ class BatchSettingModal extends Component {
 					</Button>
 				]}
 			>
-            <BatchTable   areaIndex ={areaIndex} setNewList = {this.saveState}/>
+					{(newSource && newSource.areatype === '0') ? (<BatchSearchTable areaIndex={areaIndex} setNewList={this.saveState} />):
+					(<BatchNoSearchTable areaIndex={areaIndex} setNewList={this.saveState} />)}
+			
 			</Modal>
 		</div>	
 		);
