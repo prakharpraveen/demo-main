@@ -21,34 +21,27 @@ const confirm = Modal.confirm;
 import './index.less';
 const Btns = [
 	{
-		name: '增加模块',
+		name: '新增',
 		type: 'primary'
 	},
 	{
-		name: '增加应用分类',
+		name: '修改',
 		type: 'primary'
-	},
-	{
-		name: '增加应用',
-		type: 'primary'
-	},
-	{
-		name: '增加页面',
-		type: 'primary'
-	},
-	{
-		name: '保存',
-		type: 'primary'
-	},
-	{
-		name: '取消'
 	},
 	{
 		name: '删除',
 		type: 'primary'
 	},
 	{
-		name: '修改',
+		name: '复制',
+		type: 'primary'
+	},
+	{
+		name: '分配',
+		type: 'primary'
+	},
+	{
+		name: '设置默认模板',
 		type: 'primary'
 	}
 ];
@@ -69,85 +62,23 @@ class templateSetting extends Component {
 		let { isEdit, isNew } = billStatus;
 		let isShow = false;
 		switch (name) {
-			case '增加模块':
-				if (isEdit) {
-					isShow = false;
-				} else {
-					if (optype === '' || (optype === 'module' && !parentData)) {
-						isShow = true;
-					} else {
-						isShow = false;
-					}
-				}
-				break;
-			case '增加应用分类':
-				if (isEdit) {
-					isShow = false;
-				} else {
-					if (optype === 'module' && parentData && parentData.length === 2) {
-						isShow = true;
-					} else {
-						isShow = false;
-					}
-				}
-				break;
-			case '增加应用':
-				if (isEdit) {
-					isShow = false;
-				} else {
-					if (optype === 'classify') {
-						isShow = true;
-					} else {
-						isShow = false;
-					}
-				}
-				break;
-			case '增加页面':
-				if (isEdit) {
-					isShow = false;
-				} else {
-					if (optype === 'app') {
-						isShow = true;
-					} else {
-						isShow = false;
-					}
-				}
-				break;
-			case '保存':
-				if (isEdit) {
+			case '新增':
 					isShow = true;
-				} else {
-					isShow = false;
-				}
-				break;
-			case '取消':
-				if (isEdit) {
-					isShow = true;
-				} else {
-					isShow = false;
-				}
-				break;
-			case '删除':
-				if (isNew) {
-					isShow = false;
-				} else {
-					if (optype === '') {
-						isShow = false;
-					} else {
-						isShow = true;
-					}
-				}
 				break;
 			case '修改':
-				if (isNew || isEdit) {
-					isShow = false;
-				} else {
-					if (optype === '') {
-						isShow = false;
-					} else {
-						isShow = true;
-					}
-				}
+					isShow = true;
+				break;
+			case '删除':
+					isShow = true;
+				break;
+			case '复制':
+					isShow = true;
+				break;
+			case '分配':
+				isShow = false;
+				break;
+			case '设置默认模板':
+				isShow = true;
 				break;
 			default:
 				break;
@@ -198,20 +129,26 @@ class templateSetting extends Component {
 			}
 		}
 	componentDidMount = () => {
+		// 样式处理
+		window.onresize = () => {
+			let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
+			this.setState({ siderHeight });
+		};
 	};
 	render() {
 		return (
 			<PageLayout className="nc-workbench-templateSetting">
-					<Layout height={'100%'}>
+				<Layout>
 					<Header>
-						{/* {Btns.map((item, index) => {
+						{Btns.map((item, index) => {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
-						})} */}
+						})}
 					</Header>
+					<Layout height={'100%'}>
 						<Sider
 							width={280}
-							height={'100%'}
+							height={'auto'}
 							style={{
 								background: '#fff',
 								width: '500px',
@@ -223,7 +160,9 @@ class templateSetting extends Component {
 						>
 							<SearchTree />
 						</Sider>
+						<Content style={{ padding: '20px', minHeight: 280 }}></Content>
 					</Layout>
+				</Layout>
 			</PageLayout>
 		);
 	}
