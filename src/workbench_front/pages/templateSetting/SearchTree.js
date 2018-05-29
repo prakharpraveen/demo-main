@@ -192,6 +192,8 @@ class SearchTree extends Component {
 		});
 	};
 	onSelect = (key, e) => {
+		console.log(key);
+		console.log(e);
 		let {
 			selectedKeys
 		} = this.state;
