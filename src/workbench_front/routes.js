@@ -63,6 +63,10 @@ const MenuItem = Loadable({
 	loader: () => import('Pages/MenuItem'),
 	loading: Loading
 });
+const TemplateSetting = Loadable({
+	loader: () => import('Pages/templateSetting'),
+	loading: Loading
+});
 const routes = [
 	{
 		path: '/',
@@ -122,6 +126,10 @@ const routes = [
 		path: '/mi',
 		component: MenuItem
 	},
+	{
+		path :'/templateSetting',
+		component : TemplateSetting
+	}
 ];
 const RouteWithSubRoutes = (route) => (
 	<Route
