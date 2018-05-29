@@ -37,6 +37,7 @@ class PageLayout extends Component {
 	render() {
 		return (
 			<div className="nc-workbench-page">
+				{this.props.header?this.props.header:null}
 				<div
 					onMouseMove={this.handleMouseMove}
 					onMouseUp={this.handleMouseUp}

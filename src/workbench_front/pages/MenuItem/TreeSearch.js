@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Tree, Input} from "antd";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-class TreeCom extends Component {
+class TreeSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -76,4 +76,4 @@ class TreeCom extends Component {
         );
     }
 }
-export default TreeCom;
+export default TreeSearch;
