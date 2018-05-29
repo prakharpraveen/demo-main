@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {updateMenuItemData} from 'Store/MenuRegister/action';
-import EditableTable from './EditableTable';
 import EditableCell from 'Components/EditableCell';
 import Ajax from 'Pub/js/ajax';
 import {PageLayout} from 'Components/PageLayout';
@@ -99,11 +98,10 @@ class MenuRegister extends Component{
                 key: 'action',
                 render: (text, record) => (
                     <div className='menugister-list-action'>
-                        <span onClick={()=>{this.handleListClick('edit',record)}}>修改</span>
+                        <span onClick={()=>{this.handleListClick('copy',record)}}>复制</span>
                         <Popconfirm title='确定删除?' cancelText={'取消'} okText={'确定'} onConfirm={()=>{this.handleListClick('del',record)}}>
                             <span>删除</span>
                         </Popconfirm>
-                        <span onClick={()=>{this.handleListClick('copy',record)}}>复制</span>
                         {
                             this.state.isedit?'':<span onClick={()=>{this.handleListClick('menuitem',record)}}>菜单项</span>
                         }
@@ -125,12 +123,19 @@ class MenuRegister extends Component{
                 isedit:false
             },
             {
+                name:'保存',
+                code:'save',
+                type:'primary',
+                isedit:true
+            },
+            {
                 name:'取消',
                 code:'cancle',
                 type:'',
                 isedit:true
             }
         ]
+        this.historyListData;
     }
     /**
      * 单元格编辑事件
@@ -155,9 +160,6 @@ class MenuRegister extends Component{
             case 'menuitem':
                 this.props.updateMenuItemData(record);
                 this.props.history.push(`/mi?n=菜单注册&c=102202MENU`)
-                break;
-            case 'edit':
-                
                 break;
             case 'del':
                 if(record.isdefault){
@@ -252,30 +254,43 @@ class MenuRegister extends Component{
             }
         });
     }
-    handleAdd = () => {
-        const {
-            count,
-            listData
-        } = this.state;
-        const newData = {
-            "menucode": "",
-            "menuname": "",
-            "menudesc": "",
-            "isenable": false,
-            "isdefault": false,
-            "creationtime": "",
-            "modifiedtime": ""
-        };
-        this.setState({
-            listData: [...listData, newData],
-            count: count + 1,
-        });
+    /**
+     * 表头操作按钮事件
+     */
+    handleBtnClick = ( key ) =>{
+        switch (key) {
+            case 'add':
+                const {listData} = this.state;
+                const newData = {
+                    "menucode": "",
+                    "menuname": "",
+                    "menudesc": "",
+                    "isenable": false,
+                    "isdefault": false,
+                    "creationtime": "",
+                    "modifiedtime": ""
+                };
+            this.setState({listData: [...listData, newData]});
+                break;
+            case 'edit':
+                this.historyListData = [...this.state.listData];
+                this.setState({isedit:true});
+                break;
+            case 'cancle':
+                this.setState({
+                    listData:this.historyListData,
+                    isedit:false
+                });
+                break;
+            default:
+                break;
+        }
     }
     creatBtn = ()=>{
         return this.btnList.map((item,index)=>{
             if(this.state.isedit){
                 if(item.isedit){
-                    return <Button key={item.code} type='primary' onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
+                    return <Button className='margin-left-10' key={item.code} type={item.type} onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
                 }else{
                     return null;
                 }   
@@ -283,7 +298,7 @@ class MenuRegister extends Component{
                 if(item.isedit){
                     return null;
                 }else{
-                    return <Button key={item.code} type='primary' onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
+                    return <Button className='margin-left-10' key={item.code} type={item.type} onClick={()=>{this.handleBtnClick(item.code)}}>{item.name}</Button>
                 }  
             }
         });
@@ -318,7 +333,10 @@ class MenuRegister extends Component{
                         </div>
                     </div>
                     <div className='menugister-list-table'>
-                        <EditableTable 
+                        <Table  
+                            bordered
+                            pagination={false} 
+                            size="middle"  
                             rowKey={'pk_menu'}  
                             columns={this.columns} 
                             dataSource={
@@ -326,7 +344,7 @@ class MenuRegister extends Component{
                                 item.num = index+1;
                                 return item;
                             })}
-                        />
+                        /> 
                     </div>
                 </div>
             </PageLayout>
