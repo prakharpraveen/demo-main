@@ -12,8 +12,8 @@ import {
 	setPageTemplateData,
 	setParentData
 } from 'Store/AppRegister/action';
-import TreeTable from './TreeTable';
 import SearchTree from './SearchTree';
+import TemplateTree from './TemplateTree'
 import Ajax from 'Pub/js/ajax.js';
 import { createTree } from 'Pub/js/createTree.js';
 const { Header, Footer, Sider, Content } = Layout;
@@ -51,7 +51,6 @@ class templateSetting extends Component {
 		this.state = {
 			treeDataArray: [],
 			menuItemData:{},
-			treeTableData: [],
 			siderHeight: "280"
 		};
 	}
@@ -160,7 +159,7 @@ class templateSetting extends Component {
 						>
 							<SearchTree />
 						</Sider>
-						<Content style={{ padding: '20px', minHeight: 280 }}></Content>
+						<Content style={{ padding: '20px', minHeight: 280 }}><TemplateTree/></Content>
 					</Layout>
 				</Layout>
 			</PageLayout>

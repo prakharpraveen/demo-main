@@ -34,7 +34,7 @@ const initTreeData = [{
 	text: '应用节点',
 	children: []
 }];
-class SearchTree extends Component {
+class TemplateTree extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -72,7 +72,6 @@ class SearchTree extends Component {
 				data
 			}) => {
 				if (data.success && data.data.length > 0) {
-					console.log(data.data);
 					this.setState({
 						treeDataArray: data.data
 					}, this.restoreTreeData);
@@ -184,15 +183,9 @@ class SearchTree extends Component {
 			autoExpandParent: false
 		});
 	};
-	onChange = (e) => {
-		const value = e.target.value;
-		this.setState({
-			expandedKeys,
-			searchValue: value,
-			autoExpandParent: true
-		});
-	};
 	onSelect = (key, e) => {
+		console.log(key);
+		console.log(e);
 		let {
 			selectedKeys
 		} = this.state;
@@ -302,7 +295,6 @@ class SearchTree extends Component {
 			selectedKeys,
 			treeData
 		} = this.state;
-		console.log(treeData);
 		const loop = (data) => {
 			return data.map((item) => {
 				let {
@@ -335,11 +327,6 @@ class SearchTree extends Component {
 			});
 		};
 		return( <div>
-					<Search 
-					style = {{marginBottom: 8}}
-					placeholder = 'Search'
-					onChange = {this.onChange}
-					/> 
 					{treeData.length > 0 && treeData[0].children.length > 0 && ( 
 						<Tree showLine onExpand = {this.onExpand}
 						expandedKeys = {expandedKeys}
@@ -411,7 +398,7 @@ const generateTreeData = (data) => {
 		return item;
 	});
 };
-SearchTree.propTypes = {
+TemplateTree.propTypes = {
 	setNodeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,
@@ -440,4 +427,4 @@ export default connect(
 		delTreeData,
 		reqTreeData
 	}
-)(SearchTree);
+)(TemplateTree);
