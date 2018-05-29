@@ -70,7 +70,6 @@ class AreaItem extends Component {
 								key={index} 
 								id={q.pk_query_property} 
 								name={q.label} 
-								// selectCard = {selectCard}
 								selectThisCard = {this.selectThisCard}
 								moveCard={this.moveCard}
 								 deleteCard={this.deleteCard}/>  

@@ -12,7 +12,7 @@ class TreeModal extends Component {
 		this.state = {
 			checkedKeys: [],
 			selectedKeys: [],
-			// selectedObjList: [],
+			selectedNodes: [],
 			searchValue: ''
 		};
 	}
@@ -27,7 +27,45 @@ class TreeModal extends Component {
 	//移动到的弹出框中，点击确认
 	onOkMoveDialog = () => {
 		const modalVisible = false;
-		
+		const { selectedNodes } = this.state;
+		const { targetAreaID } = this.props;
+		let cardList = [];
+		_.forEach(selectedNodes, (s, i) => {
+			const { myUniqID, datatype, refname, refcode, pid } = s.props.dataRef;
+			cardList.push({
+				pk_query_property: `newMetaData_${myUniqID}` ,
+				areaid: targetAreaID,
+				code: refcode,
+				datatype: datatype,
+				label: refname,
+				metapath: myUniqID,
+				componenttype: '0',
+				refcode: '1',
+				options: '1',
+				visible: true,
+				disabled: true,
+				required: true,
+				isenable: true,
+				mustuse: true,
+				ischeck: true,
+				usefunc: true,
+				scale: '0',
+				maxlength: '20',
+				unit: '10',
+				ratio: '0',
+				formattype: '0',
+				width: '11',
+				position: '236',
+				opersign: 'like',
+				defaultvalue: '1',
+				showtype: '0',
+				returntype: '0',
+				dr: '0',
+				status: '0',
+				m_isDirty: false
+			});
+		});
+		this.props.addCard(cardList);
 		this.setModalVisible(modalVisible);
 	};
 	//关于搜索框的方法;
@@ -64,30 +102,9 @@ class TreeModal extends Component {
 		this.setState({ checkedKeys: checkedKeys });
 	};
 	onSelect = (selectedKeys, info) => {
-		// const props = info.node.props;
-		// let {selectedObjList} = this.state;
-		// if(info.selected){
-		// 	selectedObjList = selectedObjList.concat({
-		// 		refname: props.refname,
-		// 		refpk: props.refpk,
-		// 		refcode: props.refcode,
-		// 		datatype:props.datatype
-		// 	})
-		// }else{
-		// 	let targetIndex = -1;
-		// 	_.forEach(selectedObjList,(s,index)=>{
-		// 		if(s.myUniqID === props.myUniqID){
-		// 			targetIndex = index;
-		// 			return false;
-		// 		}
-		// 	})
-		// 	selectedObjList = selectedObjList.slice(targetIndex);
-		// }
-
-		// console.log('onSelect', selectedKeys, selectedObjList);
-		// this.setState({ selectedKeys,selectedObjList });
 		console.log('onSelect', selectedKeys, info);
-		this.setState({ selectedKeys });
+
+		this.setState({ selectedKeys, selectedNodes: info.selectedNodes });
 	};
 
 	renderTreeNodes = (data) => {
@@ -109,7 +126,7 @@ class TreeModal extends Component {
 				return;
 			}
 			Ajax({
-				url: `/nccloud/platform/templet/querymetaproperty.do`,
+				url: `/nccloud/platform/templet/querymetapro.do`,
 				info: {
 					name: '单据模板设置',
 					action: '元数据树结构查询'
