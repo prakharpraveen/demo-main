@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
-const port = '3000';
+const port = '3003';
 const host = '127.0.0.1';
 module.exports = {
 	...configInfo,
