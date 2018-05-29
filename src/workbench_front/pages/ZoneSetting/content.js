@@ -20,7 +20,7 @@ class MyContent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			modalVisible: true,
+			modalVisible: false,
 			metaTree: [],
 			targetAreaID: '',
 		};
@@ -87,12 +87,13 @@ class MyContent extends Component {
 					let { data, success } = res.data;
 					if (success && data && data.rows && data.rows.length > 0) {
 						let metaTree = [];
-						data.rows.map((r) => {
+						data.rows.map((r,index) => {
 							metaTree.push({
 								...r,
 								title: r.refname,
-								key: r.refpk,
-								isShow: true
+								key: `${r.refcode}`,
+								myUniqID: `${r.refcode}`,
+								isLeaf:r.isleaf
 							});
 						});
 						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID });
@@ -102,6 +103,9 @@ class MyContent extends Component {
 			}
 		});
 	};
+	updateMetaTreeData = (metaTree)=>{
+		this.setState({metaTree:metaTree});
+	}
 
 	updateAreaList = (areaList) => {
 		this.props.updateAreaList(areaList)
@@ -182,7 +186,8 @@ class MyContent extends Component {
                     metaTree={this.state.metaTree}
 					modalVisible={this.state.modalVisible}
 					setModalVisible={this.setModalVisible}
-                    addCard = {this.addCard}
+					addCard = {this.addCard}
+					updateMetaTreeData = {this.updateMetaTreeData}
 				/>
 			</div>
 		);
