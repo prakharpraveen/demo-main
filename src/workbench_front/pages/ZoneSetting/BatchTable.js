@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Table, Input, Icon, Button, Popconfirm, Select,Form,Switch} from 'antd';
+import { Table, Input, Icon, Button, InputNumber, Select,Form,Switch} from 'antd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
@@ -36,31 +36,19 @@ class EditableCell extends React.Component {
 	handleChange = (e) => {
 		const value = e.target.value;
 		this.setState({ value },()=>{this.props.onChange(value)});
-		/* if (this.props.onChange) {
-			this.props.onChange(this.state.value);
-		} */
 	}
-	/* check = () => {
-		this.setState({ editable: false });
-		if (this.props.onChange) {
-			this.props.onChange(this.state.value);
-		}
+	handleNumChange = (value) =>{
+		this.setState({ value }, () => { this.props.onChange(value) });
 	}
-	edit = () => {
-		this.setState({ editable: true });
-	} */
 	render() {
 		const { value } = this.state;
+		const {type} = this.props;
 		return (
-			<div className="">
-				<div className="">
-							<Input
+			type === 'int' ? (<InputNumber defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
+							(<Input
 								value={value}
 								onChange = {this.handleChange}
-						   //	onPressEnter={this.check}
-							/>
-						</div>
-			</div>
+							/>)	
 		);
 	}
 }
@@ -69,24 +57,10 @@ class EditableCell extends React.Component {
 class EditableCheck extends React.Component {
 	state = {
 		value: this.props.value,
-	//	editable: false,
 	}
 	handleChange = (value) => {
 		this.setState({ value },()=>{this.props.onChange(value)});
-		// 通知父组件更改state
-	/* 	if (this.props.onChange) {
-			this.props.onChange(this.state.value);
-		} */
 	}
-	/* check = () => { 
-		this.setState({ editable: false });
-		if (this.props.onChange) {
-			this.props.onChange(this.state.value);
-		}
-	}
-	edit = () => {
-		this.setState({ editable: true });
-	} */
 	render() {
 		const { value } = this.state;
 		return (
@@ -124,12 +98,6 @@ class BatchTable extends React.Component {
 			title: '区域ID',
 			dataIndex: 'areaid',
 			width: 150,
-		/* 	render: (text, record) => (
-				<EditableCell
-					value={text}
-					onChange={this.onCellChange(record.key, 'areaid')}
-					/>
-				), */
 		}, 
 		{
 			title: '显示名称',
@@ -155,7 +123,7 @@ class BatchTable extends React.Component {
 			title: '元数据',
 			width: 150,
 			dataIndex: 'metapath', 
-			render: (text, record) => (
+			render: (text, record) => ( 
 				<EditableCell
 					value={text}
 					onChange={this.onCellChange(record.key, 'metapath')} />
@@ -168,7 +136,8 @@ class BatchTable extends React.Component {
 				width: 150,
 				render: (text, record) => (
 					<EditableCell
-							value={text}
+						type='int'
+						value={text}
 						onChange={this.onCellChange(record.key, 'componentsize')}
 					/>
 				),
@@ -180,6 +149,7 @@ class BatchTable extends React.Component {
 				render: (text, record) => (
 					<EditableCell
 						value={text}
+						type='int'
 						onChange={this.onCellChange(record.key, 'componenttype')}
 					/>
 				),
@@ -311,7 +281,8 @@ class BatchTable extends React.Component {
 				width: 150,
 				render: (text, record) => (
 					<EditableCell
-							value={text}
+						value={text}
+						type='int'
 						onChange={this.onCellChange(record.key, 'maxlength')}
 					/>
 				),
@@ -356,6 +327,7 @@ class BatchTable extends React.Component {
 				render: (text, record) => (
 					<EditableCell
 						value={text}
+						type='int'
 						onChange={this.onCellChange(record.key, 'width')}
 					/>
 				),
@@ -375,9 +347,10 @@ class BatchTable extends React.Component {
 				title: '位置',
 				dataIndex: 'position', 
 				width: 150,
-				render: (text, record) => (
+				render: (text, record) => ( 
 					<EditableCell
-							value={text}
+						value={text}
+						type='int'
 						onChange={this.onCellChange(record.key, 'position')}
 					/>
 				),
@@ -462,12 +435,7 @@ class BatchTable extends React.Component {
 			const dataSource = _.cloneDeep(this.state.dataSource);
 			const target = dataSource.queryPropertyList.find(item => item.key === key);
 			if (target) {
-			//	if (dataIndex ==='metaname'){
-				//	target[dataIndex] = value && value.refname;
-				//	target['metaid'] = value && value.refpk;
-			//	}else{
-					target[dataIndex] = value
-			//	}
+				target[dataIndex] = value
 				this.setState({ dataSource }, () => { this.props.setNewList(this.state.dataSource)});
 			}
 		};

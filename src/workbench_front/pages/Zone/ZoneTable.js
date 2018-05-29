@@ -12,7 +12,6 @@ import Notice from 'Components/Notice';
 import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer } = high;
-
 const Option = Select.Option;
 
 /**
@@ -21,14 +20,14 @@ const Option = Select.Option;
  */
 const switchType = (value) => {
 	switch (value) {
+		case '2':
+			return '表格区'
 		case '1':
-			return '非查询区'
+			return '表单区'
 		case '0':
 			return '查询区'
 		default:
 			return typeof(value ==='object')? (value.metaname): value;	
-	/* 	default:
-			break; */
 	}
 }
 
@@ -62,12 +61,9 @@ class EditableCell extends React.Component {
 								value={value}
 								onChange={this.handleChange}
 								onPressEnter={this.check}
+								onBlur={this.check}
 							/>
-							<Icon
-								type="check"
-								className="editable-cell-icon-check"
-								onClick={this.check}
-							/>
+							
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
@@ -91,7 +87,7 @@ class EditableSelect extends React.Component {
 		editable: false,
 	}
 	handleChange = (value) => {
-		this.setState({ value });
+		this.setState({ value },()=>{this.check()});
 	}
 	check = () => { 
 		this.setState({ editable: false });
@@ -111,13 +107,14 @@ class EditableSelect extends React.Component {
 						<div className="editable-cell-input-wrapper">
 							<Select showSearch optionFilterProp="children" value={value} style={{ width: 120 }} onChange={(selected) =>this.handleChange(selected)} filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
 								<Option value={'0'}>查询区</Option>
-								<Option value={'1'}>非查询区</Option>
+								<Option value={'1'}>表单区</Option>
+								<Option value={'2'}>表格区</Option>
 							</Select>
-							<Icon
+							{/* <Icon
 								type="check"
 								className="editable-cell-icon-check"
 								onClick={this.check}
-							/>
+							/> */}
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
@@ -144,12 +141,10 @@ class EditableRefer extends React.Component {
 	
 	// 组件更新 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.value !== this.props.value) {
 			this.setState({
 				value: nextProps.value,
 				metaObj: { refname: nextProps.value.metaname, refpk: nextProps.value.metaid }
 			})
-		}
 	}
 
 	check = () => {
@@ -177,10 +172,9 @@ class EditableRefer extends React.Component {
 								queryGridUrl={'nccloud/platform/templet/querymetasearch.do'}
 								value={this.state.metaObj}
 								onChange={(val) => {
-									console.log(val);
 									this.setState({
 										metaObj: val
-									});
+									},()=>{this.check()});
 								}}    
 								columnConfig={[
 									{
@@ -190,11 +184,11 @@ class EditableRefer extends React.Component {
 								]}
 								isMultiSelectedEnabled={false}
 							/>
-							<Icon
+						{/* 	<Icon
 								type="check"
 								className="editable-cell-icon-check"
 								onClick={this.check}
-							/>
+							/> */}
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
@@ -218,7 +212,6 @@ class ZoneTable extends React.Component {
 		this.state = {
 			dataSource: [],
 			count: null,
-			show:true,
 		};
 		this.columns = [
 			{
@@ -347,7 +340,7 @@ class ZoneTable extends React.Component {
 ZoneTable.propTypes = {
 	zoneDatas: PropTypes.object.isRequired,
 };
-let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
+// let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
 export default connect(
 	(state) => {
 		return {
@@ -357,4 +350,4 @@ export default connect(
 		};
 	},
 	{  setNewList }
-)(DragFromeTable);
+)(ZoneTable);
