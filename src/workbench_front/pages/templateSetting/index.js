@@ -11,7 +11,7 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	setParentData
-} from 'Store/AppRegister/action';
+} from 'Store/templateSetting/action';
 import SearchTree from './SearchTree';
 import TemplateTree from './TemplateTree'
 import Ajax from 'Pub/js/ajax.js';
