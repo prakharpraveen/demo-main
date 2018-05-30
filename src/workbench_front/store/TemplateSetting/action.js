@@ -14,7 +14,7 @@ export const reqTreeData = (data)=>{
 	}
 }
 //获取模板树数据
-export const reqTemplateTreeData = ()=>{
+export const reqTemplateTreeData = (data)=>{
 	return {
 		type: TemplateSetting.REQTEMPLATETREEDATA,
 		data

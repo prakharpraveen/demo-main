@@ -55,8 +55,8 @@ class SearchTree extends Component {
 		this.setState({
 			treeData
 		}, this.reqTreeData);
-		this.props.addTreeData(this.addTreeData);
-		this.props.delTreeData(this.delTreeData);
+		// this.props.addTreeData(this.addTreeData);
+		// this.props.delTreeData(this.delTreeData);
 		this.props.reqTreeData(this.reqTreeData);
 	}
 	/**
@@ -413,26 +413,26 @@ const generateTreeData = (data) => {
 	});
 };
 SearchTree.propTypes = {
-	setNodeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired,
-	setOpType: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired,
-	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired,
-	reqTemplateTreeData: PropTypes.func.isRequired
+	// setNodeData: PropTypes.func.isRequired,
+	// updateTreeData: PropTypes.func.isRequired,
+	// setOpType: PropTypes.func.isRequired,
+	// setParentData: PropTypes.func.isRequired,
+	 addTreeData: PropTypes.func.isRequired,
+	// delTreeData: PropTypes.func.isRequired,
+	 reqTreeData: PropTypes.func.isRequired,
+	// reqTemplateTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => {
 		return {};
 	}, {
-		setNodeData,
-		updateTreeData,
-		setOpType,
-		setParentData,
-		addTreeData,
-		delTreeData,
-		reqTreeData,
-		reqTemplateTreeData
+		// setNodeData,
+		// updateTreeData,
+		// setOpType,
+		// setParentData,
+		 addTreeData,
+		// delTreeData,
+		 reqTreeData,
+		// reqTemplateTreeData
 	}
 )(SearchTree);

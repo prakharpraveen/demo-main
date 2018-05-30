@@ -47,16 +47,16 @@ class TemplateTree extends Component {
 		};
 	}
 	componentDidMount() {
-		let {
-			treeData
-		} = this.state;
-		treeData = initTreeData;
-		this.setState({
-			treeData
-		}, this.reqTemplateTreeData);
-		this.props.addTreeData(this.addTreeData);
-		this.props.delTreeData(this.delTreeData);
-		this.props.reqTemplateTreeData(this.reqTemplateTreeData);
+		// let {
+		// 	treeData
+		// } = this.state;
+		// treeData = initTreeData;
+		// this.setState({
+		// 	treeData
+		// }, this.reqTemplateTreeData);
+		// this.props.addTreeData(this.addTreeData);
+		// this.props.delTreeData(this.delTreeData);
+		// this.props.reqTemplateTreeData(this.reqTemplateTreeData);
 	}
 	/**
 	 * tree 数据请求

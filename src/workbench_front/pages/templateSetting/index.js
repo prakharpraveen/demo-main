@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Button, Table, Switch, Icon, Popconfirm, Layout, Modal } from 'antd';
+import { Button, Layout, Modal } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
-import {
-	setNodeData,
-	setOpType,
-	setParentData
-} from 'Store/TemplateSetting/action';
-import SearchTree from './SearchTree';
+// import {
+// 	setNodeData,
+// 	setOpType,
+// 	setParentData
+// } from 'Store/TemplateSetting/action';
 import TemplateTree from './TemplateTree';
+import SearchTree from './SearchTree';
 import Ajax from 'Pub/js/ajax.js';
-import { createTree } from 'Pub/js/createTree.js';
 const { Header, Footer, Sider, Content } = Layout;
 const confirm = Modal.confirm;
 import './index.less';
@@ -55,7 +54,7 @@ class TemplateSetting extends Component {
 	setBtnsShow = (item) => {
 		let { name } = item;
 		// let { optype, parentData, billStatus } = this.props;
-		let { isEdit, isNew } = billStatus;
+		//let { isEdit, isNew } = billStatus;
 		let isShow = false;
 		switch (name) {
 			case '新增':
@@ -137,14 +136,14 @@ class TemplateSetting extends Component {
 				<Layout>
 					<Header>
 						{Btns.map((item, index) => {
-							// item = this.setBtnsShow(item);
+							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
 						})}
 					</Header>
 					<Layout height={'100%'}>
 						<Sider
 							width={280}
-							height={'auto'}
+							height={'100%'}
 							style={{
 								background: '#fff',
 								width: '500px',
@@ -164,24 +163,24 @@ class TemplateSetting extends Component {
 	}
 }
 TemplateSetting.propTypes = {
-	optype: PropTypes.string.isRequired,
-	nodeData: PropTypes.object.isRequired,
-	addTreeData: PropTypes.func.isRequired,
-	delTreeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	// optype: PropTypes.string.isRequired,
+	// nodeData: PropTypes.object.isRequired,
+	// addTreeData: PropTypes.func.isRequired,
+	// delTreeData: PropTypes.func.isRequired,
+	// updateTreeData: PropTypes.func.isRequired,
+	// reqTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => ({
-		optype: state.TemplateSettingData.optype,
-		nodeData: state.TemplateSettingData.nodeData,
-		addTreeData: state.TemplateSettingData.addTreeData,
-		delTreeData: state.TemplateSettingData.delTreeData,
-		updateTreeData: state.TemplateSettingData.updateTreeData,
-		reqTreeData: state.TemplateSettingData.reqTreeData
+		// optype: state.TemplateSettingData.optype,
+		// nodeData: state.TemplateSettingData.nodeData,
+		// addTreeData: state.TemplateSettingData.addTreeData,
+		// delTreeData: state.TemplateSettingData.delTreeData,
+		// updateTreeData: state.TemplateSettingData.updateTreeData,
+		// reqTreeData: state.TemplateSettingData.reqTreeData
 	}),
 	{
-		setNodeData,
-		setOpType
+		// setNodeData,
+		 //setOpType
 	}
 )(TemplateSetting)
