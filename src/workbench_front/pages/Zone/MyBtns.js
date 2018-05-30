@@ -49,7 +49,7 @@ class MyBtns extends Component {
 	
 	}
 	// 保存 区域数据 
-	saveZoneData(list,form){
+	saveZoneData(list,form,type){
 		let url, data;
 		url = '/nccloud/platform/templet/settempletarea.do';
 		let { zoneDatas } = this.props;
@@ -72,8 +72,9 @@ class MyBtns extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					//this.props.setZoneData(data.data);
-					// 下一步 
+					// type =1 代表保存  type =2 表示下一步 
+					type === 1 ? (location.hash = '/ar') : (location.hash = '/ZoneSetting');
+					Notice({ status: 'success', msg: data.data.true });
 				} else {
 					Notice({ status: 'error', msg: data.data.true });
 				}
@@ -83,24 +84,28 @@ class MyBtns extends Component {
 
 	// 处理按钮的事件  
 	handleClick(name){
+		let fromData = this.props.zoneFormData();
+		let { newListData } = this.props;
 		switch (name){
 			case '保存': 
-				let fromData = this.props.zoneFormData();
 				console.log(fromData);
 				if (!fromData) {
 					return;
 				}
-				console.log(fromData,'result');
-				// 保存 操作 
-				let { newListData } = this.props;
 				console.log(newListData, fromData);
-				this.saveZoneData(newListData, fromData);
+				this.saveZoneData(newListData, fromData,1);
 				debugger;
-
 			break;
 			case '下一步':
+				console.log(fromData);
+				if (!fromData) {
+					return;
+				}
+				console.log(newListData, fromData);
+				this.saveZoneData(newListData, fromData, 2);
 				break; 
 			case '取消':
+				location.hash = '/ar';
 				break;
 			case '返回':
 				history.back();

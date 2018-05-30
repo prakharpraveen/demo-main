@@ -83,7 +83,7 @@ class BatchSearchTable extends React.Component {
 		};
 		this.columns = [
 			{
-				title: '序号1',
+				title: '序号',
 				dataIndex: 'num',
 				width: 50,
 				fixed: 'left'
