@@ -16,8 +16,9 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	delTreeData,
-	reqTreeData
-} from 'Store/AppRegister/action';
+	reqTreeData,
+	reqTemplateData
+} from 'Store/TemplateSetting/action';
 import {
 	Tree,
 	Input
@@ -415,14 +416,11 @@ SearchTree.propTypes = {
 	setNodeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	reqTreeData: PropTypes.func.isRequired,
+	reqTemplateTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => {
@@ -431,13 +429,10 @@ export default connect(
 		setNodeData,
 		updateTreeData,
 		setOpType,
-		setBillStatus,
 		setParentData,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
 		addTreeData,
 		delTreeData,
-		reqTreeData
+		reqTreeData,
+		reqTemplateTreeData
 	}
 )(SearchTree);

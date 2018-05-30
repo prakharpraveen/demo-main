@@ -4,6 +4,8 @@ export const CLEARDATA = 'CLEARDATA';
 export const SETNODEDATA = 'SETNODEDATA';
 // 获取树数据
 export const REQTREEDATA = 'REQTREEDATA';
+//获取模板树数据
+export const REQTEMPLATETREEDATA = 'REQTEMPLATETREEDATA';
 // 新增树节点
 export const ADDNODEDATA = 'ADDNODEDATA';
 // 更新树数据

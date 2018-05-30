@@ -12,10 +12,6 @@ let defaultState = {
 		// 是否新增
 		isNew: false
 	},
-	// 应用参数数据
-	appParamVOs: [],
-	// 页面按钮数据
-	appButtonVOs:[],
 	// 页面模板数据
 	pageTemplets:[],
 	// 父节点信息
@@ -27,8 +23,7 @@ let defaultState = {
 	// 请求树数据
 	reqTreeData: ()=>{},
 	//请求模板树数据
-	// 获取表单数据
-	getFromData: ()=>{},
+	reqTemplateTreeData: () =>{},
 	// 添加树节点
 	addTreeData: ()=>{},
 	// 删除树节点
@@ -45,6 +40,12 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
 			return { ...state,
 				...{
 					reqTreeData: action.data
+				}
+			};
+		case TemplateSetting.REQTEMPLATETREEDATA:
+			return { ...state,
+				...{
+					reqTemplateTreeData: action.data
 				}
 			};
 		case TemplateSetting.SETNODEDATA:
@@ -77,52 +78,10 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
 					optype: action.optype
 				}
 			};
-		case TemplateSetting.BILLSTATUS:
-			return { ...state,
-				...{
-					billStatus: action.billStatus
-				}
-			};
 		case TemplateSetting.PARENTDATA:
 			return { ...state,
 				...{
 					parentData: action.parentData
-				}
-			};
-		case TemplateSetting.APPTYPE:
-			return { ...state,
-				...{
-					appType: action.appType
-				}
-			};
-		case TemplateSetting.APPPARAMDATA:
-			return { ...state,
-				...{
-					appParamVOs: action.data
-				}
-			};
-		case TemplateSetting.PAGEBUTTONDATA:
-			return { ...state,
-				...{
-					appButtonVOs: action.data
-				}
-			};
-		case TemplateSetting.PAGETEMPLATEDATA:
-			return { ...state,
-				...{
-					pageTemplets: action.data
-				}
-			};
-		case TemplateSetting.PRINTTEMPLATEDATA:
-			return { ...state,
-				...{
-					printSystemplateVO: action.data
-				}
-			};
-		case TemplateSetting.GETFROMDATA:
-			return { ...state,
-				...{
-					getFromData: action.getFromData
 				}
 			};
 		default:

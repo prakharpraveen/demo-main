@@ -64,7 +64,7 @@ const MenuItem = Loadable({
 	loading: Loading
 });
 const TemplateSetting = Loadable({
-	loader: () => import('Pages/templateSetting'),
+	loader: () => import('Pages/TemplateSetting'),
 	loading: Loading
 });
 const routes = [
@@ -127,7 +127,7 @@ const routes = [
 		component: MenuItem
 	},
 	{
-		path :'/templateSetting',
+		path :'/TemplateSetting',
 		component : TemplateSetting
 	}
 ];

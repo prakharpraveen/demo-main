@@ -5,20 +5,17 @@ import { Button, Table, Switch, Icon, Popconfirm, Layout, Modal } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import {
 	setNodeData,
-	setBillStatus,
 	setOpType,
-	setAppParamData,
-	setPageButtonData,
-	setPageTemplateData,
 	setParentData
-} from 'Store/templateSetting/action';
+} from 'Store/TemplateSetting/action';
 import SearchTree from './SearchTree';
-import TemplateTree from './TemplateTree'
+import TemplateTree from './TemplateTree';
 import Ajax from 'Pub/js/ajax.js';
 import { createTree } from 'Pub/js/createTree.js';
 const { Header, Footer, Sider, Content } = Layout;
 const confirm = Modal.confirm;
 import './index.less';
+
 const Btns = [
 	{
 		name: '新增',
@@ -45,7 +42,7 @@ const Btns = [
 		type: 'primary'
 	}
 ];
-class templateSetting extends Component {
+class TemplateSetting extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -57,7 +54,7 @@ class templateSetting extends Component {
 	// 按钮显隐性控制
 	setBtnsShow = (item) => {
 		let { name } = item;
-		let { optype, parentData, billStatus } = this.props;
+		// let { optype, parentData, billStatus } = this.props;
 		let { isEdit, isNew } = billStatus;
 		let isShow = false;
 		switch (name) {
@@ -140,7 +137,7 @@ class templateSetting extends Component {
 				<Layout>
 					<Header>
 						{Btns.map((item, index) => {
-							item = this.setBtnsShow(item);
+							// item = this.setBtnsShow(item);
 							return this.creatBtn(item);
 						})}
 					</Header>
@@ -166,39 +163,25 @@ class templateSetting extends Component {
 		);
 	}
 }
-templateSetting.propTypes = {
+TemplateSetting.propTypes = {
 	optype: PropTypes.string.isRequired,
-	billStatus: PropTypes.object.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
-	parentData: PropTypes.string.isRequired,
-	setOpType: PropTypes.func.isRequired,
 	nodeData: PropTypes.object.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired,
 	reqTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => ({
-		optype: state.AppRegisterData.optype,
-		billStatus: state.AppRegisterData.billStatus,
-		parentData: state.AppRegisterData.parentData,
-		nodeData: state.AppRegisterData.nodeData,
-		addTreeData: state.AppRegisterData.addTreeData,
-		delTreeData: state.AppRegisterData.delTreeData,
-		updateTreeData: state.AppRegisterData.updateTreeData,
-		reqTreeData: state.AppRegisterData.reqTreeData
+		optype: state.TemplateSettingData.optype,
+		nodeData: state.TemplateSettingData.nodeData,
+		addTreeData: state.TemplateSettingData.addTreeData,
+		delTreeData: state.TemplateSettingData.delTreeData,
+		updateTreeData: state.TemplateSettingData.updateTreeData,
+		reqTreeData: state.TemplateSettingData.reqTreeData
 	}),
 	{
 		setNodeData,
-		setBillStatus,
-		setOpType,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
-		setParentData
+		setOpType
 	}
-)(templateSetting);
+)(TemplateSetting)

@@ -16,8 +16,8 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	delTreeData,
-	reqTreeData
-} from 'Store/AppRegister/action';
+	reqTemplateTreeData
+} from 'Store/TemplateSetting/action';
 import {
 	Tree,
 	Input
@@ -53,15 +53,15 @@ class TemplateTree extends Component {
 		treeData = initTreeData;
 		this.setState({
 			treeData
-		}, this.reqTreeData);
+		}, this.reqTemplateTreeData);
 		this.props.addTreeData(this.addTreeData);
 		this.props.delTreeData(this.delTreeData);
-		this.props.reqTreeData(this.reqTreeData);
+		this.props.reqTemplateTreeData(this.reqTemplateTreeData);
 	}
 	/**
 	 * tree 数据请求
 	 */
-	reqTreeData = () => {
+	reqTemplateTreeData = () => {
 		Ajax({
 			url: `/nccloud/platform/appregister/querymodules.do`,
 			info: {
@@ -402,14 +402,10 @@ TemplateTree.propTypes = {
 	setNodeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	reqTemplateTreeData: PropTypes.func.isRequired,
 };
 export default connect(
 	(state) => {
@@ -420,11 +416,8 @@ export default connect(
 		setOpType,
 		setBillStatus,
 		setParentData,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
 		addTreeData,
 		delTreeData,
-		reqTreeData
+		reqTemplateTreeData
 	}
 )(TemplateTree);
