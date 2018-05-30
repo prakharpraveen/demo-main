@@ -47,37 +47,47 @@ class TemplateTree extends Component {
 		};
 	}
 	componentDidMount() {
-		// let {
-		// 	treeData
-		// } = this.state;
-		// treeData = initTreeData;
-		// this.setState({
-		// 	treeData
-		// }, this.reqTemplateTreeData);
-		// this.props.addTreeData(this.addTreeData);
-		// this.props.delTreeData(this.delTreeData);
-		// this.props.reqTemplateTreeData(this.reqTemplateTreeData);
+		
 	}
 	/**
 	 * tree 数据请求
 	 */
-	reqTemplateTreeData = () => {
-		Ajax({
-			url: `/nccloud/platform/appregister/querymodules.do`,
-			info: {
-				name:'应用注册模块',
-				action:'查询'
-			},
-			success: ({
-				data
-			}) => {
-				if (data.success && data.data.length > 0) {
-					this.setState({
-						treeDataArray: data.data
-					}, this.restoreTreeData);
+	reqTemplateTreeData = (key) => {
+		debugger
+		console.log(key);
+		if (key.length === 0) {
+			return;
+		} else {
+			// 查询模板数据
+			Ajax({
+				url: '/nccloud/platform/template/getTemplatesOfPage.do',
+				info: {
+					name:'查询模板数据',
+					action:'查询'
+				},
+				data: {
+					pageCode: key
+				},
+				success: ({
+					data
+				}) => {
+					console.log(data);
+					if (data.success && data.data) {
+						if (selectedNodeData.parentcode.length > 4) {
+							this.props.setOpType('app');
+						} else {
+							this.props.setOpType('classify');
+						}
+						let {
+							appRegisterVO,
+							appParamVOs
+						} = data.data;
+						this.props.setAppParamData(appParamVOs);
+						this.props.setNodeData(appRegisterVO);
+					}
 				}
-			}
-		});
+			});
+		}
 	};
 	/**
 	 * 新增树节点
@@ -184,8 +194,6 @@ class TemplateTree extends Component {
 		});
 	};
 	onSelect = (key, e) => {
-		console.log(key);
-		console.log(e);
 		let {
 			selectedKeys
 		} = this.state;
