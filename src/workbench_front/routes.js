@@ -67,10 +67,6 @@ const TemplateSetting = Loadable({
     loader: () => import("Pages/TemplateSetting"),
     loading: Loading
 });
-const demo = Loadable({
-    loader: () => import("Pages/demo"),
-    loading: Loading
-});
 const routes = [
     {
         path: "/",
@@ -133,10 +129,6 @@ const routes = [
     {
         path: "/TemplateSetting",
         component: TemplateSetting
-    },
-    {
-        path: "/demo",
-        component: demo
     }
 ];
 const RouteWithSubRoutes = route => (
