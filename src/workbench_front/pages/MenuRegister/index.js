@@ -244,7 +244,7 @@ class MenuRegister extends Component {
         switch (key) {
             case "menuitem":
                 this.props.updateMenuItemData(record);
-                this.props.history.push(`/mi?n=菜单注册&c=102202MENU`);
+                this.props.history.push(`/mi?id=${record.pk_menu}&mn=${record.menuname}&mt=${record.isdefault?1:0}&n=菜单注册&c=102202MENU`);
                 break;
             case "del":
                 if (record.isdefault) {

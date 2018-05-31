@@ -14,7 +14,7 @@ export const reqTreeData = (data)=>{
 	}
 }
 //获取模板树数据
-export const reqTemplateTreeData = ()=>{
+export const reqTemplateTreeData = (data)=>{
 	return {
 		type: TemplateSetting.REQTEMPLATETREEDATA,
 		data
@@ -55,13 +55,6 @@ export const setOpType = (optype) => {
 		optype: optype
 	};
 };
-// 操作类型 数据
-export const setBillStatus = (billStatus) => {
-	return {
-		type: TemplateSetting.BILLSTATUS,
-		billStatus
-	};
-};
 // 父节点 数据
 export const setParentData = (parentData) => {
 	return {
@@ -69,38 +62,3 @@ export const setParentData = (parentData) => {
 		parentData
 	};
 };
-// 设置 appTtype 数据
-export const setAppType = (appType) => {
-	return {
-		type: TemplateSetting.APPTYPE,
-		appType
-	};
-};
-// 设置 应用参数信息 数据
-export const setAppParamData = (data) => {
-	return {
-		type: TemplateSetting.APPPARAMDATA,
-		data
-	};
-};
-// 设置 页面按钮 数据
-export const setPageButtonData = (data) => {
-	return {
-		type: TemplateSetting.PAGEBUTTONDATA,
-		data
-	};
-};
-// 设置 页面模板 数据
-export const setPageTemplateData = (data) => {
-	return {
-		type: TemplateSetting.PAGETEMPLATEDATA,
-		data
-	};
-};
-// 获取表单数据
-export const getFromDataFunc = (getFromData)=>{
-	return {
-		type: TemplateSetting.GETFROMDATA,
-		getFromData
-	}
-}

@@ -16,8 +16,9 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	delTreeData,
-	reqTreeData
-} from 'Store/AppRegister/action';
+	reqTreeData,
+	reqTemplateTreeData
+} from 'Store/TemplateSetting/action';
 import {
 	Tree,
 	Input
@@ -54,31 +55,10 @@ class SearchTree extends Component {
 		this.setState({
 			treeData
 		}, this.reqTreeData);
-		this.props.addTreeData(this.addTreeData);
-		this.props.delTreeData(this.delTreeData);
+		// this.props.addTreeData(this.addTreeData);
+		// this.props.delTreeData(this.delTreeData);
 		this.props.reqTreeData(this.reqTreeData);
 	}
-	/**
-	 * tree 数据请求
-	 */
-	reqTreeData = () => {
-		Ajax({
-			url: `/nccloud/platform/appregister/querymodules.do`,
-			info: {
-				name:'应用注册模块',
-				action:'查询'
-			},
-			success: ({
-				data
-			}) => {
-				if (data.success && data.data.length > 0) {
-					this.setState({
-						treeDataArray: data.data
-					}, this.restoreTreeData);
-				}
-			}
-		});
-	};
 	/**
 	 * 新增树节点
 	 * @param {Object} nodeData
@@ -133,9 +113,27 @@ class SearchTree extends Component {
 		);
 	};
 	/**
-	 * 将平铺树数组转换为树状数组
-	 * 
+	 * tree 数据请求
 	 */
+	reqTreeData = () => {
+		Ajax({
+			url: `/nccloud/platform/appregister/querymodules.do`,
+			info: {
+				name:'应用注册模块',
+				action:'查询'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success && data.data.length > 0) {
+					console.log(data.data);
+					this.setState({
+						treeDataArray: data.data
+					}, this.restoreTreeData);
+				}
+			}
+		});
+	};
 	restoreTreeData = () => {
 		let {
 			treeData,
@@ -193,107 +191,7 @@ class SearchTree extends Component {
 	};
 	onSelect = (key, e) => {
 		console.log(key);
-		console.log(e);
-		let {
-			selectedKeys
-		} = this.state;
-		selectedKeys = key;
-		this.setState({
-			selectedKeys
-		});
-		if (key.length === 0) {
-			return;
-		} else {
-			this.props.setBillStatus({
-				isNew: false,
-				isEdit: false
-			});
-		}
-		key = key[key.length - 1];
-		if (key === '0') {
-			this.props.setNodeData('');
-			this.props.setOpType('');
-			this.props.setParentData('');
-		} else {
-			let {
-				treeDataArray
-			} = this.state;
-			let selectedNodeData = treeDataArray.find((item) => {
-				if (item.key === key) {
-					return item;
-				}
-			});
-			if (selectedNodeData.flag + '' === '0') {
-				this.props.setOpType('module');
-			} else if(selectedNodeData.flag + '' === '1'){
-				// 查询应用分类 及 应用数据
-				Ajax({
-					url: `/nccloud/platform/appregister/query.do`,
-					info: {
-						name:'应用注册应用',
-						action:'查询'
-					},
-					data: {
-						pk_appregister: key
-					},
-					success: ({
-						data
-					}) => {
-						if (data.success && data.data) {
-							if (selectedNodeData.parentcode.length > 4) {
-								this.props.setOpType('app');
-							} else {
-								this.props.setOpType('classify');
-							}
-							let {
-								appRegisterVO,
-								appParamVOs
-							} = data.data;
-							this.props.setAppParamData(appParamVOs);
-							this.props.setNodeData(appRegisterVO);
-						}
-					}
-				});
-			} else if(selectedNodeData.flag + '' === '2'){
-				this.props.setOpType('page');
-				// 查询页面数据
-				Ajax({
-					url: `/nccloud/platform/appregister/querypagedetail.do`,
-					info: {
-						name:'应用注册页面',
-						action:'查询'
-					},
-					data: {
-						pk_apppage: key
-					},
-					success: ({
-						data
-					}) => {
-						if (data.success && data.data) {
-							let {
-								apppageVO,
-								appButtonVOs,
-								pageTemplets,
-							} = data.data;
-							this.props.setPageButtonData(appButtonVOs);
-							this.props.setPageTemplateData(pageTemplets);
-							this.props.setNodeData(apppageVO);
-						}
-					}
-				});
-			}
-			selectedNodeData = Object.assign({}, selectedNodeData);
-			if (selectedNodeData.children) {
-				delete selectedNodeData.children;
-			}
-			if (selectedNodeData.parentcode) {
-				this.props.setParentData(selectedNodeData.parentcode);
-			} else {
-				this.props.setParentData('');
-			}
-			this.props.setNodeData(selectedNodeData);
-			this.props.updateTreeData(this.updateNodeData);
-		}
+		this.props.reqTemplateTreeData(key);
 	};
 	render() {
 		const {
@@ -412,32 +310,26 @@ const generateTreeData = (data) => {
 	});
 };
 SearchTree.propTypes = {
-	setNodeData: PropTypes.func.isRequired,
-	updateTreeData: PropTypes.func.isRequired,
+	// setNodeData: PropTypes.func.isRequired,
+	// updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
-	setParentData: PropTypes.func.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
-	addTreeData: PropTypes.func.isRequired,
+	// setParentData: PropTypes.func.isRequired,
+	 addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	 reqTreeData: PropTypes.func.isRequired,
+	 reqTemplateTreeData: PropTypes.func.isRequired
 };
 export default connect(
 	(state) => {
 		return {};
 	}, {
-		setNodeData,
-		updateTreeData,
+		// setNodeData,
+		// updateTreeData,
 		setOpType,
-		setBillStatus,
 		setParentData,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
-		addTreeData,
+		 addTreeData,
 		delTreeData,
-		reqTreeData
+		 reqTreeData,
+		 reqTemplateTreeData
 	}
 )(SearchTree);

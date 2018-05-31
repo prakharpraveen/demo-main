@@ -35,6 +35,15 @@ class ClassFromCard extends Component {
 					xl: 12
 				},
 				{
+					lable: '多语字段',
+					type: 'input',
+					code: 'resid',
+					required: false,
+					md: 24,
+					lg: 24,
+					xl: 12
+				},
+				{
 					lable: '应用描述',
 					type: 'input',
 					code: 'app_desc',

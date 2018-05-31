@@ -73,6 +73,24 @@ class PageLayoutLeft extends Component {
 	}
 }
 /**
+ * 单页左侧基本布局容器
+ */
+class PageLayoutHeader extends Component {
+	static defaultProps = {
+		className: ''
+	};
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div className={`nc-workbench-page-header ${this.props.className}`}>
+				{this.props.children}
+			</div>
+		);
+	}
+}
+/**
  * 单页右侧基本布局容器
  */
 class PageLayoutRight extends Component {
@@ -97,4 +115,4 @@ PageLayoutRight.propTypes = {
 	children: PropTypes.any.isRequired
 };
 
-export { PageLayout, PageLayoutLeft, PageLayoutRight };
+export { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight };

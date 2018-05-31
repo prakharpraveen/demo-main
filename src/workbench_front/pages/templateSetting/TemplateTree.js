@@ -16,8 +16,8 @@ import {
 	setPageButtonData,
 	setPageTemplateData,
 	delTreeData,
-	reqTreeData
-} from 'Store/AppRegister/action';
+	reqTemplateTreeData
+} from 'Store/TemplateSetting/action';
 import {
 	Tree,
 	Input
@@ -47,37 +47,49 @@ class TemplateTree extends Component {
 		};
 	}
 	componentDidMount() {
-		let {
-			treeData
-		} = this.state;
-		treeData = initTreeData;
-		this.setState({
-			treeData
-		}, this.reqTreeData);
-		this.props.addTreeData(this.addTreeData);
-		this.props.delTreeData(this.delTreeData);
-		this.props.reqTreeData(this.reqTreeData);
+		
 	}
 	/**
 	 * tree 数据请求
 	 */
-	reqTreeData = () => {
-		Ajax({
-			url: `/nccloud/platform/appregister/querymodules.do`,
-			info: {
-				name:'应用注册模块',
-				action:'查询'
-			},
-			success: ({
-				data
-			}) => {
-				if (data.success && data.data.length > 0) {
-					this.setState({
-						treeDataArray: data.data
-					}, this.restoreTreeData);
+	reqTemplateTreeData = (key) => {
+		console.log(this.props.reqTemplateTreeData());
+		this.setState({
+			
+		})
+		if (key.length === 0) {
+			return;
+		} else {
+			// 查询模板数据
+			Ajax({
+				url: '/nccloud/platform/template/getTemplatesOfPage.do',
+				info: {
+					name:'查询模板数据',
+					action:'查询'
+				},
+				data: {
+					pageCode: key
+				},
+				success: ({
+					data
+				}) => {
+					console.log(data);
+					if (data.success && data.data) {
+						if (selectedNodeData.parentcode.length > 4) {
+							this.props.setOpType('app');
+						} else {
+							this.props.setOpType('classify');
+						}
+						let {
+							appRegisterVO,
+							appParamVOs
+						} = data.data;
+						this.props.setAppParamData(appParamVOs);
+						this.props.setNodeData(appRegisterVO);
+					}
 				}
-			}
-		});
+			});
+		}
 	};
 	/**
 	 * 新增树节点
@@ -184,8 +196,6 @@ class TemplateTree extends Component {
 		});
 	};
 	onSelect = (key, e) => {
-		console.log(key);
-		console.log(e);
 		let {
 			selectedKeys
 		} = this.state;
@@ -402,14 +412,10 @@ TemplateTree.propTypes = {
 	setNodeData: PropTypes.func.isRequired,
 	updateTreeData: PropTypes.func.isRequired,
 	setOpType: PropTypes.func.isRequired,
-	setBillStatus: PropTypes.func.isRequired,
 	setParentData: PropTypes.func.isRequired,
-	setAppParamData: PropTypes.func.isRequired,
-	setPageButtonData: PropTypes.func.isRequired,
-	setPageTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	reqTemplateTreeData: PropTypes.func.isRequired,
 };
 export default connect(
 	(state) => {
@@ -420,11 +426,8 @@ export default connect(
 		setOpType,
 		setBillStatus,
 		setParentData,
-		setAppParamData,
-		setPageButtonData,
-		setPageTemplateData,
 		addTreeData,
 		delTreeData,
-		reqTreeData
+		reqTemplateTreeData
 	}
 )(TemplateTree);

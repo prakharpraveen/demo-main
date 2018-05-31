@@ -7,7 +7,6 @@ const FormItem = Form.Item;
 class FormCreate extends Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
 	}
 	/**
      * 创建表单项

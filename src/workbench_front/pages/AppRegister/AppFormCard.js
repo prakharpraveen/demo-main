@@ -162,6 +162,12 @@ class AppFromCard extends Component {
 					options: []
 				},
 				{
+					lable: '多语字段',
+					type: 'input',
+					code: 'resid',
+					required: false
+				},
+				{
 					lable: '帮助文件名',
 					type: 'input',
 					code: 'help_name',
