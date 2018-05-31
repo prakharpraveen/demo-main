@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import _ from "lodash";
 import {Button, Table, Switch, Icon, Popconfirm} from "antd";
 import {
     PageLayout,
@@ -12,6 +13,7 @@ import Ajax from "Pub/js/ajax.js";
 import {GetQuery} from "Pub/js/utils.js";
 import TreeSearch from "./TreeSearch";
 import FormCreate from "Components/FormCreate";
+import Notice from "Components/Notice";
 import "./index.less";
 import {WSAESTALE} from "constants";
 class MenuItem extends Component {
@@ -78,6 +80,12 @@ class MenuItem extends Component {
                 isshow: false
             },
             {
+                name: "删除",
+                code: "del",
+                type: "primary",
+                isshow: false
+            },
+            {
                 name: "保存",
                 code: "save",
                 type: "primary",
@@ -98,7 +106,11 @@ class MenuItem extends Component {
         }
         return this.btnList.map((item, index) => {
             if (this.state.isedit) {
-                if (item.code === "add" || item.code === "edit") {
+                if (
+                    item.code === "add" ||
+                    item.code === "edit" ||
+                    item.code === "del"
+                ) {
                     item.isshow = false;
                 } else {
                     item.isshow = true;
@@ -118,6 +130,9 @@ class MenuItem extends Component {
                     this.state.fields.menuitemcode.length === 8
                 ) {
                     item.isshow = false;
+                }
+                if (item.code === "del" && this.state.fields.menuitemcode) {
+                    item.isshow = true;
                 }
             }
             if (item.isshow) {
@@ -140,11 +155,22 @@ class MenuItem extends Component {
     handleBtnClick = key => {
         switch (key) {
             case "add":
-                this.historyData.children.map((item, index) => {});
+                let fieldsChildren = this.state.fields.children;
+                let newCode;
+                if (fieldsChildren.length === 0) {
+                    let fieldsItem = this.state.fields;
+                    newCode = fieldsItem["menuitemcode"] + "01";
+                } else {
+                    newCode = `${fieldsChildren[fieldsChildren.length - 1][
+                        "menuitemcode"
+                    ] -
+                        0 +
+                        1}`;
+                }
                 this.setState({
                     isedit: true,
                     fields: {
-                        menuitemcode: "",
+                        menuitemcode: newCode,
                         menuitemname: "",
                         resid: "",
                         appcodeRef: {
@@ -159,26 +185,97 @@ class MenuItem extends Component {
                 this.setState({isedit: true});
                 break;
             case "save":
+                let {
+                    appcodeRef,
+                    pk_menuitem,
+                    menuitemcode,
+                    menuitemname,
+                    menudes,
+                    pk_menu,
+                    parentcode,
+                    resid
+                } = this.state.fields;
                 console.log(this.state.fields);
-                // Ajax({
-                //     url:`/nccloud/platform/appregister/editappmenuitem.do`,
-                //     data:{
-
-                //     },
-                //     info:{
-                //         name:'菜单注册菜单项',
-                //         action:'修改'
-                //     },
-                //     success:(res)=>{
-                //         let { success, data } = res.data;
-                //         if(success&&data){
-
-                //         }
-                //     }
-                // });
+                let resData = {
+                    pk_menuitem,
+                    menuitemcode,
+                    menuitemname,
+                    menudes,
+                    pk_menu,
+                    parentcode,
+                    resid
+                };
+                if (this.state.fields.appcodeRef) {
+                    resData.appcode = appcodeRef.refcode;
+                }
+                Ajax({
+                    url: `/nccloud/platform/appregister/editappmenuitem.do`,
+                    data: resData,
+                    info: {
+                        name: "菜单注册菜单项",
+                        action: "修改"
+                    },
+                    success: res => {
+                        let {success, data} = res.data;
+                        if (success && data) {
+                            this.setState({isedit: false, fields: {...data}});
+                            Notice({
+                                status: "success",
+                                msg: data.true
+                            });
+                        } else {
+                            Notice({
+                                status: "error",
+                                msg: data.false
+                            });
+                        }
+                    }
+                });
                 this.setState({isedit: true});
                 break;
             case "cancle":
+                this.setState({isedit: false, fields: {...this.historyData}});
+                break;
+            case "del":
+                if (this.state.fields.children) {
+                    Notice({
+                        status: "warning",
+                        msg: "不是叶子节点不能删除！"
+                    });
+                    return;
+                }
+                Ajax({
+                    url: `/nccloud/platform/appregister/deleteappmenuitem.do`,
+                    data: {
+                        pk_menuitem: this.state.fields.pk_menuitem
+                    },
+                    info: {
+                        name: "菜单注册菜单项",
+                        action: "删除"
+                    },
+                    success: res => {
+                        let {success, data} = res.data;
+                        if (success && data) {
+                            let treeData = this.state.treeData;
+                            _.remove(
+                                treeData,
+                                item =>
+                                    item.pk_menuitem ===
+                                    this.state.fields.pk_menuitem
+                            );
+                            this.setState({isedit: false, treeData});
+                            Notice({
+                                status: "success",
+                                msg: data.true
+                            });
+                        } else {
+                            Notice({
+                                status: "error",
+                                msg: data.false
+                            });
+                        }
+                    }
+                });
                 this.setState({isedit: false, fields: {...this.historyData}});
                 break;
             default:
@@ -216,8 +313,11 @@ class MenuItem extends Component {
         let treeItem = treeData.find(item => item.menuitemcode === selectedKey);
         this.historyData = {...treeItem};
         let menuFormData = this.state.menuFormData;
-        menuFormData = menuFormData.map((item,index)=>{
-            if (treeItem.menuitemcode.length < 8 && item.refCode === 'appcodeRef') {
+        menuFormData = menuFormData.map((item, index) => {
+            if (
+                treeItem.menuitemcode.length < 8 &&
+                item.refCode === "appcodeRef"
+            ) {
                 item.disabled = true;
             } else {
                 item.disabled = false;
@@ -225,7 +325,7 @@ class MenuItem extends Component {
             return item;
         });
         console.log(menuFormData);
-        
+
         this.setState({isedit: false, fields: {...treeItem}});
     };
     /**

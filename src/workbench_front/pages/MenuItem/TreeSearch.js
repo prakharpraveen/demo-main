@@ -43,7 +43,12 @@ class TreeSearch extends Component {
         const loop = data =>
             data.map(item => {
                 let {menuitemcode, menuitemname} = item;
-                let itemContent = `${menuitemcode} ${menuitemname}`;
+                let itemContent ;
+                if(menuitemcode === '00'){
+                    itemContent = `${menuitemname}`;
+                }else{
+                    itemContent = `${menuitemcode} ${menuitemname}`;
+                }
                 const index = itemContent.indexOf(searchValue);
                 const beforeStr = itemContent.substr(0, index);
                 const afterStr = itemContent.substr(index + searchValue.length);
@@ -66,6 +71,11 @@ class TreeSearch extends Component {
                 }
                 return <TreeNode key={menuitemcode} title={title} />;
             });
+            let newTreeData = [{
+                /* 给树填个根 */
+                menuitemname:'菜单树',
+                menuitemcode:'00'
+            }];
         return (
             <div className="menuitem-tree-search">
                 <Search
