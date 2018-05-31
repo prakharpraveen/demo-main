@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import intl from "react-intl-universal";
-import {Select, AutoComplete} from "antd";
+import {Select, AutoComplete,Icon } from "antd";
 import Drawer from "react-motion-drawer";
 import PropTypes from "prop-types";
 import {GetQuery} from "Pub/js/utils";
@@ -213,10 +213,19 @@ class Layout extends Component {
                         </div>
                         <div className="nav-right n-right n-v-middle">
                             <span
+								className="margin-right-10"
                                 field="spr"
                                 fieldname="录制SPR"
                                 onClick={this.handleSprClick}>
-                                {sprType ? `开始录制SPR` : `结束录制SPR`}
+                                {sprType ? <Icon
+										title ='开始录制SPR'
+                                        type="play-circle-o"
+										className="iconfont"
+                                    /> : <Icon
+										title ='结束录制SPR'
+                                        type="pause-circle-o"
+										className="iconfont"
+                                    />}
                             </span>
                             {this.getSearchDom()}
                             <span className="margin-right-10">
