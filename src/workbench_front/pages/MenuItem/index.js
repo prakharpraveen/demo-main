@@ -11,12 +11,9 @@ import {
 import Ajax from "Pub/js/ajax.js";
 import {GetQuery} from "Pub/js/utils.js";
 import TreeSearch from "./TreeSearch";
-import {
-    FormContent as FormCreate,
-    getFormData,
-    setFormData
-} from "./FormCreate";
+import FormCreate from "Components/FormCreate";
 import "./index.less";
+import {WSAESTALE} from "constants";
 class MenuItem extends Component {
     constructor(props) {
         super(props);
@@ -25,115 +22,144 @@ class MenuItem extends Component {
             mt: "",
             mn: "",
             isedit: false,
-            treeData: []
+            treeData: [],
+            fields: {},
+            menuFormData: [
+                {
+                    code: "menuitemcode",
+                    type: "input",
+                    label: "菜单项编码",
+                    isRequired: true
+                },
+                {
+                    code: "menuitemname",
+                    type: "input",
+                    label: "菜单项名称",
+                    isRequired: true
+                },
+                {
+                    placeholder: "应用编码",
+                    refName: "关联应用编码",
+                    refCode: "appcodeRef",
+                    refType: "tree",
+                    isTreelazyLoad: false,
+                    queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
+                    onChange: val => {
+                        console.log(val);
+                        // this.setFieldsValue({ cont: val });
+                    },
+                    columnConfig: [
+                        {
+                            name: ["编码", "名称"],
+                            code: ["refcode", "refname"]
+                        }
+                    ],
+                    isMultiSelectedEnabled: false
+                },
+                {
+                    code: "resid",
+                    type: "input",
+                    label: "多语字段",
+                    isRequired: false
+                }
+            ]
         };
         this.btnList = [
+            {
+                name: "新增",
+                code: "add",
+                type: "primary",
+                isshow: false
+            },
             {
                 name: "修改",
                 code: "edit",
                 type: "primary",
-                isedit: false
+                isshow: false
             },
             {
                 name: "保存",
                 code: "save",
                 type: "primary",
-                isedit: true
+                isshow: false
             },
             {
                 name: "取消",
                 code: "cancle",
                 type: "",
-                isedit: true
+                isshow: false
             }
         ];
-        this.menuFormData = [
-            {
-                code: "menuitemcode",
-                type: "input",
-                label: "菜单项编码",
-                isRequired: true
-            },
-            {
-                code: "menuitemname",
-                type: "input",
-                label: "菜单项名称",
-                isRequired: true
-            },
-            {
-                placeholder: "应用编码",
-                refName: "关联应用编码",
-                refCode: "appcode",
-                refType: "tree",
-                isTreelazyLoad: false,
-                queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
-                onChange: val => {
-                    console.log(val);
-                    // this.setFieldsValue({ cont: val });
-                },
-                columnConfig: [
-                    {
-                        name: ["编码", "名称"],
-                        code: ["refcode", "refname"]
-                    }
-                ],
-                isMultiSelectedEnabled: false
-            },
-            {
-                code: "resid",
-                type: "input",
-                label: "多语字段",
-                isRequired: false
-            }
-        ];
+        this.historyData;
     }
     creatBtn = () => {
-        // if (this.state.mt) {
-        //     return;
-        // }
+        if (this.state.mt) {
+            return;
+        }
         return this.btnList.map((item, index) => {
             if (this.state.isedit) {
-                if (item.isedit) {
-                    return (
-                        <Button
-                            className="margin-left-10"
-                            key={item.code}
-                            type={item.type}
-                            onClick={() => {
-                                this.handleBtnClick(item.code);
-                            }}>
-                            {item.name}
-                        </Button>
-                    );
+                if (item.code === "add" || item.code === "edit") {
+                    item.isshow = false;
                 } else {
-                    return null;
+                    item.isshow = true;
                 }
             } else {
-                if (item.isedit) {
-                    return null;
+                if (
+                    item.code === "add" ||
+                    (this.state.fields.menuitemcode && item.code === "edit")
+                ) {
+                    item.isshow = true;
                 } else {
-                    return (
-                        <Button
-                            className="margin-left-10"
-                            key={item.code}
-                            type={item.type}
-                            onClick={() => {
-                                this.handleBtnClick(item.code);
-                            }}>
-                            {item.name}
-                        </Button>
-                    );
+                    item.isshow = false;
                 }
+                if (
+                    item.code === "add" &&
+                    this.state.fields.menuitemcode &&
+                    this.state.fields.menuitemcode.length === 8
+                ) {
+                    item.isshow = false;
+                }
+            }
+            if (item.isshow) {
+                return (
+                    <Button
+                        className="margin-left-10"
+                        key={item.code}
+                        type={item.type}
+                        onClick={() => {
+                            this.handleBtnClick(item.code);
+                        }}>
+                        {item.name}
+                    </Button>
+                );
+            } else {
+                return null;
             }
         });
     };
     handleBtnClick = key => {
         switch (key) {
+            case "add":
+                this.historyData.children.map((item, index) => {});
+                this.setState({
+                    isedit: true,
+                    fields: {
+                        menuitemcode: "",
+                        menuitemname: "",
+                        resid: "",
+                        appcodeRef: {
+                            refcode: "",
+                            refname: "",
+                            refpk: ""
+                        }
+                    }
+                });
+                break;
             case "edit":
                 this.setState({isedit: true});
                 break;
             case "save":
-                console.log(getFormData());
+                console.log(this.state.fields);
                 // Ajax({
                 //     url:`/nccloud/platform/appregister/editappmenuitem.do`,
                 //     data:{
@@ -153,7 +179,7 @@ class MenuItem extends Component {
                 this.setState({isedit: true});
                 break;
             case "cancle":
-                this.setState({isedit: false});
+                this.setState({isedit: false, fields: {...this.historyData}});
                 break;
             default:
                 break;
@@ -186,12 +212,30 @@ class MenuItem extends Component {
         });
     };
     handleSelect = selectedKey => {
-        console.log(selectedKey);
         let treeData = this.state.treeData;
         let treeItem = treeData.find(item => item.menuitemcode === selectedKey);
-        treeItem.appcode = {};
-        setFormData()(treeItem);
-        // this.setState({treeItem});
+        this.historyData = {...treeItem};
+        let menuFormData = this.state.menuFormData;
+        menuFormData = menuFormData.map((item,index)=>{
+            if (treeItem.menuitemcode.length < 8 && item.refCode === 'appcodeRef') {
+                item.disabled = true;
+            } else {
+                item.disabled = false;
+            }
+            return item;
+        });
+        console.log(menuFormData);
+        
+        this.setState({isedit: false, fields: {...treeItem}});
+    };
+    /**
+     * 表单任一字段值改变操作
+     * @param {String|Object} changedFields 改变的字段及值
+     */
+    handleFormChange = changedFields => {
+        this.setState(({fields}) => ({
+            fields: {...fields, ...changedFields}
+        }));
     };
     componentWillMount() {
         let {id, mn, mt} = GetQuery(this.props.location.search);
@@ -219,9 +263,7 @@ class MenuItem extends Component {
     }
 
     render() {
-        console.log(1111);
-
-        let {treeData, mn, isedit} = this.state;
+        let {treeData, mn, isedit, fields, menuFormData} = this.state;
         return (
             <PageLayout
                 header={
@@ -240,12 +282,16 @@ class MenuItem extends Component {
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <div className="nc-workbench-menuitem-form">
-                        <FormCreate
-                            isedit={isedit}
-                            formData={this.menuFormData}
-                            getFormData={getFormData}
-                            setFormData={setFormData}
-                        />
+                        {fields.menuitemcode || fields.menuitemcode === "" ? (
+                            <FormCreate
+                                isedit={isedit}
+                                formData={menuFormData}
+                                fields={fields}
+                                onChange={this.handleFormChange}
+                            />
+                        ) : (
+                            ""
+                        )}
                     </div>
                 </PageLayoutRight>
             </PageLayout>

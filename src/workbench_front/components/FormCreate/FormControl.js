@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form } from "antd";
-export const FormContent = Com => {
+export const FormControl = Com => {
     return Form.create({
         onFieldsChange(props, changedFields) {
             // let newChangeData = {};

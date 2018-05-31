@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Form, Row, Col, Input } from "antd";
-import { FormContent } from "./FormContent";
-import { high } from "nc-lightapp-front";
+import React, {Component} from "react";
+import {Form, Row, Col, Input} from "antd";
+import {FormControl} from "./FormControl";
+import {high} from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
-// import name from "./formCreate.less";
-const { Refer } = high;
+import name from "./index.less";
+const {Refer} = high;
 const FormItem = Form.Item;
 class ShowCom extends Component {
     constructor(props) {
@@ -14,7 +14,9 @@ class ShowCom extends Component {
         return (
             <div>
                 {typeof this.props.value === "object"
-                    ? this.props.value.refName
+                    ? this.props.value.refname
+                        ? this.props.value.refname
+                        : ""
                     : this.props.value}
             </div>
         );
@@ -25,15 +27,14 @@ class FormCreate extends Component {
         super(props);
     }
     createComponent = item => {
-        const { getFieldDecorator } = this.props.form;
+        const {getFieldDecorator} = this.props.form;
         switch (item.type) {
             case "input":
                 return (
                     <Col xs={24} md={24} lg={24} key={item.code}>
                         <FormItem
                             className="form-item margin-bottom-20"
-                            label={item.label}
-                        >
+                            label={item.label}>
                             {getFieldDecorator(item.code, {
                                 initialValue: "",
                                 rules: [
@@ -57,8 +58,7 @@ class FormCreate extends Component {
                     <Col xs={24} md={24} lg={24} key={item.refCode}>
                         <FormItem
                             className="form-item margin-bottom-20"
-                            label={item.refName}
-                        >
+                            label={item.refName}>
                             {getFieldDecorator(item.refCode, {
                                 initialValue: {},
                                 rules: [
@@ -93,27 +93,6 @@ class FormCreate extends Component {
         });
         return children;
     }
-    /**
-     * 设置表单数据
-     * @param {Object} objValue 对象
-     */
-    // getFormData = () => {
-    //     const { getFieldsValue } = this.props.form;
-    //     return getFieldsValue();
-    // };
-    // /**
-    //  * 设置表单数据
-    //  * @param {Object} objValue 对象
-    //  */
-    // setFormData = () => {
-    //     const { setFieldsValue } = this.props.form;
-    //     // const {setFields} = this.props.form;
-    //     return setFieldsValue;
-    // };
-    componentDidMount() {
-        // this.props.getFormData(this.getFormData);
-        // this.props.setFormData(this.setFormData);
-    }
     render() {
         return (
             <Form layout="inline">
@@ -122,30 +101,4 @@ class FormCreate extends Component {
         );
     }
 }
-let getFormDataFun;
-let setFormDataFun;
-/**
- * 获取表单数据
- * @param {Function} fun
- */
-const getFormData = fun => {
-    if (fun) {
-        getFormDataFun = fun;
-    } else {
-        return getFormDataFun();
-    }
-};
-/**
- * 设置表单数据
- * @param {Function} fun
- */
-const setFormData = fun => {
-    if (fun) {
-        setFormDataFun = fun;
-    } else {
-        return setFormDataFun();
-    }
-};
-export default FormContent(FormCreate);
-// const FormContent = FormContent(FormCreate);
-// export { FormContent, getFormData, setFormData };
+export default FormControl(FormCreate);

@@ -242,7 +242,7 @@ class PageTable extends Component {
 				render: (text, record) => this.renderColumns(text, record, 'name')
 			},
 			{
-				title: '多语文件',
+				title: '多语字段',
 				dataIndex: 'resid',
 				width: '15%',
 				render: (text, record) => this.renderColumns(text, record, 'resid')

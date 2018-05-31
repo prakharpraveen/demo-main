@@ -31,7 +31,7 @@ class PageFormCard extends Component{
 					required: true
 				},
 				{
-					lable: '多语资源',
+					lable: '多语字段',
 					type: 'input',
 					code: 'resid',
 					required: false	

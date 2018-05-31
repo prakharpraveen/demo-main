@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import FormItem1 from "./FormItem";
-import FormContent from "./FormCreate";
+import FormContent from "Components/FormCreate";
 
 class Demo extends Component {
     constructor(props) {
