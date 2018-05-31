@@ -156,8 +156,7 @@ class MenuItem extends Component {
                 }
                 if (fieldsChildren) {
                     if (
-                        this.state.fields.menuitemcode.length < 8 ||
-                        newCode < 8
+                        newCode.length < 8
                     ) {
                         disabled = true;
                     }
@@ -354,7 +353,7 @@ class MenuItem extends Component {
     };
     handleSelect = selectedKey => {
         if (selectedKey === "00") {
-            this.setState({isedit: false, fields: {}});
+            this.setState({isedit: false,parentKey: selectedKey, fields: {}});
             return;
         }
         let treeData = this.state.treeData;
