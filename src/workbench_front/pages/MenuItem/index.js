@@ -10,7 +10,7 @@ import {
     PageLayoutRight
 } from "Components/PageLayout";
 import Ajax from "Pub/js/ajax.js";
-import {GetQuery} from "Pub/js/utils.js";
+import {GetQuery, Pad} from "Pub/js/utils.js";
 import TreeSearch from "./TreeSearch";
 import FormCreate from "Components/FormCreate";
 import Notice from "Components/Notice";
@@ -23,50 +23,12 @@ class MenuItem extends Component {
             id: "",
             mt: "",
             mn: "",
-            parentKey:'',
+            parentKey: "",
             isedit: false,
             isNew: false,
             treeData: [],
             fields: {},
-            menuFormData: [
-                {
-                    code: "menuitemcode",
-                    type: "input",
-                    label: "菜单项编码",
-                    isRequired: true
-                },
-                {
-                    code: "menuitemname",
-                    type: "input",
-                    label: "菜单项名称",
-                    isRequired: true
-                },
-                {
-                    placeholder: "应用编码",
-                    refName: "关联应用编码",
-                    refCode: "appcodeRef",
-                    refType: "tree",
-                    isTreelazyLoad: false,
-                    queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
-                    onChange: val => {
-                        console.log(val);
-                        // this.setFieldsValue({ cont: val });
-                    },
-                    columnConfig: [
-                        {
-                            name: ["编码", "名称"],
-                            code: ["refcode", "refname"]
-                        }
-                    ],
-                    isMultiSelectedEnabled: false
-                },
-                {
-                    code: "resid",
-                    type: "input",
-                    label: "多语字段",
-                    isRequired: false
-                }
-            ]
+            disabled: false
         };
         this.btnList = [
             {
@@ -155,27 +117,62 @@ class MenuItem extends Component {
         });
     };
     handleBtnClick = key => {
+        let disabled = false;
         switch (key) {
             case "add":
                 let fieldsChildren = this.state.fields.children;
                 let newCode;
-                if (!fieldsChildren || fieldsChildren.length === 0) {
-                    let fieldsItem = this.state.fields;
-                    newCode = fieldsItem["menuitemcode"] + "01";
-                } else {
-                    newCode = `${fieldsChildren[fieldsChildren.length - 1][
+                if (
+                    this.state.parentKey === "" ||
+                    this.state.parentKey === "00"
+                ) {
+                    let treeArrayData = this.state.treeData.filter(
+                        item => item.menuitemcode.length === 2
+                    );
+                    newCode = `${treeArrayData[treeArrayData.length - 1][
                         "menuitemcode"
                     ] -
                         0 +
                         1}`;
+                } else {
+                    if (!fieldsChildren || fieldsChildren.length === 0) {
+                        let fieldsItem = this.state.fields;
+                        newCode = fieldsItem["menuitemcode"]
+                            ? fieldsItem["menuitemcode"] + "01"
+                            : "01";
+                    } else {
+                        newCode = `${fieldsChildren[fieldsChildren.length - 1][
+                            "menuitemcode"
+                        ] -
+                            0 +
+                            1}`;
+                        newCode = Pad(
+                            newCode,
+                            fieldsChildren[fieldsChildren.length - 1][
+                                "menuitemcode"
+                            ].length
+                        );
+                    }
+                }
+                if (fieldsChildren) {
+                    if (
+                        this.state.fields.menuitemcode.length < 8 ||
+                        newCode < 8
+                    ) {
+                        disabled = true;
+                    }
+                } else {
+                    disabled = true;
                 }
                 this.setState({
                     isedit: true,
                     isNew: true,
-                    parentKey:this.state.fields.menuitemcode,
+                    disabled,
                     fields: {
+                        pk_menu: this.state.id,
                         menuitemcode: newCode,
                         menuitemname: "",
+                        menudes: "",
                         resid: "",
                         appcodeRef: {
                             refcode: "",
@@ -186,7 +183,10 @@ class MenuItem extends Component {
                 });
                 break;
             case "edit":
-                this.setState({isedit: true});
+                if (this.state.fields.menuitemcode.length < 8) {
+                    disabled = true;
+                }
+                this.setState({isedit: true, disabled});
                 break;
             case "save":
                 let {
@@ -199,32 +199,35 @@ class MenuItem extends Component {
                     parentcode,
                     resid
                 } = this.state.fields;
-                let resData, url;
+                let resData, urlData;
                 if (this.state.isNew) {
-                    if(this.state.parentKey === '' ||this.state.parentKey === '00'){
+                    if (
+                        this.state.parentKey === "" ||
+                        this.state.parentKey === "00"
+                    ) {
                         resData = {
                             menuitemcode,
                             menuitemname,
-                            menudes: this.historyData.menudes,
-                            pk_menu: this.historyData.pk_menu,
+                            menudes,
+                            pk_menu,
                             resid
                         };
-                    }else{
+                    } else {
                         resData = {
                             menuitemcode,
                             menuitemname,
-                            menudes: this.historyData.menudes,
-                            pk_menu: this.historyData.pk_menu,
+                            menudes,
+                            pk_menu,
                             parentcode: this.state.parentKey,
                             resid
                         };
                     }
-                    url: `/nccloud/platform/appregister/insertappmenuitem.do`;
+                    urlData = `/nccloud/platform/appregister/insertappmenuitem.do`;
                     if (this.state.fields.appcodeRef) {
                         resData.appcode = appcodeRef.refcode;
                     }
                 } else {
-                    url: `/nccloud/platform/appregister/editappmenuitem.do`;
+                    urlData = `/nccloud/platform/appregister/editappmenuitem.do`;
                     resData = {
                         pk_menuitem,
                         menuitemcode,
@@ -239,7 +242,7 @@ class MenuItem extends Component {
                     }
                 }
                 Ajax({
-                    url,
+                    url: urlData,
                     data: resData,
                     info: {
                         name: "菜单注册菜单项",
@@ -248,6 +251,13 @@ class MenuItem extends Component {
                     success: res => {
                         let {success, data} = res.data;
                         if (success && data) {
+                            if (this.state.isNew) {
+                                let treeData = [...this.state.treeData];
+                                treeData.push(data);
+                                this.setState({
+                                    treeData
+                                });
+                            }
                             this.setState({
                                 isedit: false,
                                 isNew: false,
@@ -350,20 +360,11 @@ class MenuItem extends Component {
         let treeData = this.state.treeData;
         let treeItem = treeData.find(item => item.menuitemcode === selectedKey);
         this.historyData = {...treeItem};
-        let menuFormData = [...this.state.menuFormData];
-        menuFormData = menuFormData.map((item, index) => {
-            if (
-                treeItem.menuitemcode.length < 8 &&
-                item.refCode === "appcodeRef"
-            ) {
-                item.disabled = true;
-            } else {
-                item.disabled = false;
-            }
-            return item;
+        this.setState({
+            isedit: false,
+            parentKey: selectedKey,
+            fields: {...treeItem}
         });
-        console.log(menuFormData);
-        this.setState({isedit: false, menuFormData, fields: {...treeItem}});
     };
     /**
      * 表单任一字段值改变操作
@@ -400,7 +401,47 @@ class MenuItem extends Component {
     }
 
     render() {
-        let {treeData, mn, isedit, fields, menuFormData} = this.state;
+        let {treeData, mn, isedit, fields} = this.state;
+        let menuFormData = [
+            {
+                code: "menuitemcode",
+                type: "input",
+                label: "菜单项编码",
+                isRequired: true
+            },
+            {
+                code: "menuitemname",
+                type: "input",
+                label: "菜单项名称",
+                isRequired: true
+            },
+            {
+                placeholder: "应用编码",
+                refName: "关联应用编码",
+                refCode: "appcodeRef",
+                refType: "tree",
+                isTreelazyLoad: false,
+                queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
+                onChange: val => {
+                    console.log(val);
+                    // this.setFieldsValue({ cont: val });
+                },
+                disabled: this.state.disabled,
+                columnConfig: [
+                    {
+                        name: ["编码", "名称"],
+                        code: ["refcode", "refname"]
+                    }
+                ],
+                isMultiSelectedEnabled: false
+            },
+            {
+                code: "resid",
+                type: "input",
+                label: "多语字段",
+                isRequired: false
+            }
+        ];
         return (
             <PageLayout
                 header={

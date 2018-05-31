@@ -17,3 +17,16 @@ export const GetQuery = (query) => {
 	}
 	return theRequest;
 };
+/**
+ * 数字补位
+ * @param {Number} num 
+ * @param {Number} n 
+ */
+export const Pad=(num, n)=> {  
+	let len = num.toString().length;  
+    while(len < n) {  
+        num = "0" + num;  
+        len++;  
+    }  
+    return num;    
+}  

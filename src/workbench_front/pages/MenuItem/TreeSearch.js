@@ -7,12 +7,13 @@ class TreeSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: [],
+            expandedKeys: ['00'],
             searchValue: "",
             autoExpandParent: true
         };
     }
     onExpand = expandedKeys => {
+        expandedKeys.push('00');
         this.setState({
             expandedKeys,
             autoExpandParent: false
@@ -28,6 +29,7 @@ class TreeSearch extends Component {
         const expandedKeys = dataList.map((item, index) => {
             return item.menuitemcode;
         });
+        expandedKeys.push('00');
         this.setState({
             expandedKeys,
             autoExpandParent: true
