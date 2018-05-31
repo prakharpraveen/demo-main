@@ -20,11 +20,9 @@ class TreeSearch extends Component {
     };
     onChange = e => {
         const value = e.target.value;
-        this.setState({searchValue: value},
-            () => {
-                this.props.onSearch(value, this.handleExpanded);
-            }
-        );
+        this.setState({searchValue: value}, () => {
+            this.props.onSearch(value, this.handleExpanded);
+        });
     };
     handleExpanded = dataList => {
         const expandedKeys = dataList.map((item, index) => {
@@ -35,18 +33,18 @@ class TreeSearch extends Component {
             autoExpandParent: true
         });
     };
-    handleSelect = (selectedKey)=>{
+    handleSelect = selectedKey => {
         this.props.onSelect(selectedKey[0]);
-    }
+    };
     render() {
         const {searchValue, expandedKeys, autoExpandParent} = this.state;
         const loop = data =>
             data.map(item => {
                 let {menuitemcode, menuitemname} = item;
-                let itemContent ;
-                if(menuitemcode === '00'){
+                let itemContent;
+                if (menuitemcode === "00") {
                     itemContent = `${menuitemname}`;
-                }else{
+                } else {
                     itemContent = `${menuitemcode} ${menuitemname}`;
                 }
                 const index = itemContent.indexOf(searchValue);
@@ -71,11 +69,18 @@ class TreeSearch extends Component {
                 }
                 return <TreeNode key={menuitemcode} title={title} />;
             });
-            let newTreeData = [{
+        let newTreeData = [
+            {
                 /* 给树填个根 */
-                menuitemname:'菜单树',
-                menuitemcode:'00'
-            }];
+                menuitemname: "菜单树",
+                menuitemcode: "00",
+                children: createTree(
+                    this.props.dataSource,
+                    "menuitemcode",
+                    "parentcode"
+                )
+            }
+        ];
         return (
             <div className="menuitem-tree-search">
                 <Search
@@ -89,13 +94,7 @@ class TreeSearch extends Component {
                     expandedKeys={expandedKeys}
                     onSelect={this.handleSelect}
                     autoExpandParent={autoExpandParent}>
-                    {loop(
-                        createTree(
-                            this.props.dataSource,
-                            "menuitemcode",
-                            "parentcode"
-                        )
-                    )}
+                    {loop(newTreeData)}
                 </Tree>
             </div>
         );
