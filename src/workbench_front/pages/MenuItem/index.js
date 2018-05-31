@@ -260,7 +260,7 @@ class MenuItem extends Component {
                             this.setState({
                                 isedit: false,
                                 isNew: false,
-                                fields: {...data}
+                                fields: data
                             });
                             Notice({
                                 status: "success",
