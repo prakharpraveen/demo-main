@@ -13,11 +13,14 @@ const Ajax = ({
 	data,
 	method = 'post',
 	alert = false,
+	switchKey = false,
 	info = {name:'',action:''},
 	success = (res) => {
 		cosnole.log(res);
 	}
 }) => {
+
+	let gzipSwitch = localStorage.getItem('gzip') - 0;
 	let gziptools = new Gzip();
 	data = {
 		busiParamJson: JSON.stringify(data),
@@ -26,38 +29,72 @@ const Ajax = ({
 			ts: Date.parse(new Date())
 		}
 	}
-	Axios({
-		url,
-		data,
-		method,
-		transformRequest : [function (data) {
-			// 不压缩
-			let gData = JSON.stringify(data);
-			//Do whatever you want to transform the data
-			// 启动压缩
-			// let gData = gziptools.zip(JSON.stringify(data));
-			// console.log(data)
-			return gData;
-		}],
-		transformResponse: [function (data) {
-			let gData = JSON.parse(data);
-			// 对 data 进行任意转换处理
-			// 启动压缩
-			// let resData =  gziptools.unzip(data);	
-			// console.log(gData)
-			return gData;
-		}]
-	}).then((res) => {
-		if (res.data.success) {
-			// if (alert) {
-			// 	message.info(<Alert message='成功' description='你所提交的信息已经保存成功。' type='success' showIcon />);
-			// }
-			success(res);
-		} else {
-			Notice({ status: 'error', msg: res.data.error.message });
-			console.log(res);
-		}
-	});
+	/**
+	 * 是否为压缩的压缩的
+	 */
+	if(switchKey){
+		Axios({
+			url,
+			data,
+			method,
+			transformRequest : [function (data) {
+				// 不压缩
+				let gData = JSON.stringify(data);
+				return gData;
+			}],
+			transformResponse: [function (data) {
+				let gData = JSON.parse(data);
+				return gData;
+			}]
+		}).then((res) => {
+			if (res.data.success) {
+				success(res);
+			} else {
+				Notice({ status: 'error', msg: res.data.error.message });
+				console.log(res);
+			}
+		});	
+	}else{
+		Axios({
+			url,
+			data,
+			method,
+			transformRequest : [function (data) {
+				// 不压缩
+				let gData = JSON.stringify(data);
+				//Do whatever you want to transform the data
+				// 启动压缩
+				if(gzipSwitch){
+					gData = gziptools.zip(gData);
+				}
+				// console.log(data)
+				return gData;
+			}],
+			transformResponse: [function (data) {
+				// 对 data 进行任意转换处理
+				let gData;
+				// 启动压缩
+				if(gzipSwitch){
+					gData =  gziptools.unzip(data);	
+				}else{
+					gData = JSON.parse(data);
+				}
+				// console.log(gData)
+				return gData;
+			}]
+		}).then((res) => {
+			if (res.data.success) {
+				// if (alert) {
+				// 	message.info(<Alert message='成功' description='你所提交的信息已经保存成功。' type='success' showIcon />);
+				// }
+				success(res);
+			} else {
+				Notice({ status: 'error', msg: res.data.error.message });
+				console.log(res);
+			}
+		});	
+	}
+	
 };
 
 export default Ajax;

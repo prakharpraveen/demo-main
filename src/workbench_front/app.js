@@ -94,6 +94,20 @@ class App extends Component {
 			userInfo: '小明'
 		};
 		this.props.initAppData(data);
+		Ajax({
+			url:`/nccloud/platform/gzip/switch.do`,
+			switchKey:true,
+			info:{
+				name:'流量压缩开关',
+				action:'查询'
+			},
+			success:(res)=>{
+				let { success , data} = res.data;
+				if(success&&data){
+					localStorage.setItem('gzip',data?1:0);
+				}
+			}
+		});
 	}
 	render() {
 		return <Routes />;
