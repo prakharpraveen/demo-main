@@ -13,6 +13,7 @@ import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
+import BusinessDate from './BusinessDate';
 import { sprLog } from './spr';
 import "./index.less";
 import Ajax from "Pub/js/ajax";
@@ -252,6 +253,7 @@ class Layout extends Component {
                         ) : (
                             <Breadcrumb />
                         )}
+						<BusinessDate/>
                     </div>
                 </div>
                 <div className="nc-workbench-container">
