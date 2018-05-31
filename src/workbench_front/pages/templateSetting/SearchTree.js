@@ -60,27 +60,6 @@ class SearchTree extends Component {
 		this.props.reqTreeData(this.reqTreeData);
 	}
 	/**
-	 * tree 数据请求
-	 */
-	reqTreeData = () => {
-		Ajax({
-			url: `/nccloud/platform/appregister/querymodules.do`,
-			info: {
-				name:'应用注册模块',
-				action:'查询'
-			},
-			success: ({
-				data
-			}) => {
-				if (data.success && data.data.length > 0) {
-					this.setState({
-						treeDataArray: data.data
-					}, this.restoreTreeData);
-				}
-			}
-		});
-	};
-	/**
 	 * 新增树节点
 	 * @param {Object} nodeData
 	 */
@@ -134,9 +113,27 @@ class SearchTree extends Component {
 		);
 	};
 	/**
-	 * 将平铺树数组转换为树状数组
-	 * 
+	 * tree 数据请求
 	 */
+	reqTreeData = () => {
+		Ajax({
+			url: `/nccloud/platform/appregister/querymodules.do`,
+			info: {
+				name:'应用注册模块',
+				action:'查询'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success && data.data.length > 0) {
+					console.log(data.data);
+					this.setState({
+						treeDataArray: data.data
+					}, this.restoreTreeData);
+				}
+			}
+		});
+	};
 	restoreTreeData = () => {
 		let {
 			treeData,

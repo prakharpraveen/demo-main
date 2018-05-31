@@ -53,8 +53,10 @@ class TemplateTree extends Component {
 	 * tree 数据请求
 	 */
 	reqTemplateTreeData = (key) => {
-		debugger
-		console.log(key);
+		console.log(this.props.reqTemplateTreeData());
+		this.setState({
+			
+		})
 		if (key.length === 0) {
 			return;
 		} else {
