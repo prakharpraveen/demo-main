@@ -112,6 +112,7 @@ class AppRegister extends Component {
 					code: '',
 					name: '',
 					app_desc: '',
+					resid: '',
 					help_name: ''
 				};
 				this.props.setNodeData(classData);
@@ -142,6 +143,7 @@ class AppRegister extends Component {
 					height: '1',
 					target_path: '',
 					apptype: 1,
+					resid: '',
 					image_src: ''
 				};
 				this.props.setAppParamData([]);
