@@ -34,7 +34,15 @@ class IndividuationRegister extends Component {
                 this.save();
                 break;
             case "cancle":
-                this.setState({isedit: false, fields: {...this.historyData}});
+                if (this.state.isNew) {
+                    this.historyData = {};
+                }
+                this.setState({
+                    isedit: false,
+                    isNew: false,
+                    parentKey: "",
+                    fields: {...this.historyData}
+                });
                 break;
             case "del":
                 this.del();
@@ -277,7 +285,6 @@ class IndividuationRegister extends Component {
                         ""
                     ) : (
                         <FormCreate
-                            isedit={isedit}
                             formData={menuFormData}
                             fields={fields}
                             onChange={this.handleFormChange}
