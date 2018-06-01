@@ -25,6 +25,7 @@ class MyHeader extends Component {
 		this.setState({ batchSettingModalVisibel: visibel })
 	}
 	render() {
+		let { batchSettingModalVisibel} = this.state;
 		return (
 			<div className='template-setting-header'>
 				<div className='header-name'>
@@ -36,10 +37,10 @@ class MyHeader extends Component {
 					<Button onClick={this.showModal}>预览</Button>
 					<Button>取消</Button>
 				</div>
-				<PreviewModal
-					batchSettingModalVisibel={this.state.batchSettingModalVisibel}
+				{batchSettingModalVisibel && <PreviewModal
+					batchSettingModalVisibel={batchSettingModalVisibel}
 					setModalVisibel={this.setModalVisibel}
-				/>
+				/>} 
 			</div>
 		);
 	}

@@ -3,7 +3,8 @@ import * as zonesetting from './action-type';
 let defaultState = {
 	// 初始区域列表 
 	selectCard:[],
-	areaList:[]
+	areaList:[],
+	previewData:[],
 };
 // 首页表单数据
 export const zoneSettingData = (state = defaultState, action = {}) => { 
@@ -14,6 +15,8 @@ export const zoneSettingData = (state = defaultState, action = {}) => {
 			return { ...state,...{selectCard: action.selectCard} };
 		case zonesetting.UPDATEAREALIST:
 			return { ...state,...{areaList: action.areaList} };
+		case zonesetting.PREVIEWDATA:
+			return { ...state, ...{ previewData: action.previewData } };
 		default:
 			return state;
 	}

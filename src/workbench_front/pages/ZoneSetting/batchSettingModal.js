@@ -24,7 +24,8 @@ class BatchSettingModal extends Component {
 		areaList[areaIndex]  = this.state.newSource;
 		// 更新redux全局属性列表 
         this.props.updateAreaList(areaList);
-        console.log(areaList[areaIndex], "修改的区域")
+		console.log(areaList[areaIndex], "修改的区域");
+		this.showModalHidden();
 	}
 	saveState = (newSource) =>{
 		this.setState({newSource})

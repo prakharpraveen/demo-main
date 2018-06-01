@@ -6,4 +6,5 @@ export const ZONESETTING = 'ZONESETTING';
 export const UPDATESELECTCARD = 'UPDATESELECTCARD';
 // 增加区域字段 
 export const UPDATEAREALIST = 'UPDATEAREALIST';
-
+// 更新上传预览区域数据 
+export const PREVIEWDATA = 'PREVIEWDATA';

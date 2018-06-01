@@ -4,51 +4,115 @@ import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
 import { Input, Icon, Modal, Button } from 'antd';
 import * as utilService from './utilService';
-import {  updateAreaList } from 'Store/ZoneSetting/action';
+import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
 
 class PreviewModal extends Component {
 	constructor(props) {
 		super(props);
-		let { form, button, table, insertTable, search } = this.props;
-		let { setSearchValue, setSearchValByField, getAllSearchData } = search;
-		this.setSearchValByField = setSearchValByField;//设置查询区某个字段值
-		this.getAllSearchData = getAllSearchData;//获取查询区所有字段数据
-
 		this.state = {
-			newSource:{}
+			forms:[],
+			searchs:[],
+			tables:[]
 		};
-		
 	}
 	showModalHidden = ()=>{
         this.props.setModalVisibel(false)
     }
     onOkDialog = ()=>{
-	
-	}
-	saveState = (newSource) =>{
-	
-		/* this.setState({newSource}) */
+		this.props.setModalVisibel(false)
 	}
 
-	getMeta = (data) =>{
-
-	}
-
-	
-	componentDidMount(){
-		//let param = getUrlParam('t');
-	//	this.props.setZoneTempletid(param);
-	
-	}
-	render() {
-		let { table, button, search } = this.props;
+	createDom = () =>{
+		let { editTable, form, search } = this.props;
+		let { createForm } = form;
+		let { createEditTable } = editTable;
 		let { NCCreateSearch } = search;
+		let {forms, tables, searchs} = this.state;
+		let result =[];
+		// 表单
+		if(forms.length){
+			forms.map((val,i)=>{
+				result.push(
+				<div className='area' key={`form${i}`}>
+					<div className='descrip'>
+							<span key={`forms${i}`}> ▼ </span>{`表单区${i+1}_${val.name}`}
+					</div>
+							{ createForm(val.id)}
+				</div>
+				)
+			})
+		}
+		// 查询区
+		if (searchs.length) {
+			searchs.map((val, i) => {
+				result.push(
+					<div className='area' key={`search${i}`}>
+						<div className='descrip'>
+							<span key={`searchs${i}`} > ▼ </span>{`查询区${i+1}_${val.name}`}
+						</div>
+						{NCCreateSearch(val.id)}
+					</div>
+				)
+			})
+		} 
+		// 表格
+		if (tables.length) {
+			tables.map((val, i) => {
+				result.push(
+					<div className='area' key={`table${i}`}>
+						<div className='descrip'>
+							<span key={`tables${i}`}> ▼ </span>{`表格区${i+1}_${val.name}`}
+						</div>
+						{createEditTable(val.id)}
 
+					</div>
+				)
+			})
+		} 
+		return result;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.previewData){
+			let reviewData = nextProps.previewData;
+			let search = [], form = [], table = [];
+			reviewData.forEach((v,i)=>{
+				if (Object.keys(v) && v[Object.keys(v)[0]] && v[Object.keys(v)[0]].moduletype){
+					let key = v[Object.keys(v)[0]].moduletype;
+					let name = v[Object.keys(v)[0]].name;
+					switch (key) {
+						case 'form':
+							form.push({ id: Object.keys(v)[0],name:name})
+							break;
+						case 'table':
+							table.push({ id: Object.keys(v)[0], name: name })
+							break;
+						case 'search':
+							search.push({ id: Object.keys(v)[0], name: name })
+							break;
+						default:
+							break;
+					}
+				}
+			});
+			//  更新state; 
+			this.setState({
+				searchs:search,
+				tables:table,
+				forms:form
+			})	
+		}
+	} 
+	render() {
+		let { editTable, form, search } = this.props;
+		let { createForm } = form;
+		let { createEditTable } = editTable;
+		let { NCCreateSearch } = search;
 		return (
 			<Modal
-				title='批量设置-卡片区'
+				title='预览区'
 				mask={false}
 				wrapClassName='myModal'
 				visible={this.props.batchSettingModalVisibel}
@@ -68,12 +132,7 @@ class PreviewModal extends Component {
 					</Button>
 				]}
 			>
-					<div className="nc-bill-search-area">
-						{NCCreateSearch('data', {
-						//	onAfterEvent: afterEvent.bind(this),
-						//	clickSearchBtn: searchBtnClick.bind(this)
-						})}
-					</div>
+					{this.createDom()}
 			</Modal>
 
 		);
@@ -84,8 +143,11 @@ PreviewModal = createPage({
 	initTemplate: initTemplate
 })(PreviewModal);
 
-export default connect((state) => ({ 
-    areaList: state.zoneSettingData.areaList,
-}), {
-    updateAreaList,
+export default connect((state) => {
+	return {
+		areaList: state.zoneSettingData.areaList,
+		previewData: state.zoneSettingData.previewData,
+	}
+}, {
+		updatePreviewData,
 	})(PreviewModal);
