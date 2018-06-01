@@ -10,9 +10,12 @@ import { GetQuery } from 'Pub/js/utils';
 import store from './store';
 import Routes from './routes';
 import Notice from 'Components/Notice';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 import 'Assets/iconfont/iconfont.js';
 import 'Pub/css/public.less';
 import './theme/theme.css';
+moment.locale('zh-cn');
 window.proxyAction = $NCPE.proxyAction;
 
 class App extends Component {
