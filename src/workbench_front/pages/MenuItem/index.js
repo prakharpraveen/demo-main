@@ -420,6 +420,7 @@ class MenuItem extends Component {
                 refCode: "appcodeRef",
                 refType: "tree",
                 isTreelazyLoad: false,
+                onlyLeafCanSelect:true,
                 queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
                 onChange: val => {
                     console.log(val);

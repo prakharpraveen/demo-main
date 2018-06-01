@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import {DatePicker} from "antd";
+import locale from 'antd/lib/date-picker/locale/zh_CN';
+import moment from 'moment';
 class BusinessDate extends Component {
     constructor(props) {
         super(props);
     }
     render() {
         return (
-            <div className='nc-workbench-businessdate'>
-                <DatePicker allowClear={false} renderExtraFooter={() => "extra footer"} />
+            <div title='业务日期' className='nc-workbench-businessdate'>
+                <DatePicker locale={locale} defaultValue={moment()} allowClear={false} />
             </div>
         );
     }

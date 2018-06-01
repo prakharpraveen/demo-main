@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
+import {HashRouter as Router, Route, Link, Switch} from "react-router-dom";
 import Loadable from "react-loadable";
 import Layout from "./layout";
 // import Main from 'Pages/main';
@@ -67,6 +67,10 @@ const TemplateSetting = Loadable({
     loader: () => import("Pages/TemplateSetting"),
     loading: Loading
 });
+const IndividuationRegister = Loadable({
+    loader: () => import("Pages/IndividuationRegister"),
+    loading: Loading
+});
 const routes = [
     {
         path: "/",
@@ -129,6 +133,10 @@ const routes = [
     {
         path: "/TemplateSetting",
         component: TemplateSetting
+    },
+    {
+        path: "/ir",
+        component: IndividuationRegister
     }
 ];
 const RouteWithSubRoutes = route => (
