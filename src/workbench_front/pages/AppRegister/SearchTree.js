@@ -72,7 +72,7 @@ class SearchTree extends Component {
 				data
 			}) => {
 				if (data.success && data.data.length > 0) {
-					console.log(data.data);
+					// console.log(data.data);
 					this.setState({
 						treeDataArray: data.data
 					}, this.restoreTreeData);
@@ -302,7 +302,7 @@ class SearchTree extends Component {
 			selectedKeys,
 			treeData
 		} = this.state;
-		console.log(treeData);
+		// console.log(treeData);
 		const loop = (data) => {
 			return data.map((item) => {
 				let {
