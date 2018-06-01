@@ -19,8 +19,9 @@ export const GetQuery = (query) => {
 };
 /**
  * 数字补位
- * @param {Number} num 
- * @param {Number} n 
+ * @param {Number} num 需要补位的数字
+ * @param {Number} n 需要补的位数
+ * Pad(1,2) => // 01
  */
 export const Pad=(num, n)=> {  
 	let len = num.toString().length;  
