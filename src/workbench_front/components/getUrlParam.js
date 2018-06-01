@@ -1,4 +1,4 @@
-export default  getUrlParam = (pop) => {
+export default function (pop) {
     if (!pop) return;
     let result;
     let params = window.location.hash && window.location.hash.split('?');

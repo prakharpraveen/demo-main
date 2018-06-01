@@ -11,25 +11,9 @@ import Notice from 'Components/Notice';
 import ZoneTable from './ZoneTable';
 import MyBtns from './MyBtns';
 import Myhead from './Myhead';
+import getUrlParam from 'Components/getUrlParam';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
-
-//获取页面参数
-const getUrlParam = (pop) => {
-	if (!pop) return;
-	let result;
-	let params = window.location.hash && window.location.hash.split('?');
-	if (params) {
-		params = params[1] && params[1].split('&');
-		params &&
-			params.find((item) => {
-				if (item.indexOf(pop) != -1) {
-					result = item.split('=')[1];
-				}
-			});
-		return result;
-	}
-};
 
 /**
  * 区域配置页面 
