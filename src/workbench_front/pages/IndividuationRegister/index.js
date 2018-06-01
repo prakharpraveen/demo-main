@@ -64,42 +64,34 @@ class IndividuationRegister extends Component {
         let {treeData, fields, isedit} = this.state;
         let menuFormData = [
             {
-                code: "menuitemcode",
+                code: "code",
                 type: "input",
-                label: "菜单项编码",
+                label: "编码",
                 isRequired: true
             },
             {
-                code: "menuitemname",
+                code: "name",
                 type: "input",
-                label: "菜单项名称",
+                label: "名称",
                 isRequired: true
             },
             {
-                placeholder: "应用编码",
-                refName: "关联应用编码",
-                refCode: "appcodeRef",
-                refType: "tree",
-                isTreelazyLoad: false,
-                queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
-                onChange: val => {
-                    console.log(val);
-                    // this.setFieldsValue({ cont: val });
-                },
-                disabled: this.state.disabled,
-                columnConfig: [
-                    {
-                        name: ["编码", "名称"],
-                        code: ["refcode", "refname"]
-                    }
-                ],
-                isMultiSelectedEnabled: false
+                code: "resourceid",
+                type: "input",
+                label: "名称->资源ID",
+                isRequired: true
             },
             {
-                code: "resid",
+                code: "resourcepath",
                 type: "input",
-                label: "多语字段",
-                isRequired: false
+                label: "名称->资源路径",
+                isRequired: true
+            },
+            {
+                code: "page_part_url",
+                type: "input",
+                label: "页面片段URL",
+                isRequired: true
             }
         ];
         let btnList = [
