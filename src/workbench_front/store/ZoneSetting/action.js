@@ -19,3 +19,9 @@ export const updateAreaList = (areaList) => {
 		areaList: areaList
 	};
 };
+export const updatePreviewData = (previewData) => {
+	return {
+		type: zonesetting.PREVIEWDATA,
+		previewData: previewData
+	};
+};
