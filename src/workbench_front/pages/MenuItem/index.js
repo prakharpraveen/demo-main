@@ -35,7 +35,7 @@ class MenuItem extends Component {
                 name: "新增",
                 code: "add",
                 type: "primary",
-                isshow: false
+                isshow: false,
             },
             {
                 name: "修改",
@@ -406,13 +406,15 @@ class MenuItem extends Component {
                 code: "menuitemcode",
                 type: "input",
                 label: "菜单项编码",
-                isRequired: true
+                isRequired: true,
+                isedit:isedit
             },
             {
                 code: "menuitemname",
                 type: "input",
                 label: "菜单项名称",
-                isRequired: true
+                isRequired: true,
+                isedit:isedit,
             },
             {
                 placeholder: "应用编码",
@@ -433,13 +435,15 @@ class MenuItem extends Component {
                         code: ["refcode", "refname"]
                     }
                 ],
-                isMultiSelectedEnabled: false
+                isMultiSelectedEnabled: false,
+                isedit:isedit
             },
             {
                 code: "resid",
                 type: "input",
                 label: "多语字段",
-                isRequired: false
+                isRequired: false,
+                isedit:isedit
             }
         ];
         return (
@@ -462,7 +466,6 @@ class MenuItem extends Component {
                     <div className="nc-workbench-menuitem-form">
                         {fields.menuitemcode || fields.menuitemcode === "" ? (
                             <FormCreate
-                                isedit={isedit}
                                 formData={menuFormData}
                                 fields={fields}
                                 onChange={this.handleFormChange}

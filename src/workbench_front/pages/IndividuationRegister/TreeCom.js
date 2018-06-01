@@ -26,7 +26,7 @@ class TreeCom extends Component {
     };
     handleExpanded = dataList => {
         const expandedKeys = dataList.map((item, index) => {
-            return item.menuitemcode;
+            return item.code;
         });
         expandedKeys.push("00");
         this.setState({
@@ -34,16 +34,19 @@ class TreeCom extends Component {
             autoExpandParent: true
         });
     };
+    handleSelect = selectedKey => {
+        this.props.onSelect(selectedKey[0]);
+    };
     render() {
         const {searchValue, expandedKeys, autoExpandParent} = this.state;
         const loop = data =>
             data.map(item => {
-                let {menuitemcode, menuitemname} = item;
+                let {code, name} = item;
                 let itemContent;
-                if (menuitemcode === "00") {
-                    itemContent = `${menuitemname}`;
+                if (code === "00") {
+                    itemContent = `${name}`;
                 } else {
-                    itemContent = `${menuitemcode} ${menuitemname}`;
+                    itemContent = `${code} ${name}`;
                 }
                 const index = itemContent.indexOf(searchValue);
                 const beforeStr = itemContent.substr(0, index);
@@ -60,21 +63,21 @@ class TreeCom extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={menuitemcode} title={title}>
+                        <TreeNode key={code} title={title}>
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={menuitemcode} title={title} />;
+                return <TreeNode key={code} title={title} />;
             });
         let newTreeData = [
             {
                 /* 给树填个根 */
-                menuitemname: "个性化设置",
-                menuitemcode: "00",
+                name: "个性化设置",
+                code: "00",
                 children: createTree(
                     this.props.dataSource,
-                    "menuitemcode",
+                    "code",
                     "parentcode"
                 )
             }

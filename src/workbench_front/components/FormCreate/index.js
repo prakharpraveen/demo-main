@@ -6,6 +6,9 @@ import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 import name from "./index.less";
 const {Refer} = high;
 const FormItem = Form.Item;
+/**
+ * 输入框类浏览态组件
+ */
 class ShowCom extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +25,12 @@ class ShowCom extends Component {
         );
     }
 }
+/**
+ * 表单创建组件
+ * formData - 表单数据描述
+ * fields - 表单字段值描述
+ * onChange - 表单值改变事件
+ */
 class FormCreate extends Component {
     constructor(props) {
         super(props);
@@ -48,7 +57,7 @@ class FormCreate extends Component {
                                         message: "Please input your E-mail!"
                                     }
                                 ]
-                            })(this.props.isedit ? <Input /> : <ShowCom />)}
+                            })(item.isedit ? <Input /> : <ShowCom />)}
                         </FormItem>
                     </Col>
                 );
@@ -72,7 +81,7 @@ class FormCreate extends Component {
                                     }
                                 ]
                             })(
-                                this.props.isedit ? (
+                                item.isedit ? (
                                     <Refer {...item} />
                                 ) : (
                                     <ShowCom />
@@ -87,7 +96,7 @@ class FormCreate extends Component {
     /**
      * 创建表单项
      */
-    createFormItem() {
+    createFormItem = ()=> {
         let children = this.props.formData.map((item, index) => {
             return this.createComponent(item);
         });
