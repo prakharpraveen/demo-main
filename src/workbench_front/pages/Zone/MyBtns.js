@@ -71,7 +71,7 @@ class MyBtns extends Component {
 				action: '保存区域设置'
 			},
 			success: ({ data }) => {
-				if (data.success && data.data) {
+				if (data.success && data.data) { 
 					// type =1 代表保存  type =2 表示下一步 
 					type === 1 ? (location.hash = '/ar') : (location.hash = '/ZoneSetting');
 					Notice({ status: 'success', msg: data.data.true });
@@ -94,7 +94,6 @@ class MyBtns extends Component {
 				}
 				console.log(newListData, fromData);
 				this.saveZoneData(newListData, fromData,1);
-				debugger;
 			break;
 			case '下一步':
 				console.log(fromData);

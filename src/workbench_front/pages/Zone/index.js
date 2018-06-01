@@ -11,7 +11,7 @@ import Notice from 'Components/Notice';
 import ZoneTable from './ZoneTable';
 import MyBtns from './MyBtns';
 import Myhead from './Myhead';
-import getUrlParam from 'Components/getUrlParam';
+import { GetQuery } from 'Pub/js/utils';
 import './index.less';
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -27,12 +27,12 @@ class ZoneRegister extends Component {
 	* 获取页面具体数据 
 	*/
 	componentDidMount() {
-		let param = getUrlParam('t');
-		this.props.setZoneTempletid(param);
+		let param = GetQuery(this.props.location.search);
+		this.props.setZoneTempletid(param.t);
 		let url, data;
 		url = '/nccloud/platform/templet/queryallarea.do';
 		data = {
-			templetid: param
+			templetid: param && param.t
 		};
 		Ajax({
 			url: url,
