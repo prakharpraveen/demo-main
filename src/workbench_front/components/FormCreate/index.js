@@ -46,25 +46,32 @@ class FormContent extends Component {
     }
     createComponent = item => {
         const {getFieldDecorator} = this.props.form;
-        switch (item.type) {
+        let {
+            type = "string",
+            isRequired = false,
+            label = "",
+            code,
+            isedit = false
+        } = item;
+        switch (type) {
             case "string":
                 return (
                     <FormItem
                         className="form-item margin-bottom-20"
-                        label={item.label}>
-                        {getFieldDecorator(item.code, {
+                        label={label}>
+                        {getFieldDecorator(code, {
                             initialValue: "",
                             rules: [
                                 {
                                     type: "string",
-                                    message: "The input is not valid E-mail!"
+                                    message: "当前字段数据类型-string"
                                 },
                                 {
-                                    required: item.isRequired,
-                                    message: "Please input your E-mail!"
+                                    required: isRequired,
+                                    message: "此字段为必输项！"
                                 }
                             ]
-                        })(item.isedit ? <Input /> : <ShowCom />)}
+                        })(isedit ? <Input /> : <ShowCom />)}
                     </FormItem>
                 );
                 break;
@@ -72,26 +79,21 @@ class FormContent extends Component {
                 return (
                     <FormItem
                         className="form-item margin-bottom-20"
-                        label={item.label}>
-                        {getFieldDecorator(item.code, {
+                        label={label}>
+                        {getFieldDecorator(code, {
                             initialValue: {},
                             rules: [
                                 {
-                                    required: false,
-                                    message: ""
+                                    required: isRequired,
+                                    message: "此字段为必输项！"
                                 },
                                 {
                                     type: "object",
+                                    message: "当前字段数据类型-object",
                                     validator: null
                                 }
                             ]
-                        })(
-                            item.isedit ? (
-                                <Refer {...item.options} />
-                            ) : (
-                                <ShowCom />
-                            )
-                        )}
+                        })(isedit ? <Refer {...item.options} /> : <ShowCom />)}
                     </FormItem>
                 );
                 break;
