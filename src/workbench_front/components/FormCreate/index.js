@@ -68,12 +68,12 @@ class FormContent extends Component {
                     </FormItem>
                 );
                 break;
-            default:
+            case "refer":
                 return (
                     <FormItem
                         className="form-item margin-bottom-20"
-                        label={item.refName}>
-                        {getFieldDecorator(item.refCode, {
+                        label={item.label}>
+                        {getFieldDecorator(item.code, {
                             initialValue: {},
                             rules: [
                                 {
@@ -85,9 +85,17 @@ class FormContent extends Component {
                                     validator: null
                                 }
                             ]
-                        })(item.isedit ? <Refer {...item} /> : <ShowCom />)}
+                        })(
+                            item.isedit ? (
+                                <Refer {...item.options} />
+                            ) : (
+                                <ShowCom />
+                            )
+                        )}
                     </FormItem>
                 );
+                break;
+            default:
                 break;
         }
     };
@@ -96,13 +104,9 @@ class FormContent extends Component {
      */
     createFormItem = () => {
         let children = this.props.formData.map((item, index) => {
-            let {xs = 24, md = 24, lg = 24} = item;
+            let {xs = 24, md = 24, lg = 24, code} = item;
             return (
-                <Col
-                    xs={xs}
-                    md={md}
-                    lg={lg}
-                    key={item.code ? item.code : item.refCode}>
+                <Col xs={xs} md={md} lg={lg} key={code}>
                     {this.createComponent(item)}
                 </Col>
             );

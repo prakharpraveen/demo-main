@@ -1,3 +1,4 @@
+import _ from "lodash";
 /**
  * 创建树形态 数组
  * @param {Array} data 平铺的树数组
@@ -5,6 +6,7 @@
  * @param {String} parentKey 每一项的父节点的标识
  */
 export const createTree = (data, key, parentKey) => {
+	data = _.cloneDeep(data);
 	let { treeArray, treeObject } = dataSeparation(data, parentKey);
 	treeObject = dataMerge(treeObject, key);
 	return createTreeFun(treeArray, treeObject, key);

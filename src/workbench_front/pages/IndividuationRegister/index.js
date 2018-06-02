@@ -23,6 +23,7 @@ class IndividuationRegister extends Component {
         this.state = {
             treeData: [],
             fields: {},
+            isNew: false,
             isedit: false,
             parentKey: ""
         };
