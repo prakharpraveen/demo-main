@@ -3,29 +3,22 @@ import { Form } from "antd";
 export const FormControl = Com => {
     return Form.create({
         onFieldsChange(props, changedFields) {
-            // let newChangeData = {};
-            // for (const key in changedFields) {
-            //     if (changedFields.hasOwnProperty(key)) {
-            //         newChangeData[key] = changedFields[key]["value"];
-            //     }
-            // }
-            // props.onChange(newChangeData);
+            props.onChange(changedFields);
         },
         mapPropsToFields(props) {
-            let fields = { ...props.fields };
+            let formData = [...props.formData ];
             let fieldsObj = {};
-            for (const key in fields) {
-                if (fields.hasOwnProperty(key)) {
-                    fieldsObj[key] = {};
-                    fieldsObj[key] = Form.createFormField({
-                        value: fields[key]
-                    });
-                }
-            }
+            formData.map((item,index)=>{
+                fieldsObj[item.code] = {};
+                fieldsObj[item.code] = Form.createFormField({
+                    ...props[item.code],
+                    value: props[item.code].value
+                });
+            });            
             return fieldsObj;
         },
         onValuesChange(props, values) {
-            props.onChange(values);
+            // props.onChange(values);
         }
     })(Com);
 };

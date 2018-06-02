@@ -8,9 +8,10 @@ import {
 } from "Components/PageLayout";
 import TreeCom from "./TreeCom";
 import ButtonCreate from "Components/ButtonCreate";
-import FormCreate from "Components/FormCreate";
+import {FormCreate, dataTransfer, dataRestore,dataCheck} from "Components/FormCreate";
 import Ajax from "Pub/js/ajax.js";
 import Notice from "Components/Notice";
+
 class IndividuationRegister extends Component {
     constructor(props) {
         super(props);
@@ -20,12 +21,19 @@ class IndividuationRegister extends Component {
             isedit: false,
             parentKey: ""
         };
+        this.newFormData = {
+            code: "",
+            name: "",
+            resourceid: "",
+            resourcepath: "",
+            page_part_url: ""
+        };
         this.historyData;
     }
     handleBtnClick = key => {
         switch (key) {
             case "add":
-                this.setState({isedit: true, isNew: true, fields: {}});
+                this.setState({isedit: true, isNew: true, fields: {...this.newFormData}});
                 break;
             case "edit":
                 this.setState({isedit: true});
@@ -35,12 +43,11 @@ class IndividuationRegister extends Component {
                 break;
             case "cancle":
                 if (this.state.isNew) {
-                    this.historyData = {};
+                    this.historyData = dataTransfer(this.newFormData);
                 }
                 this.setState({
                     isedit: false,
                     isNew: false,
-                    parentKey: "",
                     fields: {...this.historyData}
                 });
                 break;
@@ -86,6 +93,14 @@ class IndividuationRegister extends Component {
     };
     save = () => {
         let {isNew, fields} = this.state;
+        if(dataCheck(fields)){
+            Notice({
+                status: "warning",
+                msg: '请将必输项填写完整！'
+            });
+            return;
+        };
+        fields = dataRestore(fields);
         let saveURL, data;
         if (isNew) {
             saveURL = `/nccloud/platform/appregister/insertindividualreg.do`;
@@ -105,7 +120,6 @@ class IndividuationRegister extends Component {
                 let {success, data} = res.data;
                 if (success && data) {
                     let treeData = [...this.state.treeData];
-                    let fields = this.state.fields;
                     if (isNew) {
                         treeData = _.concat(treeData, data);
                         fields = data;
@@ -122,7 +136,7 @@ class IndividuationRegister extends Component {
                         isNew: false,
                         isedit: false,
                         treeData,
-                        fields
+                        fields:dataTransfer(fields)
                     });
                     Notice({
                         status: "success",
@@ -142,12 +156,13 @@ class IndividuationRegister extends Component {
             this.setState({
                 isedit: false,
                 parentKey: selectedKey ? selectedKey : "",
-                fields: {}
+                fields: dataTransfer(this.newFormData)
             });
             return;
         }
         let treeData = this.state.treeData;
         let treeItem = treeData.find(item => item.code === selectedKey);
+        treeItem = dataTransfer(treeItem);
         this.historyData = {...treeItem};
         this.setState({
             isedit: false,
