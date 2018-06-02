@@ -3,7 +3,7 @@ import {Form, Row, Col, Input} from "antd";
 import {FormControl} from "./FormControl";
 import {high} from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
-import name from "./index.less";
+import "./index.less";
 const {Refer} = high;
 const FormItem = Form.Item;
 /**
