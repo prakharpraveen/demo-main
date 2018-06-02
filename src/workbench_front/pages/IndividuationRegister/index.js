@@ -69,7 +69,7 @@ class IndividuationRegister extends Component {
         }
     };
     del = () => {
-        let pk_individualreg = this.state.fields.pk_individualreg;
+        let pk_individualreg = dataRestore(this.state.fields).pk_individualreg;
         Ajax({
             url: `/nccloud/platform/appregister/deleteindividualreg.do`,
             info: {
