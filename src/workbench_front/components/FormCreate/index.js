@@ -31,12 +31,12 @@ class ShowCom extends Component {
  * 表单创建组件
  * formData - 表单数据描述
  * {
-                code: "code", - 编码
-                type: "string", -类型
-                label: "编码", - label
-                isRequired: true, - 是否必输
-                isedit: isedit - 是否可编辑
-            },
+    code: "code", - 编码
+    type: "string", -类型
+    label: "编码", - label
+    isRequired: true, - 是否必输
+    isedit: isedit - 是否可编辑
+    },
  * fields - 表单字段值描述
  * onChange - 表单值改变事件
  */
