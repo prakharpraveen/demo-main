@@ -8,7 +8,12 @@ import {
 } from "Components/PageLayout";
 import TreeCom from "./TreeCom";
 import ButtonCreate from "Components/ButtonCreate";
-import {FormCreate, dataTransfer, dataRestore,dataCheck} from "Components/FormCreate";
+import {
+    FormCreate,
+    dataTransfer,
+    dataRestore,
+    dataCheck
+} from "Components/FormCreate";
 import Ajax from "Pub/js/ajax.js";
 import Notice from "Components/Notice";
 
@@ -33,7 +38,11 @@ class IndividuationRegister extends Component {
     handleBtnClick = key => {
         switch (key) {
             case "add":
-                this.setState({isedit: true, isNew: true, fields: {...this.newFormData}});
+                this.setState({
+                    isedit: true,
+                    isNew: true,
+                    fields: {...this.newFormData}
+                });
                 break;
             case "edit":
                 this.setState({isedit: true});
@@ -93,13 +102,13 @@ class IndividuationRegister extends Component {
     };
     save = () => {
         let {isNew, fields} = this.state;
-        if(dataCheck(fields)){
+        if (dataCheck(fields)) {
             Notice({
                 status: "warning",
-                msg: '请将必输项填写完整！'
+                msg: "请将必输项填写完整！"
             });
             return;
-        };
+        }
         fields = dataRestore(fields);
         let saveURL, data;
         if (isNew) {
@@ -136,7 +145,7 @@ class IndividuationRegister extends Component {
                         isNew: false,
                         isedit: false,
                         treeData,
-                        fields:dataTransfer(fields)
+                        fields: dataTransfer(fields)
                     });
                     Notice({
                         status: "success",
@@ -201,35 +210,47 @@ class IndividuationRegister extends Component {
         let menuFormData = [
             {
                 code: "code",
-                type: "input",
+                type: "string",
                 label: "编码",
                 isRequired: true,
-                isedit: isedit
+                isedit: isedit,
+                xs: 24,
+                md: 12,
+                lg: 12
             },
             {
                 code: "name",
-                type: "input",
+                type: "string",
                 label: "名称",
                 isRequired: true,
-                isedit: isedit
+                isedit: isedit,
+                xs: 24,
+                md: 12,
+                lg: 12
             },
             {
                 code: "resourceid",
-                type: "input",
+                type: "string",
                 label: "名称->资源ID",
                 isRequired: true,
-                isedit: isedit
+                isedit: isedit,
+                xs: 24,
+                md: 12,
+                lg: 12
             },
             {
                 code: "resourcepath",
-                type: "input",
+                type: "string",
                 label: "名称->资源路径",
                 isRequired: true,
-                isedit: isedit
+                isedit: isedit,
+                xs: 24,
+                md: 12,
+                lg: 12
             },
             {
                 code: "page_part_url",
-                type: "input",
+                type: "string",
                 label: "页面片段URL",
                 isRequired: true,
                 isedit: isedit

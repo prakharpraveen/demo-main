@@ -15,7 +15,7 @@ class ShowCom extends Component {
     }
     render() {
         // console.log(this.props);
-        
+
         return (
             <div>
                 {typeof this.props.value === "object"
@@ -30,6 +30,13 @@ class ShowCom extends Component {
 /**
  * 表单创建组件
  * formData - 表单数据描述
+ * {
+                code: "code", - 编码
+                type: "string", -类型
+                label: "编码", - label
+                isRequired: true, - 是否必输
+                isedit: isedit - 是否可编辑
+            },
  * fields - 表单字段值描述
  * onChange - 表单值改变事件
  */
@@ -40,51 +47,46 @@ class FormContent extends Component {
     createComponent = item => {
         const {getFieldDecorator} = this.props.form;
         switch (item.type) {
-            case "input":
+            case "string":
                 return (
-                    <Col xs={24} md={24} lg={24} key={item.code}>
-                        <FormItem
-                            className="form-item margin-bottom-20"
-                            label={item.label}>
-                            {getFieldDecorator(item.code, {
-                                initialValue: "",
-                                rules: [
-                                    {
-                                        type: "string",
-                                        message:
-                                            "The input is not valid E-mail!"
-                                    },
-                                    {
-                                        required: item.isRequired,
-                                        message: "Please input your E-mail!"
-                                    }
-                                ]
-                            })(item.isedit ? <Input /> : <ShowCom />)}
-                        </FormItem>
-                    </Col>
+                    <FormItem
+                        className="form-item margin-bottom-20"
+                        label={item.label}>
+                        {getFieldDecorator(item.code, {
+                            initialValue: "",
+                            rules: [
+                                {
+                                    type: "string",
+                                    message: "The input is not valid E-mail!"
+                                },
+                                {
+                                    required: item.isRequired,
+                                    message: "Please input your E-mail!"
+                                }
+                            ]
+                        })(item.isedit ? <Input /> : <ShowCom />)}
+                    </FormItem>
                 );
                 break;
             default:
                 return (
-                    <Col xs={24} md={24} lg={24} key={item.refCode}>
-                        <FormItem
-                            className="form-item margin-bottom-20"
-                            label={item.refName}>
-                            {getFieldDecorator(item.refCode, {
-                                initialValue: {},
-                                rules: [
-                                    {
-                                        required: false,
-                                        message: ""
-                                    },
-                                    {
-                                        type: "object",
-                                        validator: null
-                                    }
-                                ]
-                            })(item.isedit ? <Refer {...item} /> : <ShowCom />)}
-                        </FormItem>
-                    </Col>
+                    <FormItem
+                        className="form-item margin-bottom-20"
+                        label={item.refName}>
+                        {getFieldDecorator(item.refCode, {
+                            initialValue: {},
+                            rules: [
+                                {
+                                    required: false,
+                                    message: ""
+                                },
+                                {
+                                    type: "object",
+                                    validator: null
+                                }
+                            ]
+                        })(item.isedit ? <Refer {...item} /> : <ShowCom />)}
+                    </FormItem>
                 );
                 break;
         }
@@ -94,7 +96,16 @@ class FormContent extends Component {
      */
     createFormItem = () => {
         let children = this.props.formData.map((item, index) => {
-            return this.createComponent(item);
+            let {xs = 24, md = 24, lg = 24} = item;
+            return (
+                <Col
+                    xs={xs}
+                    md={md}
+                    lg={lg}
+                    key={item.code ? item.code : item.refCode}>
+                    {this.createComponent(item)}
+                </Col>
+            );
         });
         return children;
     };
@@ -107,51 +118,51 @@ class FormContent extends Component {
     }
 }
 // export default FormControl(FormCreate);
-const FormCom = FormControl( FormContent );
+const FormCom = FormControl(FormContent);
 export class FormCreate extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        let {onChange,formData,fields} = this.props;
-        return <FormCom onChange={onChange} formData={formData} {...fields}/>;
+        let {onChange, formData, fields} = this.props;
+        return <FormCom onChange={onChange} formData={formData} {...fields} />;
     }
 }
 /**
  * 数据转换
- * @param {*} object 
+ * @param {*} object
  */
-export const dataTransfer =(object,defaultObj)=>{
-    if(JSON.stringify(object) == '{}'){
-        console.error('dataTransfer 函数参数不能为空对象');
+export const dataTransfer = (object, defaultObj) => {
+    if (JSON.stringify(object) == "{}") {
+        console.error("dataTransfer 函数参数不能为空对象");
         return;
     }
     let obj = {};
-    if(defaultObj){
+    if (defaultObj) {
         for (const key in defaultObj) {
             if (object.hasOwnProperty(key)) {
                 const element = object[key];
                 obj[key] = {};
-                obj[key]['value'] = element;
+                obj[key]["value"] = element;
             }
         }
-    }else{
+    } else {
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
                 const element = object[key];
                 obj[key] = {};
-                obj[key]['value'] = element;
+                obj[key]["value"] = element;
             }
         }
     }
     return obj;
-}
+};
 /**
  * 数据还原
  */
-export const dataRestore =(object)=>{
-    if(JSON.stringify(object) == '{}'){
-        console.error('dataTransfer 函数参数不能为空对象');
+export const dataRestore = object => {
+    if (JSON.stringify(object) == "{}") {
+        console.error("dataTransfer 函数参数不能为空对象");
         return;
     }
     let obj = {};
@@ -162,27 +173,27 @@ export const dataRestore =(object)=>{
         }
     }
     return obj;
-}
+};
 /**
  * 数据检查
  */
-export const dataCheck =(object)=>{
-    if(JSON.stringify(object) == '{}'){
-        console.error('dataTransfer 函数参数不能为空对象');
+export const dataCheck = object => {
+    if (JSON.stringify(object) == "{}") {
+        console.error("dataTransfer 函数参数不能为空对象");
         return;
     }
     let objArray = [];
     for (const key in object) {
         if (object.hasOwnProperty(key)) {
             const element = object[key];
-            if(element.errors){
+            if (element.errors) {
                 objArray.push(element);
             }
         }
     }
-    if(objArray.length>0){
+    if (objArray.length > 0) {
         return true;
-    }else{
+    } else {
         return false;
     }
-}
+};
