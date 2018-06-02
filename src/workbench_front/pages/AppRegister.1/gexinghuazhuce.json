@@ -1,0 +1,301 @@
+{
+    "data": {
+        "page": {
+            "pageIndex": "-1",
+            "pageSize": "100",
+            "total": "1000",
+            "totalPage": "0"
+        },
+        "rows": [
+            {
+                "refcode": "accountingbook",
+                "refname": "财务核算账簿",
+                "refpk": "ACCOUNTINGBOOK000000",
+                "values": {}
+            },
+            {
+                "refcode": "adminorg",
+                "refname": "行政",
+                "refpk": "ADMINORGTYPE00000000",
+                "values": {}
+            },
+            {
+                "refcode": "assetorg",
+                "refname": "资产",
+                "refpk": "ASSETORGTYPE00000000",
+                "values": {}
+            },
+            {
+                "refcode": "assetstatstru",
+                "refname": "资产统计体系",
+                "refpk": "ASSETSTATISSTRU00000",
+                "values": {}
+            },
+            {
+                "refcode": "bookcombinestru",
+                "refname": "账簿合并体系",
+                "refpk": "BOOKCOMBINESTRU00000",
+                "values": {}
+            },
+            {
+                "refcode": "budgetorgstru",
+                "refname": "预算组织体系",
+                "refpk": "BUDGETORGSTRU0000000",
+                "values": {}
+            },
+            {
+                "refcode": "businessunit",
+                "refname": "业务单元",
+                "refpk": "BUSINESSUNIT00000000",
+                "values": {}
+            },
+            {
+                "refcode": "businessunitanddept",
+                "refname": "业务单元+部门",
+                "refpk": "BUSINESSUNITDEPT0000",
+                "values": {}
+            },
+            {
+                "refcode": "busireportstru",
+                "refname": "业务汇报关系",
+                "refpk": "BUSIREPORTSTRU000000",
+                "values": {}
+            },
+            {
+                "refcode": "conbineentity",
+                "refname": "合并主体",
+                "refpk": "CONBINEENTITY0000000",
+                "values": {}
+            },
+            {
+                "refcode": "controlarea",
+                "refname": "管控范围",
+                "refpk": "CONTROLAREA000000000",
+                "values": {}
+            },
+            {
+                "refcode": "corp",
+                "refname": "法人公司",
+                "refpk": "CORPORGTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "costregion",
+                "refname": "成本域",
+                "refpk": "COSTREGION0000000000",
+                "values": {}
+            },
+            {
+                "refcode": "creditctlregion",
+                "refname": "信用控制域",
+                "refpk": "CREDITCTLREGION00000",
+                "values": {}
+            },
+            {
+                "refcode": "dept",
+                "refname": "部门",
+                "refpk": "DEPTORGTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "factory",
+                "refname": "工厂",
+                "refpk": "FACTORYTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "financeorg",
+                "refname": "财务",
+                "refpk": "FINANCEORGTYPE000000",
+                "values": {}
+            },
+            {
+                "refcode": "financestatstru",
+                "refname": "财务统计体系",
+                "refpk": "FINANCESTATISSTRU000",
+                "values": {}
+            },
+            {
+                "refcode": "fundmanasystem",
+                "refname": "资金管理体系",
+                "refpk": "FUNDMANASYSTEM000000",
+                "values": {}
+            },
+            {
+                "refcode": "fundorg",
+                "refname": "资金",
+                "refpk": "FUNDORGTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "global",
+                "refname": "全局",
+                "refpk": "GLOBLE00000000000000",
+                "values": {}
+            },
+            {
+                "refcode": "group",
+                "refname": "集团",
+                "refpk": "GROUPORGTYPE00000000",
+                "values": {}
+            },
+            {
+                "refcode": "hrorg",
+                "refname": "人力资源",
+                "refpk": "HRORGTYPE00000000000",
+                "values": {}
+            },
+            {
+                "refcode": "itemorg",
+                "refname": "项目",
+                "refpk": "ITEMORGTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "liabilitybook",
+                "refname": "责任核算账簿",
+                "refpk": "LIABILITYBOOK0000000",
+                "values": {}
+            },
+            {
+                "refcode": "liabilitycenter",
+                "refname": "利润中心",
+                "refpk": "LIACENTERTYPE0000000",
+                "values": {}
+            },
+            {
+                "refcode": "liactcostrg",
+                "refname": "利润中心成本域",
+                "refpk": "LIACTCOSTRG000000000",
+                "values": {}
+            },
+            {
+                "refcode": "maintainorgstru",
+                "refname": "维修组织体系",
+                "refpk": "MAINTAINORGSTRU00000",
+                "values": {}
+            },
+            {
+                "refcode": "maintainorg",
+                "refname": "维修",
+                "refpk": "MAINTAINORGTYPE00000",
+                "values": {}
+            },
+            {
+                "refcode": "orgunitandcostcenter",
+                "refname": "业务单元+成本中心",
+                "refpk": "ORGUNITANDCOSTCENTER",
+                "values": {}
+            },
+            {
+                "refcode": "orgunitanddeptandcc",
+                "refname": "业务单元+部门/成本中心",
+                "refpk": "ORGUNITANDDEPTANDCC0",
+                "values": {}
+            },
+            {
+                "refcode": "planbudget",
+                "refname": "预算",
+                "refpk": "PLANBUDGETTYPE000000",
+                "values": {}
+            },
+            {
+                "refcode": "plancenter",
+                "refname": "计划中心",
+                "refpk": "PLANCENTERTYPE000000",
+                "values": {}
+            },
+            {
+                "refcode": "produceplan",
+                "refname": "计划组织",
+                "refpk": "PRODUCEPLANTYPE00000",
+                "values": {}
+            },
+            {
+                "refcode": "productionplan",
+                "refname": "生产计划体系",
+                "refpk": "PRODUCTIONPLANS00000",
+                "values": {}
+            },
+            {
+                "refcode": "purchaseorg",
+                "refname": "采购",
+                "refpk": "PURCHASEORGTYPE00000",
+                "values": {}
+            },
+            {
+                "refcode": "purplanstru",
+                "refname": "采购计划体系",
+                "refpk": "PURPLANSTRU000000000",
+                "values": {}
+            },
+            {
+                "refcode": "qccenter",
+                "refname": "质检",
+                "refpk": "QCCENTERTYPE00000000",
+                "values": {}
+            },
+            {
+                "refcode": "reportcombinestru",
+                "refname": "报表合并体系",
+                "refpk": "REPORTCOMBINESTRU000",
+                "values": {}
+            },
+            {
+                "refcode": "reportmanastru",
+                "refname": "报表组织体系",
+                "refpk": "REPORTMANASTRU000000",
+                "values": {}
+            },
+            {
+                "refcode": "reportorg",
+                "refname": "报表",
+                "refpk": "REPORTORGTYPE0000000",
+                "values": {}
+            },
+            {
+                "refcode": "resacostcenter",
+                "refname": "成本中心",
+                "refpk": "RESACOSTCENTER000000",
+                "values": {}
+            },
+            {
+                "refcode": "saleappendstru",
+                "refname": "分销补货体系",
+                "refpk": "SALEAPPENDSTRUTYPE00",
+                "values": {}
+            },
+            {
+                "refcode": "saleorg",
+                "refname": "销售",
+                "refpk": "SALEORGTYPE000000000",
+                "values": {}
+            },
+            {
+                "refcode": "stockorg",
+                "refname": "库存",
+                "refpk": "STOCKORGTYPE00000000",
+                "values": {}
+            },
+            {
+                "refcode": "stockplan",
+                "refname": "库存/计划组织",
+                "refpk": "STOCKPLANTYPE0000000",
+                "values": {}
+            },
+            {
+                "refcode": "stockstatstru",
+                "refname": "库存统计体系",
+                "refpk": "STOCKSTATSTRU0000000",
+                "values": {}
+            },
+            {
+                "refcode": "trafficorg",
+                "refname": "物流",
+                "refpk": "TRAFFICORGTYPE000000",
+                "values": {}
+            }
+        ]
+    },
+    "success": true
+}

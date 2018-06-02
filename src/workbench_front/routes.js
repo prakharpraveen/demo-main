@@ -35,6 +35,10 @@ const AppRegister = Loadable({
     loader: () => import("Pages/AppRegister"),
     loading: Loading
 });
+const AppRegister1 = Loadable({
+    loader: () => import("Pages/AppRegister.1"),
+    loading: Loading
+});
 const Zone = Loadable({
     loader: () => import("Pages/Zone"),
     loading: Loading
@@ -97,6 +101,11 @@ const routes = [
         path: "/ar",
         exact: true,
         component: AppRegister
+    },
+    {
+        path: "/ar1",
+        exact: true,
+        component: AppRegister1
     },
     {
         path: "/drag",

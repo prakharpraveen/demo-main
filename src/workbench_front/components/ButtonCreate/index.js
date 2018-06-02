@@ -2,6 +2,12 @@ import React, {Component} from "react";
 import {Button} from "antd";
 /**
  * datasource - 按钮描述 数据源
+ * {
+        code:'addAppClass', - 按钮编码
+        name: "增加应用分类", - 按钮名称
+        type: "primary", - 按钮类型
+        isshow:true - 是否显示
+    },
  * onClick - 按钮 Click 事件
  */
 class CreateButton extends Component {
