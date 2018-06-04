@@ -29,7 +29,7 @@ class Ifr extends Component {
 		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}&c=${c}`;
 		return (
 			<div className='nc-workbench-iframe'>
-				<iframe field="mainiframe" fieldname="主框架" id='mainiframe' src={queryUrl} frameborder='0' scrolling='yes' />
+				<iframe field="mainiframe" fieldname="主框架" id='mainiframe' src={queryUrl} frameBorder='0' scrolling='yes' />
 			</div>
 		);
 	}
