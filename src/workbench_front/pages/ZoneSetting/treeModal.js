@@ -33,12 +33,13 @@ class TreeModal extends Component {
 		_.forEach(selectedNodes, (s, i) => {
 			const { myUniqID, datatype, refname, refcode, pid } = s.props.dataRef;
 			cardList.push({
-				pk_query_property: `newMetaData_${myUniqID}` ,
+				pk_query_property: `newMetaData_${myUniqID}`,
 				areaid: targetAreaID,
 				code: refcode,
-				datatype: datatype,
 				label: refname,
 				metapath: myUniqID,
+				datatype: datatype,
+				color: '1',
 				componenttype: '0',
 				refcode: '1',
 				options: '1',

@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Tabs, Button, Table, Input, Popconfirm, Select} from "antd";
-import {DragDropContext, DragSource, DropTarget} from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import { DragSource, DropTarget} from "react-dnd";
+// import HTML5Backend from "react-dnd-html5-backend";
+import withDragDropContext from 'Pub/js/withDragDropContext';
 import update from "immutability-helper";
 import _ from "lodash";
 import {setPageButtonData, setPageTemplateData} from "Store/AppRegister/action";
@@ -768,7 +769,7 @@ PageTable.propTypes = {
     setPageButtonData: PropTypes.func.isRequired,
     nodeData: PropTypes.object.isRequired
 };
-let DragFromeTable = DragDropContext(HTML5Backend)(PageTable);
+let DragFromeTable = withDragDropContext(PageTable);
 export default connect(
     state => {
         return {

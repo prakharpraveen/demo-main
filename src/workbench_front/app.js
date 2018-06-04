@@ -22,14 +22,22 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 	}
-	openNewApp = (appOption) => {
-		let { code, name } = appOption;
-		let type;
+	/**
+	 * 打开应用
+	 * @param {Object} appOption - 应用基本描述
+	 * @param {String} type - 打开类型 current - 当前页面打开 
+	 * @param {String} query - 需要传递的参数
+	 */
+	openNewApp = (appOption,type,query) => {
+		let { code, name,pk_appregister } = appOption;
 		if(name === '应用注册'||name === '菜单注册'||name === '个性化注册'){
 			type = 'own';
 		}
-		let { pk_appregister } = appOption;
-		let win = window.open('', '_blank');
+		let win;
+		if(type !== 'current'){
+			win = window.open('', '_blank');
+		}
+		
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
 			info:{
@@ -48,24 +56,46 @@ class App extends Component {
 							Notice({ status: 'error', msg: '请确认当前应用是否设置默认页面！' });
 							return;
 						}
-						switch (type) {
-							case 'current':
-								// 浏览器当前页打开
-								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
-								break;
-							case 'own':
-								// 浏览器当前页打开
-								win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
-								win.focus();
-								break;
-							default:
-								// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-								win.location = `#/ifr?ifr=${encodeURIComponent(
-									data
-								)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
-								win.focus();
-								break;
+						if(query){
+							switch (type) {
+								case 'current':
+									// 浏览器当前页打开
+									window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									break;
+								case 'own':
+									// 浏览器当前页打开
+									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}${query}`;
+									win.focus();
+									break;
+								default:
+									// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+									win.location = `#/ifr?ifr=${encodeURIComponent(
+										data
+									)}${query}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+							}
+						}else{
+							switch (type) {
+								case 'current':
+									// 浏览器当前页打开
+									window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
+									break;
+								case 'own':
+									// 浏览器当前页打开
+									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+								default:
+									// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+									win.location = `#/ifr?ifr=${encodeURIComponent(
+										data
+									)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+							}
 						}
+						
 					}else{
 						Notice({ status: 'error', msg: res.error.message });
 					}
@@ -80,14 +110,15 @@ class App extends Component {
 		};
 		/**
 		 * 在新页签中打开
-		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
-		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
+		 * @param　{String} appOption // 应用 描述信息 name 和 code 及 pk_appregister
+		 * @param　{String} type // current - 浏览器新页签打开 不传参数在当前页打开
+		 * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2 
 		 */
-		window.openNew = (appOption) => {
+		window.openNew = (appOption,type,query) => {
 			let { code, name } = appOption;
 			window.peData.nodeName = name;
 			window.peData.nodeCode = code;
-			proxyAction(this.openNewApp, this, '打开应用')(appOption);
+			proxyAction(this.openNewApp, this, '打开应用')(appOption,type,query);
 		};
 	}
 	componentDidMount() {
@@ -107,7 +138,7 @@ class App extends Component {
 			success:(res)=>{
 				let { success , data} = res.data;
 				if(success&&data){
-					localStorage.setItem('gzip',data?1:0);
+					sessionStorage.setItem('gzip',data?1:0);
 				}
 			}
 		});

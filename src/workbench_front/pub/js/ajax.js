@@ -20,7 +20,7 @@ const Ajax = ({
 	}
 }) => {
 
-	let gzipSwitch = localStorage.getItem('gzip') - 0;
+	let gzipSwitch = sessionStorage.getItem('gzip') - 0;
 	let gziptools = new Gzip();
 	data = {
 		busiParamJson: JSON.stringify(data),

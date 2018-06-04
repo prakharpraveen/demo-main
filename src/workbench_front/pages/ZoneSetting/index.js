@@ -13,6 +13,8 @@ import MyLeftSider from './leftSider';
 import MyContent from './content';
 import MyRightSider from './rightSider';
 import { Steps } from 'antd';
+
+import {GetQuery} from 'Pub/js/utils';
 const Step = Steps.Step;
 /**
  * 工作桌面 配置模板区域
@@ -20,7 +22,10 @@ const Step = Steps.Step;
 class ZoneSetting extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		const urlRequestObj = GetQuery(this.props.location.search);
+		this.state = {
+			templetid :urlRequestObj.templetid
+		};
 	}
 
 	componentDidMount() {}
@@ -38,7 +43,7 @@ class ZoneSetting extends Component {
 				<MyHeader />
 				<div className='template-setting-container'>
 					{/* <MyLeftSider /> */}
-					<MyContent />
+					<MyContent templetid={this.state.templetid}/>
 					<MyRightSider />
 				</div>
 			</div>
