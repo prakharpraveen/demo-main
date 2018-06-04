@@ -67,7 +67,7 @@ class MyContent extends Component {
 			},
 			data: {
 				// metaid: metaid
-				metaid: '286df5c2-da48-4e6d-b4e5-5e1c8c63977e'
+				metaid: metaid
 			},
 			success: (res) => {
 				if (res) {
