@@ -33,8 +33,9 @@ class App extends Component {
 		if(name === '应用注册'||name === '菜单注册'||name === '个性化注册'){
 			type = 'own';
 		}
+		let win;
 		if(type !== 'current'){
-			let win = window.open('', '_blank');
+			win = window.open('', '_blank');
 		}
 		
 		Ajax({
@@ -137,7 +138,7 @@ class App extends Component {
 			success:(res)=>{
 				let { success , data} = res.data;
 				if(success&&data){
-					localStorage.setItem('gzip',data?1:0);
+					sessionStorage.setItem('gzip',data?1:0);
 				}
 			}
 		});
