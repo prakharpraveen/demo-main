@@ -43,7 +43,7 @@ class ZoneRegister extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					this.props.setZoneData(data.data);
+					this.props.setZoneData(data.data[0]);
 				} else {
 					Notice({ status: 'error', msg: data.data.true });
 				}

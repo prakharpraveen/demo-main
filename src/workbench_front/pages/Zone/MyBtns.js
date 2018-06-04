@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
+import { GetQuery } from 'Pub/js/utils';
 import Notice from 'Components/Notice';
 
 
@@ -72,8 +73,10 @@ class MyBtns extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) { 
-					// type =1 代表保存  type =2 表示下一步 
-					type === 1 ? (location.hash = '/ar') : (location.hash = '/ZoneSetting');
+				//	let param = GetQuery(this.props.location);
+					// type =1 代表保存  type =2 表示下一步  保存binqie
+					debugger;
+					type === 1 ? (location.hash = '/ar') : (location.hash = `/ZoneSetting?templetid=${data.data.templetid}`);
 					Notice({ status: 'success', msg: data.data.true });
 				} else {
 					Notice({ status: 'error', msg: data.data.true });
