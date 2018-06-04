@@ -14,11 +14,13 @@ const TabPane = Tabs.TabPane;
 import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import InterModal from './interModal';
+import MoneyModal from './moneyModal';
 class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			interModalVal: false
+			interModalVal: false,
+			moneyModalVisibel:false,
 		};
 	}
 
@@ -385,13 +387,20 @@ class MyRightSider extends Component {
 							<Input
 								value={selectCard.dataval}
 								onFocus={() => {
-									this.setState({ interModalVisibel: true });
+								//	this.setState({ interModalVisibel: true });
+									this.setState({ moneyModalVisibel: true });
 								}}
 							/>
 							<InterModal
 								handleSelectChange={this.handleSelectChange}
 								initVal={selectCard.dataval}
 								modalVisibel={this.state.interModalVisibel}
+								setModalVisibel={this.setModalVisibel}
+							/>
+							<MoneyModal
+								handleSelectChange={this.handleSelectChange}
+								initVal={selectCard.dataval}
+								modalVisibel={this.state.moneyModalVisibel}
 								setModalVisibel={this.setModalVisibel}
 							/>
 						</li>

@@ -19,15 +19,13 @@ class InterModal extends Component {
 		};	
 	}
 	componentWillReceiveProps(nextProps){
-		this.setState({ initVal: nextProps.initVal})
-	}
-	componentDidMount() {
-		// 解析 内置val 
-		let { initVal } = this.state;
-		if (initVal) {
-			let initArray = initVal.split(',');
-			this.setState({ small: initArray && initArray[0], big: initArray && initArray[1]})
-		}
+		this.setState({ initVal: nextProps.initVal},() =>{
+			let { initVal } = this.state;
+			if (initVal) {
+				let initArray = initVal.split(',');
+				this.setState({ small: initArray && initArray[0], big: initArray && initArray[1] })
+			}
+		})
 	}
 	showModalHidden = ()=>{
 		this.props.setModalVisibel('inter', false)
