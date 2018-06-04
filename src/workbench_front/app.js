@@ -63,7 +63,7 @@ class App extends Component {
 									break;
 								case 'own':
 									// 浏览器当前页打开
-									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}${query}`;
 									win.focus();
 									break;
 								default:
