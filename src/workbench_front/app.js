@@ -108,7 +108,6 @@ class App extends Component {
 		 */
 		window.openNew = (appOption,type,query) => {
 			let { code, name } = appOption;
-			if(name === '用户表测试_明细'){type='current';query='&a=123&b=2222'}
 			window.peData.nodeName = name;
 			window.peData.nodeCode = code;
 			proxyAction(this.openNewApp, this, '打开应用')(appOption,type,query);
