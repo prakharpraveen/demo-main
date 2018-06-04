@@ -22,6 +22,12 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 	}
+	/**
+	 * 打开应用
+	 * @param {Object} appOption - 应用基本描述
+	 * @param {String} type - 打开类型 current - 当前页面打开 
+	 * @param {String} query - 需要传递的参数
+	 */
 	openNewApp = (appOption,type,query) => {
 		let { code, name,pk_appregister } = appOption;
 		if(name === '应用注册'||name === '菜单注册'||name === '个性化注册'){
@@ -103,8 +109,9 @@ class App extends Component {
 		};
 		/**
 		 * 在新页签中打开
-		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
-		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
+		 * @param　{String} appOption // 应用 描述信息 name 和 code 及 pk_appregister
+		 * @param　{String} type // current - 浏览器新页签打开 不传参数在当前页打开
+		 * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2 
 		 */
 		window.openNew = (appOption,type,query) => {
 			let { code, name } = appOption;
