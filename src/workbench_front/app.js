@@ -22,14 +22,15 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 	}
-	openNewApp = (appOption) => {
-		let { code, name } = appOption;
-		let type;
+	openNewApp = (appOption,type,query) => {
+		let { code, name,pk_appregister } = appOption;
 		if(name === '应用注册'||name === '菜单注册'||name === '个性化注册'){
 			type = 'own';
 		}
-		let { pk_appregister } = appOption;
-		let win = window.open('', '_blank');
+		if(type !== 'current'){
+			let win = window.open('', '_blank');
+		}
+		
 		Ajax({
 			url: `/nccloud/platform/appregister/openapp.do`,
 			info:{
@@ -48,24 +49,46 @@ class App extends Component {
 							Notice({ status: 'error', msg: '请确认当前应用是否设置默认页面！' });
 							return;
 						}
-						switch (type) {
-							case 'current':
-								// 浏览器当前页打开
-								window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
-								break;
-							case 'own':
-								// 浏览器当前页打开
-								win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
-								win.focus();
-								break;
-							default:
-								// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-								win.location = `#/ifr?ifr=${encodeURIComponent(
-									data
-								)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
-								win.focus();
-								break;
+						if(query){
+							switch (type) {
+								case 'current':
+									// 浏览器当前页打开
+									window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									break;
+								case 'own':
+									// 浏览器当前页打开
+									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+								default:
+									// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+									win.location = `#/ifr?ifr=${encodeURIComponent(
+										data
+									)}${query}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+							}
+						}else{
+							switch (type) {
+								case 'current':
+									// 浏览器当前页打开
+									window.location.hash = `#/ifr?ifr=${encodeURIComponent(data)}`;
+									break;
+								case 'own':
+									// 浏览器当前页打开
+									win.location = `#/${data}?n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+								default:
+									// 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+									win.location = `#/ifr?ifr=${encodeURIComponent(
+										data
+									)}&ar=${pk_appregister}&n=${encodeURIComponent(name)}&c=${encodeURIComponent(code)}`;
+									win.focus();
+									break;
+							}
 						}
+						
 					}else{
 						Notice({ status: 'error', msg: res.error.message });
 					}
@@ -83,11 +106,12 @@ class App extends Component {
 		 * @param　{String} appOption // 应用 描述信息 实际需要 name 和 code
 		 * @param　{String} type // new - 浏览器新页签打开 不传参数在当前页打开
 		 */
-		window.openNew = (appOption) => {
+		window.openNew = (appOption,type,query) => {
 			let { code, name } = appOption;
+			if(name === '用户表测试_明细'){type='current';query='&a=123&b=2222'}
 			window.peData.nodeName = name;
 			window.peData.nodeCode = code;
-			proxyAction(this.openNewApp, this, '打开应用')(appOption);
+			proxyAction(this.openNewApp, this, '打开应用')(appOption,type,query);
 		};
 	}
 	componentDidMount() {

@@ -12,22 +12,27 @@ class DefaultSetting extends Component {
         this.setFormDataFun2;
         this.defaultForm = [
             {
-                placeholder: "单选树表",
-                refName: "交易类型",
-                refCode: "cont",
-                refType: "gridTree",
-                queryTreeUrl: "/nccloud/reva/ref/materialclass.do",
-                queryGridUrl: "/nccloud/reva/ref/material.do",
+                placeholder: "默认业务单元",
+                refName: "默认业务单元",
+                refCode: "uapbd/refer/org/BusinessUnitTreeRef",
+                refType: "tree",
+                queryTreeUrl: "/nccloud/uapbd/ref/businessunit.do",
                 onChange: val => {
                     console.log(val);
                     // this.setFieldsValue({ cont: val });
                 },
-                columnConfig: [
-                    {
-                        name: ["编码", "名称"],
-                        code: ["refcode", "refname"]
-                    }
-                ],
+                isMultiSelectedEnabled: false
+            },
+            {
+                placeholder: "财务核算账簿 ",
+                refName: "财务核算账簿",
+                refCode: "uapbd/refer/org/AccountBookTreeRef",
+                refType: "tree",
+                queryTreeUrl: "/nccloud/uapbd/ref/AccountBookTreeRef.do",
+                onChange: val => {
+                    console.log(val);
+                    // this.setFieldsValue({ cont: val });
+                },
                 isMultiSelectedEnabled: false
             }
         ];
