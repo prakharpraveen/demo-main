@@ -98,10 +98,48 @@ class BasicProperty extends Component {
 		let user = await this.props.updateSelectCard(selectCard);
 		return user;
 	}
+	// 
+	getMetaType = (selectCard) =>{
+		if ( !!selectCard.metapath) return true; // 是元数据 
+		return false;  // 不是元数据 默认没选的情况是false 
+	}
+	// 
+	getAreaType = (areaList, selectCard) => {
+		let result;
+		_.forEach(areaList,(val,index)=>{
+			_.forEach(val.queryPropertyList,(v,i) =>{
+				if (selectCard.areaid === v.areaid) {
+					result = val.areatype;
+				//	return ; 
+				}
+			})
+		})
+      return result ==='0'? true:false;
+	}
 	render() {
-		const { selectCard } = this.props;
-		return (
-			<ul className='basic-property'>
+		const { selectCard, areaList } = this.props;
+		// 1 判断是否是元数据 2 判断所属的类型是否是查询区  默认是 不是元数据 不是查询区 
+		let isMetaData = this.getMetaType(selectCard), isSearch = this.getAreaType(areaList, selectCard);
+		let result_div;
+		if (isMetaData){
+			if (isSearch){
+				result_div = (<div>1</div>)
+			}else{
+				result_div = (<div>2</div>)
+			}
+		}else{
+			if (isSearch) {
+				result_div = (<div>3</div>)
+			} else {
+				result_div = (<div>4</div>)
+			}
+		}
+		/* (<div>
+			11
+		</div>	) */
+	//	return result_div;
+	
+		return	(<ul className='basic-property'>
 				<li>项目主键</li>
 				<li>{selectCard.metapath}</li>
 				<li>显示名称</li>
@@ -120,10 +158,10 @@ class BasicProperty extends Component {
 				<li>{this.getMyCheckbox('disabled')}</li>
 				<li>是否可用</li>
 				<li>{this.getMyCheckbox('isenable')}</li>
-			</ul>
-		);
+			</ul>); 
 	}
-}
+	}
+
 export default connect(
 	(state) => ({
 		areaList: state.zoneSettingData.areaList,

@@ -1,6 +1,5 @@
 import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
 import React from 'react';
-import ChooseImageForForm from 'Components/ChooseImageForForm';
 const FormItem = Form.Item;
 
 /**
@@ -81,30 +80,6 @@ const createFormItem = (props,itemInfo) => {
                         </Select>
                     )}
                 </FormItem>
-            ) : (
-                <FormItem label={lable}>
-                    <span className='ant-form-text'>{nodeData[code]}</span>
-                </FormItem>
-            );
-        case 'checkbox':
-            return (
-                <FormItem>
-                    {getFieldDecorator(code, {
-                        valuePropName: 'checked',
-                        initialValue: nodeData[code]
-                    })(<Checkbox disabled={!isEdit}>{lable}</Checkbox>)}
-                </FormItem>
-            );
-        case 'chooseImage':
-            return isEdit ? (
-                     <FormItem label={lable}>
-                        {getFieldDecorator(code, {
-                            initialValue: nodeData[code],
-                            rules: [
-                                { required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-                            ],
-                        })(<ChooseImageForForm data={imgs} title={'图标选择'}/>)}
-                    </FormItem>
             ) : (
                 <FormItem label={lable}>
                     <span className='ant-form-text'>{nodeData[code]}</span>
