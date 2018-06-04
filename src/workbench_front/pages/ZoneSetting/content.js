@@ -42,10 +42,17 @@ class MyContent extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
-						_.forEach(data,(a)=>{
-a.queryPropertyList =[];
+						let areaList = [];
+						_.forEach(data,(d)=>{
+							let tmpArea = {
+								...d
+							}
+							if(tmpArea.areatype !== '0'){
+								tmpArea.queryPropertyList = d.formPropertyList
+							}
+							areaList.push(tmpArea)
 						})
-						this.props.updateAreaList(data)
+						this.props.updateAreaList(areaList)
 					}
 				}
 			}
