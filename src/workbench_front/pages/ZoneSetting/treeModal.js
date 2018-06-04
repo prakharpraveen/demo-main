@@ -164,7 +164,7 @@ class TreeModal extends Component {
 			<div className='template-setting-left-sider template-setting-sider'>
 				<div className='sider-content'>
 					<div className='sider-search'>
-						<Input
+						{/* <Input
 							placeholder='请搜索元数据名称'
 							style={{ width: '70%' }}
 							onPressEnter={this.onInputSearch}
@@ -172,7 +172,7 @@ class TreeModal extends Component {
 							addonAfter={
 								<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />
 							}
-						/>
+						/> */}
 					</div>
 
 					<div className='sider-tree'>
