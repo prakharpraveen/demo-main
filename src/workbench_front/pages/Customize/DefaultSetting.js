@@ -5,7 +5,9 @@ import FormContent from "./FormCreate";
 class DefaultSetting extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            
+        };
         this.getFormDataFun1;
         this.getFormDataFun2;
         this.setFormDataFun1;
@@ -58,46 +60,8 @@ class DefaultSetting extends Component {
             }
         ];
     }
-    getFormData1 = fun => {
-        if (typeof fun === "function") {
-            this.getFormDataFun1 = fun;
-        } else {
-            return this.getFormDataFun1();
-        }
-    };
-    getFormData2 = fun => {
-        if (typeof fun === "function") {
-            this.getFormDataFun2 = fun;
-        } else {
-            return this.getFormDataFun2();
-        }
-    };
-    setFormData1 = fun => {
-        if (typeof fun === "function") {
-            this.setFormDataFun1 = fun;
-        } else {
-            this.setFormDataFun1(fun);
-        }
-    };
-    setFormData2 = fun => {
-        if (typeof fun === "function") {
-            this.setFormDataFun2 = fun;
-        } else {
-            this.setFormDataFun2(fun);
-        }
-    };
-    getAllFormData = () => {
-        let formData1 = this.getFormData1();
-        let formData2 = this.getFormData2();
-        console.log(formData1, formData2);
-    };
-    componentDidMount = () => {
-        this.setFormData1({
-            cont: {refpk: "12323", refCode: "con", value: "123"}
-        });
-        this.setFormData2({
-            cont1: {refpk: "12323", refCode: "con1", value: "123"}
-        });
+    componentDidMount(){
+
     };
 
     render() {
