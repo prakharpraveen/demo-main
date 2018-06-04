@@ -42,6 +42,9 @@ class MyContent extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
+						_.forEach(data,(a)=>{
+a.queryPropertyList =[];
+						})
 						this.props.updateAreaList(data)
 					}
 				}
