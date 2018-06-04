@@ -4,8 +4,9 @@ import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
 // drag && drop
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
+// import HTML5Backend from 'react-dnd-html5-backend';
+// import { DragDropContext } from 'react-dnd';
+import withDragDropContext from 'Pub/js/withDragDropContext';
 //自定义组件
 import MySider from './sider';
 import MyContent from './content';
@@ -14,7 +15,7 @@ import { connect } from 'react-redux';
 import * as utilService from './utilService';
 import { updateGroupList } from 'Store/test/action';
 
-@DragDropContext(HTML5Backend)
+// @withDragDropContext(HTML5Backend)
 class Test extends Component {
 	constructor(props) {
 		super(props);
@@ -85,4 +86,4 @@ export default connect(
 	{
 		updateGroupList
 	}
-)(Test);
+)(withDragDropContext(Test));

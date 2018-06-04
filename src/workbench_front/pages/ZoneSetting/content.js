@@ -6,23 +6,25 @@ import PropTypes from 'prop-types';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-
+// import { DragDropContext } from 'react-dnd';
+// import HTML5Backend from 'react-dnd-html5-backend';
+import withDragDropContext from 'Pub/js/withDragDropContext';
 import AreaItem from './areaItem';
 import TreeModal from './treeModal';
 import _ from 'lodash';
 /**
  * 工作桌面 配置模板区域
  */
-@DragDropContext(HTML5Backend)
+// @withDragDropContext(HTML5Backend)
 class MyContent extends Component {
 	constructor(props) {
 		super(props);
+		
 		this.state = {
 			modalVisible: false,
 			metaTree: [],
 			targetAreaID: '',
+		
 		};
 	}
 
@@ -34,7 +36,7 @@ class MyContent extends Component {
 				action: '配置模板区域-配置区域查询'
 			},
 			data: {
-				templetid: '0001A41000000006CBX9'
+				templetid: this.props.templetid
 			},
 			success: (res) => {
 				if (res) {
@@ -180,4 +182,4 @@ export default connect((state) => ({
 }), {
 	updateAreaList,
 	updateSelectCard
-})(MyContent);
+})(withDragDropContext(MyContent));

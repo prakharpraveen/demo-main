@@ -193,8 +193,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>编码</li>
 						<li>{selectCard.code}</li>
-						<li>元数据路径</li>
-						<li>{selectCard.metapath}</li>
+						<li >元数据路径</li>
+						<li className="metapath">{selectCard.metapath}</li>
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						{/* <li>参照名称</li>
@@ -257,7 +257,7 @@ class MyRightSider extends Component {
 						<li>编码</li>
 						<li>{selectCard.code}</li>
 						<li>元数据路径</li>
-						<li>{selectCard.metapath}</li>
+						<li className="metapath">{selectCard.metapath}</li>
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						{/* <li>参照名称</li>
