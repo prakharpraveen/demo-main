@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
 import BasicProperty from './basicProperty';
-import { Tabs , Input, Checkbox } from 'antd';
+import { Tabs, Input, Checkbox, InputNumber } from 'antd';
 const TabPane = Tabs.TabPane;
 import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
@@ -21,18 +21,18 @@ class MyRightSider extends Component {
 
 	componentDidMount() {}
 
-	changeValue = (e, propertyKey) => {
+	changeValue = (value, propertyKey) => {
 		let { selectCard } = this.props;
 		if (_.isEmpty(selectCard)) {
 			console.log('empty');
 			return;
 		}
-		console.log(e.target.value, propertyKey);
+
 		selectCard = { ...selectCard };
-		selectCard[propertyKey] = e.target.value;
+		selectCard[propertyKey] = value;
 		this.props.updateSelectCard(selectCard);
 	};
-	updateCardInArea = (e, propertyKey) => {
+	updateCardInArea = (value, propertyKey) => {
 		let { areaList, selectCard } = this.props;
 		if (_.isEmpty(selectCard)) {
 			console.log('empty');
@@ -53,7 +53,7 @@ class MyRightSider extends Component {
 		areaList[targetAreaIndex].queryPropertyList[targetCardIndex][propertyKey] = selectCard[propertyKey];
 		this.props.updateAreaList(areaList);
 	};
-	changeCheckboxValue = (e, property) => {
+	changeCheckboxValue = (value, property) => {
 		let { selectCard } = this.props;
 		if (_.isEmpty(selectCard)) {
 			console.log('empty');
@@ -61,18 +61,36 @@ class MyRightSider extends Component {
 		}
 		selectCard = { ...selectCard };
 		let targetValue = -1;
-		if (e.target.checked) {
+		if (value) {
 			targetValue = '1';
 		} else {
 			targetValue = '0';
 		}
 		selectCard[property] = targetValue;
 		this.asyncUpdateSelectCard(selectCard).then(() => {
-			this.updateCardInArea(e, property);
+			this.updateCardInArea(value, property);
 		});
 	};
-	onPressEnter = (e, property) => {
+	onPressEnter = (value, property) => {
 		this[`${property}input`].blur();
+	};
+	getMyNumberInput = (placeholder, property) => {
+		return (
+			<InputNumber
+				min={1}
+				value={this.props.selectCard[property]}
+				onChange={(value) => {
+					this.changeValue(value, property);
+				}}
+				onBlur={(e) => {
+					this.updateCardInArea(e.target.value, property);
+				}}
+				ref={(input) => (this[`${property}input`] = input)}
+				onPressEnter={(e) => {
+					this.onPressEnter(e.target.value, property);
+				}}
+			/>
+		);
 	};
 	getMyInput(placeholder, property) {
 		return (
@@ -80,14 +98,14 @@ class MyRightSider extends Component {
 				placeholder={placeholder}
 				value={this.props.selectCard[property]}
 				onChange={(e) => {
-					this.changeValue(e, property);
+					this.changeValue(e.target.value, property);
 				}}
 				onBlur={(e) => {
-					this.updateCardInArea(e, property);
+					this.updateCardInArea(e.target.value, property);
 				}}
 				ref={(input) => (this[`${property}input`] = input)}
 				onPressEnter={(e) => {
-					this.onPressEnter(e, property);
+					this.onPressEnter(e.target.value, property);
 				}}
 			/>
 		);
@@ -97,7 +115,7 @@ class MyRightSider extends Component {
 			<Checkbox
 				checked={Boolean(Number(this.props.selectCard[property]))}
 				onChange={(e) => {
-					this.changeCheckboxValue(e, property);
+					this.changeCheckboxValue(e.target.checked, property);
 				}}
 			/>
 		);
@@ -127,7 +145,7 @@ class MyRightSider extends Component {
 	};
 
 	getDom1 = () => {
-		const {selectCard} = this.props;
+		const { selectCard } = this.props;
 		return (
 			<Tabs defaultActiveKey='1'>
 				<TabPane tab='显示属性' key='1'>
@@ -142,8 +160,8 @@ class MyRightSider extends Component {
 						<li>{selectCard.metapath}</li>
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
-						<li>参照名称</li>
-						<li>{selectCard.refname}</li>
+						{/* <li>参照名称</li>
+						<li>{selectCard.refname}</li> */}
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
 						<li>控件宽度</li>
@@ -179,7 +197,7 @@ class MyRightSider extends Component {
 						<li>默认取值</li>
 						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
 						<li>数据类型</li>
-						<li>{utilService.getDatatypeName(selectCard.datatype) }</li>
+						<li>{utilService.getDatatypeName(selectCard.datatype)}</li>
 					</ul>
 				</TabPane>
 				<TabPane tab='高级属性' key='2' />
