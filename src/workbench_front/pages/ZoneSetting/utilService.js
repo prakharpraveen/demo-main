@@ -57,6 +57,7 @@ export const colorObj = [
 	{ name: '深兰色', value: '14' }
 ];
 export const dataTypeObj = [
+	{ name: '字符', value: '1' },
 	{ name: '整数', value: '4' },
 	{ name: '金额', value: '52' },
 	{ name: '自定义项', value: '56' },
