@@ -66,7 +66,6 @@ class MyContent extends Component {
 				action: '元数据树结构查询'
 			},
 			data: {
-				// metaid: metaid
 				metaid: metaid
 			},
 			success: (res) => {

@@ -13,11 +13,13 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
-
+import InterModal from './interModal';
 class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			interModalVal: false
+		};
 	}
 
 	componentDidMount() {}
@@ -180,7 +182,7 @@ class MyRightSider extends Component {
 		});
 		return result === '0' ? true : false;
 	};
-
+	//查询区，元数据属性
 	getDom1 = () => {
 		const { selectCard } = this.props;
 		return (
@@ -193,8 +195,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>编码</li>
 						<li>{selectCard.code}</li>
-						<li >元数据路径</li>
-						<li className="metapath">{selectCard.metapath}</li>
+						<li>元数据路径</li>
+						<li className='metapath'>{selectCard.metapath}</li>
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						{/* <li>参照名称</li>
@@ -244,6 +246,7 @@ class MyRightSider extends Component {
 			</Tabs>
 		);
 	};
+	//查询区，非元数据属性
 	getDom2 = () => {
 		const { selectCard } = this.props;
 		return (
@@ -257,7 +260,7 @@ class MyRightSider extends Component {
 						<li>编码</li>
 						<li>{selectCard.code}</li>
 						<li>元数据路径</li>
-						<li className="metapath">{selectCard.metapath}</li>
+						<li className='metapath'>{selectCard.metapath}</li>
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						{/* <li>参照名称</li>
@@ -300,44 +303,136 @@ class MyRightSider extends Component {
 						<li>{this.getMySelect(utilService.componentTypeObj, 'componenttype')}</li>
 						<li>显示颜色</li>
 						<li>{this.getMySelect(utilService.colorObj, 'color')}</li>
+					</ul>
+				</TabPane>
+				<TabPane tab='高级属性' key='2'>
+					<ul className='basic-property'>
 						<li>数据类型</li>
 						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
+						<li>类型设置</li>
+						<li>{this.getMyInput('类型设置', 'dataval')}</li>
 					</ul>
 				</TabPane>
 			</Tabs>
 		);
 	};
-
-	getDom3 = () => {};
-
-	getDom4 = () => {};
+	// 设置不同弹框的显示和隐藏 
+	    setModalVisibel = (type,val) =>{
+		        switch (type) {
+		            case 'inter':
+		                this.setState({ interModalVisibel: val})
+		                break;
+		            case 'money':
+		                this.setState({ moneyModalVisibel: val })
+		                break;
+		            default:
+		                break;
+		        }
+		    }
+	    // 更新当前组件的类型设置值 
+//     updateVal = (type,val) =>{
+//         switch (type) {
+//             case 'inter':
+//                 this.setState({ interModalVal: val })
+//                 break;
+//             case 'money':
+//                 this.setState({ moneyModalVal: val })
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
+	//非查询区，元数据属性
+	getDom3 = () => {
+		// <Tabs defaultActiveKey='1'>
+		// 		<TabPane tab='显示属性' key='1'>
+		// 			<ul className='basic-property'>
+		// 				{/* <li>项目主键</li>
+		// 		<li>{selectCard.metapath}</li> */}
+		// 				<li>显示名称</li>
+		// 				<li>{this.getMyInput('显示名称', 'label')}</li>
+		// 			</ul>
+		// 		</TabPane>
+		// 		<TabPane tab='高级属性' key='2'>
+		// 		<ul className='basic-property'>
+		// 				<li>数据类型</li>
+		// 				<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
+		// 				<li>类型设置</li>
+		// 				<li>{this.getMyInput('类型设置', 'dataval')}</li>
+		// 			</ul>
+		// 		</TabPane>
+		// 	</Tabs>
+	};
+	//非查询区，非元数据属性
+	getDom4 = () => {
+		const { selectCard } = this.props;
+		return (
+			<Tabs defaultActiveKey='1'>
+				<TabPane tab='显示属性' key='1'>
+					<ul className='basic-property'>
+						{/* <li>项目主键</li>
+				<li>{selectCard.metapath}</li> */}
+						<li>显示名称</li>
+						<li>{this.getMyInput('显示名称', 'label')}</li>
+					</ul>
+				</TabPane>
+				<TabPane tab='高级属性' key='2'>
+					<ul className='basic-property'>
+						<li>数据类型</li>
+						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
+						<li>类型设置</li>
+						<li>
+							<Input
+								value={selectCard.dataval}
+								onFocus={() => {
+									this.setState({ interModalVisibel: true });
+								}}
+							/>
+							<InterModal
+								handleSelectChange={this.handleSelectChange}
+								initVal={selectCard.dataval}
+								modalVisibel={this.state.interModalVisibel}
+								setModalVisibel={this.setModalVisibel}
+							/>
+						</li>
+					</ul>
+				</TabPane>
+			</Tabs>
+		);
+	};
 	render() {
 		const { selectCard, areaList } = this.props;
 		// 1 判断是否是元数据 2 判断所属的类型是否是查询区  默认是 不是元数据 不是查询区
-		let isMetaData = this.getMetaType(selectCard),
-			isSearch = this.getAreaType(areaList, selectCard);
+		
 		let result_div;
-
-		if (isSearch) {
-			//不区分显示属性和高级属性
-			if (isMetaData) {
-				//元数据中metapath 和datatype和类型设置 为只读
-				result_div = this.getDom1();
+		if(_.isEmpty(selectCard)){
+			result_div = (
+				<div></div>	
+			);
+		}else{
+			let isMetaData = this.getMetaType(selectCard),
+			isSearch = this.getAreaType(areaList, selectCard);
+			if (isSearch) {
+				//不区分显示属性和高级属性
+				if (isMetaData) {
+					//元数据中metapath 和datatype和类型设置 为只读
+					result_div = this.getDom1();
+				} else {
+					//非元数据metapath为空且只读，datatype和类型设置 为可以设置
+					result_div = this.getDom2();
+				}
 			} else {
-				//非元数据metapath为空且只读，datatype和类型设置 为可以设置
-				result_div = this.getDom2();
-			}
-		} else {
-			//
-			if (isMetaData) {
-				//非查询区，元数据
-				result_div = this.getDom3();
-			} else {
-				//非查询区，非元数据
-				result_div = this.getDom4();
+				//
+				if (isMetaData) {
+					//非查询区，元数据
+					result_div = this.getDom3();
+				} else {
+					//非查询区，非元数据
+					result_div = this.getDom4();
+				}
 			}
 		}
-
+		
 		return (
 			<div className='template-setting-right-sider template-setting-sider'>
 				<div className='sider-content'>

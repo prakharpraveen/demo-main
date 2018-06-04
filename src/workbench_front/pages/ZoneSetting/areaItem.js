@@ -70,6 +70,7 @@ class AreaItem extends Component {
 								key={index} 
 								id={q.pk_query_property} 
 								name={q.label} 
+								areaid = {areaItem.pk_area}
 								selectThisCard = {this.selectThisCard}
 								moveCard={this.moveCard}
 								 deleteCard={this.deleteCard}/>  

@@ -99,12 +99,12 @@ class MyCard extends Component {
 	}
 
 	render() {
-		const { index, name, id, key,selectCard, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const { index, name, id, key,selectCard, areaid, isDragging, connectDragSource, connectDropTarget } = this.props;
 		const opacity = isDragging ? 0 : 1;
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' style={{ opacity: opacity }} onClick={this.selectThisCard}>
-					<div className={selectCard.pk_query_property=== id ?'select-card':'normal-card'}>
+					<div className={selectCard.pk_query_property=== id && selectCard.areaid === areaid ?'select-card':'normal-card'}>
 						{name}
 						<span className='delete-card' onClick={this.deleteCard}>
 							X
