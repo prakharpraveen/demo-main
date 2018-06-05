@@ -15,12 +15,15 @@ import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import InterModal from './interModal';
 import MoneyModal from './moneyModal';
+import ReferModal from './referModal';
+
 class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			interModalVal: false,
 			moneyModalVisibel:false,
+			ReferModalVisibel:false,
 		};
 	}
 
@@ -327,6 +330,9 @@ class MyRightSider extends Component {
 		            case 'money':
 		                this.setState({ moneyModalVisibel: val })
 		                break;
+					case 'refer':
+						this.setState({ ReferModalVisibel: val })
+						break;
 		            default:
 		                break;
 		        }
@@ -388,7 +394,7 @@ class MyRightSider extends Component {
 								value={selectCard.dataval}
 								onFocus={() => {
 								//	this.setState({ interModalVisibel: true });
-									this.setState({ moneyModalVisibel: true });
+									this.setState({ ReferModalVisibel: true });
 								}}
 							/>
 							<InterModal
@@ -401,6 +407,12 @@ class MyRightSider extends Component {
 								handleSelectChange={this.handleSelectChange}
 								initVal={selectCard.dataval}
 								modalVisibel={this.state.moneyModalVisibel}
+								setModalVisibel={this.setModalVisibel}
+							/>
+							<ReferModal
+								handleSelectChange={this.handleSelectChange}
+								initVal={selectCard.dataval}
+								modalVisibel={this.state.ReferModalVisibel}
 								setModalVisibel={this.setModalVisibel}
 							/>
 						</li>
