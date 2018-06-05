@@ -652,15 +652,19 @@ class PageTable extends Component {
                 btnorder: newData.length
             });
         } else if (activeKey === "2") {
-            newData.push({
-                editable: true,
-                isdefault: false,
-                name: "",
-                pageid: pk_apppage,
-                isenable: true,
-                resid: "",
-                code: ""
-            });
+            let win = window.open("", "_blank");
+            // 浏览器当前页打开
+            win.location = `#/Zone?&n=设置页面模板`;
+            win.focus();
+            // newData.push({
+            //     editable: true,
+            //     isdefault: false,
+            //     name: "",
+            //     pageid: pk_apppage,
+            //     isenable: true,
+            //     resid: "",
+            //     code: ""
+            // });
         }
         this.setNewData(newData);
     }
