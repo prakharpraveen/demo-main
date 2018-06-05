@@ -24,6 +24,12 @@ class ModuleFromCard extends Component {
 					required: true,
 				},
 				{
+					lable: '多语字段',
+					type: 'input',
+					code: 'resid',
+					//required: true,
+				},
+				{
 					lable: '模板描述',
 					type: 'input',
 					code: 'templetdesc',

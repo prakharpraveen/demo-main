@@ -34,21 +34,23 @@ class ZoneRegister extends Component {
 		data = {
 			templetid: param && param.t
 		};
-		Ajax({
-			url: url,
-			data: data,
-			info: {
-				name: '区域设置',
-				action: '传递区域数值'
-			},
-			success: ({ data }) => {
-				if (data.success && data.data) {
-					this.props.setZoneData(data.data);
-				} else {
-					Notice({ status: 'error', msg: data.data.true });
+		if (param.t){
+			Ajax({
+				url: url,
+				data: data,
+				info: {
+					name: '区域设置',
+					action: '传递区域数值'
+				},
+				success: ({ data }) => {
+					if (data.success && data.data) {
+						this.props.setZoneData(data.data);
+					} else {
+						Notice({ status: 'error', msg: data.data.true });
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	render() {

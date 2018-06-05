@@ -7,7 +7,7 @@ import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import { GetQuery } from 'Pub/js/utils';
 import Notice from 'Components/Notice';
-
+import { withRouter } from 'react-router-dom';
 
 const { Header } = Layout;
 /**
@@ -27,6 +27,7 @@ const Btns = [
 		type: 'primary'
 	}
 ];
+
 class MyBtns extends Component {
 	constructor(props) {
 		super(props);
@@ -51,18 +52,16 @@ class MyBtns extends Component {
 	}
 	// 保存 区域数据 
 	saveZoneData(list,form,type){
+		let param = GetQuery(this.props.location.search);
 		let url, data;
 		url = '/nccloud/platform/templet/settempletarea.do';
 		let { zoneDatas } = this.props;
-		//if (zoneDatas && zoneDatas.pk_page_templet){
-			// 修改 
 			data = { 
 				pk_page_templet: zoneDatas.pk_page_templet,
-				pageid: zoneDatas.pageid,
+				pageid: zoneDatas.pageid || param.pid ,
 				areaList:list,
 				...form,
 			}
-	//	}
 		
 		Ajax({
 			url: url,
@@ -73,7 +72,6 @@ class MyBtns extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) { 
-				//	let param = GetQuery(this.props.location);
 					// type =1 代表保存  type =2 表示下一步  保存binqie
 					type === 1 ? (location.hash = '/ar') : (location.hash = `/ZoneSetting?templetid=${data.data.templetid}`);
 					Notice({ status: 'success', msg: data.data.true });
@@ -127,7 +125,7 @@ class MyBtns extends Component {
 	   </Header> );
    }
 }
-
+MyBtns = withRouter(MyBtns);
 export default connect(
 	(state) => {
 		let { zoneFormData, newListData, zoneDatas } = state.zoneRegisterData;

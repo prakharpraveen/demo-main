@@ -9,7 +9,7 @@ import _ from 'lodash';
 import {setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
-import { high } from 'nc-lightapp-front';
+ import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer } = high;
 const Option = Select.Option;
@@ -48,12 +48,15 @@ class EditableCell extends React.Component {
 		}
 	}
 	edit = () => {
-		this.setState({ editable: true });
+		if (!this.state.editable) {
+			this.setState({ editable: true },()=>{
+				this.refs.myInput.focus()});
+		}
 	}
 	render() {
 		const { value, editable } = this.state;
 		return (
-			<div className="editable-cell">
+			<div className="editable-cell" onClick ={this.edit}>
 				{
 					editable ?
 						<div className="editable-cell-input-wrapper">
@@ -62,6 +65,7 @@ class EditableCell extends React.Component {
 								onChange={this.handleChange}
 								onPressEnter={this.check}
 								onBlur={this.check}
+								ref='myInput'
 							/>
 							
 						</div>
@@ -96,12 +100,14 @@ class EditableSelect extends React.Component {
 		}
 	}
 	edit = () => {
-		this.setState({ editable: true });
+		if (!this.state.editable){
+			this.setState({ editable: true });
+		}
 	}
 	render() {
 		const { value, editable } = this.state;
 		return (
-			<div className="editable-cell">
+			<div className="editable-cell" onClick={this.edit}>
 				{
 					editable ?
 						<div className="editable-cell-input-wrapper">
@@ -154,18 +160,20 @@ class EditableRefer extends React.Component {
 		}
 	}
 	edit = () => {
-		this.setState({ editable: true });
+		if (!this.state.editable) {
+			this.setState({ editable: true });
+		}
 	}
 	render() {
 		const { value, editable } = this.state;
 		return (
-			<div className="editable-cell">
+			<div className="editable-cell" onClick={this.edit}>
 				{
 					editable ?
 						<div className="editable-cell-input-wrapper">
 							<Refer
 								placeholder={'关联元数据'}
-								refName={'交易类型'}
+								refName={'元数据参照'}
 								refCode={'cont'}
 								refType={'gridTree'}
 								queryTreeUrl={'/nccloud/platform/templet/querymetatree.do'}
