@@ -102,6 +102,7 @@ class MyRightSider extends Component {
 	getMyInput(placeholder, property) {
 		return (
 			<Input
+				style={{height:23,width:176}}
 				placeholder={placeholder}
 				value={this.props.selectCard[property]}
 				onChange={(e) => {
@@ -144,6 +145,7 @@ class MyRightSider extends Component {
 	getMySelect = (mySelectObj, property) => {
 		return (
 			<Select
+			
 				value={
 					_.isEmpty(this.props.selectCard[property]) ? mySelectObj[0].value : this.props.selectCard[property]
 				}
@@ -153,7 +155,8 @@ class MyRightSider extends Component {
 					}
 					this.handleSelectChange(value, property);
 				}}
-				style={{ width: 139 }}
+				style={{width:176}}
+				size = {'small'}
 			>
 				{mySelectObj.map((c, index) => {
 					return (

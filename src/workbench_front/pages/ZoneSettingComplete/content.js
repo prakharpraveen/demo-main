@@ -19,8 +19,8 @@ class MyContent extends Component {
 					<div>
 						<p className="first-text">应用页面配置完成</p>
 						<a onClick={()=>{
-							this.props.history.push(`/Zone?t=${this.props.templetid}`)
-						}}>继续新增</a>
+							this.props.history.push(`/Zone`)
+						}}>继续新增模板</a>
 						<a onClick={()=>{
 							this.props.history.push(`/ar?n=应用注册&c=102202APP`)
 						}}>返回页面配置</a>
