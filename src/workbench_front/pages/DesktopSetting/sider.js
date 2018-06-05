@@ -155,7 +155,11 @@ class MySider extends Component {
 	//切换搜索状态
 	switchSearch = () => {
 		const { showSearch } = this.state;
-		this.setState({ showSearch: !showSearch });
+		this.setState({ showSearch: !showSearch },()=>{
+			if(this.state.showSearch){
+				this.refs.searchInput.focus();
+			}
+		});
 	};
 	//获取sider上方的搜索框
 	getSearchDom() {
@@ -164,6 +168,7 @@ class MySider extends Component {
 			itemDom = (
 				<div className='sider-search'>
 					<Input
+						ref = 'searchInput'
 						placeholder='请输入应用名称'
 						style={{ width: '230px' }}
 						onPressEnter={this.onInputSearch}

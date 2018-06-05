@@ -65,6 +65,13 @@ class AddNotMetaDataModal extends Component {
 	changeNotMetaDataName = (e) => {
 		this.setState({ notMetaDataName: e.target.value });
 	};
+	componentWillUpdate =(nextProps, nextState)=>{
+		if(!this.props.addDataModalVisibel && nextProps.addDataModalVisibel){
+			setTimeout(() => {
+				this.refs.addNotMetaDataInputDom.focus();
+			  }, 0);
+		}
+	}
 	render() {
 		return (
 			<Modal
@@ -90,6 +97,7 @@ class AddNotMetaDataModal extends Component {
 			>
 				<span>非元数据名称：</span>
 				<Input
+					ref="addNotMetaDataInputDom"
 					placeholder='请输入非元数据名称'
 					value={this.state.notMetaDataName}
 					onChange={this.changeNotMetaDataName}

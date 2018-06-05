@@ -43,7 +43,6 @@ class AreaItem extends Component {
 		this.setState({addDataModalVisibel:visibel})
 	}
 	render() {
-        console.log("areaItem")
         const {areaItem, selectCard} = this.props;
 		return (
             <div className='area-item' >

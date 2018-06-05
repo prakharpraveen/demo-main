@@ -68,7 +68,12 @@ class Layout extends Component {
 
     changeSearchInput = () => {
         const {isShowSearch} = this.state;
-        this.setState({isShowSearch: !isShowSearch});
+        
+        this.setState({isShowSearch: !isShowSearch},()=>{
+            if(this.state.isShowSearch){
+                this.autoCompleteInput.focus();
+            }
+        });
     };
 
     onSelect = value => {
@@ -134,6 +139,7 @@ class Layout extends Component {
             return (
                 <span className="margin-right-10 autocomplete">
                     <AutoComplete
+                    ref={(input) => (this[`autoCompleteInput`] = input)}
                         dataSource={dataSource}
                         style={{width: 200, height: 30}}
                         onSelect={this.onSelect}

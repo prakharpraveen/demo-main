@@ -202,7 +202,10 @@ class GroupItem extends Component {
     }
     //组名进入编辑状态
 	editGroupItemName = ()=> {
-		this.props.updateCurrEditID(this.props.id);
+        this.props.updateCurrEditID(this.props.id);
+        setTimeout(() => {
+            this.refs.editInputDom.focus();
+          }, 0);
 	}
     //改变组名
 	changeGroupName =()=>{
@@ -225,7 +228,8 @@ class GroupItem extends Component {
         groupItemTitle = (
             <div className="group-item-title-container-no-edit">
                 <div className="title-left">
-                    <Input size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={this.changeGroupName} onChange={this.getGroupName} />
+                    <Input ref="editInputDom"
+                     size="small" placeholder="占位符" defaultValue={groupname} onPressEnter={this.changeGroupName} onChange={this.getGroupName} />
                     <Icon type="check-square-o" className="group-item-icon" title="占位符" onClick={this.changeGroupName} />
                     <Icon type="close-square-o" className="group-item-icon" title="占位符" onClick={this.cancelGroupName} />
                 </div>

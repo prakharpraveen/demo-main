@@ -144,7 +144,7 @@ class TreeModal extends Component {
 							data.rows.map((r, index) => {
 								metaTree.push({
 									...r,
-									title: r.refname,
+									title:`${r.refcode} ${r.refname}` ,
 									key: `${treeNode.props.myUniqID}.${r.refcode}`,
 									myUniqID: `${treeNode.props.myUniqID}.${r.refcode}`,
 									isLeaf: r.isleaf
