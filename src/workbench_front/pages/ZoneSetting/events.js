@@ -42,7 +42,6 @@ export default function (props) {
                     }
                     return{...pre,...cur}   // 数组拆开 展开为模板数据格式 
                  },{});
-                 debugger;
                 props.meta.setMeta(meta);
                 props.updatePreviewData(data.data);
             } else {
