@@ -650,7 +650,7 @@ class PageTable extends Component {
                 btnorder: newData.length
             });
         } else if (activeKey === "2") {
-            this.props.history.push(`/Zone?&n=设置页面模板`);
+            this.props.history.push(`/Zone?&pid=${pk_apppage}&n=设置页面模板`);
             // newData.push({
             //     editable: true,
             //     isdefault: false,
