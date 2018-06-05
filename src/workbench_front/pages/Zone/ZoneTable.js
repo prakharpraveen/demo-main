@@ -168,8 +168,8 @@ class EditableRefer extends React.Component {
 								refName={'交易类型'}
 								refCode={'cont'}
 								refType={'gridTree'}
-								queryTreeUrl={'nccloud/platform/templet/querymetatree.do'}
-								queryGridUrl={'nccloud/platform/templet/querymetasearch.do'}
+								queryTreeUrl={'/nccloud/platform/templet/querymetatree.do'}
+								queryGridUrl={'/nccloud/platform/templet/querymetasearch.do'}
 								value={this.state.metaObj}
 								onChange={(val) => {
 									this.setState({
