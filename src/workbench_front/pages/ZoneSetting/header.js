@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 // 	setPageTemplateData,
 // 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
+import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';
-import './index.less';
 import PreviewModal from './showPreview';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 /**
@@ -58,7 +58,10 @@ class MyHeader extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success) {
+					Notice({ status: 'success', msg:data });
 					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}`);
+				}else{
+					Notice({ status: 'error', msg: data });
 				}
 			}
 		});

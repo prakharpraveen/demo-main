@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
-import Ajax from 'Pub/js/ajax';
-import './index.less';
 import MyCard from './card';
 import BatchSettingModal from './batchSettingModal';
 import AddNotMetaDataModal from './addNotMetaDataModal';

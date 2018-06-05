@@ -11,6 +11,7 @@ import {GetQuery} from 'Pub/js/utils';
 import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
+import Notice from 'Components/Notice';
 
 class MySider extends Component {
 	constructor(props) {
@@ -41,6 +42,12 @@ class MySider extends Component {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
 						this.setState({ domainArr: data });
+					}else{
+						if(data.length === 0){
+							Notice({ status: 'error', msg: '领域模块数据为空' });
+						}else{
+							Notice({ status: 'error', msg: data });
+						}
 					}
 				}
 			}
@@ -87,6 +94,12 @@ class MySider extends Component {
 						c.width = Number(c.width);
 					});
 					this.setState({ appGroupArr: [data], isAllShow: true });
+				}else{
+					if(data && data.children &&data.children.length === 0){
+						Notice({ status: 'error', msg: '数据为空' });
+					}else{
+						Notice({ status: 'error', msg: data });
+					}
 				}
 			}
 		});
@@ -129,10 +142,15 @@ class MySider extends Component {
 						});
 					});
 					this.setState({ appGroupArr: data, isAllShow: true });
+				}else{
+					if(data && data.length === 0){
+						Notice({ status: 'error', msg: '数据为空' });
+					}else{
+						Notice({ status: 'error', msg: data });
+					}
 				}
 			}
 		});
-		console.log(value, '选择', this.state);
 	};
 	//切换搜索状态
 	switchSearch = () => {

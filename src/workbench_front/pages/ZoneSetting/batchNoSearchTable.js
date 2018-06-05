@@ -5,8 +5,6 @@ import { Table, Input, Icon, Button, InputNumber, Select,Form,Switch} from 'antd
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
-//import {  updateAreaList } from 'Store/ZoneSetting/action';
-import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const FormItem = Form.Item;
 const Option = Select.Option;

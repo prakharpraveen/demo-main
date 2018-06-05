@@ -5,11 +5,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
-import Ajax from 'Pub/js/ajax';
-import './index.less';
 /**
  * 工作桌面 配置模板区域
  */

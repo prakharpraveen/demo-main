@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
 import { Input, Icon, Modal, Button } from 'antd';
 import * as utilService from './utilService';

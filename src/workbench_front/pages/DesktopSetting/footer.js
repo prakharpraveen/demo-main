@@ -8,6 +8,8 @@ import { compactLayout,compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
 import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
+import Notice from 'Components/Notice';
+import { withRouter } from 'react-router-dom';
 const RadioGroup = Radio.Group;
 
 class MyFooter extends Component {
@@ -123,8 +125,12 @@ class MyFooter extends Component {
 		this.setModalVisible(modalVisible);
 	};
 	cancleSave = () => {
-		self.opener=null;
+		if(this.props.relateidObj.type === 'userID'){
+			this.props.history.push(`/`)
+		}else{
+			self.opener=null;
             self.close();
+		}
 	};
 	hasCheckedCardInGroups = () => {};
 	//抽象方法，参数为显示的button文本和方法体，注意方法提前bind
@@ -168,7 +174,6 @@ class MyFooter extends Component {
 			relateid: this.props.relateidObj.data,
 			data: tmpData
 		};
-		console.log(saveData);
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
 			info: {
@@ -179,8 +184,15 @@ class MyFooter extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success) {
-					// location.reload();
-					alert("保存成功");
+					if(this.props.relateidObj.type === 'userID'){
+						this.props.history.push(`/`)
+					}else{
+						self.opener=null;
+						self.close();
+					}
+					Notice({ status: 'success', msg:data });
+				}else{
+					Notice({ status: 'error', msg: data });
 				}
 			}
 		});
@@ -240,4 +252,4 @@ export default connect(
 	{
 		updateGroupList
 	}
-)(MyFooter);
+)(withRouter(MyFooter));

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 // 	setPageTemplateData,
 // 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
-import './index.less';
 import {  Input, Icon,Tree } from 'antd';
 const TreeNode = Tree.TreeNode;
 class MyLeftSider extends Component {
