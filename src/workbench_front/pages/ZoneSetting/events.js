@@ -21,8 +21,8 @@ export default function (props) {
     url = '/nccloud/platform/templet/previewtemplet.do';
     data = {
          
-     //    previewList: array
-        templetid: '00011110000000075ZHA'
+        previewList: array
+     //   templetid: '00011110000000075ZHA'
     };
     Ajax({
         url: url,
@@ -36,9 +36,13 @@ export default function (props) {
                 let meta = data.data.reduce((pre,cur,i)=>{
                     if (cur[Object.keys(cur)[0]] && cur[Object.keys(cur)[0]].moduletype ==='form' ){
                         cur[Object.keys(cur)[0]].status ='edit';
+                        cur[Object.keys(cur)[0]].items.forEach((element,index) => {
+                            element.attrcode = index+1;
+                        });
                     }
                     return{...pre,...cur}   // 数组拆开 展开为模板数据格式 
                  },{});
+                 debugger;
                 props.meta.setMeta(meta);
                 props.updatePreviewData(data.data);
             } else {
