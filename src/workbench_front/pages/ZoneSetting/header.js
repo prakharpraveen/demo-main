@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 // 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import { withRouter } from 'react-router-dom';
-import './index.less';
 import PreviewModal from './showPreview';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 /**

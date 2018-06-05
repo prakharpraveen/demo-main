@@ -28,7 +28,7 @@ class ZoneSetting extends Component {
 
 	render() {
 		return (
-			<div className='template-setting-page'>
+			<div className='template-setting-complete-page'>
 				<div className='template-setting-steps'>
 					<Steps size='small' current={2}>
 						<Step title='设置页面基本信息' description='完成' />

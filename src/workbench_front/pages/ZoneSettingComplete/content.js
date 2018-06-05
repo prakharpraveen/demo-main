@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Ajax from 'Pub/js/ajax';
-import './index.less';
 import _ from 'lodash';
 import { Icon } from 'antd';
 import { withRouter } from 'react-router-dom';

@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 // import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
 // 	setPageTemplateData,
 // 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
-import Ajax from 'Pub/js/ajax';
-import './index.less';
 import BasicProperty from './basicProperty';
 import { Tabs, Input, Checkbox, InputNumber, Select } from 'antd';
 const Option = Select.Option;
