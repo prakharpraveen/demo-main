@@ -162,7 +162,7 @@ class DefaultSetting extends Component {
                 <div className="dafault-form">
                     <label>默认信用控制域</label>
                     <CreditCtlRegionGridRef
-                        value={org_df_biz}
+                        value={org_df_credit}
                         placeholder={"默认信用控制域"}
                         onChange={value => {
                             this.handdleRefChange(value, "org_df_biz");
