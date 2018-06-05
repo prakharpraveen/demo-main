@@ -21,6 +21,11 @@ module.exports = {
 		filename: '[name].[chunkhash:8].js', // 生产环境可以使用 chunkhash 文件内容 hash 校验
 		libraryTarget: 'umd'
 	},
+	// 不要遵循/打包这些模块，而是在运行时从环境中请求他们
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM'
+	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
