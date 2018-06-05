@@ -54,7 +54,9 @@ class TemplateSetting extends Component {
 			treeDataArray: [],
 			treeData: [],
 			searchValue: '',
-			autoExpandParent: true
+			autoExpandParent: true,
+			treeTemData: [],
+			treeTemDataArray:[]
 		};
 	}
 	// 按钮显隐性控制
@@ -145,6 +147,32 @@ class TemplateSetting extends Component {
 		// 	this.setState({ siderHeight });
 		// };
 	};
+	restoreTreeTemData = ()=>{
+		let {
+			treeTemData,
+			treeTemDataArray
+		} = this.state;
+		let treeInfo = generateTemData(treeTemDataArray);
+		let {
+			treeArray,
+			treeObj
+		} = treeInfo;
+		treeArray.map((item, index)=>{
+			for (const key in treeObj) {
+				if (treeObj.hasOwnProperty(key)) {
+					if(item.templateId===treeObj[key][0].parentId){
+						item.children.push(treeObj[key][0]);
+					}
+				}
+			}
+		})
+		//处理树数据
+		treeTemData = treeInfo.treeArray;
+		treeTemData = generateTreeData(treeTemData);
+		this.setState({
+			treeTemData
+		});
+	}
 	/**
 	 * 将平铺树数组转换为树状数组
 	 * 
@@ -168,7 +196,6 @@ class TemplateSetting extends Component {
 							item.children = treeObj[item.moduleid];
 						} else if (treeObj[item.systypecode]) {
 							item.children = treeObj[item.systypecode];
-
 						}
 						return item;
 					});
@@ -184,13 +211,11 @@ class TemplateSetting extends Component {
 		// 处理树数据
 		treeData[0].children = treeInfo.treeArray;
 		treeData = generateTreeData(treeData);
-		// console.log(treeData);
 		this.setState({
 			treeData
 		});
 	};
 	onExpand = (expandedKeys) => {
-		// console.log(expandedKeys);
 		this.setState({
 			expandedKeys,
 			autoExpandParent: false
@@ -204,10 +229,32 @@ class TemplateSetting extends Component {
 			autoExpandParent: true
 		});
 	};
-	onSelect = (key, e) => {
-		console.log(key);
-		this.props.reqTemplateTreeData(key);
+	onSelectQuery = (key, e) => {
+		let infoData={
+			"pageCode": "23","orgId": "0001A110000000002475" 
+		}
+		infoData.pageCode=key[0];
+		Ajax({
+			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
+			data: infoData,
+			info:{
+				name:'模板设置',
+				action:'参数查询'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success && data.data.length > 0) {
+					this.setState({
+						treeTemDataArray: data.data
+					}, this.restoreTreeTemData);
+				}
+			}
+		});
 	};
+	onSelect = (key, e)=>{
+
+	}
 	/**
 	 * tree 数据请求
 	 */
@@ -222,7 +269,6 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success && data.data.length > 0) {
-					console.log(data.data);
 					this.setState({
 						treeDataArray: data.data
 					}, this.restoreTreeData);
@@ -236,7 +282,8 @@ class TemplateSetting extends Component {
 			searchValue,
 			autoExpandParent,
 			selectedKeys,
-			treeData
+			treeData,
+			treeTemData
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -300,7 +347,7 @@ class TemplateSetting extends Component {
 								{treeData.length > 0 && treeData[0].children.length > 0 && ( 
 									<Tree showLine onExpand = {this.onExpand}
 									expandedKeys = {expandedKeys}
-									onSelect = {this.onSelect}
+									onSelect = {this.onSelectQuery}
 									autoExpandParent = {autoExpandParent}
 									selectedKeys = {selectedKeys} >
 									{loop(treeData)} 
@@ -308,7 +355,13 @@ class TemplateSetting extends Component {
 								)} 
 							</div>
 						</Sider>
-						<Content style={{ padding: '20px', minHeight: 280 }}></Content>
+						<Content style={{ padding: '20px', minHeight: 280 }}><Tree showLine onExpand = {this.onExpand}
+									expandedKeys = {expandedKeys}
+									onSelect = {this.onSelect}
+									autoExpandParent = {autoExpandParent}
+									selectedKeys = {selectedKeys} >
+									{loop(treeTemData)} 
+									</Tree></Content>
 					</Layout>
 				</Layout>
 			</PageLayout>
@@ -357,6 +410,38 @@ const generateData = (data) => {
 		treeObj
 	};
 };
+const generateTemData = (data)=>{
+	// 第一层 tree 数据
+	let treeArray = [];
+	// 所有 children 数组
+	let treeObj = {};
+	data.map((item, index) => {
+		let {
+			templateId,
+			parentId,
+			name,
+			type
+		} = item;
+		if(item.children){
+			delete item.children;
+		}
+		item.key = templateId;
+		item.text = name;
+		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
+		if (parentId==='root') {
+			// 根据是否为叶子节点 来添加是否有 children 属性
+			item.children = [];
+			treeArray.push(item);
+		} else {
+			treeObj[templateId] = [];
+			treeObj[templateId].push(item);
+		}
+	});
+	return {
+		treeArray,
+		treeObj
+	};
+}
 /**
  * 生成新的树数据
  * @param {Array} data 后台返回的树数据
