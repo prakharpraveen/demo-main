@@ -1,90 +1,82 @@
 import React, {Component} from "react";
 import {Button} from "antd";
 import ComLayout from "./ComLayout";
-import FormContent from "./FormCreate";
+// 业务单元
+import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
+// 财务核算账簿
+import AccountBookTreeRef from "Components/Refers/AccountBookTreeRef";
+// 默认信用控制域
+import CreditCtlRegionGridRef from "Components/Refers/CreditCtlRegionGridRef";
+// 默认成本域
+import CostRegionDefaultGridRef from "Components/Refers/CostRegionDefaultGridRef";
+import { high } from 'nc-lightapp-front';
+import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+const { Refer } = high;
 class DefaultSetting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
-        };
-        this.getFormDataFun1;
-        this.getFormDataFun2;
-        this.setFormDataFun1;
-        this.setFormDataFun2;
-        this.defaultForm = [
-            {
-                placeholder: "默认业务单元",
-                refName: "默认业务单元",
-                refCode: "uapbd/refer/org/BusinessUnitTreeRef",
-                refType: "tree",
-                queryTreeUrl: "/nccloud/uapbd/ref/businessunit.do",
-                onChange: val => {
-                    console.log(val);
-                    // this.setFieldsValue({ cont: val });
-                },
-                isMultiSelectedEnabled: false
+            // 默认业务单元
+            org_df_bizRef: {
+                refcode: "1",
+                refname: "董事会",
+                refpk: "0001A110000000007614"
             },
-            {
-                placeholder: "财务核算账簿 ",
-                refName: "财务核算账簿",
-                refCode: "uapbd/refer/org/AccountBookTreeRef",
-                refType: "tree",
-                queryTreeUrl: "/nccloud/uapbd/ref/AccountBookTreeRef.do",
-                onChange: val => {
-                    console.log(val);
-                    // this.setFieldsValue({ cont: val });
-                },
-                isMultiSelectedEnabled: false
+            // 信用控制域
+            org_df_creditRef: {
+                refcode: "10106",
+                refname: "福建大区",
+                refpk: "1001A1100000000028HV"
+            },
+            // 默认成本域
+            org_df_costRef: {
+                refcode: "10201",
+                refname: "赣州播恩生物技术股份有限公司",
+                refpk: "1001A110000000000BNF"
+            },
+            // 默认财务核算账簿
+            org_df_faRef: {
+                refcode: "10101-0001",
+                refname: "成都播恩生物技术有限公司-基准账簿",
+                refpk: "1001A110000000000TCQ"
             }
-        ];
-        this.defaultLang = [
-            {
-                placeholder: "多选树表",
-                refName: "交易类型",
-                refCode: "cont1",
-                refType: "gridTree",
-                queryTreeUrl: "/nccloud/reva/ref/materialclass.do",
-                queryGridUrl: "/nccloud/reva/ref/material.do",
-                onChange: val => {
-                    console.log(val);
-                    // this.setFieldsValue({ cont1: val });
-                },
-                columnConfig: [
-                    {
-                        name: ["编码", "名称"],
-                        code: ["refcode", "refname"]
-                    }
-                ],
-                isMultiSelectedEnabled: false
-            }
-        ];
+        };
     }
-    componentDidMount(){
+    getAllData=()=>{
 
-    };
+    }
+    componentDidMount() {}
 
     render() {
+        let {org_df_bizRef,org_df_creditRef,org_df_costRef,org_df_faRef} = this.state;
         return (
             <ComLayout className="defaultSetting" title={this.props.title}>
                 <div className="default-title">默认设置</div>
                 <div className="dafault-form">
-                    <FormContent
-                        formData={this.defaultForm}
-                        getFormData={this.getFormData1}
-                        setFormData={this.setFormData1}
-                    />
+                    <label >默认业务单元</label>
+                    <BusinessUnitTreeRef value={org_df_bizRef} placeholder={'默认业务单元'}/>
+                </div>
+                <div className="dafault-form">
+                    <label >默认财务核算账簿</label>
+                    <AccountBookTreeRef value={org_df_faRef} placeholder={'默认财务核算账簿'}/>
+                </div>
+                <div className="dafault-form">
+                    <label >默认信用控制域</label>
+                    <CreditCtlRegionGridRef value={org_df_bizRef} placeholder={'默认信用控制域'}/>
+                </div>
+                <div className="dafault-form">
+                    <label >默认成本域</label>
+                    <CostRegionDefaultGridRef value={org_df_costRef} placeholder={'默认成本域'}/>
                 </div>
                 <div className="default-title">默认语言格式</div>
                 <div className="dafault-form">
-                    <FormContent
-                        formData={this.defaultLang}
-                        getFormData={this.getFormData2}
-                        setFormData={this.setFormData2}
-                    />
+                    <AccountBookTreeRef value={org_df_bizRef} placeholder={'默认财务核算账簿'}/>
+                </div>
+                <div className="dafault-form">
+                    <AccountBookTreeRef value={org_df_bizRef} placeholder={'默认财务核算账簿'}/>
                 </div>
                 <div className="default-footer">
-                    <Button type="primary" onClick={this.getAllFormData}>
+                    <Button type="primary" onClick={this.getAllData}>
                         应用
                     </Button>
                 </div>

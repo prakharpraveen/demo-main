@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Drawer from 'react-motion-drawer';
-import { withRouter } from 'react-router-dom';
 import { changeDrawer } from 'Store/appStore/action';
 import { sprLog } from './spr';
 class SideDrawer extends Component {
