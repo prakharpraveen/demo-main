@@ -73,7 +73,6 @@ class ReferModal extends Component {
 	saveValue = (e,type) =>{
 		let val;
 		val = e.target.checked;
-		debugger;
 		this.setState({ isCheck: val})
 	}
 	render() {
