@@ -23,39 +23,39 @@ class DefaultSetting extends Component {
         this.state = {
             // 默认业务单元
             org_df_biz: {
-                refcode: "1",
-                refname: "董事会",
-                refpk: "0001A110000000007614"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             // 信用控制域
             org_df_credit: {
-                refcode: "10106",
-                refname: "福建大区",
-                refpk: "1001A1100000000028HV"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             // 默认成本域
             org_df_cost: {
-                refcode: "10201",
-                refname: "赣州播恩生物技术股份有限公司",
-                refpk: "1001A110000000000BNF"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             // 默认财务核算账簿
             org_df_fa: {
-                refcode: "10101-0001",
-                refname: "成都播恩生物技术有限公司-基准账簿",
-                refpk: "1001A110000000000TCQ"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             // 默认数据格式参照
             dataFormat: {
-                refcode: "ZH-TW",
-                refname: "台湾繁体",
-                refpk: "FMT0Z000000000000001"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             // 默认内容语种参照
             contentLang: {
-                refcode: "ZH",
-                refname: "简体中文",
-                refpk: "zhCN0000000000000000"
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
         };
     }
