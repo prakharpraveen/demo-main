@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import { withRouter } from 'react-router-dom';
 import {Tabs, Button, Table, Input, Popconfirm, Select} from "antd";
 import { DragSource, DropTarget} from "react-dnd";
 // import HTML5Backend from "react-dnd-html5-backend";
@@ -372,10 +373,7 @@ class PageTable extends Component {
         this.setState({batchSettingModalVisibel: visibel});
     };
     jumpPage = record => {
-        let win = window.open("", "_blank");
-        // 浏览器当前页打开
-        win.location = `#/Zone?t=${record.pk_page_templet}&n=设置页面模板`;
-        win.focus();
+        this.props.history.push(`/Zone?t=${record.pk_page_templet}&n=设置页面模板`);
     };
     setDefault = record => {
         Ajax({
@@ -652,10 +650,7 @@ class PageTable extends Component {
                 btnorder: newData.length
             });
         } else if (activeKey === "2") {
-            let win = window.open("", "_blank");
-            // 浏览器当前页打开
-            win.location = `#/Zone?&n=设置页面模板`;
-            win.focus();
+            this.props.history.push(`/Zone?&n=设置页面模板`);
             // newData.push({
             //     editable: true,
             //     isdefault: false,
@@ -785,4 +780,4 @@ export default connect(
         };
     },
     {setPageButtonData, setPageTemplateData}
-)(DragFromeTable);
+)(withRouter(DragFromeTable));
