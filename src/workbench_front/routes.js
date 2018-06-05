@@ -47,6 +47,10 @@ const ZoneSetting = Loadable({
     loader: () => import("Pages/ZoneSetting"),
     loading: Loading
 });
+const ZoneSettingComplete = Loadable({
+    loader: () => import("Pages/ZoneSettingComplete"),
+    loading: Loading
+});
 const AllApps = Loadable({
     loader: () => import("Pages/AllApps"),
     loading: Loading
@@ -118,6 +122,10 @@ const routes = [
     {
         path: "/ZoneSetting",
         component: ZoneSetting
+    },
+    {
+        path: "/ZoneSettingComplete",
+        component: ZoneSettingComplete
     },
     {
         path: "/all",

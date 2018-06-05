@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 // 	setPageTemplateData,
 // 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
+import { withRouter } from 'react-router-dom';
 import './index.less';
 import PreviewModal from './showPreview';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
@@ -24,6 +25,44 @@ class MyHeader extends Component {
 	setModalVisibel = (visibel) => {
 		this.setState({ batchSettingModalVisibel: visibel })
 	}
+	saveData = ()=>{
+		const {areaList} = this.props;
+		let formPropertyList = [];
+		let queryPropertyList = [];
+		_.forEach(areaList,(a,index)=>{
+			if(a.areatype === '0'){
+				queryPropertyList = queryPropertyList.concat(a.queryPropertyList)
+			}else{
+				formPropertyList = formPropertyList.concat(a.queryPropertyList)
+			}
+		})
+		
+		const saveData = {};
+		if(formPropertyList.length !==0){
+			saveData.formPropertyList = formPropertyList;
+		}
+		if(queryPropertyList.length !== 0){
+			saveData.queryPropertyList = queryPropertyList;
+		}
+
+		if(queryPropertyList.length  === 0 && formPropertyList.length === 0){
+			return;
+		}
+		Ajax({
+			url: `/nccloud/platform/templet/setareaproperty.do`,
+			info: {
+				name:'单据模板设置',
+				action:'保存区域与属性'
+			},
+			data: saveData,
+			success: (res) => {
+				const { data, success } = res.data;
+				if (success) {
+					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}`);
+				}
+			}
+		});
+	}
 	render() {
 		let { batchSettingModalVisibel} = this.state;
 		return (
@@ -32,8 +71,10 @@ class MyHeader extends Component {
 					<span>配置模板区域</span>
 				</div>
 				<div className='button-list'>
-					<Button>上一步</Button>
-					<Button>保存</Button>
+					<Button onClick={()=>{
+							this.props.history.push(`/Zone?t=${this.props.templetid}`)
+						}}>上一步</Button>
+					<Button onClick={this.saveData}>保存</Button>
 					<Button onClick={this.showModal}>预览</Button>
 					<Button>取消</Button>
 				</div>
@@ -45,4 +86,6 @@ class MyHeader extends Component {
 		);
 	}
 }
-export default connect((state) => ({}), {})(MyHeader);
+export default connect((state) => ({
+	areaList: state.zoneSettingData.areaList,
+}), {})(withRouter(MyHeader) );

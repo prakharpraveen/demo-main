@@ -150,6 +150,9 @@ class MyRightSider extends Component {
 					_.isEmpty(this.props.selectCard[property]) ? mySelectObj[0].value : this.props.selectCard[property]
 				}
 				onChange={(value) => {
+					if(property === 'datatype'){
+						this.props.selectCard.dataval ="";
+					}
 					this.handleSelectChange(value, property);
 				}}
 				style={{ width: 139 }}
@@ -337,39 +340,77 @@ class MyRightSider extends Component {
 		                break;
 		        }
 		    }
-	    // 更新当前组件的类型设置值 
-//     updateVal = (type,val) =>{
-//         switch (type) {
-//             case 'inter':
-//                 this.setState({ interModalVal: val })
-//                 break;
-//             case 'money':
-//                 this.setState({ moneyModalVal: val })
-//                 break;
-//             default:
-//                 break;
-//         }
-//     }
 	//非查询区，元数据属性
 	getDom3 = () => {
-		// <Tabs defaultActiveKey='1'>
-		// 		<TabPane tab='显示属性' key='1'>
-		// 			<ul className='basic-property'>
-		// 				{/* <li>项目主键</li>
-		// 		<li>{selectCard.metapath}</li> */}
-		// 				<li>显示名称</li>
-		// 				<li>{this.getMyInput('显示名称', 'label')}</li>
-		// 			</ul>
-		// 		</TabPane>
-		// 		<TabPane tab='高级属性' key='2'>
-		// 		<ul className='basic-property'>
-		// 				<li>数据类型</li>
-		// 				<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
-		// 				<li>类型设置</li>
-		// 				<li>{this.getMyInput('类型设置', 'dataval')}</li>
-		// 			</ul>
-		// 		</TabPane>
-		// 	</Tabs>
+		const { selectCard } = this.props;
+		return (
+			<Tabs defaultActiveKey='1'>
+				<TabPane tab='显示属性' key='1'>
+					<ul className='basic-property'>
+						<li>显示名称</li>
+						<li>{this.getMyInput('显示名称', 'label')}</li>
+						<li>显示顺序</li>
+						<li>{selectCard.position}</li>
+						<li>控件宽度</li>
+						<li>{this.getMyInput('控件宽度', 'width')}</li>
+						<li>录入长度</li>
+						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
+						<li>下拉选项</li>
+						<li></li>
+						<li>是否可见</li>
+						<li>{this.getMyCheckbox('visible')}</li>
+						<li>是否必输项</li>
+						<li>{this.getMyCheckbox('required')}</li>
+						<li>是否可用</li>
+						<li>{this.getMyCheckbox('isenable')}</li>
+						<li>必须启用</li>
+						<li>{this.getMyCheckbox('mustuse')}</li>
+						<li>是否自动检查</li>
+						<li>{this.getMyCheckbox('ischeck')}</li>
+						<li>精度</li>
+						<li>{this.getMyInput('精度', 'scale')}</li>
+						<li>单位</li>
+						<li>{this.getMyInput('单位', 'unit')}</li>
+						<li>计算比率</li>
+						<li>{this.getMyInput('计算比率', 'ratio')}</li>
+						<li>格式化类型</li>
+						<li>{this.getMyInput('格式化类型', 'formattype')}</li>
+						<li>文本显示行数</li>
+						<li>{this.getMyInput('多行文本', 'texttrows')}</li>
+						<li>左空白</li>
+						<li>{this.getMyInput('左空白', 'leftspace')}</li>
+						<li>右空白</li>
+						<li>{this.getMyInput('右空白', 'rightspace')}</li>
+						<li>组件类型</li>
+						<li>{this.getMySelect(utilService.componentTypeObj, 'componenttype')}</li>
+						<li>显示颜色</li>
+						<li>{this.getMySelect(utilService.colorObj, 'color')}</li>
+					</ul>
+				</TabPane>
+				<TabPane tab='高级属性' key='2'>
+					<ul className='basic-property'>
+						<li>数据类型</li>
+						<li>{selectCard.datatype}</li>
+						<li>类型设置</li>
+						<li />
+						<li>能否编辑</li>
+						<li>{this.getMyCheckbox('disabled')}</li>
+						<li>参照编码</li>
+						<li>{selectCard.refcode}</li>
+						<li>元数据路径</li>
+						<li  className='metapath'>{selectCard.metapath}</li>
+						<li>元数据属性</li>
+						<li>{selectCard.code}</li>
+						<li>显示公式</li>
+						<li>{selectCard.showformula  }</li>
+						<li>编辑公式</li>
+						<li>{selectCard.editformula }</li>
+						<li>验证公式</li>
+						<li>{selectCard.validateformula  }</li>
+					</ul>
+				</TabPane>
+			</Tabs>
+		);
 	};
 	//非查询区，非元数据属性
 	getDom4 = () => {
@@ -378,10 +419,44 @@ class MyRightSider extends Component {
 			<Tabs defaultActiveKey='1'>
 				<TabPane tab='显示属性' key='1'>
 					<ul className='basic-property'>
-						{/* <li>项目主键</li>
-				<li>{selectCard.metapath}</li> */}
-						<li>显示名称</li>
+					<li>显示名称</li>
 						<li>{this.getMyInput('显示名称', 'label')}</li>
+						<li>显示顺序</li>
+						<li>{selectCard.position}</li>
+						<li>控件宽度</li>
+						<li>{this.getMyInput('控件宽度', 'width')}</li>
+						<li>录入长度</li>
+						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
+						<li>下拉选项</li>
+						<li></li>
+						<li>是否可见</li>
+						<li>{this.getMyCheckbox('visible')}</li>
+						<li>是否必输项</li>
+						<li>{this.getMyCheckbox('required')}</li>
+						<li>是否可用</li>
+						<li>{this.getMyCheckbox('isenable')}</li>
+						<li>必须启用</li>
+						<li>{this.getMyCheckbox('mustuse')}</li>
+						<li>是否自动检查</li>
+						<li>{this.getMyCheckbox('ischeck')}</li>
+						<li>精度</li>
+						<li>{this.getMyInput('精度', 'scale')}</li>
+						<li>单位</li>
+						<li>{this.getMyInput('单位', 'unit')}</li>
+						<li>计算比率</li>
+						<li>{this.getMyInput('计算比率', 'ratio')}</li>
+						<li>格式化类型</li>
+						<li>{this.getMyInput('格式化类型', 'formattype')}</li>
+						<li>文本显示行数</li>
+						<li>{this.getMyInput('多行文本', 'texttrows')}</li>
+						<li>左空白</li>
+						<li>{this.getMyInput('左空白', 'leftspace')}</li>
+						<li>右空白</li>
+						<li>{this.getMyInput('右空白', 'rightspace')}</li>
+						<li>组件类型</li>
+						<li>{this.getMySelect(utilService.componentTypeObj, 'componenttype')}</li>
+						<li>显示颜色</li>
+						<li>{this.getMySelect(utilService.colorObj, 'color')}</li>
 					</ul>
 				</TabPane>
 				<TabPane tab='高级属性' key='2'>
@@ -389,33 +464,78 @@ class MyRightSider extends Component {
 						<li>数据类型</li>
 						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
 						<li>类型设置</li>
-						<li>
-							<Input
-								value={selectCard.dataval}
-								onFocus={() => {
-								//	this.setState({ interModalVisibel: true });
-									this.setState({ ReferModalVisibel: true });
-								}}
-							/>
-							<InterModal
-								handleSelectChange={this.handleSelectChange}
-								initVal={selectCard.dataval}
-								modalVisibel={this.state.interModalVisibel}
-								setModalVisibel={this.setModalVisibel}
-							/>
-							<MoneyModal
-								handleSelectChange={this.handleSelectChange}
-								initVal={selectCard.dataval}
-								modalVisibel={this.state.moneyModalVisibel}
-								setModalVisibel={this.setModalVisibel}
-							/>
-							<ReferModal
+						{(() => {
+							switch (selectCard.datatype) {
+								case '4':
+									return (
+										<li>
+											<Input
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ interModalVisibel: true });
+												}}
+											/>
+											<InterModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.interModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
+										</li>
+									);
+								case '52':
+									return (
+										<li>
+											<Input
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ moneyModalVisibel: true });
+												}}
+											/>
+											<MoneyModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.moneyModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
+										</li>
+									);
+								case '204':
+									return (
+										<li>
+											<Input
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ ReferModalVisibel: true });
+												}}
+											/>
+											<ReferModal
 								handleSelectChange={this.handleSelectChange}
 								initVal={selectCard.dataval}
 								modalVisibel={this.state.ReferModalVisibel}
 								setModalVisibel={this.setModalVisibel}
 							/>
-						</li>
+										</li>
+									);
+								default:
+									return <li />;
+							}
+						})()}
+
+						<li>能否编辑</li>
+						<li>{this.getMyCheckbox('disabled')}</li>
+						<li>参照编码</li>
+						<li>{selectCard.refcode}</li>
+						<li>元数据路径</li>
+						<li  className='metapath'>{selectCard.metapath}</li>
+						<li>元数据属性</li>
+						<li>{selectCard.code}</li>
+						<li>显示公式</li>
+						<li>{selectCard.showformula  }</li>
+						<li>编辑公式</li>
+						<li>{selectCard.editformula }</li>
+						<li>验证公式</li>
+						<li>{selectCard.validateformula  }</li>
 					</ul>
 				</TabPane>
 			</Tabs>
@@ -424,15 +544,13 @@ class MyRightSider extends Component {
 	render() {
 		const { selectCard, areaList } = this.props;
 		// 1 判断是否是元数据 2 判断所属的类型是否是查询区  默认是 不是元数据 不是查询区
-		
+
 		let result_div;
-		if(_.isEmpty(selectCard)){
-			result_div = (
-				<div></div>	
-			);
-		}else{
+		if (_.isEmpty(selectCard)) {
+			result_div = <div />;
+		} else {
 			let isMetaData = this.getMetaType(selectCard),
-			isSearch = this.getAreaType(areaList, selectCard);
+				isSearch = this.getAreaType(areaList, selectCard);
 			if (isSearch) {
 				//不区分显示属性和高级属性
 				if (isMetaData) {
@@ -453,7 +571,7 @@ class MyRightSider extends Component {
 				}
 			}
 		}
-		
+
 		return (
 			<div className='template-setting-right-sider template-setting-sider'>
 				<div className='sider-content'>
