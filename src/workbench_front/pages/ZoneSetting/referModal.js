@@ -106,6 +106,9 @@ class ReferModal extends Component {
 					<div className='mdcontent'>
 							<div><span>参照选择:</span>
 								<Select
+									showSearch
+									optionFilterProp="children"
+									filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 									value={optionKey}
 									onChange={(value) => {
 										this.handleSelectChange(value);

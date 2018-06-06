@@ -82,7 +82,7 @@ class MoneyModal extends Component {
 		return (
 		<div className='myZoneModal'>
 			<Modal
-				title='批量设置-卡片区'
+				title='金额类型设置'
 				mask={false}
 				wrapClassName='moneyModal'
 				visible={this.props.modalVisibel}
