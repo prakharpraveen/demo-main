@@ -12,6 +12,7 @@ import withDragDropContext from 'Pub/js/withDragDropContext';
 import AreaItem from './areaItem';
 import TreeModal from './treeModal';
 import _ from 'lodash';
+import Notice from 'Components/Notice';
 /**
  * 工作桌面 配置模板区域
  */
@@ -84,6 +85,10 @@ class MyContent extends Component {
 						});
 						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID});
 						this.setModalVisible(true);
+					}else{
+						if (success && data && data.rows && !data.rows.length){
+							Notice({ status: 'warning', msg: '当前区域对应元数据树为空' });
+						}
 					}
 				}
 			}

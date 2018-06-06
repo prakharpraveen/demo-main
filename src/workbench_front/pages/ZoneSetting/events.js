@@ -6,48 +6,28 @@ export default function (props) {
     let array=[];
     array =  pageResult.reduce((prev,cur,index,self)=>{
         let tem = {};
-        tem.areacode = cur.pk_area;
-        tem.areatype = cur.areatype;
-        tem.name = cur.name;
-        tem.propertyList = cur.queryPropertyList && cur.queryPropertyList.map((item) => { return {
-            areacode: item.code, label: item.label, componenttype: item.componenttype, visible: item.visible } });
+        tem[cur.pk_area] ={};
+        tem[cur.pk_area].areacode = cur.pk_area;
+        tem[cur.pk_area].moduletype = cur.areatype === '0' ? 'search' : (cur.areatype==='1'?'form':'table');
+        tem[cur.pk_area].name = cur.name;
+        tem[cur.pk_area].items = cur.queryPropertyList && cur.queryPropertyList.map((item) => { return {
+            attrcode: item.code, label: item.label, componenttype: item.componenttype, visible: item.visible,itemtype:'input', } });
             prev.push(tem);
         return prev;
     },[])
-
-    console.log(array)
-
-    let url, data;
-    url = '/nccloud/platform/templet/previewtemplet.do';
-    data = {
-         
-        previewList: array
-     //   templetid: '00011110000000075ZHA'
-    };
-    Ajax({
-        url: url,
-        data: data,
-        info: {
-            name: '模板',
-            action: '模板预览'
-        },
-        success: ({ data }) => {
-            if (data.success && data.data) {
-                let meta = data.data.reduce((pre,cur,i)=>{
-                    if (cur[Object.keys(cur)[0]] && cur[Object.keys(cur)[0]].moduletype ==='form' ){
-                        cur[Object.keys(cur)[0]].status ='edit';
-                        cur[Object.keys(cur)[0]].items.forEach((element,index) => {
-                            element.attrcode = index+1;
-                        });
-                    }
-                    return{...pre,...cur}   // 数组拆开 展开为模板数据格式 
-                 },{});
-                props.meta.setMeta(meta);
-                props.updatePreviewData(data.data);
-            } else {
-                Notice({ status: 'error', msg: data.data.true });
-            }
+  
+    let meta = array.reduce((pre, cur, i) => {
+        if (cur[Object.keys(cur)[0]] && cur[Object.keys(cur)[0]].moduletype === 'form') {
+            cur[Object.keys(cur)[0]].status = 'edit';
+            cur[Object.keys(cur)[0]].items.forEach((element, index) => {
+                element.attrcode = index + 1;
+                element.col = 3;
+            });
         }
-    }); 
+        return { ...pre, ...cur }   // 数组拆开 展开为模板数据格式 
+    }, {});
+    props.meta.setMeta(meta);
+    props.updatePreviewData(array);
+
 }
 
