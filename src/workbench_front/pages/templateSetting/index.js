@@ -12,6 +12,13 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+const initRoTreeData = [{
+	key: '1000',
+	id: '',
+	text: '角色',
+	name: '角色',
+	children: []
+}];
 const initTreeData = [{
 	key: '0',
 	systypename: '应用节点',
@@ -21,7 +28,7 @@ const initTreeData = [{
 }];
 const { Header, Footer, Sider, Content } = Layout;
 import './index.less';
-import { generateData, generateTemData, generateTreeData } from './method';
+import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const Btns = [
 	{
 		name: '新增',
@@ -371,39 +378,27 @@ class TemplateSetting extends Component {
 			success: ({
 				data
 			}) => {
-				if (data.success && data.data.length > 0) {
-					debugger
-					this.setState({
-						treeRoDataArray: data.data
-					}, this.restoreRoTreeData);
+				if (data.success&&data.data) {
+					this.restoreRoTreeData(data.data)
 				}
 			}
 		});
 	}
-	restoreRoTreeData = ()=>{
+	restoreRoTreeData = (data)=>{
 		let {
-			treeTemData,
-			treeTemDataArray
+			treeRoData
 		} = this.state;
-		let treeInfo = generateTemData(treeTemDataArray);
-		let {
-			treeArray,
-			treeObj
-		} = treeInfo;
-		treeArray.map((item, index)=>{
-			for (const key in treeObj) {
-				if (treeObj.hasOwnProperty(key)) {
-					if(item.templateId===treeObj[key][0].parentId){
-						item.children.push(treeObj[key][0]);
-					}
-				}
-			}
-		})
-		//处理树数据
-		treeTemData = treeInfo.treeArray;
-		treeTemData = generateTreeData(treeTemData);
+		let initRolesData = initRoTreeData;
+		let initUsersData = initRoTreeData;
+		initUsersData.text='用户';
+		initUsersData.name='用户';
+		initRolesData.children = generateRoData(data.roles);
+		initUsersData.children = generateRoData(data.users);
+		treeRoData.push(initRolesData);
+		treeRoData.push(initUsersData);
+		treeRoData = generateTreeData(treeRoData);
 		this.setState({
-			treeTemData
+			treeRoData
 		});
 	}
 	handleChange = ()=>{
@@ -446,7 +441,8 @@ class TemplateSetting extends Component {
 			visible,
 			alloVisible,
 			pageCode,
-			org_df_biz
+			org_df_biz,
+			treeRoData
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -582,13 +578,13 @@ class TemplateSetting extends Component {
 											placeholder = 'Search'
 											onChange = {this.onChange}
 											/> 
-											{treeData.length > 0 && treeData[0].children.length > 0 && ( 
+											{treeRoData.length > 0 && treeRoData[0].children.length > 0 && ( 
 												<Tree showLine onExpand = {this.onExpand}
 												expandedKeys = {expandedKeys}
 												onSelect = {this.onSelectQuery}
 												autoExpandParent = {autoExpandParent}
 												selectedKeys = {selectedKeys} >
-												{loop(treeData)} 
+												{loop(treeRoData)} 
 												</Tree>
 											)} 
 										</div>
@@ -614,3 +610,5 @@ class TemplateSetting extends Component {
 	}
 }
 export default TemplateSetting
+
+

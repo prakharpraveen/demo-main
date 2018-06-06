@@ -43,6 +43,14 @@ class Item extends Component {
 		super(props);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		const thisProps = this.props || {}, thisState = this.state || {};
+		if(this.props.checked !== nextProps.checked){
+			return true
+		}
+		return false;
+	}
+
 	onChangeChecked=(e)=>{
 		const { index, parentIndex } = this.props;
 		this.props.onChangeChecked(e,parentIndex,index);
@@ -54,7 +62,7 @@ class Item extends Component {
 		return connectDragSource(
 			<div className='list-item-content' >
 				<div className='title'>
-					<span>{name}</span>
+					<span className='title-name'>{name}</span>
                     <Checkbox checked={checked}  onChange={this.onChangeChecked}/>
 				</div>
 			</div>
