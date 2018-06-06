@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Button, Layout, Modal, Tree, Input } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
+import Notice from 'Components/Notice';
+const Option = Select.Option;
+const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const initTreeData = [{
@@ -15,7 +18,6 @@ const initTreeData = [{
 	children: []
 }];
 const { Header, Footer, Sider, Content } = Layout;
-const confirm = Modal.confirm;
 import './index.less';
 
 const Btns = [
@@ -56,7 +58,12 @@ class TemplateSetting extends Component {
 			searchValue: '',
 			autoExpandParent: true,
 			treeTemData: [],
-			treeTemDataArray:[]
+			treeTemDataArray: [],
+			templatePks: '',
+			visible: false,
+			templateNameVal: '',
+			pageCode: '0001Z51000000008ABZI',
+			alloVisible:false
 		};
 	}
 	// 按钮显隐性控制
@@ -79,7 +86,7 @@ class TemplateSetting extends Component {
 					isShow = true;
 				break;
 			case '分配':
-				isShow = false;
+				isShow = true;
 				break;
 			case '设置默认模板':
 				isShow = true;
@@ -100,34 +107,94 @@ class TemplateSetting extends Component {
 			);
 		}
 	};
+	//保存
+	handleOk = (e) => {
+		let { templateNameVal, templateTitleVal, templatePks, pageCode } = this.state;
+		if(!templateNameVal){
+			Notice({ status: 'warning', msg: "请输入模板标题" });
+			return ;
+		}
+		let infoData={
+			"pageCode": pageCode,"templateId": "0001A110000000002475" ,"name":""
+		}
+		infoData.templateId=templatePks;
+		infoData.name=templateNameVal;
+		//infoData.pageCode=pageCode;
+		Ajax({
+			url: `/nccloud/platform/template/copyTemplate.do`,
+			data: infoData,
+			info:{
+				name:'模板设置',
+				action:'模板复制'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success) {
+					this.reqTreeTemData(pageCode)
+					this.setState({
+						visible: false,
+						templateNameVal:'',
+					});
+				}
+			}
+		});
+	}
+	//取消
+	handleCancel = (e) => {
+		this.setState({
+			visible: false,
+			templateNameVal:'',
+		});
+	}
 	//按钮事件的触发
 	handleClick = (btnName) => {
-		let url, Obj;
+		let { templateNameVal, templatePks, pageCode } = this.state;
+		if(!templatePks){
+			Notice({ status: 'warning', msg: "请选择模板数据" });
+			return;
+		}
 		switch (btnName) {
-			case '增加模块':
-				this.actionType = 1;
-				this.nodeData = this.props.nodeData;
-				if (!this.props.parentData) {
-					this.props.setParentData(this.nodeData.moduleid);
-				}
-				this.optype = this.props.optype;
-				let moduleData = {
-					systypecode: '',
-					moduleid: '',
-					systypename: '',
-					orgtypecode: undefined,
-					appscope: undefined,
-					isaccount: false,
-					supportcloseaccbook: false,
-					resid: '',
-					dr: 0
-				};
-				this.props.setNodeData(moduleData);
-				this.props.setOpType('module');
-				this.props.setBillStatus({
-					isEdit: true,
-					isNew: true
+			case '复制':
+				this.setState({
+					visible: true,
 				});
+				break;
+			case '新增':
+				this.props.history.push('/Zone');
+				break;
+			case '删除':
+				confirm({
+					title: '确认删除这个模板信息吗?',
+					onOk() {
+						let infoData={
+							"templateId": templatePks 
+						}
+						Ajax({
+							url: `/nccloud/platform/template/deleteTemplateDetail.do`,
+							data: infoData,
+							info:{
+								name:'模板设置',
+								action:'删除'
+							},
+							success: ({
+								data
+							}) => {
+								if (data.success) {
+									this.reqTreeTemData(pageCode)
+								}
+							}
+						});
+					},
+					onCancel() {
+						console.log('Cancel');
+					},
+				});
+				break;
+			case '分配':
+			this.setState({
+				alloVisible:true
+			})
 				break;
 			default:
 				break;
@@ -147,6 +214,7 @@ class TemplateSetting extends Component {
 		// 	this.setState({ siderHeight });
 		// };
 	};
+	//右侧树组装数据
 	restoreTreeTemData = ()=>{
 		let {
 			treeTemData,
@@ -173,10 +241,7 @@ class TemplateSetting extends Component {
 			treeTemData
 		});
 	}
-	/**
-	 * 将平铺树数组转换为树状数组
-	 * 
-	 */
+	 // 将平铺树数组转换为树状数组
 	restoreTreeData = () => {
 		let {
 			treeData,
@@ -229,11 +294,16 @@ class TemplateSetting extends Component {
 			autoExpandParent: true
 		});
 	};
+	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
+		this.reqTreeTemData(key[0]);
+	};
+	//请求右侧树数据
+	reqTreeTemData = (key)=>{
 		let infoData={
-			"pageCode": "23","orgId": "0001A110000000002475" 
+			"pageCode": "0001Z51000000008ABZI","orgId": "0001A110000000002475" 
 		}
-		infoData.pageCode=key[0];
+		//infoData.pageCode=key;
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
 			data: infoData,
@@ -246,14 +316,17 @@ class TemplateSetting extends Component {
 			}) => {
 				if (data.success && data.data.length > 0) {
 					this.setState({
-						treeTemDataArray: data.data
+						treeTemDataArray: data.data,
+						pageCode:key
 					}, this.restoreTreeTemData);
 				}
 			}
 		});
-	};
+	}
 	onSelect = (key, e)=>{
-
+		this.setState({
+			templatePks: key[0]
+		});
 	}
 	/**
 	 * tree 数据请求
@@ -276,6 +349,25 @@ class TemplateSetting extends Component {
 			}
 		});
 	};
+	handleChange = ()=>{
+
+	}
+	handleFocus = ()=>{
+
+	}
+	handleBlur = ()=>{
+		
+	}
+	handleAlloOk = ()=>{
+		this.setState({
+			alloVisible:false
+		})
+	}
+	handleOrlCancel = ()=>{
+		this.setState({
+			alloVisible:false
+		})
+	}
 	render() {
 		const {
 			expandedKeys,
@@ -283,7 +375,11 @@ class TemplateSetting extends Component {
 			autoExpandParent,
 			selectedKeys,
 			treeData,
-			treeTemData
+			treeTemData,
+			templateNameVal,
+			visible,
+			alloVisible,
+			pageCode
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -355,13 +451,59 @@ class TemplateSetting extends Component {
 								)} 
 							</div>
 						</Sider>
-						<Content style={{ padding: '20px', minHeight: 280 }}><Tree showLine onExpand = {this.onExpand}
-									expandedKeys = {expandedKeys}
-									onSelect = {this.onSelect}
-									autoExpandParent = {autoExpandParent}
-									selectedKeys = {selectedKeys} >
-									{loop(treeTemData)} 
-									</Tree></Content>
+						<Content style={{ padding: '20px', minHeight: 280 }}>
+							<Tree showLine 
+								onExpand = {this.onExpand}
+								expandedKeys = {expandedKeys}
+								onSelect = {this.onSelect}
+								autoExpandParent = {autoExpandParent}
+								selectedKeys = {selectedKeys} >
+								{loop(treeTemData)} 
+							</Tree>
+						</Content>
+						<Modal
+							title="请录入正确的模板名称和标题"
+							visible={visible}
+							onOk={this.handleOk}
+							onCancel={this.handleCancel}
+        				>
+							<div>
+								<Input placeholder="模板名称" value={templateNameVal}  onChange={(e)=>{
+									const templateNameVal = e.target.value;
+									this.setState({
+										templateNameVal
+									})
+								}} style={{marginBottom:"20px"
+								}}/>
+							</div>
+        				</Modal>
+						<Modal
+							title="多角色和用户模板分配"
+							visible={alloVisible}
+							onOk={this.handleAlloOk}
+							onCancel={this.handleOrlCancel}
+        				>
+							<div>
+								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
+								<div>
+									<div>
+										<Select
+											showSearch
+											style={{ width: 200 }}
+											placeholder="Select a person"
+											optionFilterProp="children"
+											onChange={this.handleChange}
+											onFocus={this.handleFocus}
+											onBlur={this.handleBlur}
+											filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+										>
+											<Option value="按角色和用户分配">按角色和用户分配</Option>
+											<Option value="按职责分配">按职责分配</Option>
+										</Select>
+									</div>
+								</div>
+							</div>
+        				</Modal>
 					</Layout>
 				</Layout>
 			</PageLayout>
