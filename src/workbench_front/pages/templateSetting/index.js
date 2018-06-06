@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Button, Layout, Modal, Tree, Input } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
+const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -61,7 +62,8 @@ class TemplateSetting extends Component {
 			templatePks: '',
 			visible: false,
 			templateNameVal: '',
-			pageCode: ''
+			pageCode: '0001Z51000000008ABZI',
+			alloVisible:false
 		};
 	}
 	// 按钮显隐性控制
@@ -113,7 +115,7 @@ class TemplateSetting extends Component {
 			return ;
 		}
 		let infoData={
-			"pageCode": "0001Z51000000008ABZI","templateId": "0001A110000000002475" ,"name":""
+			"pageCode": pageCode,"templateId": "0001A110000000002475" ,"name":""
 		}
 		infoData.templateId=templatePks;
 		infoData.name=templateNameVal;
@@ -141,8 +143,8 @@ class TemplateSetting extends Component {
 	//取消
 	handleCancel = (e) => {
 		this.setState({
-		visible: false,
-		templateNameVal:'',
+			visible: false,
+			templateNameVal:'',
 		});
 	}
 	//按钮事件的触发
@@ -188,6 +190,11 @@ class TemplateSetting extends Component {
 						console.log('Cancel');
 					},
 				});
+				break;
+			case '分配':
+			this.setState({
+				alloVisible:true
+			})
 				break;
 			default:
 				break;
@@ -342,6 +349,25 @@ class TemplateSetting extends Component {
 			}
 		});
 	};
+	handleChange = ()=>{
+
+	}
+	handleFocus = ()=>{
+
+	}
+	handleBlur = ()=>{
+		
+	}
+	handleAlloOk = ()=>{
+		this.setState({
+			alloVisible:false
+		})
+	}
+	handleOrlCancel = ()=>{
+		this.setState({
+			alloVisible:false
+		})
+	}
 	render() {
 		const {
 			expandedKeys,
@@ -350,7 +376,10 @@ class TemplateSetting extends Component {
 			selectedKeys,
 			treeData,
 			treeTemData,
-			templateNameVal
+			templateNameVal,
+			visible,
+			alloVisible,
+			pageCode
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -434,7 +463,7 @@ class TemplateSetting extends Component {
 						</Content>
 						<Modal
 							title="请录入正确的模板名称和标题"
-							visible={this.state.visible}
+							visible={visible}
 							onOk={this.handleOk}
 							onCancel={this.handleCancel}
         				>
@@ -446,6 +475,33 @@ class TemplateSetting extends Component {
 									})
 								}} style={{marginBottom:"20px"
 								}}/>
+							</div>
+        				</Modal>
+						<Modal
+							title="多角色和用户模板分配"
+							visible={alloVisible}
+							onOk={this.handleAlloOk}
+							onCancel={this.handleOrlCancel}
+        				>
+							<div>
+								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
+								<div>
+									<div>
+										<Select
+											showSearch
+											style={{ width: 200 }}
+											placeholder="Select a person"
+											optionFilterProp="children"
+											onChange={this.handleChange}
+											onFocus={this.handleFocus}
+											onBlur={this.handleBlur}
+											filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+										>
+											<Option value="按角色和用户分配">按角色和用户分配</Option>
+											<Option value="按职责分配">按职责分配</Option>
+										</Select>
+									</div>
+								</div>
 							</div>
         				</Modal>
 					</Layout>
