@@ -6,6 +6,8 @@ import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
+import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
+import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -19,7 +21,7 @@ const initTreeData = [{
 }];
 const { Header, Footer, Sider, Content } = Layout;
 import './index.less';
-
+import { generateData, generateTemData, generateTreeData } from './method';
 const Btns = [
 	{
 		name: '新增',
@@ -63,14 +65,19 @@ class TemplateSetting extends Component {
 			visible: false,
 			templateNameVal: '',
 			pageCode: '0001Z51000000008ABZI',
-			alloVisible:false
+			alloVisible: false,
+			treeRoData: [],
+			treeRoDataArray: [],
+            org_df_biz: {// 默认业务单元
+                refcode: "",
+                refname: "",
+                refpk: ""
+            }
 		};
 	}
 	// 按钮显隐性控制
 	setBtnsShow = (item) => {
 		let { name } = item;
-		// let { optype, parentData, billStatus } = this.props;
-		//let { isEdit, isNew } = billStatus;
 		let isShow = false;
 		switch (name) {
 			case '新增':
@@ -192,9 +199,10 @@ class TemplateSetting extends Component {
 				});
 				break;
 			case '分配':
-			this.setState({
-				alloVisible:true
-			})
+				this.setState({
+					alloVisible:true
+				})
+				this.reqRoTreeData();
 				break;
 			default:
 				break;
@@ -349,6 +357,55 @@ class TemplateSetting extends Component {
 			}
 		});
 	};
+	reqRoTreeData = ()=>{
+		let infoData={
+			"orgId": "0001A1100000000005T5"
+		}
+		Ajax({
+			url: `/nccloud/platform/template/getAllRoleUserAndResp.do`,
+			info: {
+				name:'应用注册模块',
+				action:'角色和用户职责'
+			},
+			data: infoData,
+			success: ({
+				data
+			}) => {
+				if (data.success && data.data.length > 0) {
+					debugger
+					this.setState({
+						treeRoDataArray: data.data
+					}, this.restoreRoTreeData);
+				}
+			}
+		});
+	}
+	restoreRoTreeData = ()=>{
+		let {
+			treeTemData,
+			treeTemDataArray
+		} = this.state;
+		let treeInfo = generateTemData(treeTemDataArray);
+		let {
+			treeArray,
+			treeObj
+		} = treeInfo;
+		treeArray.map((item, index)=>{
+			for (const key in treeObj) {
+				if (treeObj.hasOwnProperty(key)) {
+					if(item.templateId===treeObj[key][0].parentId){
+						item.children.push(treeObj[key][0]);
+					}
+				}
+			}
+		})
+		//处理树数据
+		treeTemData = treeInfo.treeArray;
+		treeTemData = generateTreeData(treeTemData);
+		this.setState({
+			treeTemData
+		});
+	}
 	handleChange = ()=>{
 
 	}
@@ -368,6 +425,15 @@ class TemplateSetting extends Component {
 			alloVisible:false
 		})
 	}
+	handdleRefChange = (value, type) => {
+        let {refname, refcode, refpk} = value;
+        let obj = {};
+        obj[type] = {};
+        obj[type]["refname"] = refname;
+        obj[type]["refcode"] = refcode;
+        obj[type]["refpk"] = refpk;
+        this.setState(obj);
+    };
 	render() {
 		const {
 			expandedKeys,
@@ -379,7 +445,8 @@ class TemplateSetting extends Component {
 			templateNameVal,
 			visible,
 			alloVisible,
-			pageCode
+			pageCode,
+			org_df_biz
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -486,11 +553,11 @@ class TemplateSetting extends Component {
 							<div>
 								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
 								<div>
-									<div>
+									<div style={{display:'flex',justifyContent:'space-between',padding:'10px 20px'}}>
 										<Select
 											showSearch
 											style={{ width: 200 }}
-											placeholder="Select a person"
+											placeholder="按角色和用户分配"
 											optionFilterProp="children"
 											onChange={this.handleChange}
 											onFocus={this.handleFocus}
@@ -500,6 +567,42 @@ class TemplateSetting extends Component {
 											<Option value="按角色和用户分配">按角色和用户分配</Option>
 											<Option value="按职责分配">按职责分配</Option>
 										</Select>
+										<BusinessUnitTreeRef
+											value={org_df_biz}
+											placeholder={"默认业务单元"}
+											onChange={value => {
+												this.handdleRefChange(value, "org_df_biz");
+											}}
+                    					/>
+									</div>
+									<div style={{display:'flex',justifyContent:'space-between'}}>
+										<div>
+											<Search 
+											style = {{marginBottom: 8}}
+											placeholder = 'Search'
+											onChange = {this.onChange}
+											/> 
+											{treeData.length > 0 && treeData[0].children.length > 0 && ( 
+												<Tree showLine onExpand = {this.onExpand}
+												expandedKeys = {expandedKeys}
+												onSelect = {this.onSelectQuery}
+												autoExpandParent = {autoExpandParent}
+												selectedKeys = {selectedKeys} >
+												{loop(treeData)} 
+												</Tree>
+											)} 
+										</div>
+										<div>
+											<Button className="margin-left-10">
+												分配
+											</Button>
+											<Button className="margin-left-10">
+												取消分配
+											</Button>
+										</div>
+										<div style={{ padding: '20px', minHeight: 280 }}>
+											<p>fdasdfdasfdsddsafd</p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -510,94 +613,4 @@ class TemplateSetting extends Component {
 		);
 	}
 }
-/**
- * 求到的平铺数组 将请第一层节点进行剥离
- * @param {Array} data 
- */
-const generateData = (data) => {
-	// 第一层 tree 数据
-	let treeArray = [];
-	// 所有 children 数组
-	let treeObj = {};
-	data.map((item, index) => {
-		let {
-			parentcode,
-			moduleid,
-			systypename,
-			systypecode
-		} = item;
-		if(item.children){
-			delete item.children;
-		}
-		if (moduleid.length > 4) {
-			item.text = `${systypecode} ${systypename}`;
-		} else {
-			item.text = `${moduleid} ${systypename}`;
-		}
-		item.key = moduleid;
-		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
-		if (parentcode) {
-			if (!treeObj[parentcode]) {
-				treeObj[parentcode] = [];
-			}
-			treeObj[parentcode].push(item);
-		} else {
-			// 根据是否为叶子节点 来添加是否有 children 属性
-			item.children = [];
-			treeArray.push(item);
-		}
-	});
-	return {
-		treeArray,
-		treeObj
-	};
-};
-const generateTemData = (data)=>{
-	// 第一层 tree 数据
-	let treeArray = [];
-	// 所有 children 数组
-	let treeObj = {};
-	data.map((item, index) => {
-		let {
-			templateId,
-			parentId,
-			name,
-			type
-		} = item;
-		if(item.children){
-			delete item.children;
-		}
-		item.key = templateId;
-		item.text = name;
-		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
-		if (parentId==='root') {
-			// 根据是否为叶子节点 来添加是否有 children 属性
-			item.children = [];
-			treeArray.push(item);
-		} else {
-			treeObj[templateId] = [];
-			treeObj[templateId].push(item);
-		}
-	});
-	return {
-		treeArray,
-		treeObj
-	};
-}
-/**
- * 生成新的树数据
- * @param {Array} data 后台返回的树数据
- */
-const generateTreeData = (data) => {
-	return data.map((item, index) => {
-		item = Object.assign({}, item);
-		if (item.children) {
-			item.isLeaf = false;
-			item.children = generateTreeData(item.children);
-		} else {
-			item.isLeaf = true;
-		}
-		return item;
-	});
-};
 export default TemplateSetting

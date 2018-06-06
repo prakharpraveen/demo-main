@@ -498,8 +498,11 @@ class MenuItem extends Component {
 MenuItem.propTypes = {
     menuItemData: PropTypes.object.isRequired
 };
-export default connect(state => {
-    return {
-        menuItemData: state.menuRegisterData.menuItemData
-    };
-}, {})(MenuItem);
+export default connect(
+    state => {
+        return {
+            menuItemData: state.menuRegisterData.menuItemData
+        };
+    },
+    {}
+)(MenuItem);
