@@ -130,7 +130,6 @@ class MySider extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
-					console.log(data);
 					_.forEach(data, (d) => {
 						d.isShow = true;
 						d.checkedAll = false;

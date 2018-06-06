@@ -65,13 +65,7 @@ class MyRightSider extends Component {
 			return;
 		}
 		selectCard = { ...selectCard };
-		let targetValue = -1;
-		if (value) {
-			targetValue = '1';
-		} else {
-			targetValue = '0';
-		}
-		selectCard[property] = targetValue;
+		selectCard[property] = value;
 		this.asyncUpdateSelectCard(selectCard).then(() => {
 			this.updateCardInArea(property);
 		});

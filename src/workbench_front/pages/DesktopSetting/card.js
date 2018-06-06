@@ -74,7 +74,8 @@ class Item extends Component {
 		if(this.props.isChecked !== nextProps.isChecked){
 			return true;
 		}
-		if(this.props.layout !== nextProps.layout){
+		//全等判断值为false，使用isEqual判断
+		if(!_.isEqual(this.props.layout,nextProps.layout)){
 			return true
 		}
 		if(this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy){
@@ -84,7 +85,6 @@ class Item extends Component {
 			return true
 		}
 		return false;
-		// return true;
 	}
 	//依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
 	componentWillReceiveProps(nextProps) {
@@ -114,7 +114,6 @@ class Item extends Component {
 	}
 	//
 	onCheckboxChange=(e) =>{
-		console.log(e.target.checked);
 		let {groups,groupIndex, index} = this.props;
 		groups = _.cloneDeep(groups);
 		const cardID = this.props.id;
