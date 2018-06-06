@@ -54,16 +54,16 @@ module.exports = {
 					}
 				}
 			},
-			'/nccloud/uapbd': {
-				// 代理地址
-				target: 'http://20.10.130.171:8031',
-				bypass: function(req, res, proxyOptions) {
-					if (req.headers.accept.indexOf('html') !== -1) {
-						// console.log('Skipping proxy for browser request.');
-						return '/index.html';
-					}
-				}
-			},
+			// '/nccloud/uapbd': {
+			// 	// 代理地址
+			// 	target: 'http://20.10.130.171:8031',
+			// 	bypass: function(req, res, proxyOptions) {
+			// 		if (req.headers.accept.indexOf('html') !== -1) {
+			// 			// console.log('Skipping proxy for browser request.');
+			// 			return '/index.html';
+			// 		}
+			// 	}
+			// },
 			'/nccloud': {
 				// 代理地址
 				// target: 'http://172.20.4.84:6565',

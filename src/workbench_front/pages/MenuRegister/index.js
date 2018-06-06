@@ -15,7 +15,9 @@ class MenuRegister extends Component {
         this.state = {
             isedit: false,
             iserror: false,
-            listData: []
+            listData: [],
+            // 是否为开发态
+            isDevelopMode:false
         };
         this.columns = [
             {
@@ -244,7 +246,7 @@ class MenuRegister extends Component {
         switch (key) {
             case "menuitem":
                 this.props.updateMenuItemData(record);
-                this.props.history.push(`/mi?id=${record.pk_menu}&mn=${record.menuname}&mt=${record.isdefault?1:0}&n=菜单注册&c=102202MENU`);
+                this.props.history.push(`/mi?id=${record.pk_menu}&mn=${record.menuname}&mt=${record.isdefault&&!this.state.isDevelopMode?1:0}&n=菜单注册&c=102202MENU`);
                 break;
             case "del":
                 if (record.isdefault) {
@@ -457,9 +459,9 @@ class MenuRegister extends Component {
                 action: "菜单列表查询"
             },
             success: res => {
-                let {data, success} = res.data;
+                let {data:{appMenuVOs,isDevelopMode}, success} = res.data;
                 if (success) {
-                    this.setState({listData: data});
+                    this.setState({listData: appMenuVOs,isDevelopMode});
                 }
             }
         });
