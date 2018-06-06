@@ -8,6 +8,7 @@ import Gzip from './gzip';
 // 	alertDom.id = 'alertDom';
 // 	document.querySelector('body').appendChild(alertDom);
 // }
+Axios.defaults.headers.post['Content-Type'] = 'application/json';
 const Ajax = ({
 	url,
 	data,
