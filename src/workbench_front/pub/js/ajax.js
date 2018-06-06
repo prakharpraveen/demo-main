@@ -43,16 +43,14 @@ const Ajax = ({
 				let gData = JSON.stringify(data);
 				return gData;
 			}],
-			transformResponse: [function (data) {
-				if(data === ''){
-					return data;
+			transformResponse: [function (data,headers) {
+				if(headers.contentpath){
+					window.location.href = headers.contentpath;
 				}
 				let gData = JSON.parse(data);
 				return gData;
 			}]
 		}).then((res) => {
-			console.log(res);
-			
 			if (res.data.success) {
 				success(res);
 			} else {
@@ -76,9 +74,9 @@ const Ajax = ({
 				// console.log(data)
 				return gData;
 			}],
-			transformResponse: [function (data) {
-				if(data === ''){
-					return data;
+			transformResponse: [function (data,headers) {
+				if(headers.contentpath){
+					window.location.href = headers.contentpath;
 				}
 				// 对 data 进行任意转换处理
 				let gData;
@@ -92,8 +90,6 @@ const Ajax = ({
 				return gData;
 			}]
 		}).then((res) => {
-			console.log(res);
-			
 			if (res.data.success) {
 				// if (alert) {
 				// 	message.info(<Alert message='成功' description='你所提交的信息已经保存成功。' type='success' showIcon />);
