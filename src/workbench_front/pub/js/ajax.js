@@ -43,10 +43,15 @@ const Ajax = ({
 				return gData;
 			}],
 			transformResponse: [function (data) {
+				if(data === ''){
+					return data;
+				}
 				let gData = JSON.parse(data);
 				return gData;
 			}]
 		}).then((res) => {
+			console.log(res);
+			
 			if (res.data.success) {
 				success(res);
 			} else {
@@ -71,6 +76,9 @@ const Ajax = ({
 				return gData;
 			}],
 			transformResponse: [function (data) {
+				if(data === ''){
+					return data;
+				}
 				// 对 data 进行任意转换处理
 				let gData;
 				// 启动压缩
@@ -83,6 +91,8 @@ const Ajax = ({
 				return gData;
 			}]
 		}).then((res) => {
+			console.log(res);
+			
 			if (res.data.success) {
 				// if (alert) {
 				// 	message.info(<Alert message='成功' description='你所提交的信息已经保存成功。' type='success' showIcon />);
