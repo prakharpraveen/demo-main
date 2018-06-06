@@ -126,7 +126,6 @@ class DefaultSetting extends Component {
             }
         });
     }
-
     render() {
         let {
             org_df_biz,
