@@ -57,7 +57,7 @@ const Ajax = ({
 				console.log(res);
 			}
 		}).catch((error) =>{
-			Notice({ status: 'error', msg: error.response.data.error.message });
+			Notice({ status: 'error', msg: error.message });
 		});	
 	}else{
 		Axios({
@@ -101,7 +101,7 @@ const Ajax = ({
 				console.log(res);
 			}
 		}).catch((error) =>{
-			Notice({ status: 'error', msg: error.response.data.error.message });
+			Notice({ status: 'error', msg: error.message });
 		});	
 	}
 	

@@ -3,7 +3,7 @@ import {high} from "nc-lightapp-front";
 
 const {Refer} = high;
 /**
- * 自定义档案 - 表
+ * 自定义档案
  * @param {*} props 
  */
 export default function(props = {}) {
