@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import Ajax from "Pub/js/ajax";
 import $NCPE from "Pub/js/pe";
 import {initAppData} from "Store/appStore/action";
-import {GetQuery} from "Pub/js/utils";
 import store from "./store";
 import Routes from "./routes";
 import Notice from "Components/Notice";

@@ -26,7 +26,13 @@ class Ifr extends Component {
 	render() {
 		let { ifrID, ifrName } = this.props.ifrData;
 		let { ifr, ar, c } = GetQuery(this.props.location.search);
-		let queryUrl = `${decodeURIComponent(ifr)}?ar=${ar}&c=${c}`;
+		let queryUrl;
+		ifr = decodeURIComponent(ifr);
+		if(ifr.indexOf('#') != -1){
+			queryUrl = `${ifr}&ar=${ar}&c=${c}`;
+		}else{
+			queryUrl = `${ifr}?ar=${ar}&c=${c}`;
+		}
 		return (
 			<div className='nc-workbench-iframe'>
 				<iframe field="mainiframe" fieldname="主框架" id='mainiframe' src={queryUrl} frameBorder='0' scrolling='yes' />
