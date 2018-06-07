@@ -8,6 +8,7 @@ import update from 'immutability-helper';
 import _ from 'lodash'; 
 import {setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
+import MdDefaultClassEntityRef from "Components/Refers/mdMainEntityRef";
 import Notice from 'Components/Notice';
  import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
@@ -142,14 +143,14 @@ class EditableRefer extends React.Component {
 	state = {
 		value: this.props.value,
 		editable: false,
-		metaObj: { refname: this.props.value.metaname, refpk: this.props.value.metaid}
+		metaObj: { refcode: this.props.value.refcode, refname: this.props.value.metaname, refpk: this.props.value.metaid}
 	}
 	
-	// 组件更新 
+	// 组件更新  obj[type]["refname"] = refname;
 	componentWillReceiveProps(nextProps) {
 			this.setState({
 				value: nextProps.value,
-				metaObj: { refname: nextProps.value.metaname, refpk: nextProps.value.metaid }
+				metaObj: { refcode: nextProps.value.refcode,refname: nextProps.value.metaname, refpk: nextProps.value.metaid }
 			})
 	}
 
@@ -171,7 +172,20 @@ class EditableRefer extends React.Component {
 				{
 					editable ?
 						<div className="editable-cell-input-wrapper">
-							<Refer
+							<MdDefaultClassEntityRef
+								value={this.state.metaObj}
+								placeholder={"关联元数据"}
+								onChange={(val) => {
+									debugger;
+									this.setState({
+										metaObj: val
+									}, () => { this.check() });
+								}}    
+								// onChange={value => {
+								// 	this.handdleRefChange(value, "org_df_biz");
+								// }}
+							/>
+							{/* <Refer
 								placeholder={'关联元数据'}
 								refName={'元数据参照'}
 								refCode={'cont'}
@@ -191,7 +205,7 @@ class EditableRefer extends React.Component {
 									}
 								]}
 								isMultiSelectedEnabled={false}
-							/>
+							/> */}
 						{/* 	<Icon
 								type="check"
 								className="editable-cell-icon-check"
@@ -301,6 +315,7 @@ class ZoneTable extends React.Component {
 				if (dataIndex ==='metaname'){
 					target[dataIndex] = value && value.refname;
 					target['metaid'] = value && value.refpk;
+					target['refcode'] = value && value.refcode;
 				}else{
 					target[dataIndex] = value
 				}
