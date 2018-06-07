@@ -54,6 +54,7 @@ class MyModal extends Component {
 				}
 			});
 			a.checkedAll = false;
+			a.indeterminate = false;
 		});
 
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, checkedAppList);
@@ -95,6 +96,18 @@ class MyModal extends Component {
 			</RadioGroup>
 		);
 	}
+	shouldComponentUpdate(nextProps, nextState) {
+		//若选择和显示与否变化则重新render
+		if(this.props.modalVisible !== nextProps.modalVisible){
+			return true;
+		}
+
+		if(this.state.selectedValue !== nextState.selectedValue){
+			return true
+		}
+		
+        return false;
+    }
 	render() {
 		const groupNameRadioGroup = this.getGroupItemNameRadio();
 		return (

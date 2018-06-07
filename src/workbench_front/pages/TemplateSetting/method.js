@@ -40,6 +40,7 @@ export function generateData(data) {
 		treeObj
 	};
 };
+//组装右侧的模板数据
 export function generateTemData(data){
 	// 第一层 tree 数据
 	let treeArray = [];
@@ -71,6 +72,21 @@ export function generateTemData(data){
 		treeArray,
 		treeObj
 	};
+}
+export function generateRoData(data){
+	// 第一层 tree 数据
+	let treeArray = [];
+	data.map((item, index) => {
+		let {
+			code,
+			id,
+			name
+		} = item;
+		item.key = id;
+		item.text = name+code;
+		treeArray.push(item)
+	});
+	return treeArray;
 }
 /**
  * 生成新的树数据

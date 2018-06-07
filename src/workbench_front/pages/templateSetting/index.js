@@ -12,6 +12,13 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+const initRoTreeData = [{
+	key: '1000',
+	id: '',
+	text: '角色',
+	name: '角色',
+	children: []
+}];
 const initTreeData = [{
 	key: '0',
 	systypename: '应用节点',
@@ -21,7 +28,7 @@ const initTreeData = [{
 }];
 const { Header, Footer, Sider, Content } = Layout;
 import './index.less';
-import { generateData, generateTemData, generateTreeData } from './method';
+import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const Btns = [
 	{
 		name: '新增',
@@ -67,12 +74,13 @@ class TemplateSetting extends Component {
 			pageCode: '0001Z51000000008ABZI',
 			alloVisible: false,
 			treeRoData: [],
-			treeRoDataArray: [],
+			treeResData: [],
             org_df_biz: {// 默认业务单元
                 refcode: "",
                 refname: "",
                 refpk: ""
-            }
+			},
+			treeRoVisible:true
 		};
 	}
 	// 按钮显隐性控制
@@ -371,43 +379,107 @@ class TemplateSetting extends Component {
 			success: ({
 				data
 			}) => {
-				if (data.success && data.data.length > 0) {
-					debugger
-					this.setState({
-						treeRoDataArray: data.data
-					}, this.restoreRoTreeData);
-				}
-			}
-		});
-	}
-	restoreRoTreeData = ()=>{
-		let {
-			treeTemData,
-			treeTemDataArray
-		} = this.state;
-		let treeInfo = generateTemData(treeTemDataArray);
-		let {
-			treeArray,
-			treeObj
-		} = treeInfo;
-		treeArray.map((item, index)=>{
-			for (const key in treeObj) {
-				if (treeObj.hasOwnProperty(key)) {
-					if(item.templateId===treeObj[key][0].parentId){
-						item.children.push(treeObj[key][0]);
-					}
-				}
-			}
-		})
-		//处理树数据
-		treeTemData = treeInfo.treeArray;
-		treeTemData = generateTreeData(treeTemData);
-		this.setState({
-			treeTemData
-		});
-	}
-	handleChange = ()=>{
+				if (data.success&&data.data) {
+					this.restoreRoTreeData(data.data);
+					this.restoreResTreeData(data.data.resps);
 
+				}
+			}
+		});
+	}
+	restoreResTreeData = (data)=>{
+		let {
+			treeResData
+		} = this.state;
+		let initResData = initRoTreeData;
+		initResData.name = '职责';
+		initResData.text = '职责';
+		data.map((item, index) => {
+			let {
+				code,
+				id,
+				name
+			} = item;
+			item.key = id;
+			item.text = name+code;
+		});
+		initResData.children = data;
+		treeResData.push(initResData);
+		this.setState({
+			treeResData
+		});
+	}
+	restoreRoTreeData = (data)=>{
+		let {
+			treeRoData
+		} = this.state;
+		let initRolesData = initRoTreeData;
+		let initUsersData = initRoTreeData;
+		initUsersData.text='用户';
+		initUsersData.name='用户';
+		initRolesData.children = generateRoData(data.roles);
+		initUsersData.children = generateRoData(data.users);
+		treeRoData.push(initRolesData);
+		treeRoData.push(initUsersData);
+		treeRoData = generateTreeData(treeRoData);
+		this.setState({
+			treeRoData
+		});
+	}
+	treeResAndUser = (data)=>{
+		const {
+			expandedKeys,
+			autoExpandParent,
+			selectedKeys,
+			searchValue
+		} = this.state;
+		const loop = (data) => {
+			return data.map((item) => {
+				let {
+					text,
+					key,
+					children
+				} = item;
+				const index = text.indexOf(searchValue);
+				const beforeStr = text.substr(0, index);
+				const afterStr = text.substr(index + searchValue.length);
+				const title = index > -1 ? ( 
+					<span> 
+						{beforeStr} 
+						<span style = {{color: '#f50'}} > 
+							{searchValue} 
+						</span>
+							{afterStr} 
+					</span>
+				) : (
+					<div>
+						<span> {text} </span> 
+					</div>
+				);
+				if (children) {
+					return ( <TreeNode key = {key} title = {title} > {loop(children)} </TreeNode>
+					);
+				}
+				return <TreeNode key = {key} title = {title}
+				/>;
+			});
+		};
+		return (<div>
+		<Search 
+			style = {{marginBottom: 8}}
+			placeholder = 'Search'
+			onChange = {this.onChange}
+		/> 
+		{data.length > 0 && data[0].children.length > 0 && ( 
+			<Tree showLine onExpand = {this.onExpand}
+				expandedKeys = {expandedKeys}
+				onSelect = {this.onSelectQuery}
+				autoExpandParent = {autoExpandParent}
+				selectedKeys = {selectedKeys} >
+				{loop(data)} 
+			</Tree>
+		)} 
+	</div>)
 	}
 	handleFocus = ()=>{
 
@@ -446,7 +518,10 @@ class TemplateSetting extends Component {
 			visible,
 			alloVisible,
 			pageCode,
-			org_df_biz
+			org_df_biz,
+			treeRoData,
+			treeResData,
+			treeRoVisible
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -559,9 +634,17 @@ class TemplateSetting extends Component {
 											style={{ width: 200 }}
 											placeholder="按角色和用户分配"
 											optionFilterProp="children"
-											onChange={this.handleChange}
-											onFocus={this.handleFocus}
-											onBlur={this.handleBlur}
+											onSelect={(e)=>{
+												if(e==='按角色和用户分配'){
+													this.setState({
+														treeRoVisible:true
+													})
+												}else if(e==='按职责分配'){
+													this.setState({
+														treeRoVisible:false
+													})
+												}
+											}}
 											filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 										>
 											<Option value="按角色和用户分配">按角色和用户分配</Option>
@@ -576,22 +659,7 @@ class TemplateSetting extends Component {
                     					/>
 									</div>
 									<div style={{display:'flex',justifyContent:'space-between'}}>
-										<div>
-											<Search 
-											style = {{marginBottom: 8}}
-											placeholder = 'Search'
-											onChange = {this.onChange}
-											/> 
-											{treeData.length > 0 && treeData[0].children.length > 0 && ( 
-												<Tree showLine onExpand = {this.onExpand}
-												expandedKeys = {expandedKeys}
-												onSelect = {this.onSelectQuery}
-												autoExpandParent = {autoExpandParent}
-												selectedKeys = {selectedKeys} >
-												{loop(treeData)} 
-												</Tree>
-											)} 
-										</div>
+										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}
 										<div>
 											<Button className="margin-left-10">
 												分配
@@ -600,7 +668,7 @@ class TemplateSetting extends Component {
 												取消分配
 											</Button>
 										</div>
-										<div style={{ padding: '20px', minHeight: 280 }}>
+										<div style={{ padding: '20px', minHeight: '280' }}>
 											<p>fdasdfdasfdsddsafd</p>
 										</div>
 									</div>
@@ -614,3 +682,5 @@ class TemplateSetting extends Component {
 	}
 }
 export default TemplateSetting
+
+
