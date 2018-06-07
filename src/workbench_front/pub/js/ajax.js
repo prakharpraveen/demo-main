@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { Alert } from 'antd';
 import Notice from 'Components/Notice';
 // import moment from 'moment';
 import Gzip from './gzip';
@@ -57,6 +56,8 @@ const Ajax = ({
 				Notice({ status: 'error', msg: res.data.error.message });
 				console.log(res);
 			}
+		}).catch((error) =>{
+			Notice({ status: 'error', msg: error.response.data.error.message });
 		});	
 	}else{
 		Axios({
@@ -99,6 +100,8 @@ const Ajax = ({
 				Notice({ status: 'error', msg: res.data.error.message });
 				console.log(res);
 			}
+		}).catch((error) =>{
+			Notice({ status: 'error', msg: error.response.data.error.message });
 		});	
 	}
 	
