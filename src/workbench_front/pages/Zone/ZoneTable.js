@@ -180,36 +180,7 @@ class EditableRefer extends React.Component {
 										metaObj: val
 									}, () => { this.check() });
 								}}    
-								// onChange={value => {
-								// 	this.handdleRefChange(value, "org_df_biz");
-								// }}
 							/>
-							{/* <Refer
-								placeholder={'关联元数据'}
-								refName={'元数据参照'}
-								refCode={'cont'}
-								refType={'gridTree'}
-								queryTreeUrl={'/nccloud/platform/templet/querymetatree.do'}
-								queryGridUrl={'/nccloud/platform/templet/querymetasearch.do'}
-								value={this.state.metaObj}
-								onChange={(val) => {
-									this.setState({
-										metaObj: val
-									},()=>{this.check()});
-								}}    
-								columnConfig={[
-									{
-										name: ['编码', '名称'],
-										code: ['refcode', 'refname']
-									}
-								]}
-								isMultiSelectedEnabled={false}
-							/> */}
-						{/* 	<Icon
-								type="check"
-								className="editable-cell-icon-check"
-								onClick={this.check}
-							/> */}
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
@@ -264,23 +235,29 @@ class ZoneTable extends React.Component {
 			title: '区域类型',
 			dataIndex: 'areatype', 
 			width: '20%',
-			render: (text, record) => (
-				<EditableSelect
+			render: (text, record) => {
+				if (record.pk_area){
+					return (<span>{switchType(text)}</span>)
+				}
+				return(<EditableSelect
 					value={text}
 					onChange={this.onCellChange(record.key, 'areatype')}
-					/>
-				),
+				/>)
+			},
 			},
 			{
 				title: '关联元数据',
 				dataIndex: 'metaname', 
 				width: '20%',
-				render: (text, record) => (
-					<EditableRefer
+				render: (text, record) => {
+					if(record.pk_area) {
+						return (<span>{switchType(record)}</span>)
+				}
+				return(<EditableRefer
 						value={record}
 						onChange={this.onCellChange(record.key, 'metaname')}
-					/>
-				),
+					/>)
+				},
 			},  
 			{
 			title: '操作',

@@ -16,11 +16,12 @@ class ReferModal extends Component {
 			optionKey:'',
 		};
 	}
-	componentDidMount(){
+	
+	componentWillReceiveProps(nextProps) {
 		let url, data;
 		url = '/nccloud/platform/templet/queryrefinfo.do';
 		data = {
-			//templetid: param && param.t
+			defdoc: nextProps.selectCard && nextProps.selectCard.metaid
 		};
 		Ajax({
 			url: url,
@@ -37,8 +38,6 @@ class ReferModal extends Component {
 				}
 			}
 		});
-	}
-	componentWillReceiveProps(nextProps) {
 		this.setState({ initVal: nextProps.initVal },()=>{
 			let { initVal } = this.state;
 			if (initVal) {
@@ -140,7 +139,6 @@ class ReferModal extends Component {
 	}
 }
 export default connect((state) => ({ 
-    areaList: state.zoneSettingData.areaList,
+	selectCard: state.zoneSettingData.selectCard
 }), {
-    updateAreaList,
 	})(ReferModal);

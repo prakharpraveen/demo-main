@@ -391,7 +391,28 @@ class MyRightSider extends Component {
 						<li>数据类型</li>
 						<li>{selectCard.datatype}</li>
 						<li>类型设置</li>
-						<li />
+						{(() => {
+							switch (selectCard.datatype) {
+								case '204':
+									return (
+										<li>
+											<Input
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ ReferModalVisibel: true });
+												}}
+											/>
+											<ReferModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.ReferModalVisibel}
+												setModalVisibel={this.setModalVisibel} />
+										</li>
+									);
+								default:
+									return <li />;
+							}
+						})()}
 						<li>能否编辑</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>参照编码</li>
