@@ -4,13 +4,11 @@ import {Modal} from "antd";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {
+    setTreeData,
     setNodeData,
-    setBillStatus,
-    setOpType,
-    setAppParamData,
     setPageButtonData,
     setPageTemplateData,
-    setParentData
+    setAppParamData
 } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -36,6 +34,9 @@ const confirm = Modal.confirm;
 class AppRegister extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            optype: ""
+        };
         this.nodeData;
         this.optype;
         this.actionType;
@@ -472,22 +473,118 @@ class AppRegister extends Component {
      * 右侧表单选择
      */
     switchFrom = () => {
-        let optype = this.props.optype;
-        switch (optype) {
-            case "module":
+        switch (this.state.optype) {
+            // 对应树结构中的前两层
+            case "12":
                 return <ModuleFormCard />;
-                break;
-            case "classify":
+            // 对应树结构的第三层
+            case "3":
                 return <ClassFormCard />;
-            case "app":
+            // 对应树结构的第四层
+            case "4":
                 return <AppFormCard />;
-            case "page":
+            // 对应树结构的第五层
+            case "5":
                 return <PageFromCard />;
             default:
                 return "";
         }
     };
-    componentDidMount() {}
+    /**
+     * tree 数据请求
+     */
+    reqTreeData = () => {
+        Ajax({
+            url: `/nccloud/platform/appregister/querymodules.do`,
+            info: {
+                name: "应用注册模块",
+                action: "查询"
+            },
+            success: ({data}) => {
+                if (data.success && data.data.length > 0) {
+                    this.props.setTreeData(data.data);
+                }
+            }
+        });
+    };
+    /**
+     * 树节点详细信息请求
+     * @param {Object} info 接口描述
+     * @param {String} url 请求地址
+     * @param {Object} data 请求数据
+     * @param {Function} callback 成功回调
+     */
+    reqTreeNodeData = (info, url, data, callback) => {
+        Ajax({
+            url,
+            data,
+            info,
+            success: ({data: {success, data}}) => {
+                if (success && data) {
+                    callback(data);
+                }else{
+                    Notice({status: "error", msg: res.error.message});
+                }
+            }
+        });
+    };
+    /**
+     * 数据点选择事件
+     * @param {Object} obj 选中的数节点对象
+     */
+    handleTreeNodeSelect = obj => {
+        let optype = "";
+        if (obj) {
+            switch (obj.flag) {
+                // 对应树的前两层
+                case "0":
+                    this.props.setNodeData(obj);
+                    optype = "12";
+                    break;
+                // 对应树的3、4层
+                case "1":
+                    let appCallBack = data => {
+                        this.props.setNodeData(data.appRegisterVO);
+                        this.props.setAppParamData(data.appParamVOs);
+                    };
+                    optype = "3";
+                    if (obj.parentcode.length > 4) {
+                        optype = "4";
+                    }
+                    this.reqTreeNodeData(
+                        {name: "应用注册", action: "应用查询"},
+                        `/nccloud/platform/appregister/query.do`,
+                        {pk_appregister: obj.moduleid},
+                        appCallBack
+                    );
+                    break;
+                // 对应树的最后一层
+                case "2":
+                    let pageCallBack = data => {
+                        this.props.setNodeData(data.apppageVO);
+                        this.props.setPageButtonData(data.appButtonVOs);
+                        this.props.setPageTemplateData(data.pageTemplets);
+                    };
+                    this.reqTreeNodeData(
+                        {name: "应用注册", action: "应用页面查询"},
+                        `/nccloud/platform/appregister/querypagedetail.do`,
+                        {pk_apppage: obj.moduleid},
+                        pageCallBack
+                    );
+                    optype = "5";
+                    break;
+                default:
+                    break;
+            }
+        }
+        this.setState({
+            optype
+        });
+        console.log(obj);
+    };
+    componentDidMount() {
+        this.reqTreeData();
+    }
     render() {
         let btnList = [
             {
@@ -552,50 +649,27 @@ class AppRegister extends Component {
                     </PageLayoutHeader>
                 }>
                 <PageLayoutLeft>
-                    <SearchTree />
+                    <SearchTree onSelect={this.handleTreeNodeSelect} />
                 </PageLayoutLeft>
-                <PageLayoutRight>{this.switchFrom()}
-                </PageLayoutRight>
+                <PageLayoutRight>{this.switchFrom()}</PageLayoutRight>
             </PageLayout>
         );
     }
 }
 AppRegister.propTypes = {
-    optype: PropTypes.string.isRequired,
-    billStatus: PropTypes.object.isRequired,
-    setBillStatus: PropTypes.func.isRequired,
-    parentData: PropTypes.string.isRequired,
-    setOpType: PropTypes.func.isRequired,
-    nodeData: PropTypes.object.isRequired,
-    setAppParamData: PropTypes.func.isRequired,
+    setTreeData: PropTypes.func.isRequired,
+    setNodeData: PropTypes.func.isRequired,
     setPageButtonData: PropTypes.func.isRequired,
     setPageTemplateData: PropTypes.func.isRequired,
-    getFromData: PropTypes.func.isRequired,
-    addTreeData: PropTypes.func.isRequired,
-    delTreeData: PropTypes.func.isRequired,
-    updateTreeData: PropTypes.func.isRequired,
-    setParentData: PropTypes.func.isRequired,
-    reqTreeData: PropTypes.func.isRequired
+    setAppParamData: PropTypes.func.isRequired
 };
 export default connect(
-    state => ({
-        optype: state.AppRegisterData.optype,
-        billStatus: state.AppRegisterData.billStatus,
-        parentData: state.AppRegisterData.parentData,
-        nodeData: state.AppRegisterData.nodeData,
-        getFromData: state.AppRegisterData.getFromData,
-        addTreeData: state.AppRegisterData.addTreeData,
-        delTreeData: state.AppRegisterData.delTreeData,
-        updateTreeData: state.AppRegisterData.updateTreeData,
-        reqTreeData: state.AppRegisterData.reqTreeData
-    }),
+    state => ({}),
     {
+        setTreeData,
         setNodeData,
-        setBillStatus,
-        setOpType,
-        setAppParamData,
         setPageButtonData,
         setPageTemplateData,
-        setParentData
+        setAppParamData
     }
 )(AppRegister);
