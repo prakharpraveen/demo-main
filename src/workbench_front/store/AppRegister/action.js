@@ -6,10 +6,10 @@ export const clearData = () => {
 		type: AppRegister.CLEARDATA
 	};
 };
-// 获取树数据
-export const reqTreeData = (data)=>{
+// 设置 树 数据
+export const setTreeData = (data)=>{
 	return {
-		type: AppRegister.REQTREEDATA,
+		type: AppRegister.SETTREEDATA,
 		data
 	}
 }
@@ -20,6 +20,39 @@ export const setNodeData = (data) => {
 		data
 	};
 };
+// 设置 页面按钮 数据
+export const setPageButtonData = (data) => {
+	return {
+		type: AppRegister.PAGEBUTTONDATA,
+		data
+	};
+};
+// 设置 页面模板 数据
+export const setPageTemplateData = (data) => {
+	return {
+		type: AppRegister.PAGETEMPLATEDATA,
+		data
+	};
+};
+// 设置 应用参数信息 数据
+export const setAppParamData = (data) => {
+	return {
+		type: AppRegister.APPPARAMDATA,
+		data
+	};
+};
+
+
+
+
+// 获取树数据
+export const reqTreeData = (data)=>{
+	return {
+		type: AppRegister.REQTREEDATA,
+		data
+	}
+}
+
 // 更新 树节点 数据
 export const updateTreeData = (updateTreeData) => {
 	return {
@@ -39,13 +72,6 @@ export const delTreeData = (delTreeData) => {
 	return {
 		type: AppRegister.DELNODEDATA,
 		delTreeData
-	};
-};
-// 操作类型 数据
-export const setOpType = (optype) => {
-	return {
-		type: AppRegister.OPERATIONTYPE,
-		optype: optype
 	};
 };
 // 操作类型 数据
@@ -69,27 +95,8 @@ export const setAppType = (appType) => {
 		appType
 	};
 };
-// 设置 应用参数信息 数据
-export const setAppParamData = (data) => {
-	return {
-		type: AppRegister.APPPARAMDATA,
-		data
-	};
-};
-// 设置 页面按钮 数据
-export const setPageButtonData = (data) => {
-	return {
-		type: AppRegister.PAGEBUTTONDATA,
-		data
-	};
-};
-// 设置 页面模板 数据
-export const setPageTemplateData = (data) => {
-	return {
-		type: AppRegister.PAGETEMPLATEDATA,
-		data
-	};
-};
+
+
 // 获取表单数据
 export const getFromDataFunc = (getFromData)=>{
 	return {

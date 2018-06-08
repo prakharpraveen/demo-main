@@ -1,10 +1,10 @@
 import * as AppRegister from './action-type';
 
 let defaultState = {
+	// 树数据
+	treeData:[],
 	// 树节点对象
 	nodeData: {},
-	// 	节点类型 模块、应用分类、应用
-	optype: '',
 	// 页面当前状态
 	billStatus: {
 		// 是否编辑态
@@ -40,6 +40,12 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 			return { ...state,
 				...defaultState
 			};
+		case AppRegister.SETTREEDATA:
+			return { ...state,
+				...{
+					treeData: action.data
+				}
+			};
 		case AppRegister.REQTREEDATA:
 			return { ...state,
 				...{
@@ -68,12 +74,6 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 			return { ...state,
 				...{
 					delTreeData: action.delTreeData
-				}
-			};
-		case AppRegister.OPERATIONTYPE:
-			return { ...state,
-				...{
-					optype: action.optype
 				}
 			};
 		case AppRegister.BILLSTATUS:
