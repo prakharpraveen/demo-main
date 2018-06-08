@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Button, Layout, Modal, Tree, Input, Select } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
@@ -12,13 +12,13 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-const initRoTreeData = [{
+const initRoTreeData = {
 	key: '1000',
 	id: '',
 	text: '角色',
 	name: '角色',
 	children: []
-}];
+};
 const initTreeData = [{
 	key: '0',
 	systypename: '应用节点',
@@ -49,10 +49,6 @@ const Btns = [
 	{
 		name: '分配',
 		type: 'primary'
-	},
-	{
-		name: '设置默认模板',
-		type: 'primary'
 	}
 ];
 class TemplateSetting extends Component {
@@ -71,7 +67,7 @@ class TemplateSetting extends Component {
 			templatePks: '',
 			visible: false,
 			templateNameVal: '',
-			pageCode: '0001Z51000000008ABZI',
+			pageCode: '',
 			alloVisible: false,
 			treeRoData: [],
 			treeResData: [],
@@ -80,7 +76,12 @@ class TemplateSetting extends Component {
                 refname: "",
                 refpk: ""
 			},
-			treeRoVisible:true
+			treeRoVisible: true,
+			dataRoKey: '',
+			dataRoObj:{},
+			roleUserDatas:{},
+			allowDataArray:[],
+			treeAllowData:[]
 		};
 	}
 	// 按钮显隐性控制
@@ -162,12 +163,50 @@ class TemplateSetting extends Component {
 			templateNameVal:'',
 		});
 	}
+	menuFun  =()=>{
+
+		return(
+			<Menu onClick={this.settingClick.bind(this)}>
+			  <Menu.Item key="设置默认">
+				<p>设置默认</p>
+			  </Menu.Item>
+			  <Menu.Divider />
+			  <Menu.Item key="取消默认"><p>取消默认</p></Menu.Item>
+			</Menu>
+		  )
+	};
+	settingClick = (key)=>{
+		let { templateNameVal, templatePks, pageCode } = this.state;
+		let infoDataSet={
+			"templateId": templatePks ,"pageCode":pageCode
+		}
+		const btnName=key.key;
+		if(!templatePks){
+			Notice({ status: 'warning', msg: "请选择模板数据" });
+			return;
+		}
+		switch (btnName) {
+			case '设置默认':
+				let urlSetting='/nccloud/platform/template/setDefaultTemplate.do';
+				this.setDefaultFun(urlSetting, infoDataSet, "设置成功");
+				break;
+			case '取消默认':
+				let urlCancel='/nccloud/platform/template/cancelDefaultTemplate.do';
+				this.setDefaultFun(urlCancel, infoDataSet, "取消成功");
+				break;
+			default:
+				break;
+		}
+	}
 	//按钮事件的触发
 	handleClick = (btnName) => {
 		let { templateNameVal, templatePks, pageCode } = this.state;
 		if(!templatePks){
 			Notice({ status: 'warning', msg: "请选择模板数据" });
 			return;
+		}
+		let infoData={
+			"templateId": templatePks 
 		}
 		switch (btnName) {
 			case '复制':
@@ -182,9 +221,6 @@ class TemplateSetting extends Component {
 				confirm({
 					title: '确认删除这个模板信息吗?',
 					onOk() {
-						let infoData={
-							"templateId": templatePks 
-						}
 						Ajax({
 							url: `/nccloud/platform/template/deleteTemplateDetail.do`,
 							data: infoData,
@@ -216,6 +252,25 @@ class TemplateSetting extends Component {
 				break;
 			}
 		}
+	setDefaultFun = (url, infoData, textInfo)=>{
+		let { pageCode }=this.state;
+		Ajax({
+			url: url,
+			data: infoData,
+			info:{
+				name:'模板设置',
+				action:'参数查询'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success) {
+					Notice({ status: 'success', msg: textInfo });
+					this.reqTreeTemData(pageCode)
+				}
+			}
+		});
+	}
 	componentDidMount = () => {
 		let {
 			treeData
@@ -236,6 +291,11 @@ class TemplateSetting extends Component {
 			treeTemData,
 			treeTemDataArray
 		} = this.state;
+		treeTemDataArray.map((item)=>{
+			if(item.isDefault==='y'){
+				item.name=item.name+' [默认]'
+			}
+		})
 		let treeInfo = generateTemData(treeTemDataArray);
 		let {
 			treeArray,
@@ -312,12 +372,17 @@ class TemplateSetting extends Component {
 	};
 	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
+		console.log(key);
+		this.setState({
+			pageCode:key[0]
+		})
 		this.reqTreeTemData(key[0]);
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
+		let {pageCode}=this.state;
 		let infoData={
-			"pageCode": "0001Z51000000008ABZI","orgId": "0001A110000000002475" 
+			"pageCode": pageCode,"orgId": "0001A110000000002475" 
 		}
 		//infoData.pageCode=key;
 		Ajax({
@@ -382,6 +447,9 @@ class TemplateSetting extends Component {
 				if (data.success&&data.data) {
 					this.restoreRoTreeData(data.data);
 					this.restoreResTreeData(data.data.resps);
+					this.setState({
+						roleUserDatas:data.data
+					})
 
 				}
 			}
@@ -414,6 +482,8 @@ class TemplateSetting extends Component {
 			treeRoData
 		} = this.state;
 		let initRolesData = initRoTreeData;
+		initRolesData.text="角色";
+		initRolesData.name="角色";
 		let initUsersData = initRoTreeData;
 		initUsersData.text='用户';
 		initUsersData.name='用户';
@@ -425,6 +495,64 @@ class TemplateSetting extends Component {
 		this.setState({
 			treeRoData
 		});
+	}
+	selectRoFun = (key, e)=>{
+		this.setState({
+			dataRoKey: key[0]
+		},this.lookDataFun)
+	}
+	lookDataFun = ()=>{
+		let {dataRoKey, dataRoObj, roleUserDatas}=this.state;
+		if(!dataRoKey){
+			Notice({ status: 'warning', msg: "请选中信息" });
+			return ;
+		}
+		for(let key in roleUserDatas){
+			roleUserDatas[key].map((item, index)=>{
+				if(item.id===dataRoKey){
+					dataRoObj.id=item.id;
+					dataRoObj.name=item.name;
+					dataRoObj.code=item.code;
+				}
+			})
+		}
+		this.setState({
+			dataRoObj
+		})
+	}
+	allowClick = (name)=>{
+		let { dataRoObj, allowDataArray, treeAllowData}=this.state;
+		switch(name){
+			case 'allowRole':
+				let indexNum="-1";
+				if(allowDataArray&&allowDataArray.length>0){
+					indexNum=allowDataArray.map((item)=>{
+						if(item.id!==dataRoObj.id){
+							return "-1";
+						}else{
+							return "1";
+						}
+					})
+				}
+				if(Number(indexNum)<0){
+					allowDataArray.push(dataRoObj);
+				}
+				break;
+			case 'allowRoleCancel':
+				console.log(name);
+			break;
+			default:
+			break;
+		}
+		allowDataArray.map((item)=>{
+			item.text = item.name+item.code;
+			item.key = item.id;
+		})
+		treeAllowData=generateTreeData(allowDataArray);
+		this.setState({
+			allowDataArray,
+			treeAllowData
+		})
 	}
 	treeResAndUser = (data)=>{
 		const {
@@ -457,14 +585,14 @@ class TemplateSetting extends Component {
 					</div>
 				);
 				if (children) {
-					return ( <TreeNode key = {key} title = {title} > {loop(children)} </TreeNode>
+					return ( <TreeNode key = {key} title = {text} > {loop(children)} </TreeNode>
 					);
 				}
-				return <TreeNode key = {key} title = {title}
+				return <TreeNode key = {key} title = {text}
 				/>;
 			});
 		};
-		return (<div>
+		return (<div style={{border:'1px solid #ccc',padding:'15px',maxHeight:'370px',overflow:'auto'}}>
 		<Search 
 			style = {{marginBottom: 8}}
 			placeholder = 'Search'
@@ -473,7 +601,7 @@ class TemplateSetting extends Component {
 		{data.length > 0 && data[0].children.length > 0 && ( 
 			<Tree showLine onExpand = {this.onExpand}
 				expandedKeys = {expandedKeys}
-				onSelect = {this.onSelectQuery}
+				onSelect = {this.selectRoFun}
 				autoExpandParent = {autoExpandParent}
 				selectedKeys = {selectedKeys} >
 				{loop(data)} 
@@ -488,9 +616,28 @@ class TemplateSetting extends Component {
 		
 	}
 	handleAlloOk = ()=>{
-		this.setState({
-			alloVisible:false
-		})
+		let { templatePks, pageCode, allowDataArray } = this.state;
+		let targets={};
+		let infoData={
+			"pageCode": pageCode,"templateId": templatePks ,"orgId":"0001A110000000002475"
+		}
+		Ajax({
+			url: `/nccloud/platform/template/assignTemplate.do`,
+			data: infoData,
+			info:{
+				name:'模板设置',
+				action:'模板分配保存'
+			},
+			success: ({
+				data
+			}) => {
+				if (data.success) {
+					this.setState({
+						alloVisible:false
+					})
+				}
+			}
+		});
 	}
 	handleOrlCancel = ()=>{
 		this.setState({
@@ -521,7 +668,9 @@ class TemplateSetting extends Component {
 			org_df_biz,
 			treeRoData,
 			treeResData,
-			treeRoVisible
+			treeRoVisible,
+			allowDataArray,
+			treeAllowData
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -562,6 +711,11 @@ class TemplateSetting extends Component {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
 						})}
+						<Dropdown overlay={this.menuFun()} trigger={['click']}>
+						<Button key="" className="margin-left-10" type="primary">
+							设置默认模板
+						</Button>
+						</Dropdown>
 					</Header>
 					<Layout height={'100%'}>
 						<Sider
@@ -628,7 +782,7 @@ class TemplateSetting extends Component {
 							<div>
 								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
 								<div>
-									<div style={{display:'flex',justifyContent:'space-between',padding:'10px 20px'}}>
+									<div style={{display:'flex',justifyContent:'space-between',padding:'10px 20px',borderTop:"1px solid #ccc"}}>
 										<Select
 											showSearch
 											style={{ width: 200 }}
@@ -658,18 +812,25 @@ class TemplateSetting extends Component {
 											}}
                     					/>
 									</div>
-									<div style={{display:'flex',justifyContent:'space-between'}}>
+									<div style={{display:'flex',justifyContent:'space-between',borderBottom:"1px solid #ccc",padding:'15px'}}>
 										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}
 										<div>
-											<Button className="margin-left-10">
+											<p><Button className="margin-left-10" onClick={this.allowClick.bind(this, 'allowRole')}>
 												分配
-											</Button>
-											<Button className="margin-left-10">
-												取消分配
-											</Button>
+											</Button></p>
+											<p><Button className="margin-left-10" onClick={this.allowClick.bind(this, 'allowRoleCancel')}>
+												取消
+											</Button></p>
 										</div>
-										<div style={{ padding: '20px', minHeight: '280' }}>
-											<p>fdasdfdasfdsddsafd</p>
+										<div style={{ padding: '20px', minHeight: '280' ,border:'1px solid #ccc'}}>
+											<Tree showLine 
+												onExpand = {this.onExpand}
+												expandedKeys = {expandedKeys}
+												onSelect = {this.onSelect}
+												autoExpandParent = {autoExpandParent}
+												selectedKeys = {selectedKeys} >
+												{loop(treeAllowData)}
+											</Tree>
 										</div>
 									</div>
 								</div>
