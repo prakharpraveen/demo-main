@@ -135,7 +135,6 @@ class TemplateSetting extends Component {
 		}
 		infoData.templateId=templatePks;
 		infoData.name=templateNameVal;
-		//infoData.pageCode=pageCode;
 		Ajax({
 			url: `/nccloud/platform/template/copyTemplate.do`,
 			data: infoData,
@@ -164,7 +163,6 @@ class TemplateSetting extends Component {
 		});
 	}
 	menuFun  =()=>{
-
 		return(
 			<Menu onClick={this.settingClick.bind(this)}>
 			  <Menu.Item key="设置默认">
@@ -250,6 +248,7 @@ class TemplateSetting extends Component {
 					alloVisible:true
 				})
 				this.reqRoTreeData();
+				this.reqAllowTreeData();
 				break;
 			default:
 				break;
@@ -383,7 +382,7 @@ class TemplateSetting extends Component {
 	reqTreeTemData = (key)=>{
 		let {pageCode}=this.state;
 		let infoData={
-			"pageCode": pageCode,"orgId": "0001A110000000002475" 
+			"pageCode": pageCode
 		}
 		//infoData.pageCode=key;
 		Ajax({
@@ -431,6 +430,31 @@ class TemplateSetting extends Component {
 			}
 		});
 	};
+	reqAllowTreeData = ()=>{
+		let { pageCode, templatePks }=this.state;
+		let infoData={
+			"pageCode":pageCode,"orgId": "0001A1100000000005T5","templateId":templatePks
+		}
+		Ajax({
+			url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
+			info: {
+				name:'模板设置模块',
+				action:'已分配用户和职责'
+			},
+			data: infoData,
+			success: ({
+				data
+			}) => {
+				if (data.success&&data.data) {
+					debugger
+					this.setState({
+						roleUserDatas:data.data
+					})
+
+				}
+			}
+		});
+	}
 	reqRoTreeData = ()=>{
 		let infoData={
 			"orgId": "0001A1100000000005T5"
