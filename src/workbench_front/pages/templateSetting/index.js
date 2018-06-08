@@ -372,11 +372,9 @@ class TemplateSetting extends Component {
 	};
 	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
-		console.log(key);
 		this.setState({
 			pageCode:key[0]
-		})
-		this.reqTreeTemData(key[0]);
+		},this.reqTreeTemData)
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
