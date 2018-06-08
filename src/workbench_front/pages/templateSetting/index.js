@@ -214,6 +214,9 @@ class TemplateSetting extends Component {
 					visible: true,
 				});
 				break;
+			case '修改':
+				this.props.history.push(`/Zone?templetid=${templatePks}`);
+			break;
 			case '新增':
 				this.props.history.push('/Zone');
 				break;
