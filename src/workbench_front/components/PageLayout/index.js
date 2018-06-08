@@ -24,6 +24,7 @@ class PageLayout extends Component {
 			let mouseLeft = e.clientX;
 			let layoutLeft = document.querySelector('#layoutLeft');
 			let blockLeft = layoutLeft.offsetLeft;
+			console.log(blockLeft);
 			let w = parseInt(mouseLeft - blockLeft);
 			if (w < 200) {
 				return;
