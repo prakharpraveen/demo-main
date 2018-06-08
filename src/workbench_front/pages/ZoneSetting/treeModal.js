@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Tree, Modal, Button } from 'antd';
+import { Input, Icon, Tree, Modal, Button, Checkbox } from 'antd';
 import * as utilService from './utilService';
 const TreeNode = Tree.TreeNode;
 
@@ -17,11 +17,11 @@ class TreeModal extends Component {
 		};
 	}
 	showModalHidden = () => {
-		utilService.setPropertyValueForItemInItemList(this.props.metaTree);
+		// utilService.setPropertyValueForItemInItemList(this.props.metaTree);
 		this.setModalVisible(false);
 	};
 	setModalVisible = (modalVisible) => {
-		this.setState({ selectedKeys: [], checkedKeys: [] });
+		this.setState({ selectedKeys: [], checkedKeys: [],selectedNodes:[] });
 		this.props.setModalVisible(modalVisible);
 	};
 	//移动到的弹出框中，点击确认
@@ -31,8 +31,8 @@ class TreeModal extends Component {
 		const { targetAreaID } = this.props;
 		let cardList = [];
 		_.forEach(selectedNodes, (s, i) => {
-			const { myUniqID, datatype, refname, refcode, pid, refpk } = s.props.dataRef;
-			cardList.push({
+			const { myUniqID, datatype, refname, refcode, pid,refpk } = s.props.dataRef;
+			let cardObj = {
 				pk_query_property: `newMetaData_${myUniqID}`,
 				areaid: targetAreaID,
 				code: refcode,
@@ -63,9 +63,12 @@ class TreeModal extends Component {
 				returntype: '0',
 				dr: '0',
 				status: '0',
-				metaid: refpk,
 				m_isDirty: false
-			});
+			}
+			if(cardObj.datatype === '204'){
+				cardObj.metaid = refpk
+			}
+			cardList.push(cardObj);
 		});
 		this.props.addCard(cardList);
 		this.setModalVisible(modalVisible);
@@ -192,17 +195,60 @@ class TreeModal extends Component {
 			</div>
 		);
 	};
+	selectAllTreeNode = (e)=>{
+		const isChecked = e.target.checked;
+		const {metaTree} = this.props;
+		let {selectedKeys} = this.state;
+		selectedKeys = _.cloneDeep(selectedKeys)
+		if(isChecked){
+			_.forEach(metaTree,(m,i)=>{
+				if(selectedKeys.indexOf(m.myUniqID)===-1){
+					selectedKeys.push(m.myUniqID);
+					this.state.selectedNodes.push({
+						props:{
+							dataRef:{
+								...m
+							}
+						}
+					});
+				}
+			})
+		}else{
+			_.forEach(metaTree,(m,i)=>{
+				_.remove(selectedKeys, (n)=> {
+					return n === m.myUniqID;
+				  });
+			})
+			_.forEach(metaTree,(m,i)=>{
+				_.remove(this.state.selectedNodes, (n)=> {
+					return n.props.dataRef.myUniqID === m.myUniqID;
+				  });
+			})
+		}
+		console.log(selectedKeys,metaTree,this.state.selectedNodes);
+		this.setState({selectedKeys});
+
+	}
+	getModalTitleDom =()=>{
+		return (
+			<div>
+				<span>添加元数据</span>
+				<Checkbox style={{marginLeft:'25px'}} onChange={this.selectAllTreeNode}>全选根节点</Checkbox>
+			</div>	
+		)
+	}
 	render() {
 		return (
 			<Modal
-				title='添加元数据'
+				title={this.getModalTitleDom()}
 				mask={false}
 				wrapClassName='vertical-center-modal'
 				visible={this.props.modalVisible}
 				onOk={this.onOkMoveDialog}
 				onCancel={this.showModalHidden}
 				destroyOnClose={true}
-				width={640}
+				width={'50%'}
+				style={{ top: 20 }}
 				// bodyStyle={{width: 640, height:'100%',overflowY:'auto'}}
 				footer={[
 					<Button

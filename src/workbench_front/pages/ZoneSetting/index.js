@@ -9,7 +9,6 @@ import Ajax from 'Pub/js/ajax';
 
 import './index.less';
 import MyHeader from './header';
-import MyLeftSider from './leftSider';
 import MyContent from './content';
 import MyRightSider from './rightSider';
 import { Steps } from 'antd';
@@ -43,7 +42,6 @@ class ZoneSetting extends Component {
 				</div>
 				<MyHeader templetid ={this.state.templetid}/>
 				<div className='template-setting-container'>
-					{/* <MyLeftSider /> */}
 					<MyContent templetid={this.state.templetid}/>
 					<MyRightSider />
 				</div>

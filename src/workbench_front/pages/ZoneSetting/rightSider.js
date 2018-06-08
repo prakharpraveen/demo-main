@@ -13,16 +13,18 @@ import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import InterModal from './interModal';
 import MoneyModal from './moneyModal';
-import ReferModal from './referModal'; 
+import ReferModal from './referModal';
 import CustomModal from './customModal';
+import RelateMetaModal from './relateMetaModal';
 
 class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			interModalVal: false,
-			moneyModalVisibel:false,
-			ReferModalVisibel:false,
+			moneyModalVisibel: false,
+			ReferModalVisibel: false,
+			relateMetaModalVisibel: false
 		};
 	}
 
@@ -59,6 +61,18 @@ class MyRightSider extends Component {
 		});
 		areaList[targetAreaIndex].queryPropertyList[targetCardIndex][propertyKey] = selectCard[propertyKey];
 		this.props.updateAreaList(areaList);
+	};
+
+	getCardListInAreaBySelectCard = () => {
+		let { areaList, selectCard } = this.props;
+		let targetAreaIndex = 0;
+		_.forEach(areaList, (a, i) => {
+			if (a.pk_area === selectCard.areaid) {
+				targetAreaIndex = i;
+				return false;
+			}
+		});
+		return areaList[targetAreaIndex].queryPropertyList;
 	};
 	changeCheckboxValue = (value, property) => {
 		let { selectCard } = this.props;
@@ -97,7 +111,7 @@ class MyRightSider extends Component {
 	getMyInput(placeholder, property) {
 		return (
 			<Input
-				style={{height:23,width:176}}
+				style={{ height: 23, width: 176 }}
 				placeholder={placeholder}
 				value={this.props.selectCard[property]}
 				onChange={(e) => {
@@ -140,18 +154,17 @@ class MyRightSider extends Component {
 	getMySelect = (mySelectObj, property) => {
 		return (
 			<Select
-			
 				value={
 					_.isEmpty(this.props.selectCard[property]) ? mySelectObj[0].value : this.props.selectCard[property]
 				}
 				onChange={(value) => {
-					if(property === 'datatype'){
-						this.props.selectCard.dataval ="";
+					if (property === 'datatype') {
+						this.props.selectCard.dataval = '';
 					}
 					this.handleSelectChange(value, property);
 				}}
-				style={{width:176}}
-				size = {'small'}
+				style={{ width: 176 }}
+				size={'small'}
 			>
 				{mySelectObj.map((c, index) => {
 					return (
@@ -320,28 +333,34 @@ class MyRightSider extends Component {
 			</Tabs>
 		);
 	};
-	// 设置不同弹框的显示和隐藏 
-	    setModalVisibel = (type,val) =>{
-		        switch (type) {
-		            case 'inter':
-		                this.setState({ interModalVisibel: val})
-		                break;
-		            case 'money':
-		                this.setState({ moneyModalVisibel: val })
-		                break;
-					case 'refer':
-						this.setState({ ReferModalVisibel: val })
-						break;
-					case 'custom':
-						this.setState({ CustomModalVisibel: val })
-						break;
-		            default:
-		                break;
-		        }
-		    }
+	// 设置不同弹框的显示和隐藏
+	setModalVisibel = (type, val) => {
+		switch (type) {
+			case 'inter':
+				this.setState({ interModalVisibel: val });
+				break;
+			case 'money':
+				this.setState({ moneyModalVisibel: val });
+				break;
+			case 'refer':
+				this.setState({ ReferModalVisibel: val });
+				break;
+			case 'custom':
+				this.setState({ CustomModalVisibel: val });
+				break;
+			case 'relatemeta':
+				this.setState({ relateMetaModalVisibel: val });
+				break;
+			default:
+				break;
+		}
+	};
 	//非查询区，元数据属性
 	getDom3 = () => {
 		const { selectCard } = this.props;
+		const isShowRelateMeta = selectCard.datatype === '204' ? 'block' : 'none';
+		const areaCardList = this.getCardListInAreaBySelectCard();
+		console.log(areaCardList, 'areaCardList');
 		return (
 			<Tabs defaultActiveKey='1'>
 				<TabPane tab='显示属性' key='1'>
@@ -354,8 +373,6 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('控件宽度', 'col')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
-						<li>下拉选项</li>
-						<li></li>
 						<li>是否可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>是否必输项</li>
@@ -374,8 +391,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('计算比率', 'ratio')}</li>
 						<li>格式化类型</li>
 						<li>{this.getMyInput('格式化类型', 'formattype')}</li>
-						<li>文本显示行数</li>
-						<li>{this.getMyInput('多行文本', 'texttrows')}</li>
+						<li>多行文本显示行数</li>
+						<li>{this.getMyInput('多行文本显示行数', 'texttrows')}</li>
 						<li>左空白</li>
 						<li>{this.getMyInput('左空白', 'leftspace')}</li>
 						<li>右空白</li>
@@ -389,7 +406,7 @@ class MyRightSider extends Component {
 				<TabPane tab='高级属性' key='2'>
 					<ul className='basic-property'>
 						<li>数据类型</li>
-						<li>{selectCard.datatype}</li>
+						<li>{utilService.getDatatypeName(selectCard.datatype)}</li>
 						<li>类型设置</li>
 						{(() => {
 							switch (selectCard.datatype) {
@@ -406,7 +423,8 @@ class MyRightSider extends Component {
 												handleSelectChange={this.handleSelectChange}
 												initVal={selectCard.dataval}
 												modalVisibel={this.state.ReferModalVisibel}
-												setModalVisibel={this.setModalVisibel} />
+												setModalVisibel={this.setModalVisibel}
+											/>
 										</li>
 									);
 								default:
@@ -418,15 +436,32 @@ class MyRightSider extends Component {
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						<li>元数据路径</li>
-						<li  className='metapath'>{selectCard.metapath}</li>
+						<li className='metapath'>{selectCard.metapath}</li>
 						<li>元数据属性</li>
 						<li>{selectCard.code}</li>
 						<li>显示公式</li>
-						<li>{selectCard.showformula  }</li>
+						<li>{selectCard.showformula}</li>
 						<li>编辑公式</li>
-						<li>{selectCard.editformula }</li>
+						<li>{selectCard.editformula}</li>
 						<li>验证公式</li>
-						<li>{selectCard.validateformula  }</li>
+						<li>{selectCard.validateformula}</li>
+						<li style={{ display: isShowRelateMeta }}>元数据编辑关联项</li>
+						<li style={{ display: isShowRelateMeta }}>
+							<Input
+								style={{ height: 23, width: 176 }}
+								value={selectCard.relatemeta}
+								onFocus={() => {
+									this.setState({ relateMetaModalVisibel: true });
+								}}
+							/>
+							<RelateMetaModal
+								cards={areaCardList}
+								handleSelectChange={this.handleSelectChange}
+								initVal={selectCard.relatemeta}
+								modalVisibel={this.state.relateMetaModalVisibel}
+								setModalVisibel={this.setModalVisibel}
+							/>
+						</li>
 					</ul>
 				</TabPane>
 			</Tabs>
@@ -436,10 +471,10 @@ class MyRightSider extends Component {
 	getDom4 = () => {
 		const { selectCard } = this.props;
 		return (
-			<Tabs defaultActiveKey='1'>
+			<Tabs defaultActiveKey='1' size='small'>
 				<TabPane tab='显示属性' key='1'>
 					<ul className='basic-property'>
-					<li>显示名称</li>
+						<li>显示名称</li>
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
@@ -447,8 +482,6 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('控件宽度', 'col')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
-						<li>下拉选项</li>
-						<li></li>
 						<li>是否可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>是否必输项</li>
@@ -467,8 +500,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('计算比率', 'ratio')}</li>
 						<li>格式化类型</li>
 						<li>{this.getMyInput('格式化类型', 'formattype')}</li>
-						<li>文本显示行数</li>
-						<li>{this.getMyInput('多行文本', 'texttrows')}</li>
+						<li>多行文本显示行数</li>
+						<li>{this.getMyInput('多行文本显示行数', 'texttrows')}</li>
 						<li>左空白</li>
 						<li>{this.getMyInput('左空白', 'leftspace')}</li>
 						<li>右空白</li>
@@ -519,7 +552,7 @@ class MyRightSider extends Component {
 												setModalVisibel={this.setModalVisibel}
 											/>
 										</li>
-									); 
+									);
 								case '204':
 									return (
 										<li>
@@ -529,11 +562,12 @@ class MyRightSider extends Component {
 													this.setState({ ReferModalVisibel: true });
 												}}
 											/>
-												<ReferModal
+											<ReferModal
 												handleSelectChange={this.handleSelectChange}
 												initVal={selectCard.dataval}
 												modalVisibel={this.state.ReferModalVisibel}
-												setModalVisibel={this.setModalVisibel}/>
+												setModalVisibel={this.setModalVisibel}
+											/>
 										</li>
 									);
 								case '57':
@@ -563,15 +597,15 @@ class MyRightSider extends Component {
 						<li>参照编码</li>
 						<li>{selectCard.refcode}</li>
 						<li>元数据路径</li>
-						<li  className='metapath'>{selectCard.metapath}</li>
+						<li className='metapath'>{selectCard.metapath}</li>
 						<li>元数据属性</li>
 						<li>{selectCard.code}</li>
 						<li>显示公式</li>
-						<li>{selectCard.showformula  }</li>
+						<li>{selectCard.showformula}</li>
 						<li>编辑公式</li>
-						<li>{selectCard.editformula }</li>
+						<li>{selectCard.editformula}</li>
 						<li>验证公式</li>
-						<li>{selectCard.validateformula  }</li>
+						<li>{selectCard.validateformula}</li>
 					</ul>
 				</TabPane>
 			</Tabs>

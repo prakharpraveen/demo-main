@@ -49,7 +49,11 @@ class MyContent extends Component {
 								...d
 							}
 							if(tmpArea.areatype !== '0'){
-								tmpArea.queryPropertyList = d.formPropertyList
+								tmpArea.queryPropertyList = d.formPropertyList;
+								_.forEach(tmpArea.queryPropertyList,(q)=>{
+									q.pk_query_property = q.pk_form_property,
+									q.myMetaPath=''
+								})
 							}
 							areaList.push(tmpArea)
 						})
@@ -87,7 +91,7 @@ class MyContent extends Component {
 						this.setModalVisible(true);
 					}else{
 						if (success && data && data.rows && !data.rows.length){
-							Notice({ status: 'warning', msg: '当前区域对应元数据树为空' });
+							Notice({ status: 'warning', msg: '元数据树为空' });
 						}
 					}
 				}
@@ -110,7 +114,7 @@ class MyContent extends Component {
                 return false;
             }
         })
-		areaList[targetAreaIndex].queryPropertyList = _.uniqBy(areaList[targetAreaIndex].queryPropertyList.concat(addCardList),'pk_query_property');
+		areaList[targetAreaIndex].queryPropertyList = _.uniqBy(areaList[targetAreaIndex].queryPropertyList.concat(addCardList),'metapath');
 
 		_.forEach(areaList[targetAreaIndex].queryPropertyList,(q,i)=>{
 			q.position = i+1;

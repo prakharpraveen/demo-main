@@ -9,9 +9,9 @@
 		}
 	}
 	.template-setting-header {
-		height: 60px;
-		margin-left: 10%;
-		margin-right: 10%;
+		height: 40px;
+		margin-left: 8%;
+		margin-right: 8%;
 		padding-left: 20px;
 		padding-right: 20px;
 		display: flex;
@@ -31,9 +31,9 @@
 	.template-setting-container {
 		display: flex;
 		flex-flow: row;
-		margin-left: 10%;
-		margin-right: 10%;
-		margin-top: 5px;
+		margin-left: 8%;
+		margin-right: 8%;
+		margin-top: 2px;
 
 		.template-setting-content {
 			flex: 1;
@@ -104,27 +104,27 @@
 			}
 		}
 		.template-setting-right-sider {
-			width: 322px;
+			width: 350px;
 			background: #fff;
 			margin-left: 5px;
-			.ant-tabs-tabpane{
-				height: calc(100vh - 50px - 60px - 20px - 90px - 30px - 50px);
+			.ant-tabs-tabpane {
+				height: calc(100vh - 50px - 60px - 20px - 90px - 30px - 10px);
 				overflow-y: auto;
 			}
 			.basic-property {
 				display: flex;
 				flex-wrap: wrap;
-				li:nth-child(odd){
+				li:nth-child(odd) {
 					list-style-type: none;
-					width: 30%;
+					width: 40%;
 					display: inline-block;
 					line-height: 30px;
 					/* border-color: rgba(235, 235, 235, 1); */
 					border-bottom: 1px solid rgba(235, 235, 235, 1);
 				}
-				li:nth-child(even){
+				li:nth-child(even) {
 					list-style-type: none;
-					width: 70%;
+					width: 60%;
 					display: inline-block;
 					line-height: 30px;
 					/* border-color: rgba(235, 235, 235, 1); */
@@ -132,17 +132,66 @@
 				}
 				.metapath {
 					word-wrap: break-word;
-					line-height: 20px!important;
+					line-height: 20px !important;
 					margin-top: 15px;
 					// line-height: 1.5;
 					// height: 1.5;
 					// padding: 10px 20px;
 				}
-				
 			}
 		}
 	}
 }
+.realate-meta-modal {
+	.nc-workbench-page {
+		height: calc(100vh - 100px - 100px);
+		padding: 0;
+		margin: 0;
+		.sider-list {
+			height: calc(100vh - 100px - 100px);
+			overflow-y: auto;
+			overflow-x: hidden;
+			margin-right: 20px;
+			border-radius: 4px;
+			table,
+			th,
+			td {
+				border: 1px solid #ccc;
+				.close-and-text {
+					display: flex;
+					align-items: center;
+				}
+			}
+			th,
+			td {
+				padding-left: 5px;
+			}
+			table {
+				width: 100%;
+			}
+			tbody {
+				tr:hover {
+					background-color: #e6f7ff;
+				}
+				tr.select {
+					background-color: #bae7ff;
+				}
+				i {
+					font-size: 18px;
+					cursor: pointer;
+				}
+			}
+		}
+
+		.sider-tree {
+			height: calc(100vh - 100px - 100px);
+			overflow: auto;
+			border: 1px solid #d9d9d9;
+			border-radius: 4px;
+		}
+	}
+}
+
 .template-setting-left-sider {
 	// height: calc(100vh - 90px - 50px - 60px);
 	background: #fff;
@@ -181,7 +230,7 @@
 			text-align: center;
 		}
 		.sider-tree {
-			height: calc(70vh - 100px - 100px);
+			height: calc(100vh - 100px - 100px - 20px);
 			overflow-y: auto;
 		}
 	}
@@ -228,94 +277,93 @@
 		padding: 10px;
 	}
 }
-	.interModal{
-		.ant-modal-body{
-			display: flex;
-			.ant-input{
-				margin-left: 10px;
-				width: 30%;
-			    margin-right: 20px;
+.interModal {
+	.ant-modal-body {
+		display: flex;
+		.ant-input {
+			margin-left: 10px;
+			width: 30%;
+			margin-right: 20px;
+		}
+	}
+}
+.moneyModal {
+	.descrip_label {
+		padding: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #eee;
+	}
+	.mdcontent {
+		display: flex;
+		div {
+			width: 50%;
+			span {
+				display: inline-block;
+				min-width: 73px;
+				text-align: right;
 			}
 		}
 	}
- .moneyModal{
-	 .descrip_label{
-		 padding:10px;
-		 margin-bottom: 10px;
-		 border-bottom: 1px solid #eee;
-	 }
-	 .mdcontent{
-		 display: flex;
-		 div{
-			 width: 50%;
-			 span{
-				 display: inline-block;
-				 min-width: 73px;
-				 text-align: right;
-			 }
-		 }
-	 }
-	 .ant-input{
-				max-width: 60%;
-			    margin-right: 20px;
-			}
- }
- .referModal{
-	 .descrip_label{
-		 padding:10px;
-		 margin-bottom: 10px;
-		 border-bottom: 1px solid #eee;
-		 font-weight: bold;
-	 }
-	 .mdcontent{
-		 display: flex;
-		 div{
-			 span{
-				 display: inline-block;
-				 margin-right: 10px;
-				 text-align: right;
-			 }
-		 }
-	 }
-	 .ant-input{
-				max-width: 60%;
-			    margin-right: 20px;
-			}
+	.ant-input {
+		max-width: 60%;
+		margin-right: 20px;
 	}
- .moneyModal{
-	 .descrip_label{
-		 padding:10px;
-		 margin-bottom: 10px;
-		 border-bottom: 1px solid #eee;
-		 font-weight: bold;
-	 }
-	 .mdcontent{
-		 display: flex;
-		 div{
-			 width: 50%;
-			 span{
-				 display: inline-block;
-				 min-width: 73px;
-				 text-align: right;
-				 margin-right: 10px;
-			 }
-		 }
-	 }
-	 .ant-input{
-				max-width: 55%;
-			    margin-right: 20px;
+}
+.referModal {
+	.descrip_label {
+		padding: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #eee;
+		font-weight: bold;
+	}
+	.mdcontent {
+		display: flex;
+		div {
+			span {
+				display: inline-block;
+				margin-right: 10px;
+				text-align: right;
 			}
- }
- .customModal{
-	 .ant-modal-body{
-		 height: 100px;
-		.refer{
-				width: 80%;
-				left:10%;
-				position: absolute;
-				top:41%;
-				height:35px;
+		}
+	}
+	.ant-input {
+		max-width: 60%;
+		margin-right: 20px;
+	}
+}
+.moneyModal {
+	.descrip_label {
+		padding: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #eee;
+		font-weight: bold;
+	}
+	.mdcontent {
+		display: flex;
+		div {
+			width: 50%;
+			span {
+				display: inline-block;
+				min-width: 73px;
+				text-align: right;
+				margin-right: 10px;
 			}
-		 }
-	 
- 		}
+		}
+	}
+	.ant-input {
+		max-width: 55%;
+		margin-right: 20px;
+	}
+}
+.customModal {
+	.ant-modal-body {
+		height: 100px;
+		.refer {
+			width: 80%;
+			left: 10%;
+			position: absolute;
+			top: 41%;
+			height: 35px;
+		}
+	}
+}

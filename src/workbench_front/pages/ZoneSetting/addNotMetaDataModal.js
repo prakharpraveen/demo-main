@@ -18,7 +18,6 @@ class AddNotMetaDataModal extends Component {
 	onOkDialog = () => {
 		let { areaList, areaIndex } = this.props;
 		let queryPropertyList = areaList[areaIndex].queryPropertyList;
-		// areaList[areaIndex].queryPropertyList = _.cloneDeep(areaList[areaIndex].queryPropertyList);
 		areaList[areaIndex].queryPropertyList = queryPropertyList.concat({
 			pk_query_property: 'newNotMetaData' + new Date().getTime(),
 			areaid: areaList[areaIndex].pk_area,
