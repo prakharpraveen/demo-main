@@ -13,7 +13,8 @@ import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
 import InterModal from './interModal';
 import MoneyModal from './moneyModal';
-import ReferModal from './referModal';
+import ReferModal from './referModal'; 
+import CustomModal from './customModal';
 
 class MyRightSider extends Component {
 	constructor(props) {
@@ -331,6 +332,9 @@ class MyRightSider extends Component {
 					case 'refer':
 						this.setState({ ReferModalVisibel: val })
 						break;
+					case 'custom':
+						this.setState({ CustomModalVisibel: val })
+						break;
 		            default:
 		                break;
 		        }
@@ -347,7 +351,7 @@ class MyRightSider extends Component {
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
 						<li>控件宽度</li>
-						<li>{this.getMyInput('控件宽度', 'width')}</li>
+						<li>{this.getMyInput('控件宽度', 'col')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
 						<li>下拉选项</li>
@@ -419,7 +423,7 @@ class MyRightSider extends Component {
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
 						<li>控件宽度</li>
-						<li>{this.getMyInput('控件宽度', 'width')}</li>
+						<li>{this.getMyInput('控件宽度', 'col')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
 						<li>下拉选项</li>
@@ -494,7 +498,7 @@ class MyRightSider extends Component {
 												setModalVisibel={this.setModalVisibel}
 											/>
 										</li>
-									);
+									); 
 								case '204':
 									return (
 										<li>
@@ -504,12 +508,28 @@ class MyRightSider extends Component {
 													this.setState({ ReferModalVisibel: true });
 												}}
 											/>
-											<ReferModal
-								handleSelectChange={this.handleSelectChange}
-								initVal={selectCard.dataval}
-								modalVisibel={this.state.ReferModalVisibel}
-								setModalVisibel={this.setModalVisibel}
-							/>
+												<ReferModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.ReferModalVisibel}
+												setModalVisibel={this.setModalVisibel}/>
+										</li>
+									);
+								case '57':
+									return (
+										<li>
+											<Input
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ CustomModalVisibel: true });
+												}}
+											/>
+											<CustomModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.CustomModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
 										</li>
 									);
 								default:
