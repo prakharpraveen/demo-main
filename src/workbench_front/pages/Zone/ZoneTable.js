@@ -176,7 +176,6 @@ class EditableRefer extends React.Component {
 								value={this.state.metaObj}
 								placeholder={"关联元数据"}
 								onChange={(val) => {
-									debugger;
 									this.setState({
 										metaObj: val
 									}, () => { this.check() });
@@ -254,8 +253,9 @@ class ZoneTable extends React.Component {
 		}, {
 			title: '区域名称',
 			dataIndex: 'name',
+			width: '20%',
 			render: (text, record) => (
-					<EditableCell
+				<EditableCell
 					value={text}
 					onChange={this.onCellChange(record.key, 'name')}
 					/>
@@ -263,6 +263,7 @@ class ZoneTable extends React.Component {
 		}, {
 			title: '区域类型',
 			dataIndex: 'areatype', 
+			width: '20%',
 			render: (text, record) => (
 				<EditableSelect
 					value={text}
@@ -273,6 +274,7 @@ class ZoneTable extends React.Component {
 			{
 				title: '关联元数据',
 				dataIndex: 'metaname', 
+				width: '20%',
 				render: (text, record) => (
 					<EditableRefer
 						value={record}
@@ -282,6 +284,7 @@ class ZoneTable extends React.Component {
 			},  
 			{
 			title: '操作',
+			width: '10%',
 			dataIndex: 'operation',
 			render: (text, record) => {
 				return (

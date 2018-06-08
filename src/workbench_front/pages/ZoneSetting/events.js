@@ -11,6 +11,7 @@ export default function (props) {
         tem[cur.pk_area].moduletype = cur.areatype === '0' ? 'search' : (cur.areatype==='1'?'form':'table');
         tem[cur.pk_area].name = cur.name;
         tem[cur.pk_area].items = cur.queryPropertyList && cur.queryPropertyList.map((item) => { return {
+            col: item.col, leftspace:item.leftspace,rightspace:item.rightspace,
             attrcode: item.code, label: item.label, componenttype: item.componenttype, visible: item.visible,itemtype:'input', } });
             prev.push(tem);
         return prev;
@@ -21,7 +22,7 @@ export default function (props) {
             cur[Object.keys(cur)[0]].status = 'edit';
             cur[Object.keys(cur)[0]].items.forEach((element, index) => {
                 element.attrcode = index + 1;
-                element.col = 4;
+               // element.col = 4;
             });
         }
         return { ...pre, ...cur }   // 数组拆开 展开为模板数据格式 

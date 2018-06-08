@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button } from 'antd';
+import { InputNumber, Icon, Modal, Button } from 'antd';
 import * as utilService from './utilService';
+import Notice from 'Components/Notice';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
 import BatchSearchTable from './batchSearchTable';
 import BatchNoSearchTable from './batchNoSearchTable';
 
-class MoneyModal extends Component {
+export default  class MoneyModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -24,20 +25,20 @@ class MoneyModal extends Component {
 			let { initVal } = this.state;
 			if (initVal) {
 				let initArray = initVal.split(',');
-				if (initVal.indexOf('@') > -1) {
-					// 表示的是参数设置
-					this.setState({
-						paramScale: initArray && initArray[0].substr(1),
-						small: initArray && initArray[1],
-						big: initArray && initArray[2],
-					})
-				} else {
+				// if (initVal.indexOf('@') > -1) {
+				// 	// 表示的是参数设置
+				// 	this.setState({
+				// 		paramScale: initArray && initArray[0].substr(1),
+				// 		small: initArray && initArray[1],
+				// 		big: initArray && initArray[2],
+				// 	})
+				// } else {
 					this.setState({
 						customScale: initArray && initArray[0],
 						small: initArray && initArray[1],
 						big: initArray && initArray[2],
 					})
-				}
+			//	}
 			}
 		})
 	}
@@ -46,19 +47,20 @@ class MoneyModal extends Component {
     }
     onOkDialog = ()=>{
 		let { small, big, customScale,paramScale } = this.state;
+		if (small >= big ){
+			return Notice({ status: 'error', msg: '所选的最小值与最大值不匹配' });
+		}
 		let result;
 		// 判断是否是精度 
-		if (paramScale){
-			result = `@${paramScale},${small},${big}`
-		}else{
+		// if (paramScale){
+		// 	result = `@${paramScale},${small},${big}`
+		// }else{
 			result = `${customScale},${small},${big}`
-		}
+		//}
 		this.props.handleSelectChange(result, 'dataval');
 		this.showModalHidden();
 	}
-	saveValue = (e,type) =>{
-		let val;
-		val = e.target.value;
+	saveValue = (val,type) =>{
 		switch (type) {
 			case 1:
 				this.setState({ customScale: val, paramScale:''})
@@ -106,15 +108,15 @@ class MoneyModal extends Component {
 				<div>
 					<div className='descrip_label'>精度设置 </div>
 					<div className='mdcontent'>
-							<div><span>	自定义精度:</span><Input value={customScale} onChange={(e) => { this.saveValue(e, 1) }} /></div>	
-							<div><span>	参数精度:</span><Input value={paramScale} onChange={(e) => { this.saveValue(e, 2) }} /></div>	
+							<div><span>	自定义精度:</span><InputNumber value={customScale} onChange={(value) => { this.saveValue(value, 1) }} /></div>	
+						    	
 					</div>	
 				</div>
 			     <div>
 					<div className='descrip_label'>取值设置 </div>
 						<div className='mdcontent'>
-							<div><span>最小值:</span><Input value={small} onChange={(e) => { this.saveValue(e, 3) }} /></div>	
-							<div><span>最大值:</span><Input value={big} onChange={(e) => { this.saveValue(e, 4) }} /></div>	
+							<div><span>最小值:</span><InputNumber value={small} onChange={(value) => { this.saveValue(value, 3) }} /></div>	
+							<div><span>最大值:</span><InputNumber value={big} onChange={(value) => { this.saveValue(value, 4) }} /></div>	
 				 </div>
 					</div>
 			</Modal>
@@ -122,8 +124,10 @@ class MoneyModal extends Component {
 		);
 	}
 }
-export default connect((state) => ({ 
-    areaList: state.zoneSettingData.areaList,
-}), {
-    updateAreaList,
-	})(MoneyModal);
+
+ // export default MoneyModal   // connect((state) => ({}), {})(ZoneSetting);
+// export default connect((state) => ({ 
+//     areaList: state.zoneSettingData.areaList,
+// }), {
+//     updateAreaList,
+// 	})(MoneyModal);
