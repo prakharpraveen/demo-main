@@ -78,3 +78,35 @@ body {
 		}
 	}
 }
+// 预览弹框
+.previewModal {
+	.ant-modal-content {
+		left: -280px;
+		width: 1100px;
+	}
+	.ant-modal-body {
+		max-width: 1100px;
+		overflow-x: scroll;
+		.u-table-content {
+			min-height: 200px;
+		}
+		// 预览表头
+		.area {
+			margin-top: 10px;
+			.descrip {
+				display: block;
+				border-bottom: 1px solid #e8e8e8;
+				padding: 16px 24px;
+				/* &::after{
+				content: '';
+				border: 2px solid #eee;
+				display: block;
+			} */
+			}
+		}
+	}
+	.ant-table-tbody > tr > td,
+	.ant-table-thead > tr > th {
+		padding: 10px;
+	}
+}

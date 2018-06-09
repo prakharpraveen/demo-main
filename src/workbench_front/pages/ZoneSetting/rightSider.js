@@ -608,6 +608,26 @@ class MyRightSider extends Component {
 												}}
 											/>
 											<MoneyModal
+												type='金额'
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.moneyModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
+										</li>
+									);
+								case '2':
+									return (
+										<li>
+											<Input
+												style={{ height: 23, width: 176 }}
+												value={selectCard.dataval}
+												onFocus={() => {
+													this.setState({ moneyModalVisibel: true });
+												}}
+											/>
+											<MoneyModal
+												type='小数'
 												handleSelectChange={this.handleSelectChange}
 												initVal={selectCard.dataval}
 												modalVisibel={this.state.moneyModalVisibel}

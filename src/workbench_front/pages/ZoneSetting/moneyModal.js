@@ -14,6 +14,7 @@ export default  class MoneyModal extends Component {
 		super(props);
 		this.state = {
 			initVal: this.props.initVal, 
+			type:this.props.type,
 			small:'',
 			big:'',
 			customScale:'',
@@ -80,11 +81,11 @@ export default  class MoneyModal extends Component {
 		}
 	}
 	render() {
-		let { customScale, paramScale, small, big }  = this.state;
+		let { customScale, paramScale, small, big,type }  = this.state;
 		return (
 		<div className='myZoneModal'>
 			<Modal
-				title='金额类型设置'
+				title={`${type}类型设置`}
 				mask={false}
 				wrapClassName='moneyModal'
 				visible={this.props.modalVisibel}
