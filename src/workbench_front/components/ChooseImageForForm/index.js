@@ -113,6 +113,9 @@ class ChooseImageForForm extends Component {
     }
     render() {
         let {listData, value} = this.state;
+        if(!value){
+            value = '';
+        }
         return (
             <div className="choose-imgae">
                 {value.indexOf("/") === -1 ? (

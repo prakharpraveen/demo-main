@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
 import {Modal} from "antd";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -16,6 +15,11 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
+import {
+    dataTransfer,
+    dataRestore,
+    dataCheck
+} from "Components/FormCreate";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -35,7 +39,8 @@ class AppRegister extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            optype: ""
+            optype: "",
+            isedit: true,
         };
         this.nodeData;
         this.optype;
@@ -476,16 +481,16 @@ class AppRegister extends Component {
         switch (this.state.optype) {
             // 对应树结构中的前两层
             case "12":
-                return <ModuleFormCard />;
+                return <ModuleFormCard isedit={this.state.isedit}/>;
             // 对应树结构的第三层
             case "3":
-                return <ClassFormCard />;
+                return <ClassFormCard isedit={this.state.isedit}/>;
             // 对应树结构的第四层
             case "4":
-                return <AppFormCard />;
+                return <AppFormCard isedit={this.state.isedit}/>;
             // 对应树结构的第五层
             case "5":
-                return <PageFromCard />;
+                return <PageFromCard isedit={this.state.isedit}/>;
             default:
                 return "";
         }
@@ -538,13 +543,13 @@ class AppRegister extends Component {
             switch (obj.flag) {
                 // 对应树的前两层
                 case "0":
-                    this.props.setNodeData(obj);
+                    this.props.setNodeData(dataTransfer(obj));
                     optype = "12";
                     break;
                 // 对应树的3、4层
                 case "1":
                     let appCallBack = data => {
-                        this.props.setNodeData(data.appRegisterVO);
+                        this.props.setNodeData(dataTransfer(data.appRegisterVO));
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     optype = "3";
@@ -561,7 +566,7 @@ class AppRegister extends Component {
                 // 对应树的最后一层
                 case "2":
                     let pageCallBack = data => {
-                        this.props.setNodeData(data.apppageVO);
+                        this.props.setNodeData(dataTransfer(data.apppageVO));
                         this.props.setPageButtonData(data.appButtonVOs);
                         this.props.setPageTemplateData(data.pageTemplets);
                     };

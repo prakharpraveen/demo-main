@@ -5,6 +5,14 @@ let defaultState = {
 	treeData:[],
 	// 树节点对象
 	nodeData: {},
+	// 应用参数数据
+	appParamVOs: [],
+	// 页面按钮数据
+	appButtonVOs:[],
+	// 页面模板数据
+	pageTemplets:[],
+
+
 	optype : '',
 	// 页面当前状态
 	billStatus: {
@@ -13,12 +21,6 @@ let defaultState = {
 		// 是否新增
 		isNew: false
 	},
-	// 应用参数数据
-	appParamVOs: [],
-	// 页面按钮数据
-	appButtonVOs:[],
-	// 页面模板数据
-	pageTemplets:[],
 	// 父节点信息
 	parentData: '',
 	// 应用类型 1 为 小应用 2 为 小部件

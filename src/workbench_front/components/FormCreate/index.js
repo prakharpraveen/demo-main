@@ -153,7 +153,7 @@ class FormContent extends Component {
                             ]
                         })(
                             isedit ? (
-                                <Select placeholder={`请选择${lable}`}>
+                                <Select placeholder={`请选择${label}`}>
                                     {this.createOption(item.options)}
                                 </Select>
                             ) : (
@@ -167,17 +167,17 @@ class FormContent extends Component {
                     <FormItem>
                         {getFieldDecorator(code, {
                             initialValue: false
-                        })(<Checkbox disabled={!isedit}>{lable}</Checkbox>)}
+                        })(<Checkbox disabled={!isedit}>{label}</Checkbox>)}
                     </FormItem>
                 );
             case "chooseImage":
-                return isEdit ? (
-                    <FormItem label={lable}>
+                return isedit ? (
+                    <FormItem label={label}>
                         {getFieldDecorator(code, {
-                            initialValue: nodeData[code],
+                            initialValue: '',
                             rules: [
                                 {
-                                    required: required,
+                                    required: isRequired,
                                     message: "请选择一张图片！"
                                 }
                             ]
@@ -198,12 +198,21 @@ class FormContent extends Component {
                 break;
         }
     };
+    // // 绑定下拉
+    // triggerChange = (changedValue) => {
+    //     // Should provide an event to pass value to Form.
+    //     const onChange = this.props.onChange;
+    //     console.log(onChange);
+    //     if (onChange) {
+    //         onChange(Object.assign({}, {value:changedValue}));
+    //     }
+    // }
     /**
      * 创建表单项
      */
     createFormItem = () => {
         let children = this.props.formData.map((item) => {
-            let {xs = 24, md = 24, lg = 24, code, hidden=false} = item;
+            let {xs = 24, md = 12, lg = 12, code, hidden=false} = item;
             if(hidden === true){
                 return null;
             }
