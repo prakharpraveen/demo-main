@@ -39,7 +39,8 @@ class Test extends Component {
 				action:'工作桌面查询'
 			},
 			data: {
-				relateid: this.state.relateidObj.data
+				relateid: this.state.relateidObj.data,
+				isuser: this.state.relateidObj.type === 'userID'?'1':'0' //1用户 0职责
 			},
 			success: (res) => {
 				if (res) {

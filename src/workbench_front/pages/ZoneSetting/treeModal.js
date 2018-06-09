@@ -31,39 +31,55 @@ class TreeModal extends Component {
 		const { targetAreaID } = this.props;
 		let cardList = [];
 		_.forEach(selectedNodes, (s, i) => {
-			const { myUniqID, datatype, refname, refcode, pid,refpk } = s.props.dataRef;
-			let cardObj = {
-				pk_query_property: `newMetaData_${myUniqID}`,
-				areaid: targetAreaID,
-				code: refcode,
-				label: refname,
-				metapath: myUniqID,
-				datatype: datatype,
-				color: '1',
-				componenttype: '0',
-				refcode: '1',
-				options: '1',
-				visible: true,
-				disabled: true,
-				required: true,
-				isenable: true,
-				mustuse: true,
-				ischeck: true,
-				usefunc: true,
-				scale: '0',
-				maxlength: '20',
-				unit: '10',
-				ratio: '0',
-				formattype: '0',
-				width: '11',
-				position: '236',
-				opersign: 'like',
-				defaultvalue: '1',
-				showtype: '0',
-				returntype: '0',
-				dr: '0',
-				status: '0',
-				m_isDirty: false
+			const { myUniqID, datatype, refname, refcode, pid,refpk,isLeaf } = s.props.dataRef;
+			let cardObj = {}
+			if(this.props.targetAreaType === '0'){
+				cardObj = {
+					pk_query_property: `newMetaData_${myUniqID}`,
+					areaid: targetAreaID,
+					datatype: datatype,
+					code: myUniqID,
+					label: refname,
+					metapath: myUniqID,
+					opersign:utilService.getOpersignByDatatype(datatype),
+					opersignname:utilService.getOpersignNameByDatatype(datatype),
+					defaultvalue:'',
+					isfixedcondition:false,
+					required:false,
+					visible:false,
+					isquerycondition:true,
+					refname: datatype==='204'?refname:'-99',
+					containlower:isLeaf?false:true,
+					ischeck:false,
+					isbeyondorg:false,
+					usefunc:datatype==='34'?true:false,
+					showtype:'1',
+					returntype:'1'
+				}
+			}else{
+				cardObj = {
+					pk_query_property: `newMetaData_${myUniqID}`,
+					areaid: targetAreaID,
+					code: myUniqID,
+					datatype: datatype,
+					label: refname,
+					metapath: myUniqID,
+					color: '1',
+					width: '6',
+					isrevise:false,
+					istotal:false,
+					required:false,
+					disabled:false,
+					visible:true,
+					maxlength:'20',
+					textrows:'1',
+					leftspace:'0',
+					rightspace:'0',
+					defaultvar:'',
+				}
+			}
+			if(this.props.targetAreaType === '2'){
+				cardObj.width = '';
 			}
 			if(cardObj.datatype === '204'){
 				cardObj.metaid = refpk

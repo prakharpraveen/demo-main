@@ -184,12 +184,15 @@ class MyFooter extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success) {
-					if(this.props.relateidObj.type === 'userID'){
-						this.props.history.push(`/`)
-					}else{
-						self.opener=null;
-						self.close();
-					}
+					setTimeout(() => {
+						if(this.props.relateidObj.type === 'userID'){
+							this.props.history.push(`/`)
+						}else{
+							self.opener=null;
+							self.close();
+						}
+					}, 1000);
+					
 					Notice({ status: 'success', msg:data });
 				}else{
 					Notice({ status: 'error', msg: data });
@@ -197,7 +200,29 @@ class MyFooter extends Component {
 			}
 		});
 	};
-
+	toBeDefault = ()=>{
+		Ajax({
+			url: `/nccloud/platform/appregister/resetworkbench.do`,
+			info: {
+				name:'工作桌面配置',
+				action:'恢复默认'
+			},
+			data: {
+				relateid: this.props.relateidObj.data
+			},
+			success: (res) => {
+				const { data, success } = res.data;
+				if (success) {
+					Notice({ status: 'success', msg:'恢复默认成功' });
+					setTimeout(() => {
+						location.reload();
+					}, 500);
+				}else{
+					Notice({ status: 'error', msg: data });
+				}
+			}
+		});
+	}
 	render() {
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
@@ -212,7 +237,7 @@ class MyFooter extends Component {
 						保存
 					</Button>
 					{/* <Button className='right-button'>预览</Button> */}
-					<Button className='right-button'>恢复默认</Button>
+					<Button className='right-button' onClick={this.toBeDefault}>恢复默认</Button>
 					<Button className='right-button' onClick={this.cancleSave}>
 						取消
 					</Button>

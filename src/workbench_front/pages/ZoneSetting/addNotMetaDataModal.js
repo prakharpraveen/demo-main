@@ -18,39 +18,58 @@ class AddNotMetaDataModal extends Component {
 	onOkDialog = () => {
 		let { areaList, areaIndex } = this.props;
 		let queryPropertyList = areaList[areaIndex].queryPropertyList;
-		areaList[areaIndex].queryPropertyList = queryPropertyList.concat({
-			pk_query_property: 'newNotMetaData' + new Date().getTime(),
-			areaid: areaList[areaIndex].pk_area,
-			label: this.state.notMetaDataName,
-			code: this.state.notMetaDataName,
-			metapath: "",
-			position: `${queryPropertyList.length + 1}`,
-			datatype: '1',
-			color:'1',
-			componenttype: '0',
-			refcode: this.state.notMetaDataName,
-			options: '1',
-			visible: true,
-			disabled: true,
-			required: true,
-			isenable: true,
-			mustuse: true,
-			ischeck: true,
-			usefunc: true,
-			scale: '0',
-			maxlength: '20',
-			unit: '10',
-			ratio: '0',
-			formattype: '0',
-			width: '11',
-			opersign: 'like',
-			defaultvalue: '1',
-			showtype: '0',
-			returntype: '0',
-			dr: '0',
-			status: '0',
-			m_isDirty: false
-		});
+		let cardObj = {};
+		if(this.props.areatype === '0'){
+			cardObj = {
+				pk_query_property: 'newNotMetaData' + new Date().getTime(),
+				areaid: areaList[areaIndex].pk_area,
+				label: this.state.notMetaDataName,
+				code: this.state.notMetaDataName,
+				metapath: "",
+				position: `${queryPropertyList.length + 1}`,
+				opersign:'=@>@>=@<@<=@like@',
+				opersignname:'等于@大于@大于等于@小于@小于等于@相似@',
+				defaultvalue:'',
+				isfixedcondition:false,
+				required:false,
+				visible:false,
+				isquerycondition:false,
+				datatype: '1',
+				refname: '-99',
+				containlower:false,
+				ischeck:false,
+				isbeyondorg:false,
+				usefunc: false,
+				showtype:'1',
+				returntype:'1'
+			}
+		}else{
+			cardObj = {
+				pk_query_property: 'newNotMetaData' + new Date().getTime(),
+				areaid: areaList[areaIndex].pk_area,
+				code: this.state.notMetaDataName,
+				datatype: '1',
+				label: this.state.notMetaDataName,
+				position: `${queryPropertyList.length + 1}`,
+				metapath: '',
+				color: '1',
+				width: '6',
+				isrevise:false,
+				istotal:false,
+				required:false,
+				disabled:false,
+				visible:true,
+				maxlength:'20',
+				textrows:'1',
+				leftspace:'0',
+				rightspace:'0',
+				defaultvar:'',
+			}
+		}
+		if(this.props.targetAreaType === '2'){
+			cardObj.width = '';
+		}
+		areaList[areaIndex].queryPropertyList = queryPropertyList.concat(cardObj);
 		this.setState({ notMetaDataName: '' });
 		this.props.updateAreaList(areaList);
 		this.showModalHidden();

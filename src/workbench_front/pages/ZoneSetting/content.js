@@ -25,6 +25,7 @@ class MyContent extends Component {
 			modalVisible: false,
 			metaTree: [],
 			targetAreaID: '',
+			targetAreaType:''
 		
 		};
 	}
@@ -63,7 +64,7 @@ class MyContent extends Component {
 			}
 		});
 	}
-	addMetaInArea = (metaid, targetAreaID) => {
+	addMetaInArea = (metaid, targetAreaID,areatype) => {
 		Ajax({
 			url: `/nccloud/platform/templet/querymetapro.do`,
 			info: {
@@ -87,7 +88,7 @@ class MyContent extends Component {
 								isLeaf:r.isleaf
 							});
 						});
-						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID});
+						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID,targetAreaType:areatype});
 						this.setModalVisible(true);
 					}else{
 						if (success && data && data.rows && !data.rows.length){
@@ -171,6 +172,7 @@ class MyContent extends Component {
                             key={i}
                             id={a.pk_area}
 							index={i}
+							areatype = {a.areatype}
 							metaid={a.metaid}
 							// selectCard = {this.props.selectCard}
 							moveCard={this.moveCard}
@@ -185,6 +187,7 @@ class MyContent extends Component {
                     metaTree={this.state.metaTree}
 					modalVisible={this.state.modalVisible}
 					targetAreaID = {this.state.targetAreaID}
+					targetAreaType = {this.state.targetAreaType}
 					targetAreaCardLength = {this.state.targetAreaCardLength}
 					setModalVisible={this.setModalVisible}
 					addCard = {this.addCard}

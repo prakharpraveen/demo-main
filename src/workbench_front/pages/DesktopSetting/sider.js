@@ -11,6 +11,7 @@ import {GetQuery} from 'Pub/js/utils';
 import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
+const Search = Input.Search;
 import Notice from 'Components/Notice';
 
 class MySider extends Component {
@@ -166,13 +167,12 @@ class MySider extends Component {
 		if (this.state.showSearch) {
 			itemDom = (
 				<div className='sider-search'>
-					<Input
+					<Search
 						ref = 'searchInput'
 						placeholder='请输入应用名称'
 						style={{ width: '230px' }}
-						onPressEnter={this.onInputSearch}
 						onChange={this.onInputChange}
-						addonAfter={<Icon type='search' className='search-input-icon' onClick={this.onInputSearch} />}
+						onSearch={this.onInputSearch}
 					/>
 					<span className='switch-search-cancel' onClick={this.switchSearch}>
 						取消

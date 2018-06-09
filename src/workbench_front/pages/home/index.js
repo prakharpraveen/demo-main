@@ -72,7 +72,8 @@ class Home extends Component {
 				action:'首页加载'
 			},
 			data: {
-				relateid: this.props.userID
+				relateid: this.props.userID,
+				isuser:'1'
 			},
 			success: (res) => {
 				if (res) {
