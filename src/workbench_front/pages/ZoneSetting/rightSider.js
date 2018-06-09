@@ -13,6 +13,9 @@ import MoneyModal from './moneyModal';
 import ReferModal from './referModal';
 import CustomModal from './customModal';
 import RelateMetaModal from './relateMetaModal';
+import { high } from 'nc-lightapp-front';
+import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+const { Refer, FormulaEditor } = high;
 
 class MyRightSider extends Component {
 	constructor(props) {
@@ -367,7 +370,7 @@ class MyRightSider extends Component {
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
 						<li>控件宽度</li>
-						<li>{this.getMyInput('控件宽度', 'col')}</li>
+						<li>{this.getMyInput('控件宽度', 'width')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
 						<li>是否可见</li>
@@ -437,12 +440,12 @@ class MyRightSider extends Component {
 						<li className='metapath'>{selectCard.metapath}</li>
 						<li>元数据属性</li>
 						<li>{selectCard.code}</li>
-						<li>显示公式</li>
+					{/* 	<li>显示公式</li>
 						<li>{selectCard.showformula}</li>
 						<li>编辑公式</li>
 						<li>{selectCard.editformula}</li>
 						<li>验证公式</li>
-						<li>{selectCard.validateformula}</li>
+						<li>{selectCard.validateformula}</li> */}
 						<li style={{ display: isShowRelateMeta }}>元数据编辑关联项</li>
 						<li style={{ display: isShowRelateMeta }}>
 							<Input
@@ -460,6 +463,66 @@ class MyRightSider extends Component {
 								setModalVisibel={this.setModalVisibel}
 							/>
 						</li>
+						<li>
+							<Input
+							value={selectCard.showformula}
+							onFocus={() => {
+								this.refs.showformula.setShow(true);
+								this.refs.showformula.handleTextAreaChange(selectCard.showformula);
+							}}/>
+							<FormulaEditor ref='showformula' 
+								treeParam={{
+									pk_billtype: 'CM02',
+									bizmodelStyle: 'fip',
+									classid: ''} }
+									onOk={(val)=>{
+										this.this.handleSelectChange(val, showformula)
+										this.refs.forms.setShow(false);
+									}}/>
+						</li>
+
+					{/* 	<li>{selectCard.showformula  }</li> */}
+						<li>编辑公式</li> 
+						<li>
+							<Input
+								value={selectCard.editformula}
+								onFocus={() => {
+									this.refs.showformula.setShow(true);
+									this.refs.showformula.handleTextAreaChange(selectCard.editformula);
+								}} />
+							<FormulaEditor ref='editformula'
+								treeParam={{
+									pk_billtype: 'CM02',
+									bizmodelStyle: 'fip',
+									classid: ''
+								}}
+								onOk={(val) => {
+									this.this.handleSelectChange(val, editformula)
+									this.refs.forms.setShow(false);
+								}} />
+						</li>
+					{/* 	<li>{selectCard.editformula }</li> */}
+						<li>验证公式</li>
+						<li>
+							<Input
+								value={selectCard.validateformula}
+								onFocus={() => {
+									this.refs.showformula.setShow(true);
+									this.refs.showformula.handleTextAreaChange(selectCard.validateformula);
+								}} />
+							<FormulaEditor ref='validateformula'
+								treeParam={{
+									pk_billtype: 'CM02',
+									bizmodelStyle: 'fip',
+									classid: ''
+								}}
+								onOk={(val) => {
+	
+									this.this.handleSelectChange(val, validateformula)
+									this.refs.forms.setShow(false);
+								}} />
+						</li>
+						{/* <li>{selectCard.validateformula  }</li> */}
 					</ul>
 				</TabPane>
 			</Tabs>
@@ -477,7 +540,7 @@ class MyRightSider extends Component {
 						<li>显示顺序</li>
 						<li>{selectCard.position}</li>
 						<li>控件宽度</li>
-						<li>{this.getMyInput('控件宽度', 'col')}</li>
+						<li>{this.getMyInput('控件宽度', 'width')}</li>
 						<li>录入长度</li>
 						<li>{this.getMyInput('录入长度', 'maxlength')}</li>
 						<li>是否可见</li>

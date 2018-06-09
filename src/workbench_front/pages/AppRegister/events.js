@@ -1,14 +1,9 @@
 import Ajax from "Pub/js/ajax";
 // import getUrlParam from 'Components/getUrlParam';
 export default function(props) {
-    console.log(props);
-
-    // 获取templetId
-    // let templetid = getUrlParam('templetid');
     let url, data;
     url = "/nccloud/platform/templet/previewtemplet.do";
     data = {
-        //    previewList: array
         templetid: props.templetid
     };
     Ajax({
@@ -27,8 +22,8 @@ export default function(props) {
                     ) {
                         cur[Object.keys(cur)[0]].status = "edit";
                         cur[Object.keys(cur)[0]].items.forEach((element, index) => {
-                            element.attrcode = index + 1 + '';
-                            element.col = 4;
+                            element.attrcode =`${index+1}`;
+                            element.col = element.width;
                         });
                     }
                     return {...pre, ...cur}; // 数组拆开 展开为模板数据格式

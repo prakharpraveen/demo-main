@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
 import Notice from 'Components/Notice';
+import * as utilService from './utilService';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -25,6 +26,101 @@ const switchType = (value) => {
 			break; */
 	}
 }
+
+// 下拉组件 
+class SelectCell extends React.Component {
+	state = {
+		value: this.props.value,
+	}
+	handleSelectChange = (value) => {
+		this.setState({ value }, () => { this.props.onChange(value) });
+	}
+	render() {
+		const { value } = this.state;
+		const { type } = this.props;
+		let result_div;
+		switch (type) {
+			case 'color':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['colorObj'][0].value
+						}
+						onChange={(value) => {
+							// if (property === 'datatype') {
+							// 	this.props.selectCard.dataval = "";
+							// }
+							this.handleSelectChange(value, 'color');
+						}}
+					>
+						{utilService['colorObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+			case 'datatype':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['dataTypeObj'][0].value
+						}
+						onChange={(value) => {
+							// if (property === 'datatype') {
+							// 	this.props.selectCard.dataval = "";
+							// }
+							this.handleSelectChange(value);
+						}}
+					
+					>
+						{utilService['dataTypeObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+			case 'componenttype':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['componentTypeObj'][0].value
+						}
+						onChange={(value) => {
+							// if (property === 'datatype') {
+							// 	this.props.selectCard.dataval = "";
+							// }
+							this.handleSelectChange(value, 'color');
+						}}
+						
+					>
+						{utilService['componentTypeObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+		
+			default:
+				break;
+		}
+		return (
+			result_div
+		);
+	}
+}
+
 
 // 可编辑表格input  
 class EditableCell extends React.Component {
@@ -140,7 +236,7 @@ class BatchSearchTable extends React.Component {
 					/>
 				),
 			},  
-				{
+			/* 	{
 				title: '组件类型',
 				dataIndex: 'componenttype', 
 				width: 150,
@@ -151,7 +247,7 @@ class BatchSearchTable extends React.Component {
 						onChange={this.onCellChange(record.key, 'componenttype')}
 					/>
 				),
-			},  
+			},  */ 
 			{
 				title: '参照名称',
 				dataIndex: 'refname', 
@@ -213,7 +309,7 @@ class BatchSearchTable extends React.Component {
 				width: 150, 
 				render: (text, record) => (
 					<EditableCheck
-							value={text}
+						value={text}
 						onChange={this.onCellChange(record.key, 'required')}
 					/>
 				),
@@ -375,7 +471,7 @@ class BatchSearchTable extends React.Component {
 					/>
 				),
 			}, 
-			{
+			/* {
 				title: '数据类型',
 				dataIndex: 'datatype',
 				width: 150, 
@@ -385,7 +481,7 @@ class BatchSearchTable extends React.Component {
 						onChange={this.onCellChange(record.key, 'datatype')}
 					/>
 				),
-			}, 
+			},  */
 			{
 				title: '显示类型',
 				dataIndex: 'showtype', 
@@ -408,19 +504,44 @@ class BatchSearchTable extends React.Component {
 					/>
 				),
 			}, 
+			{
+				title: '组件类型',
+				dataIndex: 'componenttype',
+				width: 150,
+				render: (text, record) => (
+					<SelectCell
+						value={text}
+						type='componenttype'
+						onChange={this.onCellChange(record.key, 'componenttype')}
+					/>
+				),
+			}, 
+			{
+				title: '数据类型',
+				dataIndex: 'datatype',
+				width: 150,
+				render: (text, record) => (
+					<SelectCell
+						value={text}
+						type='datatype'
+						onChange={this.onCellChange(record.key, 'datatype')}
+					/>
+				),
+			}, 
+			{
+				title: '颜色',
+				dataIndex: 'color',
+				width: 150,
+				render: (text, record) => (
+					<SelectCell
+						value={text}
+						type='color'
+						onChange={this.onCellChange(record.key, 'color')}
+					/>
+				),
+			}, 
 			];
 	}
-/* 	// 组件更新
-	componentWillReceiveProps(nextProps) { 
-	//	if (nextProps.zoneDatas.areaList){
-			this.setState({
-				dataSource: nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
-				count: nextProps.zoneDatas.areaList.length,
-			});
-			// 设置初始 table数组 
-			this.props.setNewList(nextProps.zoneDatas.areaList)
-	//	}
-	} */
    shouldComponentUpdate(nextProps,nextState){
       if(_.isEqual(nextState.dataSource , this.state.dataSource)){
         return false
@@ -445,7 +566,7 @@ class BatchSearchTable extends React.Component {
 		const columns = this.columns;
 		console.log(dataSource,2223322)
 		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 4500 }} />
+				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 4500, y:400 }} />
 		);
 	}
 }

@@ -44,17 +44,17 @@ module.exports = {
 		// 开启报错提示
 		stats: 'errors-only',
 		proxy: {
-			// '/': {
-			// 	// 代理地址
-			// 	// target: 'http://172.20.4.84:6565',
-			// 	target: 'http://172.16.86.10:8080',
-			// 	bypass: function(req, res, proxyOptions) {
-			// 		if (req.headers.accept.indexOf('html') !== -1) {
-			// 			// console.log('Skipping proxy for browser request.');
-			// 			return '/index.html';
-			// 		}
-			// 	}
-			// },
+			'/nccloud': {
+				// 代理地址
+				target: 'http://10.11.115.25:8888/',
+				// target: 'http://10.11.115.30:8006',
+				bypass: function (req, res, proxyOptions) {
+					if (req.headers.accept.indexOf('html') !== -1) {
+						// console.log('Skipping proxy for browser request.');
+						return '/index.html';
+					}
+				}
+			},
 			// '/nccloud/uapbd': {
 			// 	// 代理地址
 			// 	target: 'http://20.10.130.171:8031',
@@ -65,7 +65,7 @@ module.exports = {
 			// 		}
 			// 	}
 			// },
-			'/nccloud': {
+			'/nccloud/formula': {
 				// 代理地址
 				// target: 'http://172.20.4.84:6565',
 				target: 'http://10.11.115.25:8888/',
