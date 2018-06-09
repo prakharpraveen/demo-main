@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import { setZoneState } from 'Store/AppRegister/action';
+import { setZoneData, setZoneTempletid } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import { GetQuery } from 'Pub/js/utils';
 import Notice from 'Components/Notice';
@@ -16,11 +16,9 @@ const { Header } = Layout;
 const Btns = [	
 	{
 		name: '取消',
-	//	type: 'primary'
 	},
 	{
 		name: '保存',
-		//	type: 'primary'
 	},
 	{
 		name: '下一步',
@@ -36,11 +34,7 @@ class MyBtns extends Component {
 			state:'browse'
 		};
 	}
-	// 初始化设置按钮的状态 
-	componentDidMount(){
-		
-	//	this.props.setZoneState('browse');
-	}
+	
 	// 根据不同的状态 生成不同的按钮 
 	creatBtns(Btns){
 	return	Btns && Btns.map((item,index) =>{
@@ -72,6 +66,9 @@ class MyBtns extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) { 
+					// qingchu 
+					this.props.setZoneData({});
+					debugger;
 					// type =1 代表保存  type =2 表示下一步  保存binqie
 					type === 1 ? (location.hash = '/ar') : (location.hash = `/ZoneSetting?templetid=${data.data.templetid}`);
 					Notice({ status: 'success', msg: data.data.true });
@@ -136,6 +133,6 @@ export default connect(
 		
 	},
 	{
-		setZoneState
+		setZoneData
 	}
 )(MyBtns);
