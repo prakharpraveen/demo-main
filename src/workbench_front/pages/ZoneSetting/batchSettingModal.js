@@ -57,7 +57,7 @@ class BatchSettingModal extends Component {
 				]}
 			>
 					{(newSource && newSource.areatype === '0') ? (<BatchSearchTable areaIndex={areaIndex} setNewList={this.saveState} />):
-					(<BatchNoSearchTable areaIndex={areaIndex} setNewList={this.saveState} />)}
+					(<BatchNoSearchTable areatype={newSource.areatype} areaIndex={areaIndex} setNewList={this.saveState} />)}
 			
 			</Modal>
 		</div>	

@@ -46,7 +46,7 @@ class TreeModal extends Component {
 					defaultvalue:'',
 					isfixedcondition:false,
 					required:false,
-					visible:false,
+					visible:true,
 					isquerycondition:true,
 					refname: datatype==='204'?refname:'-99',
 					containlower:isLeaf?false:true,

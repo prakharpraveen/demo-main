@@ -32,7 +32,7 @@ class AddNotMetaDataModal extends Component {
 				defaultvalue:'',
 				isfixedcondition:false,
 				required:false,
-				visible:false,
+				visible:true,
 				isquerycondition:false,
 				datatype: '1',
 				refname: '-99',

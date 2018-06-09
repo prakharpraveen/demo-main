@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Table, Input, Icon, Button, InputNumber, Select,Form,Switch} from 'antd';
+import { Table, Input, Icon, Button, InputNumber, Select, Form, Switch } from 'antd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import _ from 'lodash'; 
 import Notice from 'Components/Notice';
+import * as utilService from './utilService';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -25,6 +26,119 @@ const switchType = (value) => {
 			break; */
 	}
 }
+
+// 下拉组件 
+class SelectCell extends React.Component {
+	state = {
+		value: this.props.value,
+	}
+	handleSelectChange = (value) => {
+		this.setState({ value }, () => { this.props.onChange(value) });
+	}
+	render() {
+		const { value } = this.state;
+		const { type } = this.props;
+		let result_div;
+		switch (type) {
+			case 'color':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['colorObj'][0].value
+						}
+						onChange={(value) => {
+							this.handleSelectChange(value, 'color');
+						}}
+
+					>
+						{utilService['colorObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+			case 'defaultvar':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['defaultvarObj'][0].value
+						}
+						onChange={(value) => {
+							// if (property === 'datatype') {
+							// 	this.props.selectCard.dataval = "";
+							// }
+							this.handleSelectChange(value);
+						}}
+
+					>
+						{utilService['defaultvarObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+			case 'width':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['componentWidthObj'][0].value
+						}
+						onChange={(value) => {
+							// if (property === 'datatype') {
+							// 	this.props.selectCard.dataval = "";
+							// }
+							this.handleSelectChange(value);
+						}}
+
+					>
+						{utilService['componentWidthObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
+
+			default:
+				break;
+		}
+		return (
+			result_div
+		);
+	}
+}
+
+// 可编辑表格复选框
+class EditableCheck extends React.Component {
+	state = {
+		value: this.props.value,
+	}
+	handleChange = (value) => {
+		this.setState({ value }, () => { this.props.onChange(value) });
+	}
+	render() {
+		const { value } = this.state;
+		return (
+			<div className="editable-cell">
+				<div className="editable-cell-input-wrapper">
+					<Switch defaultChecked={value} onChange={this.handleChange}></Switch>
+				</div>
+			</div>
+		);
+	}
+}
+
 
 // 可编辑表格input  
 class EditableCell extends React.Component {
@@ -51,33 +165,15 @@ class EditableCell extends React.Component {
 	}
 }
 
-// 可编辑表格复选框
-class EditableCheck extends React.Component {
-	state = {
-		value: this.props.value,
-	}
-	handleChange = (value) => {
-		this.setState({ value },()=>{this.props.onChange(value)});
-	}
-	render() {
-		const { value } = this.state;
-		return (
-			<div className="editable-cell">
-				<div className="editable-cell-input-wrapper">
-					<Switch defaultChecked={value}  onChange={this.handleChange}></Switch>
-		    	</div>
-			</div>
-		);
-	}
-}
 
 // 可编辑的表格 
 class BatchSearchTable extends React.Component {
 	constructor(props) {
 		super(props);
-		let {areaList, areaIndex}  = this.props;
+		let { areaList, areaIndex, areatype}  = this.props;
 		this.state = {
 			dataSource: areaList[areaIndex],
+			areatype
 		};
 		this.columns = [
 			{
@@ -87,20 +183,10 @@ class BatchSearchTable extends React.Component {
 				fixed: 'left'
 			},
 			{
-			title: '主键',
-			dataIndex: 'pk_query_property',
-			width: 100,
-			fixed: 'left'
-		},
-		 {
-			title: '区域ID',
-			dataIndex: 'areaid',
-			width: 150,
-		}, 
-		{
 			title: '显示名称',
 			dataIndex: 'label', 
 			width: 150,
+			fixed: 'left',
 			render: (text, record) => (
 				<EditableCell
 					value={text}
@@ -118,86 +204,60 @@ class BatchSearchTable extends React.Component {
 				),
 			},
 			{
-			title: '元数据',
+			title: '组件长度',
 			width: 150,
-			dataIndex: 'metapath', 
-			render: (text, record) => ( 
-				<EditableCell
-					value={text}
-					onChange={this.onCellChange(record.key, 'metapath')} />
-				),
+			dataIndex: 'width', 
+			render: (text, record) => {
+					if (this.state.areatype==='2') {
+						return (
+							<EditableCell
+								value={text}
+								onChange={this.onCellChange(record.key, 'width')} />
+						) }
+					return (
+					<SelectCell
+						value={text}
+						type='width'
+						onChange={this.onCellChange(record.key, 'width')}
+					/>)
+					},
 			},
 			
 			{
-				title: '组件长度',
-				dataIndex: 'componentsize', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						type='int'
-						value={text}
-						onChange={this.onCellChange(record.key, 'componentsize')}
-					/>
-				),
-			},  
-				{
-				title: '组件类型',
-				dataIndex: 'componenttype', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						type='int'
-						onChange={this.onCellChange(record.key, 'componenttype')}
-					/>
-				),
-			},  
-			{
-				title: '参照名称',
-				dataIndex: 'refname', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'refname')}
-					/>
-				),
-			},  
-			{
-				title: '参照编码',
-				dataIndex: 'refcode', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'refcode')}
-					/>
-				),
-			},  
-			{
-				title: '下拉选项',
-				dataIndex: 'options', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'options')}
-					/>
-				),
-			},
-			{
-				title: '是否可见',
-				dataIndex: 'visible', 
+				title: '可修订',
+				dataIndex: 'isrevise', 
 				width: 150,
 				render: (text, record) => (
 					<EditableCheck
-							value={text}
-						onChange={this.onCellChange(record.key, 'visible')}
+						value={text}
+						onChange={this.onCellChange(record.key, 'isrevise')}
 					/>
 				),
 			},  
 			{
-				title: '是否可修改',
+				title: '合计',
+				dataIndex: 'istotal',
+				width: 150,
+				render: (text, record) => (
+					<EditableCheck
+						value={text}
+						onChange={this.onCellChange(record.key, 'istotal')}
+					/>
+				),
+			}, 
+			{
+				title: '必输项',
+				dataIndex: 'required',
+				width: 150,
+				render: (text, record) => (
+					<EditableCheck
+						value={text}
+						onChange={this.onCellChange(record.key, 'required')}
+					/>
+				),
+			}, 
+			{
+				title: '可修改',
 				dataIndex: 'disabled', 
 				width: 150,
 				render: (text, record) => (
@@ -207,72 +267,17 @@ class BatchSearchTable extends React.Component {
 					/>
 				),
 			},  
-				{
-				title: '是否必输',
-				dataIndex: 'required',
-				width: 150, 
+			{
+				title: '可见',
+				dataIndex: 'visible',
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
-							value={text}
-						onChange={this.onCellChange(record.key, 'required')}
+						value={text}
+						onChange={this.onCellChange(record.key, 'visible')}
 					/>
 				),
 			},  
-			{
-				title: '是否可用',
-				dataIndex: 'isenable',
-				width: 100, 
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'isenable')}
-					/>
-				),
-			}, 
-			{
-				title: '必须启用',
-				dataIndex: 'mustuse', 
-				width: 100,
-				render: (text, record) => (
-					<EditableCheck
-							value={text}
-						onChange={this.onCellChange(record.key, 'mustuse')}
-					/>
-				),
-			}, 
-			{
-				title: '是否自动检查',
-				dataIndex: 'ischeck', 
-				width: 100,
-				render: (text, record) => (
-					<EditableCheck
-							value={text}
-						onChange={this.onCellChange(record.key, 'ischeck')}
-					/>
-				),
-			}, 
-			{
-				title: '是否使用函数',
-				dataIndex: 'usefunc', 
-				width: 100,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'usefunc')}
-					/>
-				),
-			}, 
-			{
-				title: '精度',
-				dataIndex: 'scale', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'scale')}
-					/>
-				),
-			}, 
 			{
 				title: '最大长度',
 				dataIndex: 'maxlength', 
@@ -280,147 +285,72 @@ class BatchSearchTable extends React.Component {
 				render: (text, record) => (
 					<EditableCell
 						value={text}
-						type='int'
 						onChange={this.onCellChange(record.key, 'maxlength')}
 					/>
 				),
-			}, 
+			},  
 			{
-				title: '单位',
-				dataIndex: 'unit', 
+				title: '多行文本显示行数',
+				dataIndex: 'textrows',
 				width: 150,
 				render: (text, record) => (
 					<EditableCell
-							value={text}
-						onChange={this.onCellChange(record.key, 'unit')}
+						value={text}
+						onChange={this.onCellChange(record.key, 'textrows')}
 					/>
 				),
 			}, 
 			{
-				title: '计算比率',
-				dataIndex: 'ratio',
+				title: '左空白',
+				dataIndex: 'leftspace', 
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+							value={text}
+						onChange={this.onCellChange(record.key, 'leftspace')}
+					/>
+				),
+			},  
+			{
+				title: '右空白',
+				dataIndex: 'rightspace', 
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'rightspace')}
+					/>
+				),
+			},  
+			{
+				title: '颜色',
+				dataIndex: 'color',
 				width: 150, 
 				render: (text, record) => (
-					<EditableCell
-							value={text}
-						onChange={this.onCellChange(record.key, 'ratio')}
-					/>
-				),
-			}, 
-			{
-				title: '格式化类型',
-				dataIndex: 'formattype', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
+					<SelectCell
 						value={text}
-						onChange={this.onCellChange(record.key, 'formattype')}
+						type='color'
+						onChange={this.onCellChange(record.key, 'color')}
 					/>
 				),
-			}, 
+			},  
 			{
-				title: '宽度',
-				dataIndex: 'width', 
+				title: '默认系统变量',
+				dataIndex: 'defaultvar',
 				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						type='int'
-						onChange={this.onCellChange(record.key, 'width')}
-					/>
-				),
-			}, 
-			{
-				title: '多语',
-				dataIndex: 'resid', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-							value={text}
-						onChange={this.onCellChange(record.key, 'resid')}
-					/>
-				),
-			}, 
-			{
-				title: '位置',
-				dataIndex: 'position', 
-				width: 150,
-				render: (text, record) => ( 
-					<EditableCell
-						value={text}
-						type='int'
-						onChange={this.onCellChange(record.key, 'position')}
-					/>
-				),
-			}, 
-			{
-				title: '操作符',
-				dataIndex: 'opersign', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'opersign')}
-					/>
-				),
-			}, 
-			{
-				title: '默认取值',
-				dataIndex: 'defaultvalue', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-							value={text}
-						onChange={this.onCellChange(record.key, 'defaultvalue')}
-					/>
-				),
-			}, 
-			{
-				title: '数据类型',
-				dataIndex: 'datatype',
-				width: 150, 
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'datatype')}
-					/>
-				),
-			}, 
-			{
-				title: '显示类型',
-				dataIndex: 'showtype', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'showtype')}
-					/>
-				),
-			}, 
-			{
-				title: '返回类型',
-				dataIndex: 'returntype', 
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'returntype')}
-					/>
-				),
-			}, 
+				render: (text, record) => {
+					if (record.datatype==='204') {
+						return (
+							<SelectCell
+								value={text}
+								type='defaultvar'
+								onChange={this.onCellChange(record.key, 'defaultvar')}
+							/>
+						) }
+					},
+			},  
 			];
 	}
-/* 	// 组件更新
-	componentWillReceiveProps(nextProps) { 
-	//	if (nextProps.zoneDatas.areaList){
-			this.setState({
-				dataSource: nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
-				count: nextProps.zoneDatas.areaList.length,
-			});
-			// 设置初始 table数组 
-			this.props.setNewList(nextProps.zoneDatas.areaList)
-	//	}
-	} */
    shouldComponentUpdate(nextProps,nextState){
       if(_.isEqual(nextState.dataSource , this.state.dataSource)){
         return false
@@ -443,9 +373,8 @@ class BatchSearchTable extends React.Component {
 		let { dataSource } = this.state;
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
-		console.log(dataSource,2223322)
 		return (
-			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 4500, y: 400 }} />
+			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2250, y: 400 }} />
 		);
 	}
 }
