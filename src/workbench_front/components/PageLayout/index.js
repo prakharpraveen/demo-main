@@ -23,7 +23,7 @@ class PageLayout extends Component {
 		if (isMouseDown) {
 			let mouseLeft = e.clientX;
 			let layoutLeft = document.querySelector('#layoutLeft');
-			let blockLeft = layoutLeft.offsetLeft;
+			let blockLeft = layoutLeft.getBoundingClientRect().left;
 			console.log(blockLeft);
 			let w = parseInt(mouseLeft - blockLeft);
 			if (w < 200) {
