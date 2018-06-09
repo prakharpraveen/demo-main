@@ -411,7 +411,7 @@ class BatchSearchTable extends React.Component {
 }
 
 BatchSearchTable.propTypes = {
-	zoneDatas: propTypes.object.isRequired,
+//	zoneDatas: propTypes.object.isRequired,
 };
 
 export default connect((state) => ({ 
