@@ -91,4 +91,9 @@ export const defaultvarObj = [
 	{ name: '@SYSOPER', value: '@SYSOPER' },
 	{ name: '@SYSUSER', value: '@SYSUSER' },
 	{ name: '@SYSDEPT', value: '@SYSDEPT' },
+	{ name: '小数', value: '2' }
+];
+export const showtype = [
+	{ name: '名称', value: '1' },
+	{ name: '编码', value: '2' }
 ];
