@@ -187,10 +187,10 @@ class MySider extends Component {
 						style={{ width: '230px' }}
 						options={this.state.domainArr}
 						onChange={this.onCascaderChange}
-						placeholder='领域-模块'
+						placeholder='请选择领域-模块'
 					/>
 					<span className='switch-search' onClick={this.switchSearch}>
-						<Icon type='search' />
+						<Icon type='search' title="切换至名称搜索"/>
 					</span>
 				</div>
 			);
@@ -334,7 +334,7 @@ class MySider extends Component {
 						<Icon
 							className={this.hasChechedItem() ? 'add' : 'cannot-add'}
 							type='plus-circle-o'
-							title='占位符'
+							title='添加应用到分组'
 							onClick={this.showModalVisible}
 						/>
 					</div>

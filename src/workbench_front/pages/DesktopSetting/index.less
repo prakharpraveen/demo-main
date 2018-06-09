@@ -16,22 +16,22 @@
 			overflow-x: auto;
 			overflow-y: hidden;
 			margin-left: 10px;
-			li {
+			a {
 				margin-left: 5px;
 				margin-bottom: 5px;
 				color: #474d54;
-				background-color: rgba(9, 44, 66, .08);
-				border-color: rgba(9, 44, 66, .08);
 				cursor: pointer;
 				height: 32px;
 				text-align: center;
 				border: 1px solid transparent;
 				white-space: nowrap;
-				padding: 0 15px;
+				padding: 0 10px;
 				font-size: 14px;
 				border-radius: 4px;
 				display: inline-block;
 				line-height: 32px;
+				text-decoration: underline;
+							color:#474D54;
 			}
 		}
 		.nc-workbench-home-container {
@@ -42,6 +42,7 @@
 			.group-item-add {
 				width: 100%;
 				border: 1px solid rgba(78, 89, 104, .25);
+				background: #fff;
 			}
 			.group-item {
 				width: 100%;
@@ -116,6 +117,7 @@
 			}
 		}
 		.nc-workbench-home-footer {
+			background: rgba(26, 32, 38, 0.6);
 			width: calc(100vw - 300px);
 			height: 48px;
 			position: fixed;
@@ -129,6 +131,14 @@
 			button {
 				margin: 0 8px;
 			}
+			.footer-button {
+				color: rgba(255, 255, 255, .7);
+				background-color: rgba(9, 44, 66, 0);
+				border-color: rgba(255, 255, 255, .8);
+			}
+			.footer-button:hover{
+				border-color: rgba(255, 255, 255, .5);
+			}
 			.footer-left {
 				display: flex;
 				margin-left: 100px;
@@ -139,7 +149,7 @@
 			}
 		}
 	}
-	
+
 	.nc-workbench-home-sider {
 		background: #fff;
 		overflow: auto;
@@ -210,7 +220,7 @@
 									.title {
 										display: flex;
 										justify-content: space-between;
-										.title-name{
+										.title-name {
 											display: block;
 											max-width: 100%;
 											flex-shrink: 1;

@@ -235,14 +235,14 @@ class Layout extends Component {
                                     />}
                             </span>
                             {this.getSearchDom()}
-                            <span className="margin-right-10">
-                                <Link to={`all`}>
+                            <span className="margin-right-10" onClick={()=>{
+this.props.history.push(`/all`)
+                            }}>
                                     <i
                                         field="application"
                                         fieldname="全部应用"
                                         className="iconfont icon-quanbuyingyong"
                                     />
-                                </Link>
                             </span>
                             <span className="margin-right-10">
                                 <i
