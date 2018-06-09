@@ -32,7 +32,7 @@ class ReferShow extends Component {
         // console.log(this.props);
         return (
             <div>
-                {this.props.value.refname ? this.props.value.refname : ""}
+                {this.props.value&&this.props.value.refname ? this.props.value.refname : ""}
             </div>
         );
     }
@@ -83,7 +83,8 @@ class FormContent extends Component {
             isRequired = false,
             label = "",
             code,
-            isedit = false
+            isedit = false,
+            check
         } = item;
         switch (type) {
             case "string":
@@ -101,6 +102,9 @@ class FormContent extends Component {
                                 {
                                     required: isRequired,
                                     message: "此字段为必输项！"
+                                },
+                                {
+                                validator: check?check:null
                                 }
                             ]
                         })(isedit ? <Input /> : <NormalShow />)}
