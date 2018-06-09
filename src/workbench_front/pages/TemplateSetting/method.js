@@ -22,7 +22,7 @@ export function generateData(data) {
 		} else {
 			item.text = `${moduleid} ${systypename}`;
 		}
-		item.key = moduleid;
+		item.key = systypecode;
 		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
 		if (parentcode) {
 			if (!treeObj[parentcode]) {
