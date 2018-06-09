@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 
 import './index.less';

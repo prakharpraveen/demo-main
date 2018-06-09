@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';

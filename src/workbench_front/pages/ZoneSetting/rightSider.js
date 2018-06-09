@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { setNodeData, setBillStatus, setOpType, setAppParamData, setPageButtonData,
-// 	setPageTemplateData,
-// 	setPrintTemplateData,setParentData } from 'Store/AppRegister/action';
 import BasicProperty from './basicProperty';
 import { Tabs, Input, Checkbox, InputNumber, Select } from 'antd';
 const Option = Select.Option;
@@ -414,6 +411,7 @@ class MyRightSider extends Component {
 									return (
 										<li>
 											<Input
+											style={{ height: 23, width: 176 }}
 												value={selectCard.dataval}
 												onFocus={() => {
 													this.setState({ ReferModalVisibel: true });
@@ -523,6 +521,7 @@ class MyRightSider extends Component {
 									return (
 										<li>
 											<Input
+											style={{ height: 23, width: 176 }}
 												value={selectCard.dataval}
 												onFocus={() => {
 													this.setState({ interModalVisibel: true });
@@ -540,6 +539,7 @@ class MyRightSider extends Component {
 									return (
 										<li>
 											<Input
+											style={{ height: 23, width: 176 }}
 												value={selectCard.dataval}
 												onFocus={() => {
 													this.setState({ moneyModalVisibel: true });
@@ -557,6 +557,7 @@ class MyRightSider extends Component {
 									return (
 										<li>
 											<Input
+											style={{ height: 23, width: 176 }}
 												value={selectCard.dataval}
 												onFocus={() => {
 													this.setState({ ReferModalVisibel: true });
@@ -574,6 +575,7 @@ class MyRightSider extends Component {
 									return (
 										<li>
 											<Input
+											style={{ height: 23, width: 176 }}
 												value={selectCard.dataval}
 												onFocus={() => {
 													this.setState({ CustomModalVisibel: true });
