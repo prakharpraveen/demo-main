@@ -13,10 +13,24 @@ const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const initRoTreeData = {
-	key: '1000',
-	id: '',
+	key: 'abc1234567',
+	id: 'abc1234567',
 	text: '角色',
 	name: '角色',
+	children: []
+};
+const initUserTreeData = {
+	key: 'abc2234567',
+	id: 'abc2234567',
+	text: '用户',
+	name: '用户',
+	children: []
+};
+const initAbiTreeData = {
+	key: 'abc3334567',
+	id: 'abc3334567',
+	text: '职责',
+	name: '职责',
 	children: []
 };
 const initTreeData = [{
@@ -248,7 +262,7 @@ class TemplateSetting extends Component {
 					alloVisible:true
 				})
 				this.reqRoTreeData();
-				this.reqAllowTreeData();
+				//this.reqAllowTreeData();
 				break;
 			default:
 				break;
@@ -384,7 +398,6 @@ class TemplateSetting extends Component {
 		let infoData={
 			"pageCode": pageCode
 		}
-		//infoData.pageCode=key;
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
 			data: infoData,
@@ -395,7 +408,7 @@ class TemplateSetting extends Component {
 			success: ({
 				data
 			}) => {
-				if (data.success && data.data.length > 0) {
+				if (data.success) {
 					this.setState({
 						treeTemDataArray: data.data,
 						pageCode:key
@@ -446,10 +459,6 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success&&data.data) {
-					debugger
-					this.setState({
-						roleUserDatas:data.data
-					})
 
 				}
 			}
@@ -484,9 +493,7 @@ class TemplateSetting extends Component {
 		let {
 			treeResData
 		} = this.state;
-		let initResData = initRoTreeData;
-		initResData.name = '职责';
-		initResData.text = '职责';
+		let initResData = initAbiTreeData;
 		data.map((item, index) => {
 			let {
 				code,
@@ -507,11 +514,7 @@ class TemplateSetting extends Component {
 			treeRoData
 		} = this.state;
 		let initRolesData = initRoTreeData;
-		initRolesData.text="角色";
-		initRolesData.name="角色";
-		let initUsersData = initRoTreeData;
-		initUsersData.text='用户';
-		initUsersData.name='用户';
+		let initUsersData = initUserTreeData;
 		initRolesData.children = generateRoData(data.roles);
 		initUsersData.children = generateRoData(data.users);
 		treeRoData.push(initRolesData);
@@ -538,6 +541,7 @@ class TemplateSetting extends Component {
 					dataRoObj.id=item.id;
 					dataRoObj.name=item.name;
 					dataRoObj.code=item.code;
+					dataRoObj.type=key;
 				}
 			})
 		}
@@ -547,15 +551,14 @@ class TemplateSetting extends Component {
 	}
 	allowClick = (name)=>{
 		let { dataRoObj, allowDataArray, treeAllowData}=this.state;
+		debugger
 		switch(name){
 			case 'allowRole':
 				let indexNum="-1";
 				if(allowDataArray&&allowDataArray.length>0){
 					indexNum=allowDataArray.map((item)=>{
-						if(item.id!==dataRoObj.id){
-							return "-1";
-						}else{
-							return "1";
+						if(item.id===dataRoObj.id){
+							return 1;
 						}
 					})
 				}
@@ -564,7 +567,6 @@ class TemplateSetting extends Component {
 				}
 				break;
 			case 'allowRoleCancel':
-				console.log(name);
 			break;
 			default:
 			break;
@@ -575,8 +577,8 @@ class TemplateSetting extends Component {
 		})
 		treeAllowData=generateTreeData(allowDataArray);
 		this.setState({
-			allowDataArray,
-			treeAllowData
+			treeAllowData,
+			allowDataArray
 		})
 	}
 	treeResAndUser = (data)=>{
@@ -641,7 +643,7 @@ class TemplateSetting extends Component {
 		
 	}
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode, allowDataArray } = this.state;
+		let { templatePks, pageCode } = this.state;
 		let targets={};
 		let infoData={
 			"pageCode": pageCode,"templateId": templatePks ,"orgId":"0001A110000000002475"
@@ -803,6 +805,7 @@ class TemplateSetting extends Component {
 							visible={alloVisible}
 							onOk={this.handleAlloOk}
 							onCancel={this.handleOrlCancel}
+							width={720}
         				>
 							<div>
 								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
