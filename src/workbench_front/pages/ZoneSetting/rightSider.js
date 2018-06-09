@@ -463,9 +463,11 @@ class MyRightSider extends Component {
 								setModalVisibel={this.setModalVisibel}
 							/>
 						</li>
+						<li>显示公式</li>
 						<li>
 							<Input
 							value={selectCard.showformula}
+							style={{ height: 23, width: 176 }}
 							onFocus={() => {
 								this.refs.showformula.setShow(true);
 								this.refs.showformula.handleTextAreaChange(selectCard.showformula);
@@ -480,12 +482,11 @@ class MyRightSider extends Component {
 										this.refs.forms.setShow(false);
 									}}/>
 						</li>
-
-					{/* 	<li>{selectCard.showformula  }</li> */}
 						<li>编辑公式</li> 
 						<li>
 							<Input
 								value={selectCard.editformula}
+								style={{ height: 23, width: 176 }}
 								onFocus={() => {
 									this.refs.showformula.setShow(true);
 									this.refs.showformula.handleTextAreaChange(selectCard.editformula);
@@ -501,11 +502,11 @@ class MyRightSider extends Component {
 									this.refs.forms.setShow(false);
 								}} />
 						</li>
-					{/* 	<li>{selectCard.editformula }</li> */}
 						<li>验证公式</li>
 						<li>
 							<Input
 								value={selectCard.validateformula}
+								style={{ height: 23, width: 176 }}
 								onFocus={() => {
 									this.refs.showformula.setShow(true);
 									this.refs.showformula.handleTextAreaChange(selectCard.validateformula);
@@ -517,12 +518,10 @@ class MyRightSider extends Component {
 									classid: ''
 								}}
 								onOk={(val) => {
-	
 									this.this.handleSelectChange(val, validateformula)
 									this.refs.forms.setShow(false);
 								}} />
 						</li>
-						{/* <li>{selectCard.validateformula  }</li> */}
 					</ul>
 				</TabPane>
 			</Tabs>
