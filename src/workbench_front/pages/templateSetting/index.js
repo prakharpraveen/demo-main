@@ -95,7 +95,8 @@ class TemplateSetting extends Component {
 			dataRoObj:{},
 			roleUserDatas:{},
 			allowDataArray:[],
-			treeAllowData:[]
+			treeAllowedData:[],
+			allowedTreeKey:''
 		};
 	}
 	// 按钮显隐性控制
@@ -395,6 +396,7 @@ class TemplateSetting extends Component {
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
 		let {pageCode}=this.state;
+		console.log(pageCode);
 		let infoData={
 			"pageCode": pageCode
 		}
@@ -410,8 +412,7 @@ class TemplateSetting extends Component {
 			}) => {
 				if (data.success) {
 					this.setState({
-						treeTemDataArray: data.data,
-						pageCode:key
+						treeTemDataArray: data.data
 					}, this.restoreTreeTemData);
 				}
 			}
@@ -541,7 +542,13 @@ class TemplateSetting extends Component {
 					dataRoObj.id=item.id;
 					dataRoObj.name=item.name;
 					dataRoObj.code=item.code;
-					dataRoObj.type=key;
+					if(key==='users'){
+						dataRoObj.type='user';
+					}else if(key==='roles'){//
+						dataRoObj.type='role';
+					}else if(key==='resps'){
+						dataRoObj.type='resp';
+					}
 				}
 			})
 		}
@@ -550,35 +557,59 @@ class TemplateSetting extends Component {
 		})
 	}
 	allowClick = (name)=>{
-		let { dataRoObj, allowDataArray, treeAllowData}=this.state;
-		debugger
+		let { dataRoObj, allowDataArray, treeAllowedData, allowedTreeKey}=this.state;
+		let allowDataObj={};
 		switch(name){
 			case 'allowRole':
 				let indexNum="-1";
 				if(allowDataArray&&allowDataArray.length>0){
-					indexNum=allowDataArray.map((item)=>{
-						if(item.id===dataRoObj.id){
-							return 1;
+					for(let i=0;i<allowDataArray.length;i++){
+						if(allowDataArray[i].id===dataRoObj.id){
+							indexNum=1;
 						}
-					})
+					}
 				}
-				if(Number(indexNum)<0){
-					allowDataArray.push(dataRoObj);
+				if(Number(indexNum)<=0){
+					allowDataObj.id=dataRoObj.id;
+					allowDataObj.name=dataRoObj.name;
+					allowDataObj.code=dataRoObj.code;
+					allowDataObj.type=dataRoObj.type;
+					allowDataArray.push(allowDataObj);
 				}
+				allowDataArray.map((item)=>{
+					item.text = item.name+item.code;
+					item.key = item.id;
+				})
+				treeAllowedData=generateTreeData(allowDataArray);
 				break;
 			case 'allowRoleCancel':
+				if(!allowedTreeKey){
+					Notice({ status: 'warning', msg: "请选中信息" });
+					return ;
+				}
+				Array.prototype.remove = function(val) {
+					let index = this.indexOf(val);
+					if (index > -1) {
+						this.splice(index, 1);
+					}
+				};
+				for(let i=0;i<treeAllowedData.length;i++){
+					if(treeAllowedData[i].id===allowedTreeKey){
+						treeAllowedData.remove(treeAllowedData[i]);
+					}
+				}
 			break;
 			default:
 			break;
 		}
-		allowDataArray.map((item)=>{
-			item.text = item.name+item.code;
-			item.key = item.id;
-		})
-		treeAllowData=generateTreeData(allowDataArray);
 		this.setState({
-			treeAllowData,
+			treeAllowedData,
 			allowDataArray
+		})
+	}
+	onSelectedAllow = (key)=>{
+		this.setState({
+			allowedTreeKey:key[0]
 		})
 	}
 	treeResAndUser = (data)=>{
@@ -643,11 +674,25 @@ class TemplateSetting extends Component {
 		
 	}
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode } = this.state;
+		let { templatePks, pageCode, treeAllowedData } = this.state;
+		if(!treeAllowedData){
+			Notice({ status: 'warning', msg: "请选中信息" });
+			return ;
+		}
+		debugger
 		let targets={};
+		for(let i=0;i<treeAllowedData.length;i++){
+			let allowedData=treeAllowedData[i];
+			for(let key in allowedData){
+				if(key==='id'){
+					targets[allowedData[key]]=allowedData.type;
+				}
+			}
+		}
 		let infoData={
 			"pageCode": pageCode,"templateId": templatePks ,"orgId":"0001A110000000002475"
 		}
+		infoData.targets=targets;
 		Ajax({
 			url: `/nccloud/platform/template/assignTemplate.do`,
 			data: infoData,
@@ -659,6 +704,7 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success) {
+					Notice({ status: 'success', msg: '分配成功' });
 					this.setState({
 						alloVisible:false
 					})
@@ -667,6 +713,7 @@ class TemplateSetting extends Component {
 		});
 	}
 	handleOrlCancel = ()=>{
+
 		this.setState({
 			alloVisible:false
 		})
@@ -697,7 +744,7 @@ class TemplateSetting extends Component {
 			treeResData,
 			treeRoVisible,
 			allowDataArray,
-			treeAllowData
+			treeAllowedData
 		} = this.state;
 		const loop = (data) => {
 			return data.map((item) => {
@@ -765,11 +812,11 @@ class TemplateSetting extends Component {
 								/> 
 								{treeData.length > 0 && treeData[0].children.length > 0 && ( 
 									<Tree showLine onExpand = {this.onExpand}
-									expandedKeys = {expandedKeys}
-									onSelect = {this.onSelectQuery}
-									autoExpandParent = {autoExpandParent}
-									selectedKeys = {selectedKeys} >
-									{loop(treeData)} 
+										expandedKeys = {expandedKeys}
+										onSelect = {this.onSelectQuery}
+										autoExpandParent = {autoExpandParent}
+										selectedKeys = {selectedKeys} >
+										{loop(treeData)} 
 									</Tree>
 								)} 
 							</div>
@@ -854,10 +901,10 @@ class TemplateSetting extends Component {
 											<Tree showLine 
 												onExpand = {this.onExpand}
 												expandedKeys = {expandedKeys}
-												onSelect = {this.onSelect}
+												onSelect = {this.onSelectedAllow}
 												autoExpandParent = {autoExpandParent}
 												selectedKeys = {selectedKeys} >
-												{loop(treeAllowData)}
+												{loop(treeAllowedData)}
 											</Tree>
 										</div>
 									</div>
