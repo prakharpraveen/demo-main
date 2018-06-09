@@ -37,7 +37,7 @@ class BatchSettingModal extends Component {
 			<Modal
 				title='批量设置-卡片区'
 				mask={false}
-				wrapClassName='myModal'
+				wrapClassName='previewModal'
 				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
 				destroyOnClose = {true}

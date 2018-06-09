@@ -105,10 +105,10 @@ class PreviewModal extends Component {
 		}
 	} 
 	render() {
-		let { editTable, form, search } = this.props;
+		/* let { editTable, form, search } = this.props;
 		let { createForm } = form;
 		let { createEditTable } = editTable;
-		let { NCCreateSearch } = search;
+		let { NCCreateSearch } = search; */
 		return (
 			<Modal
 				title='预览区'

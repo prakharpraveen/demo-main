@@ -68,7 +68,6 @@ class MyBtns extends Component {
 				if (data.success && data.data) { 
 					// qingchu 
 					this.props.setZoneData({});
-					debugger;
 					// type =1 代表保存  type =2 表示下一步  保存binqie
 					type === 1 ? (location.hash = '/ar') : (location.hash = `/ZoneSetting?templetid=${data.data.templetid}`);
 					Notice({ status: 'success', msg: data.data.true });
