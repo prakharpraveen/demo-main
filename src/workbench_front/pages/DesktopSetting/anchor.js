@@ -26,7 +26,7 @@ class AnchorLi extends Component {
     }
 	render() {
 		const { name } = this.props;
-		return (<li onClick={this.targetAnchor}>{name}</li>)
+		return (<a onClick={this.targetAnchor}>{name}</a>)
 	}
 }
 
@@ -38,11 +38,11 @@ class MyContentAnchor extends Component {
 	render() {
 		const { groups} = this.props;
 		return (
-			<ul className='content-anchor'>
+			<div className='content-anchor'>
 				{groups.map((g, i) => {
 					return <AnchorLi key={g.pk_app_group} id={g.pk_app_group} index={i} name={g.groupname} />;
 				})}
-			</ul>
+			</div>
 		);
 	}
 }

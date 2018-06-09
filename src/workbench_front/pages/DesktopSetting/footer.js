@@ -139,7 +139,7 @@ class MyFooter extends Component {
 		const { groups } = this.props;
 		const isDisabled = utilService.hasCheckedCardInGroups(groups);
 		tmpDom = (
-			<Button disabled={!isDisabled} onClick={fn}>
+			<Button className="footer-button" disabled={!isDisabled} onClick={fn}>
 				{text}
 			</Button>
 		);
@@ -237,8 +237,8 @@ class MyFooter extends Component {
 						保存
 					</Button>
 					{/* <Button className='right-button'>预览</Button> */}
-					<Button className='right-button' onClick={this.toBeDefault}>恢复默认</Button>
-					<Button className='right-button' onClick={this.cancleSave}>
+					<Button className='right-button footer-button' onClick={this.toBeDefault}>恢复默认</Button>
+					<Button className='right-button footer-button' onClick={this.cancleSave}>
 						取消
 					</Button>
 				</div>
