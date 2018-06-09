@@ -2,6 +2,8 @@
 export const CLEARDATA = 'CLEARDATA';
 // 设置树数据
 export const SETTREEDATA = 'SETTREEDATA';
+// 设置类型 
+export const SETOPTYPE = 'SETOPTYPE';
 // 设置树数据
 export const SETNODEDATA = 'SETNODEDATA';
 // 获取树数据

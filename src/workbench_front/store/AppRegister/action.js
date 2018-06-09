@@ -45,6 +45,14 @@ export const setAppParamData = (data) => {
 
 
 
+
+// 设置表单类型
+export const setOpType = (data)=>{
+	return {
+		type: AppRegister.SETOPTYPE,
+		data
+	}
+}
 // 获取树数据
 export const reqTreeData = (data)=>{
 	return {

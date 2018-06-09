@@ -5,6 +5,7 @@ let defaultState = {
 	treeData:[],
 	// 树节点对象
 	nodeData: {},
+	optype : '',
 	// 页面当前状态
 	billStatus: {
 		// 是否编辑态
@@ -122,6 +123,12 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
 			return { ...state,
 				...{
 					getFromData: action.getFromData
+				}
+			};
+			case AppRegister.SETOPTYPE:
+			return { ...state,
+				...{
+					optype: action.data
 				}
 			};
 		default:
