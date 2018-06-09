@@ -478,7 +478,7 @@ class MyRightSider extends Component {
 									bizmodelStyle: 'fip',
 									classid: ''} }
 									onOk={(val)=>{
-										this.this.handleSelectChange(val, showformula)
+										this.handleSelectChange(val, showformula)
 										this.refs.forms.setShow(false);
 									}}/>
 						</li>
@@ -498,7 +498,7 @@ class MyRightSider extends Component {
 									classid: ''
 								}}
 								onOk={(val) => {
-									this.this.handleSelectChange(val, editformula)
+									this.handleSelectChange(val, editformula)
 									this.refs.forms.setShow(false);
 								}} />
 						</li>
@@ -518,7 +518,7 @@ class MyRightSider extends Component {
 									classid: ''
 								}}
 								onOk={(val) => {
-									this.this.handleSelectChange(val, validateformula)
+									this.handleSelectChange(val, validateformula)
 									this.refs.forms.setShow(false);
 								}} />
 						</li>
