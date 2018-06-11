@@ -212,7 +212,7 @@ class MyContent extends Component {
 		let insertIndex = groupIndex;
 		const tmpItem = {
 			pk_app_group: 'newGroupItem' + new Date().getTime(),
-			groupname: `分组(${utilService.getAddedGroupItemCount(groups) + 1})`,
+			groupname: `分组(${utilService.getNewGroupItemNum(groups)})`,
 			type: 'group',
 			apps: []
 		};
