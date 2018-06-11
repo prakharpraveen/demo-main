@@ -20,7 +20,7 @@ class Test extends Component {
 	constructor(props) {
 		super(props);
 		const urlRequestObj = GetQuery(this.props.location.search);
-		const relateidObj = utilService.getRelateidObj(urlRequestObj.pk_responsibility, this.props.userID)
+		const relateidObj = utilService.getRelateidObj(urlRequestObj.pk_responsibility, "")
 		this.state = {
 			relateidObj:relateidObj
 		};
@@ -82,7 +82,6 @@ class Test extends Component {
 
 export default connect(
 	(state) => ({
-		userID : state.appData.userID
 	}),
 	{
 		updateGroupList

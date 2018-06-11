@@ -72,7 +72,7 @@ class Home extends Component {
 				action:'首页加载'
 			},
 			data: {
-				relateid: this.props.userID,
+				relateid: "",
 				isuser:'1'
 			},
 			success: (res) => {
@@ -266,7 +266,6 @@ const scrollToAnchor = (anchorName) => {
 Home.propTypes = {};
 export default connect(
 	(state) => ({
-		userID: state.appData.userID
 	}),
 	{
 		updateGroupList

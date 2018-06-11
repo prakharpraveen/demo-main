@@ -245,7 +245,7 @@ class MyFooter extends Component {
 				<Modal
 					title='移动到'
 					mask={false}
-					wrapClassName='vertical-center-modal'
+					wrapClassName='desk-setting-vertical-center-modal'
 					visible={this.state.modalVisible}
 					onOk={this.onOkMoveDialog}
 					onCancel={this.showModalHidden}

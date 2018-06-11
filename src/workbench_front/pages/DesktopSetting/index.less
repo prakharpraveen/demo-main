@@ -7,31 +7,37 @@
 		flex: 1;
 		.content-anchor {
 			padding-top: 2px;
+			margin-left: 10px;
+			width: calc(100vw - 330px);
+			height: 48px;
 			display: flex;
 			left: 300px;
 			top: 95px;
 			position: fixed;
-			height: 48px;
-			width: calc(100vw - 330px);
 			overflow-x: auto;
 			overflow-y: hidden;
-			margin-left: 10px;
 			a {
 				margin-left: 5px;
-				margin-bottom: 5px;
-				color: #474d54;
-				cursor: pointer;
 				height: 32px;
 				text-align: center;
-				border: 1px solid transparent;
 				white-space: nowrap;
 				padding: 0 10px;
-				font-size: 14px;
-				border-radius: 4px;
-				display: inline-block;
-				line-height: 32px;
-				text-decoration: underline;
-							color:#474D54;
+				color: #474d54;
+			}
+			.active {
+				position: relative;
+				span {
+					display: flex;
+					justify-content: center;
+					&::after {
+						content: "";
+						display: block;
+						width: 20px;
+						height: 4px;
+						background: rgba(221,55,48,1);;
+						border-radius: 4px;
+					}
+				}
 			}
 		}
 		.nc-workbench-home-container {
@@ -136,7 +142,7 @@
 				background-color: rgba(9, 44, 66, 0);
 				border-color: rgba(255, 255, 255, .8);
 			}
-			.footer-button:hover{
+			.footer-button:hover {
 				border-color: rgba(255, 255, 255, .5);
 			}
 			.footer-left {
@@ -239,19 +245,14 @@
 			}
 		}
 	}
+}
 
-	/* 使用 css 技巧来动态设置的对话框位置 */
-	.vertical-center-modal {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.vertical-center-modal .ant-modal {
-		top: 0;
-	}
-	.modal-radio {
-		display: block !important;
-		height: 30px !important;
-		line-height: 30px !important;
-	}
+/* 使用 css 技巧来动态设置的对话框位置 */
+.desk-setting-vertical-center-modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.desk-setting-vertical-center-modal .ant-modal {
+	top: 0;
 }

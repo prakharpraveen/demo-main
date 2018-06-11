@@ -114,7 +114,7 @@ class MyModal extends Component {
 			<Modal
 				title='添加到'
 				mask={false}
-				wrapClassName='vertical-center-modal'
+				wrapClassName='desk-setting-vertical-center-modal'
 				visible={this.props.modalVisible}
 				onOk={this.onOkMoveDialog}
 				onCancel={this.showModalHidden}

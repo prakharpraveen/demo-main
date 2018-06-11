@@ -290,7 +290,7 @@ class MyContent extends Component {
 		return (
 			<div className='nc-desktop-setting-content'>
 				<MyContentAnchor />
-				<div className='nc-workbench-home-container'>{this.initGroupItem(groups)}</div>
+				<div className='nc-workbench-home-container' id="nc-workbench-home-container">{this.initGroupItem(groups)}</div>
 				<MyFooter relateidObj={relateidObj} />
 			</div>
 		);
