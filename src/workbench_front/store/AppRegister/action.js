@@ -112,3 +112,11 @@ export const getFromDataFunc = (getFromData)=>{
 		getFromData
 	}
 }
+
+// 获取页面父节点code
+export const getPageParentCode = (data)=>{
+	return {
+		type: AppRegister.PAGEPARENTCODE,
+		data
+	}
+}

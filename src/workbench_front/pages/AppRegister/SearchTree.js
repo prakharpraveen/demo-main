@@ -15,6 +15,7 @@ import {
 	setAppParamData,
 	setPageButtonData,
 	setPageTemplateData,
+	getPageParentCode,
 	delTreeData,
 	reqTreeData
 } from 'Store/AppRegister/action';
@@ -225,6 +226,7 @@ class SearchTree extends Component {
 			if (selectedNodeData.flag + '' === '0') {
 				this.props.setOpType('module');
 			} else if(selectedNodeData.flag + '' === '1'){
+				this.props.getPageParentCode(selectedNodeData.systypecode);
 				// 查询应用分类 及 应用数据
 				Ajax({
 					url: `/nccloud/platform/appregister/query.do`,
@@ -422,7 +424,8 @@ SearchTree.propTypes = {
 	setPageTemplateData: PropTypes.func.isRequired,
 	addTreeData: PropTypes.func.isRequired,
 	delTreeData: PropTypes.func.isRequired,
-	reqTreeData: PropTypes.func.isRequired
+	reqTreeData: PropTypes.func.isRequired,
+	getPageParentCode: PropTypes.func.isRequired,
 };
 export default connect(
 	(state) => {
@@ -438,6 +441,7 @@ export default connect(
 		setPageTemplateData,
 		addTreeData,
 		delTreeData,
-		reqTreeData
+		reqTreeData,
+		getPageParentCode
 	}
 )(SearchTree);

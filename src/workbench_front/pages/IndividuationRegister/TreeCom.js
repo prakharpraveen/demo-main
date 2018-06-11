@@ -34,7 +34,9 @@ class TreeCom extends Component {
             autoExpandParent: true
         });
     };
-    handleSelect = selectedKey => {
+    handleSelect = (selectedKey,info) => {
+        console.log(info);
+        
         this.props.onSelect(selectedKey[0]);
     };
     render() {
@@ -63,7 +65,7 @@ class TreeCom extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={code} title={title}>
+                        <TreeNode key={code} title={title} >
                             {loop(item.children)}
                         </TreeNode>
                     );

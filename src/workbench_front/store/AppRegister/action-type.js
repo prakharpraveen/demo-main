@@ -28,3 +28,5 @@ export const PAGEBUTTONDATA = 'PAGEBUTTONDATA';
 export const PAGETEMPLATEDATA = 'PAGETEMPLATEDATA';
 // 应用数据 包括 按钮注册及参数注册
 export const GETFROMDATA = 'GETFROMDATA';
+// 页面的父code
+export const PAGEPARENTCODE = 'PAGEPARENTCODE';

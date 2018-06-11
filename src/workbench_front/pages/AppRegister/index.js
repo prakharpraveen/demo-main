@@ -264,6 +264,7 @@ class AppRegister extends Component {
                                 action: "编辑"
                             };
                         }
+                        fromData.parentcode = this.props.pageParentCode;
                         fromData.parent_id = this.props.parentData;
                         reqData = { ...this.props.nodeData, ...fromData };
                         break;
@@ -634,6 +635,7 @@ class AppRegister extends Component {
 }
 AppRegister.propTypes = {
     optype: PropTypes.string.isRequired,
+    pageParentCode: PropTypes.string.isRequired,
     billStatus: PropTypes.object.isRequired,
     setBillStatus: PropTypes.func.isRequired,
     parentData: PropTypes.string.isRequired,
@@ -659,7 +661,8 @@ export default connect(
         addTreeData: state.AppRegisterData.addTreeData,
         delTreeData: state.AppRegisterData.delTreeData,
         updateTreeData: state.AppRegisterData.updateTreeData,
-        reqTreeData: state.AppRegisterData.reqTreeData
+        reqTreeData: state.AppRegisterData.reqTreeData,
+        pageParentCode:state.AppRegisterData.pageParentCode
     }),
     {
         setNodeData,
