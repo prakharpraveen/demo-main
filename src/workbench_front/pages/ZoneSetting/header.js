@@ -7,7 +7,6 @@ import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';
 import PreviewModal from './showPreview';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { GetQuery } from 'Pub/js/utils';
 /**
  * 工作桌面 配置模板区域

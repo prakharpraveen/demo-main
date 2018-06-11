@@ -6,7 +6,7 @@ import { Input, Icon, Modal, Button } from 'antd';
 import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
-
+import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 class PreviewModal extends Component {
 	constructor(props) {
 		super(props);
