@@ -229,9 +229,9 @@ class Home extends Component {
      * @param {Object} widgets // 小部件类型
      */
     createWidgetMountPoint = widgets => {
-        return widgets.map((item, index) => {
+        return widgets.map((item) => {
             if (item) {
-                let {apptype, width, height, name} = item;
+                let {apptype, name} = item;
                 switch (Number(apptype)) {
                     case 1:
                         // 系统预置的应用打开需要特殊处理
