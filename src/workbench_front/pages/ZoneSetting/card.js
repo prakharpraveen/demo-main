@@ -102,7 +102,7 @@ class MyCard extends Component {
 					<div className={selectCard.pk_query_property=== id && selectCard.areaid === areaid ?'select-card':'normal-card'}>
 						{name}
 						<span className='delete-card' onClick={this.deleteCard}>
-							X
+							x
 						</span>
 					</div>
 				</li>
