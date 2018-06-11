@@ -50,11 +50,13 @@ const Ajax = ({
 				return gData;
 			}]
 		}).then((res) => {
-			if (res.data.success) {
-				success(res);
-			} else {
-				Notice({ status: 'error', msg: res.data.error.message });
-				console.log(res);
+			if(res.status === 200){
+				let {data:{success:successStatus,error:errorStatus}} = res;
+				if(successStatus){
+					success(res);
+				}else{
+					Notice({ status: 'error', msg: errorStatus.message });
+				}
 			}
 		}).catch((error) =>{
 			Notice({ status: 'error', msg: error.message });
@@ -67,12 +69,10 @@ const Ajax = ({
 			transformRequest : [function (data) {
 				// 不压缩
 				let gData = JSON.stringify(data);
-				//Do whatever you want to transform the data
 				// 启动压缩
 				if(gzipSwitch){
 					gData = gziptools.zip(gData);
 				}
-				// console.log(data)
 				return gData;
 			}],
 			transformResponse: [function (data,headers) {
@@ -87,18 +87,16 @@ const Ajax = ({
 				}else{
 					gData = JSON.parse(data);
 				}
-				// console.log(gData)
 				return gData;
 			}]
 		}).then((res) => {
-			if (res.data.success) {
-				// if (alert) {
-				// 	message.info(<Alert message='成功' description='你所提交的信息已经保存成功。' type='success' showIcon />);
-				// }
-				success(res);
-			} else {
-				Notice({ status: 'error', msg: res.data.error.message });
-				console.log(res);
+			if(res.status === 200){
+				let {data:{success:successStatus,error:errorStatus}} = res;
+				if(successStatus){
+					success(res);
+				}else{
+					Notice({ status: 'error', msg: errorStatus.message });
+				}
 			}
 		}).catch((error) =>{
 			Notice({ status: 'error', msg: error.message });

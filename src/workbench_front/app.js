@@ -40,7 +40,6 @@ class App extends Component {
         if (type !== "current") {
             win = window.open("", "_blank");
         }
-
         Ajax({
             url: `/nccloud/platform/appregister/openapp.do`,
             info: {
@@ -48,76 +47,70 @@ class App extends Component {
                 action: "打开"
             },
             data: {
-                pk_appregister: pk_appregister
+                appcode: code
             },
-            success: res => {
-                if (res) {
-                    let {data, success} = res.data;
-                    if (success) {
-                        if (data === "false") {
-                            win.close();
-                            Notice({
-                                status: "error",
-                                msg: "请确认当前应用是否设置默认页面！"
-                            });
-                            return;
-                        }
-                        if (query) {
-                            switch (type) {
-                                case "current":
-                                    // 浏览器当前页打开
-                                    window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                                        data
-                                    )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                        name
-                                    )}&c=${encodeURIComponent(code)}`;
-                                    break;
-                                case "own":
-                                    // 浏览器当前页打开
-                                    win.location = `#/${data}?n=${encodeURIComponent(
-                                        name
-                                    )}&c=${encodeURIComponent(code)}${query}`;
-                                    win.focus();
-                                    break;
-                                default:
-                                    // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-                                    win.location = `#/ifr?ifr=${encodeURIComponent(
-                                        data
-                                    )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                        name
-                                    )}&c=${encodeURIComponent(code)}`;
-                                    win.focus();
-                                    break;
-                            }
-                        } else {
-                            switch (type) {
-                                case "current":
-                                    // 浏览器当前页打开
-                                    window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                                        data
-                                    )}`;
-                                    break;
-                                case "own":
-                                    // 浏览器当前页打开
-                                    win.location = `#/${data}?n=${encodeURIComponent(
-                                        name
-                                    )}&c=${encodeURIComponent(code)}`;
-                                    win.focus();
-                                    break;
-                                default:
-                                    // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-                                    win.location = `#/ifr?ifr=${encodeURIComponent(
-                                        data
-                                    )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                        name
-                                    )}&c=${encodeURIComponent(code)}`;
-                                    win.focus();
-                                    break;
-                            }
+            success: ({data:{data:{pageurl,field,menu,menuclass,module}}}) => {
+                if (pageurl) {
+                    if (query) {
+                        switch (type) {
+                            case "current":
+                                // 浏览器当前页打开
+                                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+                                    pageurl
+                                )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
+                                    name
+                                )}&c=${encodeURIComponent(code)}`;
+                                break;
+                            case "own":
+                                // 浏览器当前页打开
+                                win.location = `#/${pageurl}?n=${encodeURIComponent(
+                                    name
+                                )}&c=${encodeURIComponent(code)}${query}`;
+                                win.focus();
+                                break;
+                            default:
+                                // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+                                win.location = `#/ifr?ifr=${encodeURIComponent(
+                                    pageurl
+                                )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
+                                    name
+                                )}&c=${encodeURIComponent(code)}`;
+                                win.focus();
+                                break;
                         }
                     } else {
-                        Notice({status: "error", msg: res.error.message});
+                        switch (type) {
+                            case "current":
+                                // 浏览器当前页打开
+                                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+                                    pageurl
+                                )}`;
+                                break;
+                            case "own":
+                                // 浏览器当前页打开
+                                win.location = `#/${pageurl}?n=${encodeURIComponent(
+                                    name
+                                )}&c=${encodeURIComponent(code)}`;
+                                win.focus();
+                                break;
+                            default:
+                                // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
+                                win.location = `#/ifr?ifr=${encodeURIComponent(
+                                    pageurl
+                                )}&ar=${pk_appregister}&n=${encodeURIComponent(
+                                    name
+                                )}&c=${encodeURIComponent(code)}`;
+                                win.focus();
+                                break;
+                        }
                     }
+                }else{
+                    win.close();
+                    Notice({
+                        status: "error",
+                        msg: "请确认当前应用是否设置默认页面！"
+                    });
+                    return;
                 }
             }
         });
