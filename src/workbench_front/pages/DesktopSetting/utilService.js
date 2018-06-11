@@ -105,6 +105,22 @@ export const getAddedGroupItemCount = (groups) => {
 	});
 	return count;
 };
+//获得新添加组的数字
+export const getNewGroupItemNum = (groups,myCount) => {
+	let count = myCount||1;
+	let existFlag = false;
+	_.forEach(groups, (g) => {
+		if (g.groupname === `分组(${count})`) {
+			existFlag = true;
+			return false;
+		}
+	});
+	if(existFlag){
+		return getNewGroupItemNum(groups,++count)
+	}else{
+		return count;
+	}
+};
 //
 export const setGridXGridYMaxInCards = (cardList) => {
 	_.forEach(cardList, (c) => {

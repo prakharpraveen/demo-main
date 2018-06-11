@@ -227,6 +227,7 @@ class MyFooter extends Component {
 	render() {
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
+		const isShowToBeDefault = this.props.relateidObj.type === 'userID'?'block':'none'
 		return (
 			<div className='nc-workbench-home-footer'>
 				<div className='footer-left'>
@@ -238,7 +239,9 @@ class MyFooter extends Component {
 						保存
 					</Button>
 					{/* <Button className='right-button'>预览</Button> */}
-					<Button className='right-button footer-button' onClick={this.toBeDefault}>恢复默认</Button>
+					<Button style={{ display: isShowToBeDefault }} className='right-button footer-button' onClick={this.toBeDefault}>
+					恢复默认
+					</Button>
 					<Button className='right-button footer-button' onClick={this.cancleSave}>
 						取消
 					</Button>
