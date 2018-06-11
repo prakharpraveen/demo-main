@@ -1,6 +1,9 @@
 body {
 	background-color: #f0f2f5;
 }
+*{
+	box-sizing:border-box
+}
 .nc-workbench-templateSetting {
 	.ant-layout {
 		background: #ffffff;
@@ -57,4 +60,43 @@ body {
 }
 .ant-modal-mask{
 	background: none;
+}
+//分配组件的摸态框
+.allocationPage{
+	.pageCode-show{
+
+	}
+	.allocationPage-content{
+		.allocationPage-content-select{
+			display:flex;
+			justify-content:space-between;
+			padding:10px 20px;
+			border-top:1px solid #ccc
+		}
+		.allocationPage-content-tree{
+			display:flex;
+			justify-content:space-between;
+			border-bottom:1px solid #ccc;
+			padding:15px;
+			.allocation-treeCom{
+				width:42%;
+				border:1px solid #ccc;
+				padding:15px;
+				max-height:370px;
+				overflow:auto;
+			};
+			.allocation-button{
+				width:16%;
+				p{
+					text-align: center;
+				}
+			};
+			.allocation-tree{
+				width:42%;
+				padding: 20px;
+				max-height: 370px;
+				border:1px solid #ccc
+			}
+		}
+	}
 }
