@@ -70,7 +70,7 @@ class MyBtns extends Component {
 					// qingchu 
 					this.props.setZoneData({});
 					// type =1 代表保存  type =2 表示下一步  保存binqie
-					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.code}&pid=${datas.pageid}`));
+					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
 					Notice({ status: 'success', msg: data.data.true });
 				}
 			}

@@ -208,7 +208,7 @@ class ZoneTable extends React.Component {
 		this.columns = [
 			{
 				title: '序号',
-				dataIndex: 'num',
+				dataIndex: 'position',
 				width: '10%',
 			},
 			{
@@ -329,7 +329,7 @@ class ZoneTable extends React.Component {
 	}
 	render() {
 		let { dataSource } = this.state;
-		dataSource && dataSource.map((v, i) =>{ v.num = i+1})
+		dataSource && dataSource.map((v, i) => { v.position = i+1})
 		const columns = this.columns;
 		return (
 			<div>

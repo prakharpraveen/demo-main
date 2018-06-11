@@ -36,7 +36,7 @@ class PreviewModal extends Component {
 				result.push(
 				<div className='area' key={`form${i}`}>
 					<div className='descrip'>
-							<span key={`forms${i}`}> ▼ </span>{`表单区${i+1}_${val.name}`}
+							<span> ▼ </span>{`表单区${i+1}_${val.name}`}
 					</div>
 							{ createForm(val.id)}
 				</div>
@@ -49,7 +49,7 @@ class PreviewModal extends Component {
 				result.push(
 					<div className='area' key={`search${i}`}>
 						<div className='descrip'>
-							<span key={`searchs${i}`} > ▼ </span>{`查询区${i+1}_${val.name}`}
+							<span> ▼ </span>{`查询区${i+1}_${val.name}`}
 						</div>
 						{NCCreateSearch(val.id)}
 					</div>
@@ -62,7 +62,7 @@ class PreviewModal extends Component {
 				result.push(
 					<div className='area' key={`table${i}`}>
 						<div className='descrip'>
-							<span key={`tables${i}`}> ▼ </span>{`表格区${i+1}_${val.name}`}
+							<span> ▼ </span>{`表格区${i+1}_${val.name}`}
 						</div>
 						{createEditTable(val.id)}
 
