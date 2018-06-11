@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
+import { GetQuery } from 'Pub/js/utils';
+// let param = GetQuery(this.props.location.search);
 class MyContent extends Component {
 	constructor(props) {
 		super(props);
@@ -19,10 +21,12 @@ class MyContent extends Component {
 					<div>
 						<p className="first-text">应用页面配置完成</p>
 						<a onClick={()=>{
-							this.props.history.push(`/Zone`)
+							let param = GetQuery(this.props.location.search);
+							this.props.history.push(`/Zone?pcode=${param.pcode}&pid=${param.pid}`)
 						}}>继续新增模板</a>
 						<a onClick={()=>{
-							this.props.history.push(`/ar?n=应用注册&c=102202APP`)
+							let param = GetQuery(this.props.location.search);
+							this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${param.pcode}&pid=${param.pid}`)
 						}}>返回页面配置</a>
 					</div>
 				</div>

@@ -8,9 +8,11 @@ import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';
 import PreviewModal from './showPreview';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+import { GetQuery } from 'Pub/js/utils';
 /**
  * 工作桌面 配置模板区域
  */
+
 class MyHeader extends Component {
 	constructor(props) {
 		super(props);
@@ -53,10 +55,11 @@ class MyHeader extends Component {
 			},
 			data: saveData,
 			success: (res) => {
+				let param = GetQuery(this.props.location.search);
 				const { data, success } = res.data;
 				if (success) {
 					Notice({ status: 'success', msg:data });
-					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}`);
+					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}`);
 				}else{
 					Notice({ status: 'error', msg: data });
 				}
@@ -72,7 +75,8 @@ class MyHeader extends Component {
 				</div>
 				<div className='button-list'>
 					<Button onClick={()=>{
-							this.props.history.push(`/Zone?t=${this.props.templetid}`)
+						let param = GetQuery(this.props.location.search);
+						this.props.history.push(`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}`)
 						}}>上一步</Button>
 					<Button onClick={this.saveData}>保存</Button>
 					<Button onClick={this.showModal}>预览</Button>

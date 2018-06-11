@@ -47,11 +47,12 @@ class MyBtns extends Component {
 	// 保存 区域数据 
 	saveZoneData(list,form,type){
 		let param = GetQuery(this.props.location.search);
-		let url, data;
+		let url, datas;
 		url = '/nccloud/platform/templet/settempletarea.do';
 		let { zoneDatas } = this.props;
-			data = { 
+			datas = { 
 				pk_page_templet: zoneDatas.pk_page_templet,
+				code: zoneDatas.code || param.pcode, 
 				pageid: zoneDatas.pageid || param.pid ,
 				areaList:list,
 				...form,
@@ -59,7 +60,7 @@ class MyBtns extends Component {
 		
 		Ajax({
 			url: url,
-			data: data,
+			data: datas,
 			info: {
 				name: '保存区域',
 				action: '保存区域设置'
@@ -69,10 +70,8 @@ class MyBtns extends Component {
 					// qingchu 
 					this.props.setZoneData({});
 					// type =1 代表保存  type =2 表示下一步  保存binqie
-					type === 1 ? (location.hash = '/ar') : (location.hash = `/ZoneSetting?templetid=${data.data.templetid}`);
+					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.code}&pid=${datas.pageid}`));
 					Notice({ status: 'success', msg: data.data.true });
-				} else {
-					Notice({ status: 'error', msg: data.data.true });
 				}
 			}
 		});

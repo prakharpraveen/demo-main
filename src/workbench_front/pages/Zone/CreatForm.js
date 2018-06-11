@@ -30,62 +30,6 @@ const createFormItem = (props,itemInfo) => {
     let nodeData = props.zoneDatas;
     const { getFieldDecorator } = props.form;
     let { lable, type, code,required,check,search } = itemInfo;
-    switch (type) {
-        case 'select':
-            if(code === 'target_path'){
-                return isEdit ? !isNew?(
-                    <FormItem label={lable} hasFeedback>
-                        {getFieldDecorator(code, {
-                            initialValue: nodeData[code],
-                            rules: [ { required: required, message: `请选择${lable}` } ]
-                        })(<Select placeholder={`请选择${lable}`}>{createOption(itemInfo.options)}</Select>)}
-                    </FormItem>
-                ) :null: (
-                    <FormItem label={lable}>
-                        <span className='ant-form-text'>{optionShow(itemInfo.options, nodeData[code])}</span>
-                    </FormItem>
-                );
-            }else{
-                return isEdit ? (
-                    <FormItem label={lable} hasFeedback>
-                        {getFieldDecorator(code, {
-                            initialValue: nodeData[code],
-                            rules: [ { required: required, message: `请选择${lable}` } ]
-                        })(<Select placeholder={`请选择${lable}`}>{createOption(itemInfo.options)}</Select>)}
-                    </FormItem>
-                ) : (
-                    <FormItem label={lable}>
-                        <span className='ant-form-text'>{optionShow(itemInfo.options, nodeData[code])}</span>
-                    </FormItem>
-                );
-            }
-        case 'search':
-            return isEdit ? (
-                <FormItem label={lable} hasFeedback>
-                    {getFieldDecorator(code, {
-                        initialValue: nodeData[code],
-                        rules: [
-                            { required: required, message: itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}` }
-                        ]
-                    })(
-                        <Select
-                            placeholder={itemInfo.placeholder ? itemInfo.placeholder : `请选择${lable}`}
-                            mode='combobox'
-                            defaultActiveFirstOption={false}
-                            showArrow={false}
-                            filterOption={false}
-                            onChange={search}
-                        >
-                            {createOption(itemInfo.options)}
-                        </Select>
-                    )}
-                </FormItem>
-            ) : (
-                <FormItem label={lable}>
-                    <span className='ant-form-text'>{nodeData[code]}</span>
-                </FormItem>
-            );
-        default:
             return (
                 <FormItem label={lable}>
                     {getFieldDecorator(code, {
@@ -101,5 +45,4 @@ const createFormItem = (props,itemInfo) => {
                     })(<Input placeholder={`请输入${lable}`} />)}
                 </FormItem>
             )
-    }
 };
