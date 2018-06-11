@@ -96,7 +96,9 @@ class TemplateSetting extends Component {
 			roleUserDatas:{},
 			allowDataArray:[],
 			treeAllowedData:[],
-			allowedTreeKey:''
+			allowedTreeKey:'',
+			orgidObj:{},
+			treeRoDataObj:{}
 		};
 	}
 	// 按钮显隐性控制
@@ -146,10 +148,8 @@ class TemplateSetting extends Component {
 			return ;
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": "0001A110000000002475" ,"name":""
+			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal
 		}
-		infoData.templateId=templatePks;
-		infoData.name=templateNameVal;
 		Ajax({
 			url: `/nccloud/platform/template/copyTemplate.do`,
 			data: infoData,
@@ -262,8 +262,6 @@ class TemplateSetting extends Component {
 				this.setState({
 					alloVisible:true
 				})
-				this.reqRoTreeData();
-				//this.reqAllowTreeData();
 				break;
 			default:
 				break;
@@ -396,7 +394,6 @@ class TemplateSetting extends Component {
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
 		let {pageCode}=this.state;
-		console.log(pageCode);
 		let infoData={
 			"pageCode": pageCode
 		}
@@ -445,9 +442,9 @@ class TemplateSetting extends Component {
 		});
 	};
 	reqAllowTreeData = ()=>{
-		let { pageCode, templatePks }=this.state;
+		let { pageCode, templatePks, orgidObj }=this.state;
 		let infoData={
-			"pageCode":pageCode,"orgId": "0001A1100000000005T5","templateId":templatePks
+			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks
 		}
 		Ajax({
 			url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -459,15 +456,29 @@ class TemplateSetting extends Component {
 			success: ({
 				data
 			}) => {
-				if (data.success&&data.data) {
-
+				if (data.success) {
+					this.setState({
+						allowDataArray:data.data
+					},this.restoreAllowedTree)
 				}
 			}
 		});
 	}
+	restoreAllowedTree = ()=>{
+		let { allowDataArray, treeAllowedData }=this.state;
+		allowDataArray.map((item)=>{
+			item.text = item.name+item.code;
+			item.key = item.id;
+		})
+		treeAllowedData=generateTreeData(allowDataArray);
+		this.setState({
+			treeAllowedData
+		});
+	};
 	reqRoTreeData = ()=>{
+		let { orgidObj }=this.state;
 		let infoData={
-			"orgId": "0001A1100000000005T5"
+			"orgId": orgidObj.refpk
 		}
 		Ajax({
 			url: `/nccloud/platform/template/getAllRoleUserAndResp.do`,
@@ -480,12 +491,17 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success&&data.data) {
-					this.restoreRoTreeData(data.data);
-					this.restoreResTreeData(data.data.resps);
+					if(data.data.roles||data.data.users){
+						this.setState({
+							treeRoDataObj:data.data
+						},this.restoreRoTreeData)
+					}else if(data.data.resps){
+						this.restoreResTreeData(data.data.resps);
+					}
 					this.setState({
 						roleUserDatas:data.data
 					})
-
+					this.reqAllowTreeData();
 				}
 			}
 		});
@@ -494,6 +510,7 @@ class TemplateSetting extends Component {
 		let {
 			treeResData
 		} = this.state;
+		treeResData=[];
 		let initResData = initAbiTreeData;
 		data.map((item, index) => {
 			let {
@@ -512,12 +529,14 @@ class TemplateSetting extends Component {
 	}
 	restoreRoTreeData = (data)=>{
 		let {
-			treeRoData
+			treeRoData,
+			treeRoDataObj
 		} = this.state;
+		treeRoData=[];
 		let initRolesData = initRoTreeData;
 		let initUsersData = initUserTreeData;
-		initRolesData.children = generateRoData(data.roles);
-		initUsersData.children = generateRoData(data.users);
+		initRolesData.children = generateRoData(treeRoDataObj.roles);
+		initUsersData.children = generateRoData(treeRoDataObj.users);
 		treeRoData.push(initRolesData);
 		treeRoData.push(initUsersData);
 		treeRoData = generateTreeData(treeRoData);
@@ -544,7 +563,7 @@ class TemplateSetting extends Component {
 					dataRoObj.code=item.code;
 					if(key==='users'){
 						dataRoObj.type='user';
-					}else if(key==='roles'){//
+					}else if(key==='roles'){
 						dataRoObj.type='role';
 					}else if(key==='resps'){
 						dataRoObj.type='resp';
@@ -650,7 +669,7 @@ class TemplateSetting extends Component {
 				/>;
 			});
 		};
-		return (<div style={{border:'1px solid #ccc',padding:'15px',maxHeight:'370px',overflow:'auto'}}>
+		return (<div className='allocation-treeCom'>
 		<Search 
 			style = {{marginBottom: 8}}
 			placeholder = 'Search'
@@ -674,12 +693,11 @@ class TemplateSetting extends Component {
 		
 	}
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode, treeAllowedData } = this.state;
+		let { templatePks, pageCode, treeAllowedData, orgidObj } = this.state;
 		if(!treeAllowedData){
 			Notice({ status: 'warning', msg: "请选中信息" });
 			return ;
 		}
-		debugger
 		let targets={};
 		for(let i=0;i<treeAllowedData.length;i++){
 			let allowedData=treeAllowedData[i];
@@ -690,7 +708,7 @@ class TemplateSetting extends Component {
 			}
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": templatePks ,"orgId":"0001A110000000002475"
+			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk
 		}
 		infoData.targets=targets;
 		Ajax({
@@ -713,20 +731,22 @@ class TemplateSetting extends Component {
 		});
 	}
 	handleOrlCancel = ()=>{
-
+		let { treeAllowedData, treeRoData, treeResData }=this.state;
 		this.setState({
 			alloVisible:false
 		})
 	}
 	handdleRefChange = (value, type) => {
+		let {orgidObj}=this.state;
         let {refname, refcode, refpk} = value;
-        let obj = {};
-        obj[type] = {};
-        obj[type]["refname"] = refname;
-        obj[type]["refcode"] = refcode;
-        obj[type]["refpk"] = refpk;
-        this.setState(obj);
-    };
+		orgidObj = {};
+        orgidObj["refname"] = refname;
+        orgidObj["refcode"] = refcode;
+        orgidObj["refpk"] = refpk;
+        this.setState({
+			orgidObj
+		},this.reqRoTreeData);
+	};
 	render() {
 		const {
 			expandedKeys,
@@ -854,10 +874,10 @@ class TemplateSetting extends Component {
 							onCancel={this.handleOrlCancel}
 							width={720}
         				>
-							<div>
-								<p><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
-								<div>
-									<div style={{display:'flex',justifyContent:'space-between',padding:'10px 20px',borderTop:"1px solid #ccc"}}>
+							<div className='allocationPage'>
+								<p className='pageCode-show'><span>功能节点：</span><span>{pageCode ?pageCode:""}</span></p>
+								<div className='allocationPage-content'>
+									<div className='allocationPage-content-select'>
 										<Select
 											showSearch
 											style={{ width: 200 }}
@@ -887,17 +907,17 @@ class TemplateSetting extends Component {
 											}}
                     					/>
 									</div>
-									<div style={{display:'flex',justifyContent:'space-between',borderBottom:"1px solid #ccc",padding:'15px'}}>
+									<div className='allocationPage-content-tree'>
 										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}
-										<div>
-											<p><Button className="margin-left-10" onClick={this.allowClick.bind(this, 'allowRole')}>
+										<div className='allocation-button'>
+											<p><Button onClick={this.allowClick.bind(this, 'allowRole')}>
 												分配
 											</Button></p>
-											<p><Button className="margin-left-10" onClick={this.allowClick.bind(this, 'allowRoleCancel')}>
+											<p><Button onClick={this.allowClick.bind(this, 'allowRoleCancel')}>
 												取消
 											</Button></p>
 										</div>
-										<div style={{ padding: '20px', minHeight: '280' ,border:'1px solid #ccc'}}>
+										<div className='allocation-tree'>
 											<Tree showLine 
 												onExpand = {this.onExpand}
 												expandedKeys = {expandedKeys}
