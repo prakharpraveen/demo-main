@@ -652,16 +652,7 @@ class PageTable extends Component {
                 btnorder: newData.length
             });
         } else if (activeKey === "2") {
-            this.props.history.push(`/Zone?&pid=${pk_apppage}&n=设置页面模板`);
-            // newData.push({
-            //     editable: true,
-            //     isdefault: false,
-            //     name: "",
-            //     pageid: pk_apppage,
-            //     isenable: true,
-            //     resid: "",
-            //     code: ""
-            // });
+            this.props.history.push(`/Zone?&pid=${pk_apppage}&pcode=${pagecode}&n=设置页面模板`);
         }
         this.setNewData(newData);
     }

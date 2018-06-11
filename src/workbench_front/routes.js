@@ -59,10 +59,6 @@ const Customize = Loadable({
     loader: () => import("Pages/Customize"),
     loading: Loading
 });
-const Customize1 = Loadable({
-    loader: () => import("Pages/Customize/index.1.js"),
-    loading: Loading
-});
 const MenuRegister = Loadable({
     loader: () => import("Pages/MenuRegister"),
     loading: Loading
@@ -134,10 +130,6 @@ const routes = [
     {
         path: "/c",
         component: Customize
-    },
-    {
-        path: "/c1",
-        component: Customize1
     },
     {
         path: "/mr",

@@ -172,6 +172,7 @@ class MyFooter extends Component {
 		});
 		const saveData = {
 			relateid: this.props.relateidObj.data,
+			isuser: this.props.relateidObj.type === 'userID'?'1':'0', //1用户 0职责，
 			data: tmpData
 		};
 		Ajax({

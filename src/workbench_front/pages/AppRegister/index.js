@@ -595,12 +595,7 @@ class AppRegister extends Component {
         return { ...item, isShow };
     };
     componentDidMount() {
-        // 样式处理
-        window.onresize = () => {
-            let siderHeight = document.querySelector(".ant-layout-content")
-                .offsetHeight;
-            this.setState({ siderHeight });
-        };
+        
     }
 
     render() {
