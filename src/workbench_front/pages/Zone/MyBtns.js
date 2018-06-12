@@ -71,7 +71,7 @@ class MyBtns extends Component {
 					this.props.setZoneData({});
 					// type =1 代表保存  type =2 表示下一步  保存binqie
 					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
-					Notice({ status: 'success', msg: data.data.true });
+					//Notice({ status: 'success', msg: data.data.true });
 				}
 			}
 		});
@@ -83,19 +83,15 @@ class MyBtns extends Component {
 		let { newListData } = this.props;
 		switch (name){
 			case '保存': 
-				console.log(fromData);
 				if (!fromData) {
 					return;
 				}
-				console.log(newListData, fromData);
 				this.saveZoneData(newListData, fromData,1);
 			break;
 			case '下一步':
-				console.log(fromData);
 				if (!fromData) {
 					return;
 				}
-				console.log(newListData, fromData);
 				this.saveZoneData(newListData, fromData, 2);
 				break; 
 			case '取消':
@@ -103,7 +99,6 @@ class MyBtns extends Component {
 				break;
 			case '返回':
 				history.back();
-				console.log(this);
 				break;
 		}
 	}
