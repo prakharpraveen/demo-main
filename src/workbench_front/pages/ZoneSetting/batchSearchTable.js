@@ -55,6 +55,7 @@ class SelectCell extends React.Component {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
+									<span className="color-select-color" style={{ backgroundColor: c.value }}/>
 								</Option>
 							);
 						})}
@@ -89,7 +90,7 @@ class SelectCell extends React.Component {
 				result_div = (
 					<Select
 						value={
-							this.props.value ? this.props.value : utilService['showtype'][0].value
+							this.props.value ? this.props.value : utilService['showAndReturnType'][0].value
 						}
 						onChange={(value) => {
 							// if (property === 'datatype') {
@@ -99,7 +100,7 @@ class SelectCell extends React.Component {
 						}}
 						
 					>
-						{utilService['showtype'].map((c, index) => {
+						{utilService['showAndReturnType'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
@@ -136,8 +137,9 @@ class EditableCell extends React.Component {
 		const { value } = this.state;
 		const {type} = this.props;
 		return (
-			type === 'int' ? (<InputNumber defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
+			type === 'int' ? (<InputNumber size='small' defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
 							(<Input
+								size = 'small'
 								value={value}
 								onChange = {this.handleChange}
 							/>)	
@@ -280,17 +282,6 @@ class BatchSearchTable extends React.Component {
 				),
 			}, 
 			{
-				title: '查询条件',
-				dataIndex: 'isquerycondition',
-				width: 150,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'isquerycondition')}
-					/>
-				),
-			}, 
-			{
 				title: '数据类型',
 				dataIndex: 'datatype',
 				width: 150,
@@ -374,10 +365,65 @@ class BatchSearchTable extends React.Component {
 				dataIndex: 'returntype',
 				width: 150,
 				render: (text, record) => (
-					<SelectCell
+					<EditableCell
 						value={text}
 						type='showtype'
 						onChange={this.onCellChange(record.key, 'returntype')}
+					/>
+				),
+			},
+			{
+				title: '自定义项1',
+				dataIndex: 'define1',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define1')}
+					/>
+				),
+			},
+			{
+				title: '自定义项2',
+				dataIndex: 'define2',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define2')}
+					/>
+				),
+			},
+			{
+				title: '自定义项3',
+				dataIndex: 'define3',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define3')}
+					/>
+				),
+			},
+			{
+				title: '自定义项4',
+				dataIndex: 'define4',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define4')}
+					/>
+				),
+			},
+			{
+				title: '自定义项5',
+				dataIndex: 'define5',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define5')}
 					/>
 				),
 			}];
@@ -405,7 +451,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2850, y:400 }} />
+				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3500, y:400 }} />
 		);
 	}
 }

@@ -54,7 +54,11 @@ class SelectCell extends React.Component {
 						{utilService['colorObj'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
-									{c.name}
+									<span className="template-setting-color-select">
+										<span>{c.name}</span>
+										<span className="color-select-color" style={{ backgroundColor: c.value }}>
+										</span>
+									</span>
 								</Option>
 							);
 						})}
@@ -156,8 +160,9 @@ class EditableCell extends React.Component {
 		const { value } = this.state;
 		const {type} = this.props;
 		return (
-			type === 'int' ? (<InputNumber defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
+			type === 'int' ? (<InputNumber size='small'  defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
 							(<Input
+								size='small'
 								value={value}
 								onChange = {this.handleChange}
 							/>)	
@@ -349,6 +354,39 @@ class BatchSearchTable extends React.Component {
 						) }
 					},
 			},  
+			{
+				title: '自定义项1',
+				dataIndex: 'define1',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define1')}
+					/>
+				),
+			},
+			{
+				title: '自定义项2',
+				dataIndex: 'define2',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define2')}
+					/>
+				),
+			},
+			{
+				title: '自定义项3',
+				dataIndex: 'define3',
+				width: 150,
+				render: (text, record) => (
+					<EditableCell
+						value={text}
+						onChange={this.onCellChange(record.key, 'define3')}
+					/>
+				),
+			}
 			];
 	}
    shouldComponentUpdate(nextProps,nextState){
@@ -374,7 +412,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2250, y: 400 }} />
+			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2700, y: 400 }} />
 		);
 	}
 }
