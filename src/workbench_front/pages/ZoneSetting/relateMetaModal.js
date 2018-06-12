@@ -58,61 +58,61 @@ class RelateMetaModal extends Component {
 		});
 	};
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.modalVisibel !== true){
+		if (nextProps.modalVisibel !== true) {
 			return;
-		}else{
-			const { metaid,relatemeta } = this.props.selectCard;
-			let {cards} = this.props
-			if(relatemeta && relatemeta !== ""){
+		} else {
+			const { metaid, relatemeta } = this.props.selectCard;
+			let { cards } = this.props;
+			if (relatemeta && relatemeta !== '') {
 				let tmpArr1 = relatemeta.split(',');
 				let tmpArr2 = [];
-				_.forEach(tmpArr1,(t)=>{
-					let tmpArr = t.split("=");
+				_.forEach(tmpArr1, (t) => {
+					let tmpArr = t.split('=');
 					tmpArr2.push({
-						cardMetaPath:tmpArr[0],
-						myMetaPath:tmpArr[1]
-					})
+						cardMetaPath: tmpArr[0],
+						myMetaPath: tmpArr[1]
+					});
 				});
-				_.forEach(cards,(c,index)=>{
-					_.forEach(tmpArr2,(t)=>{
-						if(t.cardMetaPath === c.metapath){
+				_.forEach(cards, (c, index) => {
+					_.forEach(tmpArr2, (t) => {
+						if (t.cardMetaPath === c.metapath) {
 							c.myMetaPath = t.myMetaPath;
 						}
-					})
-				})
+					});
+				});
 			}
-		Ajax({
-			url: `/nccloud/platform/templet/querymetapro.do`,
-			info: {
-				name: '单据模板设置',
-				action: '元数据树结构查询'
-			},
-			data: {
-				metaid: metaid
-			},
-			success: (res) => {
-				if (res) {
-					let { data, success } = res.data;
-					if (success && data && data.rows && data.rows.length > 0) {
-						let metaTree = [];
-						data.rows.map((r, index) => {
-							metaTree.push({
-								...r,
-								title: `${r.refcode} ${r.refname}`,
-								key: `${r.refcode}`,
-								myUniqID: `${r.refcode}`,
-								isLeaf: r.isleaf
+			Ajax({
+				url: `/nccloud/platform/templet/querymetapro.do`,
+				info: {
+					name: '单据模板设置',
+					action: '元数据树结构查询'
+				},
+				data: {
+					metaid: metaid
+				},
+				success: (res) => {
+					if (res) {
+						let { data, success } = res.data;
+						if (success && data && data.rows && data.rows.length > 0) {
+							let metaTree = [];
+							data.rows.map((r, index) => {
+								metaTree.push({
+									...r,
+									title: `${r.refcode} ${r.refname}`,
+									key: `${r.refcode}`,
+									myUniqID: `${r.refcode}`,
+									isLeaf: r.isleaf
+								});
 							});
-						});
-						this.setState({ metaTree: metaTree });
-					} else {
-						if (success && data && data.rows && !data.rows.length) {
-							Notice({ status: 'warning', msg: '元数据树为空' });
+							this.setState({ metaTree: metaTree });
+						} else {
+							if (success && data && data.rows && !data.rows.length) {
+								Notice({ status: 'warning', msg: '元数据树为空' });
+							}
 						}
 					}
 				}
-			}
-		});
+			});
 		}
 	}
 	showModalHidden = () => {
@@ -129,9 +129,9 @@ class RelateMetaModal extends Component {
 		let { cards } = this.props;
 		_.forEach(cards, (c, i) => {
 			if (c.myMetaPath && c.myMetaPath !== '') {
-				if(result===""){
+				if (result === '') {
 					result = `${c.metapath}=${c.myMetaPath}`;
-				}else{
+				} else {
 					result = `${result},${c.metapath}=${c.myMetaPath}`;
 				}
 			}
@@ -154,7 +154,6 @@ class RelateMetaModal extends Component {
 
 	onSelect = (selectedKeys, info) => {
 		this.setState({ selectedKeys, selectTreeNodes: info.selectedNodes });
-		console.log('onSelect', selectedKeys, info);
 	};
 
 	cardClick = (card) => {
@@ -222,6 +221,18 @@ class RelateMetaModal extends Component {
 			>
 				<PageLayout>
 					<PageLayoutLeft>
+						<div className='sider-tree'>
+							<Tree
+								loadData={this.onLoadData}
+								showLine={true}
+								onSelect={this.onSelect}
+								selectedKeys={this.state.selectedKeys}
+							>
+								{this.renderTreeNodes(metaTree)}
+							</Tree>
+						</div>
+					</PageLayoutLeft>
+					<PageLayoutRight>
 						<div className='sider-list'>
 							<table>
 								<thead>
@@ -269,18 +280,6 @@ class RelateMetaModal extends Component {
 									})}
 								</tbody>
 							</table>
-						</div>
-					</PageLayoutLeft>
-					<PageLayoutRight>
-						<div className='sider-tree'>
-							<Tree
-								loadData={this.onLoadData}
-								showLine={true}
-								onSelect={this.onSelect}
-								selectedKeys={this.state.selectedKeys}
-							>
-								{this.renderTreeNodes(metaTree)}
-							</Tree>
 						</div>
 					</PageLayoutRight>
 				</PageLayout>

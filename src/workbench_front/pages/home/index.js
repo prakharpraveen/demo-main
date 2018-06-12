@@ -17,6 +17,7 @@ import {
     calGridItemPosition,
     calColCount
 } from "Pages/DesktopSetting/utilService";
+import Notice from 'Components/Notice';
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -81,7 +82,10 @@ class Home extends Component {
                 isuser: "1"
             },
             success: ({data: {data, success, error}}) => {
-                if (success && data) {
+                if (success && data&& data.length > 0) {
+					if(data[0].groups.length===0){
+						Notice({ status: 'error', msg: '工作桌面为空，请配置' });
+					}
                     _.forEach(data[0].groups, g => {
                         g.type = "group";
                         _.forEach(g.apps, a => {
@@ -94,7 +98,13 @@ class Home extends Component {
                     this.setState({groups: data[0].groups});
                     this.props.updateGroupList(data[0].groups);
                     this.handleHomeLoad();
-                }
+                }else{
+					if(success && data && data.length === 0){
+						Notice({ status: 'error', msg: '工作桌面为空，请配置' });
+					}else{
+						Notice({ status: 'error', msg: data });
+					}
+				}
             }
         });
     }

@@ -47,7 +47,7 @@ class AreaItem extends Component {
 		return (
 			<div className='area-item'>
 				<div className='area-item-header'>
-					<span className='area-item-name'>
+					<span className='area-item-name' >
 						<span> ▼ </span>
 						{areaItem.name}
 					</span>
@@ -66,6 +66,7 @@ class AreaItem extends Component {
 								id={q.pk_query_property}
 								name={q.label}
 								areaid={areaItem.pk_area}
+								visible={q.visible}
 								selectThisCard={this.selectThisCard}
 								moveCard={this.moveCard}
 								deleteCard={this.deleteCard}

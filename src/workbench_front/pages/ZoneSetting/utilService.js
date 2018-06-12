@@ -55,7 +55,7 @@ export const componentWidthObj = [
 ];
 export const showAndReturnType = [ { name: '名称', value: '1' }, { name: '编码', value: '2' } ];
 export const colorObj = [
-	{ name: '黑色', value: '1' },
+	{ name: '黑色-', value: '1' },
 	{ name: '白色', value: '2' },
 	{ name: '浅灰色', value: '3' },
 	{ name: '灰色', value: '4' },

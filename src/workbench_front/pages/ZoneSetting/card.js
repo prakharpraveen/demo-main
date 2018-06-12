@@ -94,8 +94,8 @@ class MyCard extends Component {
 	}
 
 	render() {
-		const { index, name, id, key,selectCard, areaid, isDragging, connectDragSource, connectDropTarget } = this.props;
-		const opacity = isDragging ? 0 : 1;
+		const { index, name, id, key,selectCard, areaid,visible, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const opacity = isDragging ? 0 : (visible ? 1 : 0.5);
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' style={{ opacity: opacity }} onClick={this.selectThisCard}>
