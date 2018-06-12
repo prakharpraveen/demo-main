@@ -387,8 +387,6 @@ class TemplateSetting extends Component {
 	};
 	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
-		console.log(e);
-		
 		this.setState({
 			pageCode:key[0]
 		},this.reqTreeTemData)
@@ -768,8 +766,6 @@ class TemplateSetting extends Component {
 			allowDataArray,
 			treeAllowedData
 		} = this.state;
-		console.log(treeData);
-		
 		const loop = (data) => {
 			return data.map((item) => {
 				let {

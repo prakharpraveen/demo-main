@@ -206,25 +206,24 @@ class SearchTree extends Component {
 				let {
 					text,
 					key,
-					children,
-					title
+					children
 				} = item;
 				const index = text.indexOf(searchValue);
 				const beforeStr = text.substr(0, index);
 				const afterStr = text.substr(index + searchValue.length);
-				// const title = index > -1 ? ( 
-				// 	<span> 
-				// 		{beforeStr} 
-				// 		<span style = {{color: '#f50'}} > 
-				// 			{searchValue} 
-				// 		</span>
-				// 			{afterStr} 
-				// 	</span>
-				// ) : (
-				// 	<div>
-				// 		<span> {text} </span> 
-				// 	</div>
-				// );
+				const title = index > -1 ? ( 
+					<span> 
+						{beforeStr} 
+						<span style = {{color: '#f50'}} > 
+							{searchValue} 
+						</span>
+							{afterStr} 
+					</span>
+				) : (
+					<div>
+						<span> {text} </span> 
+					</div>
+				);
 				if (children) {
 					return ( <TreeNode key = {key} title = {title} > {loop(children)} </TreeNode>
 					);

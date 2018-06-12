@@ -1,0 +1,102 @@
+body {
+	background-color: #f0f2f5;
+}
+*{
+	box-sizing:border-box
+}
+.nc-workbench-templateSetting {
+	.ant-layout {
+		background: #ffffff;
+	}
+	& > .ant-layout {
+		border: 1px solid #edecec;
+		border-radius: 4px;
+	}
+	.ant-layout-header {
+		height: 60px;
+		line-height: 60px;
+		padding: 0 20px;
+		background: #ffffff;
+		border-bottom: 1px solid #edecec;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+	.ant-layout-sider {
+		border-right: 1px solid #edecec;
+	}
+	.from-card {
+		padding: 24px;
+		background: #fbfbfb;
+		// border: 1px solid #d9d9d9;
+		border-radius: 6px;
+	}
+
+	.from-card .ant-form-item {
+		display: flex;
+	}
+
+	.from-card .ant-form-item-control-wrapper {
+		flex: 1;
+	}
+	.ant-form-item {
+		margin-bottom: 16px;
+	}
+	.ant-form-item-with-help {
+		margin-bottom: 0;
+	}
+	.ant-form-explain {
+		font-size: 12px;
+	}
+	.ant-checkbox-disabled + span {
+		color: rgba(0, 0, 0, .65);
+	}
+	.ant-form-item-label {
+		min-width: 96px;
+	}
+	.ant-checkbox-wrapper {
+		margin-left: 70px;
+	}
+}
+.ant-modal-mask{
+	background: none;
+}
+//分配组件的摸态框
+.allocationPage{
+	.pageCode-show{
+
+	}
+	.allocationPage-content{
+		.allocationPage-content-select{
+			display:flex;
+			justify-content:space-between;
+			padding:10px 20px;
+			border-top:1px solid #ccc
+		}
+		.allocationPage-content-tree{
+			display:flex;
+			justify-content:space-between;
+			border-bottom:1px solid #ccc;
+			padding:15px;
+			.allocation-treeCom{
+				width:42%;
+				border:1px solid #ccc;
+				padding:15px;
+				max-height:370px;
+				overflow:auto;
+			};
+			.allocation-button{
+				width:16%;
+				p{
+					text-align: center;
+				}
+			};
+			.allocation-tree{
+				width:42%;
+				padding: 20px;
+				max-height: 370px;
+				border:1px solid #ccc
+			}
+		}
+	}
+}

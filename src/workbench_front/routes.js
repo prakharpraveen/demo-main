@@ -71,6 +71,10 @@ const TemplateSetting = Loadable({
     loader: () => import("Pages/TemplateSetting"),
     loading: Loading
 });
+const  TemplateSettingUnit = Loadable({
+    loader: () => import("Pages/TemplateSetting-unit"),
+    loading: Loading
+});
 const IndividuationRegister = Loadable({
     loader: () => import("Pages/IndividuationRegister"),
     loading: Loading
@@ -142,6 +146,10 @@ const routes = [
     {
         path: "/TemplateSetting",
         component: TemplateSetting
+    },
+    {
+        path:"/TemplateSetting-unit",
+        component:TemplateSettingUnit
     },
     {
         path: "/ir",

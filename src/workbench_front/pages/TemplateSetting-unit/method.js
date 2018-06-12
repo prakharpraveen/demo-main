@@ -22,7 +22,6 @@ export function generateData(data) {
 		} else {
 			item.text = `${moduleid} ${systypename}`;
 		}
-		item.title = item.text;
 		item.key = systypecode;
 		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
 		if (parentcode) {
@@ -85,7 +84,6 @@ export function generateRoData(data){
 		} = item;
 		item.key = id;
 		item.text = name+code;
-		item.title = item.text;
 		treeArray.push(item)
 	});
 	return treeArray;
