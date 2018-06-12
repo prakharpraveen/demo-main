@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import intl from "react-intl-universal";
-import {Select, AutoComplete,Icon } from "antd";
+import {Select, AutoComplete, Icon} from "antd";
 import Drawer from "react-motion-drawer";
 import PropTypes from "prop-types";
 import {GetQuery} from "Pub/js/utils";
@@ -13,8 +13,8 @@ import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
-import BusinessDate from './BusinessDate';
-import { sprLog } from './spr';
+import BusinessDate from "./BusinessDate";
+import {sprLog} from "./spr";
 import "./index.less";
 import Ajax from "Pub/js/ajax";
 const Option = Select.Option;
@@ -68,9 +68,9 @@ class Layout extends Component {
 
     changeSearchInput = () => {
         const {isShowSearch} = this.state;
-        
-        this.setState({isShowSearch: !isShowSearch},()=>{
-            if(this.state.isShowSearch){
+
+        this.setState({isShowSearch: !isShowSearch}, () => {
+            if (this.state.isShowSearch) {
                 this.autoCompleteInput.focus();
             }
         });
@@ -139,7 +139,7 @@ class Layout extends Component {
             return (
                 <span className="margin-right-10 autocomplete">
                     <AutoComplete
-                    ref={(input) => (this[`autoCompleteInput`] = input)}
+                        ref={input => (this[`autoCompleteInput`] = input)}
                         dataSource={dataSource}
                         style={{width: 200, height: 30}}
                         onSelect={this.onSelect}
@@ -177,7 +177,7 @@ class Layout extends Component {
         });
     };
     render() {
-        let {nodeName,sprType} = this.state;
+        let {nodeName, sprType} = this.state;
         let {isOpen} = this.props;
         return (
             <div className="nc-workbench-layout">
@@ -220,29 +220,35 @@ class Layout extends Component {
                         </div>
                         <div className="nav-right n-right n-v-middle">
                             <span
-								className="margin-right-10"
+                                className="margin-right-10"
                                 field="spr"
                                 fieldname="录制SPR"
                                 onClick={this.handleSprClick}>
-                                {sprType ? <Icon
-										title ='开始录制SPR'
+                                {sprType ? (
+                                    <Icon
+                                        title="开始录制SPR"
                                         type="play-circle-o"
-										className="iconfont"
-                                    /> : <Icon
-										title ='结束录制SPR'
+                                        className="iconfont"
+                                    />
+                                ) : (
+                                    <Icon
+                                        title="结束录制SPR"
                                         type="pause-circle-o"
-										className="iconfont"
-                                    />}
+                                        className="iconfont"
+                                    />
+                                )}
                             </span>
                             {this.getSearchDom()}
-                            <span className="margin-right-10" onClick={()=>{
-this.props.history.push(`/all`)
-                            }}>
-                                    <i
-                                        field="application"
-                                        fieldname="全部应用"
-                                        className="iconfont icon-quanbuyingyong"
-                                    />
+                            <span
+                                className="margin-right-10"
+                                onClick={() => {
+                                    this.props.history.push(`/all`);
+                                }}>
+                                <i
+                                    field="application"
+                                    fieldname="全部应用"
+                                    className="iconfont icon-quanbuyingyong"
+                                />
                             </span>
                             <span className="margin-right-10">
                                 <i
@@ -253,13 +259,16 @@ this.props.history.push(`/all`)
                             </span>
                         </div>
                     </nav>
-                    <div field="top-info" fieldname="顶栏信息" className="nccwb-header-info">
+                    <div
+                        field="top-info"
+                        fieldname="顶栏信息"
+                        className="nccwb-header-info">
                         {this.props.location.pathname === "/" ? (
                             <TabsLink />
                         ) : (
                             <Breadcrumb />
                         )}
-						<BusinessDate/>
+                        <BusinessDate />
                     </div>
                 </div>
                 <div className="nc-workbench-container">
