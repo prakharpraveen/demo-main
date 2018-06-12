@@ -52,7 +52,7 @@ class MyBtns extends Component {
 		let { zoneDatas } = this.props;
 			datas = { 
 				pk_page_templet: zoneDatas.pk_page_templet,
-				code: zoneDatas.code || param.pcode, 
+				pagecode: zoneDatas.pagecode || param.pcode, 
 				pageid: zoneDatas.pageid || param.pid ,
 				areaList:list,
 				...form,
@@ -67,9 +67,8 @@ class MyBtns extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) { 
-					// qingchu 
 					this.props.setZoneData({});
-					// type =1 代表保存  type =2 表示下一步  保存binqie
+					// type =1 代表保存  type =2 表示下一步 
 					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
 					//Notice({ status: 'success', msg: data.data.true });
 				}
@@ -79,6 +78,12 @@ class MyBtns extends Component {
 
 	// 处理按钮的事件  
 	handleClick(name){
+		let { zoneDatas } = this.props;
+		let param = GetQuery(this.props.location.search);
+		let  datas = {
+			pagecode: zoneDatas.pagecode || param.pcode,
+			pageid: zoneDatas.pageid || param.pid,
+		}
 		let fromData = this.props.zoneFormData();
 		let { newListData } = this.props;
 		switch (name){
@@ -95,7 +100,9 @@ class MyBtns extends Component {
 				this.saveZoneData(newListData, fromData, 2);
 				break; 
 			case '取消':
-				location.hash = '/ar';
+			debugger;
+				this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)
+			//	location.hash = '/ar';
 				break;
 			case '返回':
 				history.back();
