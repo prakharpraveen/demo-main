@@ -783,7 +783,6 @@ class TemplateSetting extends Component {
 			allowDataArray,
 			treeAllowedData
 		} = this.state;
-		console.log(templateNameVal);
 		const loop = (data) => {
 			return data.map((item) => {
 				let {
@@ -819,6 +818,13 @@ class TemplateSetting extends Component {
 			<PageLayout className="nc-workbench-templateSetting">
 				<Layout>
 					<Header>
+						<BusinessUnitTreeRef
+							value={org_df_biz}
+							placeholder={"默认业务单元"}
+							onChange={value => {
+								this.handdleRefChange(value, "org_df_biz");
+							}}
+						/>
 						{Btns.map((item, index) => {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
@@ -917,13 +923,6 @@ class TemplateSetting extends Component {
 											<Option value="按角色和用户分配">按角色和用户分配</Option>
 											<Option value="按职责分配">按职责分配</Option>
 										</Select>
-										<BusinessUnitTreeRef
-											value={org_df_biz}
-											placeholder={"默认业务单元"}
-											onChange={value => {
-												this.handdleRefChange(value, "org_df_biz");
-											}}
-                    					/>
 									</div>
 									<div className='allocationPage-content-tree'>
 										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}

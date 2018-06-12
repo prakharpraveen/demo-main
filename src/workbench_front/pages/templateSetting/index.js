@@ -783,7 +783,6 @@ class TemplateSetting extends Component {
 			allowDataArray,
 			treeAllowedData
 		} = this.state;
-		console.log(templateNameVal);
 		const loop = (data) => {
 			return data.map((item) => {
 				let {
