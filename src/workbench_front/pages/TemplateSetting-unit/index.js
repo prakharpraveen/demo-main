@@ -214,26 +214,34 @@ class TemplateSetting extends Component {
 	//按钮事件的触发
 	handleClick = (btnName) => {
 		let { templateNameVal, templatePks, pageCode } = this.state;
-		if(!templatePks){
-			Notice({ status: 'warning', msg: "请选择模板数据" });
-			return;
-		}
 		let infoData={
 			"templateId": templatePks 
 		}
 		switch (btnName) {
 			case '复制':
+				if(!templatePks){
+					Notice({ status: 'warning', msg: "请选择模板数据" });
+					return;
+				}
 				this.setState({
 					visible: true,
 				});
 				break;
 			case '修改':
+				if(!templatePks){
+					Notice({ status: 'warning', msg: "请选择模板数据" });
+					return;
+				}
 				this.props.history.push(`/Zone?templetid=${templatePks}`);
 			break;
 			case '新增':
 				this.props.history.push('/Zone');
 				break;
 			case '删除':
+				if(!templatePks){
+					Notice({ status: 'warning', msg: "请选择模板数据" });
+					return;
+				}
 				confirm({
 					title: '确认删除这个模板信息吗?',
 					onOk() {
@@ -254,7 +262,6 @@ class TemplateSetting extends Component {
 						});
 					},
 					onCancel() {
-						console.log('Cancel');
 					},
 				});
 				break;
@@ -418,7 +425,23 @@ class TemplateSetting extends Component {
 	onSelect = (key, e)=>{
 		this.setState({
 			templatePks: key[0]
-		});
+		},this.lookTemplateNameVal);
+	}
+	lookTemplateNameVal = ()=>{
+		let { templateNameVal, treeTemData, templatePks }=this.state;
+		for(let i=0;i<treeTemData.length;i++){
+			if(treeTemData[i].children&&treeTemData[i].children.length>0){
+				let childrenDatas=treeTemData[i].children;
+				childrenDatas.map((ele)=>{
+					if(ele.templateId===templatePks){
+						templateNameVal=ele.text;
+					}
+				})
+			}
+		}
+		this.setState({
+			templateNameVal
+		})
 	}
 	/**
 	 * tree 数据请求
@@ -686,12 +709,6 @@ class TemplateSetting extends Component {
 		)} 
 	</div>)
 	}
-	handleFocus = ()=>{
-
-	}
-	handleBlur = ()=>{
-		
-	}
 	handleAlloOk = ()=>{
 		let { templatePks, pageCode, treeAllowedData, orgidObj } = this.state;
 		if(!treeAllowedData){
@@ -766,6 +783,7 @@ class TemplateSetting extends Component {
 			allowDataArray,
 			treeAllowedData
 		} = this.state;
+		console.log(templateNameVal);
 		const loop = (data) => {
 			return data.map((item) => {
 				let {
@@ -858,7 +876,7 @@ class TemplateSetting extends Component {
 							onCancel={this.handleCancel}
         				>
 							<div>
-								<Input placeholder="模板名称" value={templateNameVal}  onChange={(e)=>{
+								<Input value={templateNameVal}  onChange={(e)=>{
 									const templateNameVal = e.target.value;
 									this.setState({
 										templateNameVal
