@@ -12,7 +12,7 @@ export default function (props) {
         tem[cur.pk_area].name = cur.name;
         tem[cur.pk_area].items = cur.queryPropertyList && cur.queryPropertyList.map((item) => { return {
             leftspace:item.leftspace,rightspace:item.rightspace,
-            attrcode: item.code, label: item.label, visible: item.visible,itemtype:'input', } });
+            width: item.width, attrcode: item.code, label: item.label, visible: item.visible,itemtype:'input', } });
             prev.push(tem);
         return prev;
     },[])
@@ -33,6 +33,7 @@ export default function (props) {
         }
         return { ...pre, ...cur }   // 数组拆开 展开为模板数据格式 
     }, {});
+    debugger;
     props.meta.setMeta(meta);
     props.updatePreviewData(array);
 
