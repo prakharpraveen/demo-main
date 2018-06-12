@@ -69,7 +69,7 @@ class MyBtns extends Component {
 				if (data.success && data.data) { 
 					this.props.setZoneData({});
 					// type =1 代表保存  type =2 表示下一步 
-					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
+					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
 					//Notice({ status: 'success', msg: data.data.true });
 				}
 			}
@@ -100,8 +100,7 @@ class MyBtns extends Component {
 				this.saveZoneData(newListData, fromData, 2);
 				break; 
 			case '取消':
-			debugger;
-				this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.code}&pid=${datas.pageid}`)
+				this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)
 			//	location.hash = '/ar';
 				break;
 			case '返回':
