@@ -141,6 +141,7 @@ class Layout extends Component {
                     <AutoComplete
                         ref={input => (this[`autoCompleteInput`] = input)}
                         dataSource={dataSource}
+                        dropdownClassName={'field_global-search'}
                         style={{width: 200, height: 30}}
                         onSelect={this.onSelect}
                         onSearch={this.handleSearch}
