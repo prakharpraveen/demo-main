@@ -17,8 +17,6 @@ class Breadcrumb extends Component {
         b2 = decodeURIComponent(b2);
         b3 = decodeURIComponent(b3);
         n = decodeURIComponent(n);
-        console.log(b1 === "undefined"||"null" , b2, b3, n);
-        
         return (
             <div className="workbench-breadcrumb">
                 <i

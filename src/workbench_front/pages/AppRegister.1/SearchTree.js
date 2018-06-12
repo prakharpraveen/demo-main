@@ -41,13 +41,10 @@ class SearchTree extends Component {
      * 树节点选中事件
      * @param {Array} selectedKey
      */
-    handleSelect = selectedKey => {
-        let selectObj;
-        if(selectedKey[0]){
-            selectObj = this.props.treeData.find((item)=>item.moduleid === selectedKey[0]);
-        };
+    handleSelect = (selectedKey,info) => {
+        let selectedNode = info['selectedNodes'][0]['props']['refData'];
         // 为父组件返回选中的树节点对象
-        this.props.onSelect(selectObj);
+        this.props.onSelect(selectedNode);
     };
     render() {
         const {searchValue, expandedKeys, autoExpandParent} = this.state;
@@ -75,12 +72,12 @@ class SearchTree extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={code} title={title}>
+                        <TreeNode key={code} title={title} refData={item}>
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={code} title={title} />;
+                return <TreeNode key={code} title={title} refData={item}/>;
             });
         let newTreeData = [
             {
