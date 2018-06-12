@@ -49,7 +49,7 @@ class App extends Component {
             data: {
                 appcode: code
             },
-            success: ({data:{data:{pageurl,field:f,menu:n,menuclass:mc,module:mod}}}) => {
+            success: ({data:{data:{pageurl,menu:b4,menuclass:b3,module:b2,field:b1}}}) => {
                 if (pageurl) {
                     if (query) {
                         switch (type) {
@@ -58,14 +58,14 @@ class App extends Component {
                                 window.location.hash = `#/ifr?ifr=${encodeURIComponent(
                                     pageurl
                                 )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 break;
                             case "own":
                                 // 浏览器当前页打开
                                 win.location = `#/${pageurl}?n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}${query}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}${query}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 win.focus();
                                 break;
                             default:
@@ -73,8 +73,8 @@ class App extends Component {
                                 win.location = `#/ifr?ifr=${encodeURIComponent(
                                     pageurl
                                 )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 win.focus();
                                 break;
                         }
@@ -85,14 +85,14 @@ class App extends Component {
                                 window.location.hash = `#/ifr?ifr=${encodeURIComponent(
                                     pageurl
                                 )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 break;
                             case "own":
                                 // 浏览器当前页打开
                                 win.location = `#/${pageurl}?n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 win.focus();
                                 break;
                             default:
@@ -100,8 +100,8 @@ class App extends Component {
                                 win.location = `#/ifr?ifr=${encodeURIComponent(
                                     pageurl
                                 )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                                    n
-                                )}&c=${encodeURIComponent(code)}&f=${encodeURIComponent(f)}&mc=${encodeURIComponent(mc)}&mod=${encodeURIComponent(mod)}`;
+                                    b4
+                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
                                 win.focus();
                                 break;
                         }
