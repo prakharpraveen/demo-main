@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button,Icon } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MyCard from './card';
@@ -13,6 +13,7 @@ class AreaItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			isShow: true,
 			batchSettingModalVisibel: false,
 			addDataModalVisibel: false
 		};
@@ -42,14 +43,20 @@ class AreaItem extends Component {
 	setAddDataModalVisibel = (visibel) => {
 		this.setState({ addDataModalVisibel: visibel });
 	};
+	showOrHideAreaItem = () => {
+		this.setState({ isShow: !this.state.isShow });
+	};
 	render() {
 		const { areaItem, selectCard } = this.props;
 		return (
 			<div className='area-item'>
 				<div className='area-item-header'>
-					<span className='area-item-name' >
-						<span> ▼ </span>
-						{areaItem.name}
+					<span className='area-item-name' onClick={this.showOrHideAreaItem}>
+						{(()=>{
+						const showOrHide = this.state.isShow ?<Icon type='down' /> : <Icon type='right' />;
+						return <strong>{showOrHide}</strong> ;
+						})()}
+						&nbsp;{areaItem.name}
 					</span>
 					<span className='area-item-button'>
 						<a onClick={this.addMetaInArea}>新增元数据</a>
@@ -57,7 +64,7 @@ class AreaItem extends Component {
 						<a onClick={this.openBatchSetting}>批量设置</a>
 					</span>
 				</div>
-				<ul className='area-item-content'>
+				<ul className='area-item-content' style={{ display: this.state.isShow ? 'block' : 'none' }}>
 					{areaItem.queryPropertyList.map((q, index) => {
 						return (
 							<MyCard
@@ -67,6 +74,8 @@ class AreaItem extends Component {
 								name={q.label}
 								areaid={areaItem.pk_area}
 								visible={q.visible}
+								color={q.color}
+								required={q.required}
 								selectThisCard={this.selectThisCard}
 								moveCard={this.moveCard}
 								deleteCard={this.deleteCard}

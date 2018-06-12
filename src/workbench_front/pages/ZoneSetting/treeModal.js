@@ -54,7 +54,13 @@ class TreeModal extends Component {
 					isbeyondorg:false,
 					usefunc:datatype==='34'?true:false,
 					showtype:'1',
-					returntype:'1'
+					returntype:'1',
+					define1:"",
+					define2:"",
+					define3:"",
+					define4:"",
+					define5:""
+					
 				}
 			}else{
 				cardObj = {
@@ -64,7 +70,7 @@ class TreeModal extends Component {
 					datatype: datatype,
 					label: refname,
 					metapath: myUniqID,
-					color: '1',
+					color: '#6E6E77',
 					width: '6',
 					isrevise:false,
 					istotal:false,
@@ -76,6 +82,9 @@ class TreeModal extends Component {
 					leftspace:'0',
 					rightspace:'0',
 					defaultvar:'',
+					define1:"",
+					define2:"",
+					define3:""
 				}
 			}
 			if(this.props.targetAreaType === '2'){

@@ -55,20 +55,21 @@ export const componentWidthObj = [
 ];
 export const showAndReturnType = [ { name: '名称', value: '1' }, { name: '编码', value: '2' } ];
 export const colorObj = [
-	{ name: '黑色-', value: '1' },
-	{ name: '白色', value: '2' },
-	{ name: '浅灰色', value: '3' },
-	{ name: '灰色', value: '4' },
-	{ name: '深灰色', value: '5' },
-	{ name: '红色', value: '6' },
-	{ name: '粉色', value: '7' },
-	{ name: '橘色', value: '8' },
-	{ name: '黄色', value: '9' },
-	{ name: '绿色', value: '10' },
-	{ name: '紫红色', value: '11' },
-	{ name: '蓝绿色', value: '12' },
-	{ name: '兰色', value: '13' },
-	{ name: '深兰色', value: '14' }
+	{ name: '默认', value: '#6E6E77' },
+	{ name: '黑色', value: '#000000' },
+	{ name: '白色', value: '#ffffff' },
+	{ name: '浅灰色', value: '#DCDCDC' },
+	{ name: '灰色', value: '#7C7C7C' },
+	{ name: '深灰色', value: '#434343' },
+	{ name: '红色', value: '#EC1D22' },
+	{ name: '粉色', value: '#F78C92' },
+	{ name: '橘色', value: '#F5781E' },
+	{ name: '黄色', value: '#F8F36F' },
+	{ name: '绿色', value: '#2AB566' },
+	{ name: '紫红色', value: '#C11B80' },
+	{ name: '蓝绿色', value: '#23C1C4' },
+	{ name: '兰色', value: '#6FCBFF' },
+	{ name: '深兰色', value: '#00A2FE' }
 ];
 export const dataTypeObj = [
 	{ name: '字符', value: '1' },
@@ -90,10 +91,5 @@ export const defaultvarObj = [
 	{ name: '@SYSCORP', value: '@SYSCORP' },
 	{ name: '@SYSOPER', value: '@SYSOPER' },
 	{ name: '@SYSUSER', value: '@SYSUSER' },
-	{ name: '@SYSDEPT', value: '@SYSDEPT' },
-	{ name: '小数', value: '2' }
-];
-export const showtype = [
-	{ name: '名称', value: '1' },
-	{ name: '编码', value: '2' }
+	{ name: '@SYSDEPT', value: '@SYSDEPT' }
 ];

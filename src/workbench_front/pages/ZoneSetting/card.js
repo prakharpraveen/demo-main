@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as utilService from './utilService';
 /**
  * 工作桌面 配置模板区域
  */
@@ -93,13 +94,28 @@ class MyCard extends Component {
 		this.props.selectThisCard(this.props.index);
 	}
 
+	getCardClassName=()=>{
+		const {selectCard,required,id,areaid} = this.props;
+		let result = "";
+		if(required){
+			result = " required-card"
+		}
+		if(selectCard.pk_query_property=== id && selectCard.areaid === areaid){
+			result = `select-card${result}`
+		}else{
+			result = `normal-card${result}`
+		}
+		return result;
+	}
+	
 	render() {
-		const { index, name, id, key,selectCard, areaid,visible, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const { index, name, id, key, selectCard, areaid, visible, color, isDragging, connectDragSource, connectDropTarget } = this.props;
 		const opacity = isDragging ? 0 : (visible ? 1 : 0.5);
+		const myClassName = this.getCardClassName();
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' style={{ opacity: opacity }} onClick={this.selectThisCard}>
-					<div className={selectCard.pk_query_property=== id && selectCard.areaid === areaid ?'select-card':'normal-card'}>
+					<div style={{color:color}} className={myClassName}>
 						{name}
 						<span className='delete-card' onClick={this.deleteCard}>
 							x

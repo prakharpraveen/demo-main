@@ -167,13 +167,29 @@ class MyRightSider extends Component {
 				style={{ width: 176 }}
 				size={'small'}
 			>
-				{mySelectObj.map((c, index) => {
-					return (
-						<Option key={index} value={c.value}>
-							{c.name}
-						</Option>
-					);
-				})}
+				{(() => {
+					if (property === 'color') {
+					return	mySelectObj.map((c, index) => {
+							return (
+								<Option key={index} value={c.value}  >
+									<span className="template-setting-color-select">
+										<span>{c.name}</span>
+										<span className="color-select-color" style={{ backgroundColor: c.value }}>
+										</span>
+									</span>
+								</Option>
+							);
+						});
+					} else {
+						return	mySelectObj.map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						});
+					}
+				})()}
 			</Select>
 		);
 	};
@@ -245,6 +261,16 @@ class MyRightSider extends Component {
 						<li>{this.getMySelect(utilService.showAndReturnType, 'showtype')}</li>
 						<li>返回类型</li>
 						<li>{this.getMySelect(utilService.showAndReturnType, 'returntype')}</li>
+						<li>自定义1</li>
+						<li>{this.getMyInput('自定义1', 'define1')}</li>
+						<li>自定义2</li>
+						<li>{this.getMyInput('自定义2', 'define2')}</li>
+						<li>自定义3</li>
+						<li>{this.getMyInput('自定义3', 'define3')}</li>
+						<li>自定义4</li>
+						<li>{this.getMyInput('自定义4', 'define4')}</li>
+						<li>自定义5</li>
+						<li>{this.getMyInput('自定义5', 'define5')}</li>
 					</ul>
 				</TabPane>
 			</Tabs>
@@ -301,6 +327,16 @@ class MyRightSider extends Component {
 						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
 						<li>类型设置</li>
 						<li>{this.getMyInput('类型设置', 'dataval')}</li>
+						<li>自定义1</li>
+						<li>{this.getMyInput('自定义1', 'define1')}</li>
+						<li>自定义2</li>
+						<li>{this.getMyInput('自定义2', 'define2')}</li>
+						<li>自定义3</li>
+						<li>{this.getMyInput('自定义3', 'define3')}</li>
+						<li>自定义4</li>
+						<li>{this.getMyInput('自定义4', 'define4')}</li>
+						<li>自定义5</li>
+						<li>{this.getMyInput('自定义5', 'define5')}</li>
 					</ul>
 				</TabPane>
 			</Tabs>
@@ -570,6 +606,12 @@ class MyRightSider extends Component {
 								}}
 							/>
 						</li>
+						<li>自定义1</li>
+						<li>{this.getMyInput('自定义1', 'define1')}</li>
+						<li>自定义2</li>
+						<li>{this.getMyInput('自定义2', 'define2')}</li>
+						<li>自定义3</li>
+						<li>{this.getMyInput('自定义3', 'define3')}</li>
 					</ul>
 				</TabPane>
 			</Tabs>

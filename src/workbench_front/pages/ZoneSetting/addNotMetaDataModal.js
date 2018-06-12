@@ -38,10 +38,15 @@ class AddNotMetaDataModal extends Component {
 				refname: '-99',
 				containlower:false,
 				ischeck:false,
-				isbeyondorg:false,
+				isbeyondorg: false,
 				usefunc: false,
-				showtype:'1',
-				returntype:'1'
+				showtype: '1',
+				returntype: '1',
+				define1: "",
+				define2: "",
+				define3: "",
+				define4: "",
+				define5: ""
 			}
 		}else{
 			cardObj = {
@@ -52,18 +57,21 @@ class AddNotMetaDataModal extends Component {
 				label: this.state.notMetaDataName,
 				position: `${queryPropertyList.length + 1}`,
 				metapath: '',
-				color: '1',
+				color: '#6E6E77',
 				width: '6',
 				isrevise:false,
 				istotal:false,
 				required:false,
-				disabled:false,
-				visible:true,
-				maxlength:'20',
-				textrows:'1',
-				leftspace:'0',
-				rightspace:'0',
-				defaultvar:'',
+				disabled: false,
+				visible: true,
+				maxlength: '20',
+				textrows: '1',
+				leftspace: '0',
+				rightspace: '0',
+				defaultvar: '',
+				define1: "",
+				define2: "",
+				define3: ""
 			}
 		}
 		if(this.props.targetAreaType === '2'){
