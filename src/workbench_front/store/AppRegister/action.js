@@ -44,8 +44,6 @@ export const setAppParamData = (data) => {
 
 
 
-
-
 // 设置表单类型
 export const setOpType = (data)=>{
 	return {
