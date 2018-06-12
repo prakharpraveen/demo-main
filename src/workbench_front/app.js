@@ -10,6 +10,7 @@ import store from "./store";
 import Routes from "./routes";
 import Notice from "Components/Notice";
 import moment from "moment";
+import {CreateQuery} from 'Pub/js/utils.js';
 import "moment/locale/zh-cn";
 import "Assets/iconfont/iconfont.js";
 import "Pub/css/public.less";
@@ -49,9 +50,27 @@ class App extends Component {
             data: {
                 appcode: code
             },
-            success: ({data:{data:{pageurl,menu:b4,menuclass:b3,module:b2,field:b1}}}) => {
+            success: ({
+                data: {
+                    data: {
+                        pageurl,
+                        menu: b4,
+                        menuclass: b3,
+                        module: b2,
+                        field: b1
+                    }
+                }
+            }) => {
                 if (pageurl) {
+                    // 面包屑信息
+                    let breadcrumbInfo = `&b1=${encodeURIComponent(
+                        b1
+                    )}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(
+                        b3
+                    )}`;
                     if (query) {
+                        // 将参数对象转换成url参数字符串
+                        query = CreateQuery(query);
                         switch (type) {
                             case "current":
                                 // 浏览器当前页打开
@@ -59,13 +78,15 @@ class App extends Component {
                                     pageurl
                                 )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
                                 break;
                             case "own":
                                 // 浏览器当前页打开
                                 win.location = `#/${pageurl}?n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}${query}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${query}${breadcrumbInfo}`;
                                 win.focus();
                                 break;
                             default:
@@ -74,7 +95,9 @@ class App extends Component {
                                     pageurl
                                 )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${breadcrumbInfo}`;
                                 win.focus();
                                 break;
                         }
@@ -86,13 +109,17 @@ class App extends Component {
                                     pageurl
                                 )}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${breadcrumbInfo}`;
                                 break;
                             case "own":
                                 // 浏览器当前页打开
                                 win.location = `#/${pageurl}?n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${breadcrumbInfo}`;
                                 win.focus();
                                 break;
                             default:
@@ -101,12 +128,14 @@ class App extends Component {
                                     pageurl
                                 )}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}&b1=${encodeURIComponent(b1)}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${breadcrumbInfo}`;
                                 win.focus();
                                 break;
                         }
                     }
-                }else{
+                } else {
                     win.close();
                     Notice({
                         status: "error",
@@ -138,21 +167,16 @@ class App extends Component {
                 query
             );
         };
-		/**
-		 * 当前页打开新页面 不做应用校验
-		 * @param {String} url  目标页面 url 地址
-		 * @param {Object} object 需要传递的参数对象 非必输
-		 */
+        /**
+         * 当前页打开新页面 不做应用校验
+         * @param {String} url  目标页面 url 地址
+         * @param {Object} object 需要传递的参数对象 非必输
+         */
         window.openNewPage = (url, object) => {
             if (object) {
-                let arg = "";
-                for (const key in object) {
-                    if (object.hasOwnProperty(key)) {
-                        const element = object[key];
-                        arg += `&${key}=${element}`;
-                    }
-                }
-                window.location.hash = `#/ifr?ifr=${encodeURIComponent(url)}${arg}`;
+                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+                    url
+                )}${CreateQuery(object)}`;
             } else {
                 window.location.hash = `#/ifr?ifr=${encodeURIComponent(url)}`;
             }

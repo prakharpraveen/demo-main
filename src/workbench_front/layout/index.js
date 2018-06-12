@@ -185,7 +185,7 @@ class Layout extends Component {
                     className="nc-workbench-top-container  nccwb-header"
                     style={{zIndex: "1"}}>
                     <nav
-                        field="nccwb-header"
+                        field="top-area"
                         fieldname={nodeName}
                         className="nc-workbench-nav">
                         <div className="nav-left n-left n-v-middle">
@@ -253,7 +253,7 @@ this.props.history.push(`/all`)
                             </span>
                         </div>
                     </nav>
-                    <div className="nccwb-header-info">
+                    <div field="top-info" fieldname="顶栏信息" className="nccwb-header-info">
                         {this.props.location.pathname === "/" ? (
                             <TabsLink />
                         ) : (

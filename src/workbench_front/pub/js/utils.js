@@ -18,6 +18,20 @@ export const GetQuery = (query) => {
 	return theRequest;
 };
 /**
+ * 将对象转换成 url 参数字符串
+ * @param {Object} object 参数对象
+ */
+export const CreateQuery = (object) => {
+	let arg = "";
+	for (const key in object) {
+		if (object.hasOwnProperty(key)) {
+			const element = object[key];
+			arg += `&${key}=${element}`;
+		}
+	}
+	return arg;
+};
+/**
  * 数字补位
  * @param {Number} num 需要补位的数字
  * @param {Number} n 需要补的位数

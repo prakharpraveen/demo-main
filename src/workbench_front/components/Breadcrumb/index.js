@@ -17,9 +17,13 @@ class Breadcrumb extends Component {
         b2 = decodeURIComponent(b2);
         b3 = decodeURIComponent(b3);
         n = decodeURIComponent(n);
+        console.log(b1 === "undefined"||"null" , b2, b3, n);
+        
         return (
             <div className="workbench-breadcrumb">
                 <i
+                    field="home-icon" 
+                    fieldname="主页"
                     className="iconfont icon-zhuye"
                     onClick={this.handleHomeClick}
                 />
@@ -27,10 +31,10 @@ class Breadcrumb extends Component {
                     separator={
                         <i className="iconfont icon-mianbaoxie font-size-12" />
                     }>
-                    <Bc.Item>{b1 === "undefined" ? null : b1}</Bc.Item>
-                    <Bc.Item>{b2 === "undefined" ? null : b2}</Bc.Item>
-                    <Bc.Item>{b3 === "undefined" ? null : b3}</Bc.Item>
-                    <Bc.Item>{n === "undefined" ? null : n}</Bc.Item>
+                    <Bc.Item>{b1 === "undefined"||b1 === "null" ? null : b1}</Bc.Item>
+                    <Bc.Item>{b2 === "undefined"||b2 === "null" ? null : b2}</Bc.Item>
+                    <Bc.Item>{b3 === "undefined"||b3 === "null" ? null : b3}</Bc.Item>
+                    <Bc.Item>{n === "undefined"||n === "null" ? null : n}</Bc.Item>
                 </Bc>
             </div>
         );
