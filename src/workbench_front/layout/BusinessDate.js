@@ -8,7 +8,7 @@ class BusinessDate extends Component {
     }
     render() {
         return (
-            <div title='业务日期' className='nc-workbench-businessdate'>
+            <div field="business-date" fieldname="业务日期" title='业务日期' className='nc-workbench-businessdate'>
                 <DatePicker locale={locale} defaultValue={moment()} allowClear={false} />
             </div>
         );

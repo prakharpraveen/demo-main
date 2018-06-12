@@ -15,11 +15,7 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
-import {
-    dataTransfer,
-    dataRestore,
-    dataCheck
-} from "Components/FormCreate";
+import {dataTransfer, dataRestore, dataCheck} from "Components/FormCreate";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -40,7 +36,8 @@ class AppRegister extends Component {
         super(props);
         this.state = {
             optype: "",
-            isedit: true,
+            isedit: false,
+            isNew: false
         };
         this.nodeData;
         this.optype;
@@ -481,16 +478,16 @@ class AppRegister extends Component {
         switch (this.state.optype) {
             // 对应树结构中的前两层
             case "12":
-                return <ModuleFormCard isedit={this.state.isedit}/>;
+                return <ModuleFormCard isedit={this.state.isedit} />;
             // 对应树结构的第三层
             case "3":
-                return <ClassFormCard isedit={this.state.isedit}/>;
+                return <ClassFormCard isedit={this.state.isedit} />;
             // 对应树结构的第四层
             case "4":
-                return <AppFormCard isedit={this.state.isedit}/>;
+                return <AppFormCard isedit={this.state.isedit} />;
             // 对应树结构的第五层
             case "5":
-                return <PageFromCard isedit={this.state.isedit}/>;
+                return <PageFromCard isedit={this.state.isedit} />;
             default:
                 return "";
         }
@@ -527,7 +524,7 @@ class AppRegister extends Component {
             success: ({data: {success, data}}) => {
                 if (success && data) {
                     callback(data);
-                }else{
+                } else {
                     Notice({status: "error", msg: res.error.message});
                 }
             }
@@ -543,13 +540,16 @@ class AppRegister extends Component {
             switch (obj.flag) {
                 // 对应树的前两层
                 case "0":
+                    console.log(obj);
                     this.props.setNodeData(dataTransfer(obj));
                     optype = "12";
                     break;
                 // 对应树的3、4层
                 case "1":
                     let appCallBack = data => {
-                        this.props.setNodeData(dataTransfer(data.appRegisterVO));
+                        this.props.setNodeData(
+                            dataTransfer(data.appRegisterVO)
+                        );
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     optype = "3";
@@ -591,54 +591,55 @@ class AppRegister extends Component {
         this.reqTreeData();
     }
     render() {
+        let {isedit, optype} = this.state;
         let btnList = [
             {
                 code: "addModule",
                 name: "增加模块",
                 type: "primary",
-                isshow: true
+                isshow: !isedit && (optype === "" || optype === "12")
             },
             {
                 code: "addAppClass",
                 name: "增加应用分类",
                 type: "primary",
-                isshow: true
+                isshow: !isedit && optype === "3"
             },
             {
                 code: "addApp",
                 name: "增加应用",
                 type: "primary",
-                isshow: true
+                isshow: !isedit && optype === "4"
             },
             {
                 code: "addPage",
                 name: "增加页面",
                 type: "primary",
-                isshow: true
-            },
-            {
-                code: "save",
-                name: "保存",
-                type: "primary",
-                isshow: true
+                isshow: !isedit && optype === "5"
             },
             {
                 code: "cancel",
                 name: "取消",
                 type: "",
-                isshow: true
+                isshow: isedit
+            },
+            {
+                code: "save",
+                name: "保存",
+                type: "primary",
+                isshow: isedit
             },
             {
                 code: "del",
                 name: "删除",
                 type: "primary",
-                isshow: true
+                isshow: !isedit
             },
             {
                 code: "edit",
                 name: "修改",
                 type: "primary",
-                isshow: true
+                isshow: !isedit
             }
         ];
         return (

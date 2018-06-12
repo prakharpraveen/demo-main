@@ -137,7 +137,7 @@ class Layout extends Component {
         if (isShowSearch) {
             const {dataSource} = this.state;
             return (
-                <span className="margin-right-10 autocomplete">
+                <span field="global-search" fieldname="全局搜索" className="margin-right-10 autocomplete">
                     <AutoComplete
                         ref={input => (this[`autoCompleteInput`] = input)}
                         dataSource={dataSource}
@@ -156,7 +156,7 @@ class Layout extends Component {
             );
         } else {
             return (
-                <span className="margin-right-10">
+                <span field="global-search" fieldname="全局搜索" className="margin-right-10">
                     <i
                         field="search"
                         fieldname="查询"
