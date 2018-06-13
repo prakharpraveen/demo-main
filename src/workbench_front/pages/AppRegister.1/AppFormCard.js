@@ -165,7 +165,7 @@ class AppFromCard extends Component {
                 label: "应用编码",
                 type: "string",
                 code: "code",
-                required: true,
+                isRequired: true,
                 check: (rule, value, callback) => {
                     if (value === this.props.parentData) {
                         callback("不能与父节点编码重复");
@@ -179,14 +179,14 @@ class AppFromCard extends Component {
                 label: "应用名称",
                 type: "string",
                 code: "name",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "组织类型",
                 type: "select",
                 code: "orgtypecode",
-                required: true,
+                isRequired: true,
                 options: this.state.orgtypecode,
                 isedit: this.props.isedit
             },
@@ -194,7 +194,7 @@ class AppFromCard extends Component {
                 label: "功能点类型",
                 type: "select",
                 code: "funtype",
-                required: true,
+                isRequired: true,
                 options: [
                     {
                         value: "0",
@@ -219,7 +219,7 @@ class AppFromCard extends Component {
                 label: "应用类型",
                 type: "select",
                 code: "apptype",
-                required: true,
+                isRequired: true,
                 options: [
                     {
                         value: "1",
@@ -236,21 +236,21 @@ class AppFromCard extends Component {
                 label: "应用宽",
                 type: "string",
                 code: "width",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "应用高",
                 type: "string",
                 code: "height",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "关联元数据ID",
                 type: "search",
                 code: "mdid",
-                required: false,
+                isRequired: false,
                 placeholder: "请输入元数据名称过滤",
                 search: this.handleSearch,
                 options: this.state.mdid,
@@ -260,35 +260,35 @@ class AppFromCard extends Component {
                 label: "所属集团",
                 type: "string",
                 code: "pk_group",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "是否启用",
                 type: "checkbox",
                 code: "isenable",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "是否加载占用",
                 type: "checkbox",
                 code: "uselicense_load",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "是否CA用户可用",
                 type: "checkbox",
                 code: "iscauserusable",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "默认页面",
                 type: "select",
                 code: "target_path",
-                required: false,
+                isRequired: false,
                 options: this.state.target_path,
                 isedit: this.props.isedit
             },
@@ -296,21 +296,21 @@ class AppFromCard extends Component {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "帮助文件名",
                 type: "string",
                 code: "help_name",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "应用描述",
                 type: "string",
                 code: "app_desc",
-                required: false,
+                isRequired: false,
                 md: 24,
                 lg: 24,
                 xl: 24,
@@ -320,7 +320,7 @@ class AppFromCard extends Component {
                 label: "图标路径",
                 type: "chooseImage",
                 code: "image_src",
-                required: true,
+                isRequired: true,
                 options: IMGS,
                 md: 24,
                 lg: 24,
