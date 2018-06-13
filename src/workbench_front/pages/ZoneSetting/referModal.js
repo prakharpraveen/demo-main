@@ -81,7 +81,7 @@ class ReferModal extends Component {
 			<Modal
 				title='参照类型设置'
 				mask={false}
-				wrapClassName='referModal'
+				wrapClassName='zonesetting-referModal'
 				visible={this.props.modalVisibel}
 				onOk={this.onOkDialog}
 				destroyOnClose = {true}
@@ -103,7 +103,7 @@ class ReferModal extends Component {
 				<div>
 					<div className='descrip_label'>参照设置 </div>
 					<div className='mdcontent'>
-							<div><span>参照选择:</span>
+							<div><span className='refer_label'>参照选择:</span>
 								<Select
 									showSearch
 									optionFilterProp="children"
@@ -123,14 +123,14 @@ class ReferModal extends Component {
 									})}
 								</Select>
 							</div>	
-							<div><span></span></div>	
+								
 					</div>	
 				</div>
 			     <div>
 					<div className='descrip_label'>关联设置 </div>
 						<div className='mdcontent'>
-							<div><span>焦点离开后参照显示名称:</span><Checkbox checked={isCheck}  onChange={(e) => { this.saveValue(e) }} /></div>	
-							<div><span></span></div>	
+							<div><span className='refer_label'>焦点离开后参照显示名称:</span><Checkbox checked={isCheck}  onChange={(e) => { this.saveValue(e) }} /></div>	
+							
 				 </div>
 					</div>
 			</Modal>

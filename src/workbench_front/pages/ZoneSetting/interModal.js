@@ -48,7 +48,7 @@ class InterModal extends Component {
 			<Modal
 				title='整数-设置'
 				mask={false}
-				wrapClassName='interModal'
+				wrapClassName='zonesetting-interModal'
 				visible={this.props.modalVisibel}
 				onOk={this.onOkDialog}
 				destroyOnClose = {true}
@@ -68,8 +68,8 @@ class InterModal extends Component {
 				]}
 			>	  
 			     <div>
-					最小值:<InputNumber value={small} onChange={(val) => { this.saveValue(val,1)}}/>
-					最大值:<InputNumber value={big} onChange={(val) => { this.saveValue(val,2)}} />
+					<span className='inter-label'>最小值:</span><InputNumber value={small} onChange={(val) => { this.saveValue(val,1)}}/>
+					<span className='inter-label'>最大值:</span><InputNumber value={big} onChange={(val) => { this.saveValue(val,2)}} />
 				 </div>
 			</Modal>	
 		);

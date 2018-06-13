@@ -87,7 +87,7 @@ export default  class MoneyModal extends Component {
 			<Modal
 				title={`${type}类型设置`}
 				mask={false}
-				wrapClassName='moneyModal'
+				wrapClassName='zonesetting-moneyModal'
 				visible={this.props.modalVisibel}
 				onOk={this.onOkDialog}
 				destroyOnClose = {true}
@@ -95,7 +95,6 @@ export default  class MoneyModal extends Component {
 				footer={[
 					<Button
 						key='submit'
-						// disabled={}
 						type='primary'
 						onClick={this.onOkDialog}
 					>
@@ -109,15 +108,15 @@ export default  class MoneyModal extends Component {
 				<div>
 					<div className='descrip_label'>精度设置 </div>
 					<div className='mdcontent'>
-							<div><span>	自定义精度:</span><InputNumber value={customScale} onChange={(value) => { this.saveValue(value, 1) }} /></div>	
+							<div><span className='money-label'>	自定义精度:</span><InputNumber value={customScale} onChange={(value) => { this.saveValue(value, 1) }} /></div>	
 						    	
 					</div>	
 				</div>
 			     <div>
 					<div className='descrip_label'>取值设置 </div>
 						<div className='mdcontent'>
-							<div><span>最小值:</span><InputNumber value={small} onChange={(value) => { this.saveValue(value, 3) }} /></div>	
-							<div><span>最大值:</span><InputNumber value={big} onChange={(value) => { this.saveValue(value, 4) }} /></div>	
+							<div><span className='money-label'>最小值:</span><InputNumber value={small} onChange={(value) => { this.saveValue(value, 3) }} /></div>	
+							<div><span className='money-label'>最大值:</span><InputNumber value={big} onChange={(value) => { this.saveValue(value, 4) }} /></div>	
 				 </div>
 					</div>
 			</Modal>
