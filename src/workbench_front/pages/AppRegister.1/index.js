@@ -95,7 +95,13 @@ class AppRegister extends Component {
      * 添加模块
      */
     addModule = () => {
-        this.historyOptype = this.state.optype;
+        let optype = this.state.optype;
+        this.historyOptype = optype;
+        if(optype === ''){
+            optype = '1';
+        }else if(optype === '1'){
+            optype = '2';
+        }
         this.historyNodeData = this.props.nodeData;
         let moduleData = {
             systypecode: "",
@@ -108,8 +114,9 @@ class AppRegister extends Component {
             resid: "",
             dr: 0
         };
-        this.props.setNodeData(moduleData);
+        this.props.setNodeData(dataTransfer(moduleData));
         this.setState({
+            optype,
             isedit: true,
             isNew: true
         });
@@ -118,7 +125,11 @@ class AppRegister extends Component {
      * 添加应用分类
      */
     addAppClass = () => {
-        this.historyOptype = this.state.optype;
+        let optype = this.state.optype;
+        this.historyOptype = optype;
+        if(optype === '2'){
+            optype = '3';
+        }
         this.historyNodeData = this.props.nodeData;
         let classData = {
             apptype: 0,
@@ -129,8 +140,9 @@ class AppRegister extends Component {
             resid: "",
             help_name: ""
         };
-        this.props.setNodeData(classData);
+        this.props.setNodeData(dataTransfer(classData));
         this.setState({
+            optype,
             isedit: true,
             isNew: true
         });
@@ -139,13 +151,17 @@ class AppRegister extends Component {
      * 添加页面
      */
     addApp = () => {
-        this.historyOptype = this.state.optype;
+        let optype = this.state.optype;
+        this.historyOptype = optype;
+        if(optype === '3'){
+            optype = '4';
+        }
         this.historyNodeData = this.props.nodeData;
         let appData = {
             code: "",
             name: "",
-            orgtypecode: undefined,
-            funtype: undefined,
+            orgtypecode: "",
+            funtype: "",
             app_desc: "",
             help_name: "",
             isenable: true,
@@ -155,13 +171,14 @@ class AppRegister extends Component {
             width: "1",
             height: "1",
             target_path: "",
-            apptype: 1,
+            apptype: '1',
             resid: "",
             image_src: ""
         };
         this.props.setAppParamData([]);
-        this.props.setNodeData(appData);
+        this.props.setNodeData(dataTransfer(appData));
         this.setState({
+            optype,
             isedit: true,
             isNew: true
         });
@@ -170,7 +187,11 @@ class AppRegister extends Component {
      * 添加页面
      */
     addPage = () => {
-        this.historyOptype = this.state.optype;
+        let optype = this.state.optype;
+        this.historyOptype = optype;
+        if(optype === '4'){
+            optype = '5';
+        }
         this.historyNodeData = this.props.nodeData;
         let pageData = {
             pagecode: "",
@@ -182,8 +203,9 @@ class AppRegister extends Component {
         };
         this.props.setPageButtonData([]);
         this.props.setPageTemplateData([]);
-        this.props.setNodeData(pageData);
+        this.props.setNodeData(dataTransfer(pageData));
         this.setState({
+            optype,
             isedit: true,
             isNew: true
         });
@@ -256,8 +278,8 @@ class AppRegister extends Component {
             });
         };
         if (isNew) {
-            if (optype === "" || optype === "1") {
-                if (id.length > 0) {
+            if (optype === "1" || optype === "2") {
+                if (id!=='00'&&id.length > 0) {
                     fromData.parentcode = id;
                 }
                 this.reqTreeNodeData(
@@ -270,7 +292,7 @@ class AppRegister extends Component {
                     newSaveFun
                 );
             }
-            if (optype === "2" || optype === "3") {
+            if (optype === "3" || optype === "4") {
                 if (id.length > 0) {
                     fromData.parent_id = id;
                 }
@@ -284,7 +306,7 @@ class AppRegister extends Component {
                     newSaveFun
                 );
             }
-            if (optype === "4") {
+            if (optype === "5") {
                 if (id.length > 0) {
                     fromData.parent_id = id;
                     fromData.parentcode = code;
@@ -474,6 +496,11 @@ class AppRegister extends Component {
      */
     handleTreeNodeSelect = obj => {
         let optype = "";
+        let nodeInfo = {
+            id: "",
+            code: "",
+            name: ""
+        };
         if (obj) {
             switch (obj.flag) {
                 // 对应树的前两层
@@ -522,14 +549,17 @@ class AppRegister extends Component {
                 default:
                     break;
             }
-        }
-        this.setState({
-            optype,
-            nodeInfo: {
+            nodeInfo = {
                 id: obj.moduleid,
                 code: obj.systypecode,
                 name: obj.name
             }
+        }
+        this.setState({
+            optype,
+            nodeInfo,
+            isedit: false,
+            isNew: false,
         });
     };
     /**

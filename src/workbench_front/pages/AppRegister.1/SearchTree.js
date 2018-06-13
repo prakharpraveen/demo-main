@@ -42,7 +42,10 @@ class SearchTree extends Component {
      * @param {Array} selectedKey
      */
     handleSelect = (selectedKey,info) => {
-        let selectedNode = info['selectedNodes'][0]['props']['refData'];
+        let selectedNode;
+        if(info['selectedNodes'].length>0){
+            selectedNode = info['selectedNodes'][0]['props']['refData'];
+        }
         // 为父组件返回选中的树节点对象
         this.props.onSelect(selectedNode);
     };

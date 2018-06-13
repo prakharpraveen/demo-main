@@ -21,7 +21,7 @@ class ClassFromCard extends Component {
                 label: "应用编码",
                 type: "string",
                 code: "code",
-                required: true,
+                isRequired: true,
                 check: (rule, value, callback) => {
                     if (value === this.props.parentData) {
                         callback("不能与父节点编码重复");
@@ -35,28 +35,28 @@ class ClassFromCard extends Component {
                 label: "应用名称",
                 type: "string",
                 code: "name",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "应用描述",
                 type: "string",
                 code: "app_desc",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "帮助文件名",
                 type: "string",
                 code: "help_name",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             }
         ];

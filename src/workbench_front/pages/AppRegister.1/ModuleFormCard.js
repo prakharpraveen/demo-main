@@ -54,7 +54,7 @@ class ModuleFromCard extends Component {
                 label: "模块编码",
                 type: "string",
                 code: "systypecode",
-				required: true,
+				isRequired: true,
 				isedit:this.props.isedit,
                 lg: 8
             },
@@ -62,7 +62,7 @@ class ModuleFromCard extends Component {
                 label: "模块号",
                 type: "string",
                 code: "moduleid",
-                required: true,
+                isRequired: true,
                 check: (rule, value, callback) => {
                     if (value === this.props.parentData) {
                         callback("不能与父节点编码重复");
@@ -77,7 +77,7 @@ class ModuleFromCard extends Component {
                 label: "模块名称",
                 type: "string",
                 code: "systypename",
-				required: true,
+				isRequired: true,
 				isedit:this.props.isedit,
                 lg: 8
             },
@@ -85,7 +85,7 @@ class ModuleFromCard extends Component {
                 label: "对应模块号",
                 type: "string",
                 code: "devmodule",
-				required: false,
+				isRequired: false,
 				isedit:this.props.isedit,
                 lg: 8
             },
@@ -93,7 +93,7 @@ class ModuleFromCard extends Component {
                 label: "应用范围",
                 type: "select",
                 code: "appscope",
-                required: false,
+                isRequired: false,
                 options: [
                     {
                         value: "0",
@@ -111,7 +111,7 @@ class ModuleFromCard extends Component {
                 label: "组织类型",
                 type: "select",
                 code: "orgtypecode",
-                required: false,
+                isRequired: false,
 				options: this.state.orgtypecode,
 				isedit:this.props.isedit,
                 lg: 8
@@ -120,7 +120,7 @@ class ModuleFromCard extends Component {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
-				required: false,
+				isRequired: false,
 				isedit:this.props.isedit,
                 lg: 8
             },
@@ -128,7 +128,7 @@ class ModuleFromCard extends Component {
                 label: "是否支持开关帐设置",
                 type: "checkbox",
                 code: "supportcloseaccbook",
-				required: false,
+				isRequired: false,
 				isedit:this.props.isedit,
                 lg: 8
             },
@@ -136,7 +136,7 @@ class ModuleFromCard extends Component {
                 label: "是否发送会计平台",
                 type: "checkbox",
                 code: "isaccount",
-				required: false,
+				isRequired: false,
 				isedit:this.props.isedit,
                 lg: 8
             }

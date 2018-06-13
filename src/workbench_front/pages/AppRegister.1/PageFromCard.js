@@ -24,7 +24,7 @@ class PageFormCard extends Component {
                 label: "页面编码",
                 type: "string",
                 code: "pagecode",
-                required: true,
+                isRequired: true,
                 check: (rule, value, callback) => {
                     if (value === this.props.parentData) {
                         callback("不能与父节点编码重复");
@@ -38,28 +38,28 @@ class PageFormCard extends Component {
                 label: "页面名称",
                 type: "string",
                 code: "pagename",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit
             },
             {
                 label: "设为默认页面",
                 type: "checkbox",
                 code: "isdefault",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit
             },
             {
                 label: "页面描述",
                 type: "string",
                 code: "pagedesc",
-                required: false,
+                isRequired: false,
                 isedit: this.props.isedit,
                 md: 24,
                 lg: 16,
@@ -69,7 +69,7 @@ class PageFormCard extends Component {
                 label: "页面地址",
                 type: "string",
                 code: "pageurl",
-                required: true,
+                isRequired: true,
                 isedit: this.props.isedit,
                 md: 24,
                 lg: 24,

@@ -234,6 +234,7 @@ class FormContent extends Component {
      * @param {Array} options 下拉项数组
      */
     createOption = options => {
+        console.log(options);
         return options.map((item, index) => {
             return (
                 <Option key={item.value} value={item.value}>
