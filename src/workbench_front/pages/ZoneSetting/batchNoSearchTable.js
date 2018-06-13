@@ -412,7 +412,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2700, y: 400 }} />
+			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2600, y: 400 }} />
 		);
 	}
 }

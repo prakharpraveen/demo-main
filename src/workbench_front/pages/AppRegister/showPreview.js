@@ -113,10 +113,10 @@ class PreviewModal extends Component {
 			<Modal
 				title='预览区'
 				mask={false}
-				wrapClassName='previewModal'
 				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
 				onCancel={this.showModalHidden}
+				width='100%'
 				footer={[
 					<Button
 						key='submit'

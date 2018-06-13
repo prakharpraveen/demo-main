@@ -185,7 +185,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '显示名称',
 				dataIndex: 'label',
-				width: 100,
+				width: 150,
 				fixed: 'left',
 				render: (text, record) => (
 					<EditableCell
@@ -197,7 +197,7 @@ class BatchSearchTable extends React.Component {
 			{
 			title: '编码',
 			dataIndex: 'code', 
-			width: 100,
+			width: 150,
 			render: (text, record) => (
 				<EditableCell
 					value={text}
@@ -207,7 +207,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '操作符编码',
 				dataIndex: 'opersign',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -218,7 +218,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '操作符名称',
 				dataIndex: 'opersignname',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -229,7 +229,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '默认取值',
 				dataIndex: 'defaultvalue',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -240,7 +240,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '固定条件',
 				dataIndex: 'isfixedcondition',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -251,7 +251,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '必输条件',
 				dataIndex: 'required',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -262,7 +262,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '可见',
 				dataIndex: 'visible',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -273,7 +273,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '查询条件',
 				dataIndex: 'isquerycondition',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -284,7 +284,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '数据类型',
 				dataIndex: 'datatype',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<SelectCell
 						value={text}
@@ -296,7 +296,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照名称',
 				dataIndex: 'refname',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -307,7 +307,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否包含下级',
 				dataIndex: 'containlower',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -318,7 +318,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否自动检查',
 				dataIndex: 'ischeck',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -329,7 +329,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否跨集团',
 				dataIndex: 'isbeyondorg',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -340,7 +340,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '是否使用系统函数',
 				dataIndex: 'usefunc',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -351,7 +351,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '显示类型 ',
 				dataIndex: 'showtype',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<SelectCell
 						value={text}
@@ -363,7 +363,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '返回类型',
 				dataIndex: 'returntype',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -451,14 +451,11 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2250, y:400 }} />
+				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3100, y:400 }} />
 		);
 	}
 }
 
-BatchSearchTable.propTypes = {
-//	zoneDatas: propTypes.object.isRequired,
-};
 
 export default connect((state) => ({ 
     areaList: state.zoneSettingData.areaList,

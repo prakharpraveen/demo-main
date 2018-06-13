@@ -23,7 +23,6 @@ export default function(props) {
                         cur[Object.keys(cur)[0]].status = "edit";
                         cur[Object.keys(cur)[0]].items.forEach((element, index) => {
                             element.attrcode =`${index+1}`;
-                            element.col = element.width;
                         });
                     }
                     return {...pre, ...cur}; // 数组拆开 展开为模板数据格式
