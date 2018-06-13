@@ -213,6 +213,7 @@ class ZoneTable extends React.Component {
 			},
 			{
 			title: '区域编码',
+			className:'required-tableCell',
 			dataIndex: 'code',
 			width: '20%',
 			render: (text, record) => (
