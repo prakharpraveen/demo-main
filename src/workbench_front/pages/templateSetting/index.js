@@ -395,6 +395,7 @@ class TemplateSetting extends Component {
 	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
 		this.setState({
+			selectedKeys:key,
 			pageCode:key[0]
 		},this.reqTreeTemData)
 	};
