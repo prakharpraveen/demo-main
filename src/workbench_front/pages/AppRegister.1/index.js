@@ -110,7 +110,7 @@ class AppRegister extends Component {
         };
         this.props.setNodeData(moduleData);
         this.setState({
-            isEdit: true,
+            isedit: true,
             isNew: true
         });
     };
@@ -131,7 +131,7 @@ class AppRegister extends Component {
         };
         this.props.setNodeData(classData);
         this.setState({
-            isEdit: true,
+            isedit: true,
             isNew: true
         });
     };
@@ -162,7 +162,7 @@ class AppRegister extends Component {
         this.props.setAppParamData([]);
         this.props.setNodeData(appData);
         this.setState({
-            isEdit: true,
+            isedit: true,
             isNew: true
         });
     };
@@ -184,7 +184,7 @@ class AppRegister extends Component {
         this.props.setPageTemplateData([]);
         this.props.setNodeData(pageData);
         this.setState({
-            isEdit: true,
+            isedit: true,
             isNew: true
         });
     };
@@ -196,82 +196,71 @@ class AppRegister extends Component {
             return;
         }
         let fromData = dataRestore(this.props.nodeData);
+        if (fromData.children) {
+            delete fromData.children;
+        }
         let {
             optype,
             isNew,
             nodeInfo: {id, code}
         } = this.state;
         //  新增保存回调
-        let newSaveFun = ({data: {data}}) => {
-            if (data) {
-                this.props.reqTreeData();
-                this.props.setNodeData(dataTransfer(data));
-                this.setState({
-                    isEdit: false,
-                    isNew: false
-                });
-                Notice({status: "success"});
-            }
+        let newSaveFun = data => {
+            this.reqTreeData();
+            this.props.setNodeData(dataTransfer(data));
+            this.setState({
+                isedit: false,
+                isNew: false
+            });
+            Notice({status: "success"});
         };
         //  对应树节点前两层 模块编辑保存成功回调
-        let moduleEditFun = ({data: {data}}) => {
-            if (data) {
-                this.props.reqTreeData();
-                this.props.setNodeData(
-                    dataTransfer({
-                        ...data,
-                        flag: "0"
-                    })
-                );
-                Notice({status: "success"});
-                this.setState({
-                    isEdit: false,
-                    isNew: false
-                });
-            }
+        let moduleEditFun = data => {
+            this.reqTreeData();
+            Notice({status: "success", msg: data.msg});
+            this.setState({
+                isedit: false,
+                isNew: false
+            });
         };
         //  对应树节点中间两层 应用分类 及 应用编辑后保存
-        let appEditFun = ({data: {data}}) => {
-            if (data) {
-                let treeData = {
-                    moduleid: data.pk_appregister,
-                    parentcode: code,
-                    systypecode: data.code,
-                    systypename: data.name,
-                    flag: "1"
-                };
-                this.props.updateTreeData(treeData);
-                Notice({status: "success"});
-                this.setState({
-                    isEdit: false,
-                    isNew: false
-                });
-            }
+        let appEditFun = data => {
+            let treeData = {
+                moduleid: data.pk_appregister,
+                parentcode: code,
+                systypecode: data.code,
+                systypename: data.name,
+                flag: "1"
+            };
+            this.updateTreeData(treeData);
+            Notice({status: "success"});
+            this.setState({
+                isedit: false,
+                isNew: false
+            });
         };
         //  对应树节点中间两层 应用分类 及 应用编辑后保存
-        let pageEditFun = ({data: {data}}) => {
-            if (data) {
-                let treeData = {
-                    moduleid: data.pk_apppage,
-                    parentcode: data.code,
-                    systypecode: data.pagecode,
-                    systypename: data.pagename,
-                    flag: "2"
-                };
-                this.props.updateTreeData(treeData);
-                Notice({status: "success"});
-                this.setState({
-                    isEdit: false,
-                    isNew: false
-                });
-            }
+        let pageEditFun = data => {
+            let treeData = {
+                moduleid: data.pk_apppage,
+                parentcode: data.code,
+                systypecode: data.pagecode,
+                systypename: data.pagename,
+                flag: "2"
+            };
+            this.updateTreeData(treeData);
+            Notice({status: "success"});
+            this.setState({
+                isedit: false,
+                isNew: false
+            });
         };
         if (isNew) {
             if (optype === "" || optype === "1") {
                 if (id.length > 0) {
                     fromData.parentcode = id;
                 }
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "模块新增"
@@ -285,7 +274,7 @@ class AppRegister extends Component {
                 if (id.length > 0) {
                     fromData.parent_id = id;
                 }
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "应用新增"
@@ -300,7 +289,7 @@ class AppRegister extends Component {
                     fromData.parent_id = id;
                     fromData.parentcode = code;
                 }
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "页面新增"
@@ -312,7 +301,7 @@ class AppRegister extends Component {
             }
         } else {
             if (optype === "1" || optype === "2") {
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "模块编辑"
@@ -323,7 +312,7 @@ class AppRegister extends Component {
                 );
             }
             if (optype === "3" || optype === "4") {
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "应用编辑"
@@ -334,7 +323,7 @@ class AppRegister extends Component {
                 );
             }
             if (optype === "5") {
-                reqTreeNodeData(
+                this.reqTreeNodeData(
                     {
                         name: "应用注册",
                         action: "页面编辑"
@@ -364,7 +353,7 @@ class AppRegister extends Component {
                     nodeInfo: {id, code, name}
                 } = _this.state;
                 nodeData = dataRestore(_this.props.nodeData);
-                let delFun = ({data: {data}}) => {
+                let delFun = data => {
                     Notice({
                         status: "success",
                         msg: data.true
@@ -375,7 +364,7 @@ class AppRegister extends Component {
                     });
                 };
                 if (optype === "1" || optype === "2") {
-                    reqTreeNodeData(
+                    _this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "模块删除"
@@ -388,7 +377,7 @@ class AppRegister extends Component {
                     );
                 }
                 if (optype === "3" || optype === "4") {
-                    reqTreeNodeData(
+                    _this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "应用删除"
@@ -401,7 +390,7 @@ class AppRegister extends Component {
                     );
                 }
                 if (optype === "5") {
-                    reqTreeNodeData(
+                    _this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "页面删除"
@@ -484,7 +473,6 @@ class AppRegister extends Component {
      * @param {Object} obj 选中的数节点对象
      */
     handleTreeNodeSelect = obj => {
-        console.log(obj);
         let optype = "";
         if (obj) {
             switch (obj.flag) {
@@ -544,6 +532,19 @@ class AppRegister extends Component {
             }
         });
     };
+    /**
+     * 更新树数组
+     */
+    updateTreeData = obj => {
+        let treeDataArray = this.props.treeData;
+        treeDataArray = treeDataArray.map((item, index) => {
+            if (item.moduleid === obj.moduleid) {
+                item = obj;
+            }
+            return item;
+        });
+        this.props.setTreeData(treeDataArray);
+    };
     componentDidMount() {
         this.reqTreeData();
     }
@@ -590,13 +591,13 @@ class AppRegister extends Component {
                 code: "del",
                 name: "删除",
                 type: "primary",
-                isshow: !isedit&& optype !== ""
+                isshow: !isedit && optype !== ""
             },
             {
                 code: "edit",
                 name: "修改",
                 type: "primary",
-                isshow: !isedit&& optype !== ""
+                isshow: !isedit && optype !== ""
             }
         ];
         return (
@@ -620,7 +621,8 @@ class AppRegister extends Component {
     }
 }
 AppRegister.propTypes = {
-    nodeData:PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired,
+    treeData: PropTypes.array.isRequired,
     setTreeData: PropTypes.func.isRequired,
     setNodeData: PropTypes.func.isRequired,
     setPageButtonData: PropTypes.func.isRequired,
@@ -628,7 +630,10 @@ AppRegister.propTypes = {
     setAppParamData: PropTypes.func.isRequired
 };
 export default connect(
-    state => ({nodeData:state.AppRegisterData.nodeData}),
+    state => ({
+        nodeData: state.AppRegisterData.nodeData,
+        treeData: state.AppRegisterData.treeData
+    }),
     {
         setTreeData,
         setNodeData,
