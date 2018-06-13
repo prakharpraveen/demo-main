@@ -8,6 +8,8 @@ import Ajax from 'Pub/js/ajax';
 import { GetQuery } from 'Pub/js/utils';
 import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
+
 
 const { Header } = Layout;
 /**
@@ -44,6 +46,27 @@ class MyBtns extends Component {
 		})
 	
 	}
+	// 校验tableCode 
+	validateCode(list){
+		let foreCheck, afterCheck, result= true;
+		foreCheck = list && list.length;
+		afterCheck = _.uniqBy(list, 'code') && _.uniqBy(list, 'code').length;
+		// 校验code重复
+		if (foreCheck > afterCheck){
+			Notice({ status: 'warning', msg: '区域编码不能重复' });
+			result = false;
+			return result;
+		}
+		// 校验为空
+		_.forEach(list, (v, i) => {
+			if (!v.code){
+				Notice({ status: 'warning', msg: '区域编码不能为空' });
+				result = false;
+				return result
+			}
+		})
+		return result;
+	}
 	// 保存 区域数据 
 	saveZoneData(list,form,type){
 		let param = GetQuery(this.props.location.search);
@@ -57,23 +80,26 @@ class MyBtns extends Component {
 				areaList:list,
 				...form,
 			}
-		
-		Ajax({
-			url: url,
-			data: datas,
-			info: {
-				name: '保存区域',
-				action: '保存区域设置'
-			},
-			success: ({ data }) => {
-				if (data.success && data.data) { 
-					this.props.setZoneData({});
-					// type =1 代表保存  type =2 表示下一步 
-					type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
-					//Notice({ status: 'success', msg: data.data.true });
+			
+		let validateResult = this.validateCode(list);
+		if (validateResult){
+			Ajax({
+				url: url,
+				data: datas,
+				info: {
+					name: '保存区域',
+					action: '保存区域设置'
+				},
+				success: ({ data }) => {
+					if (data.success && data.data) {
+						this.props.setZoneData({});
+						// type =1 代表保存  type =2 表示下一步 
+						type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
+						//Notice({ status: 'success', msg: data.data.true });
+					}
 				}
-			}
-		});
+			});
+		}
 	} 
 
 	// 处理按钮的事件  
