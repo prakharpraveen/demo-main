@@ -154,7 +154,7 @@ class AppFromCard extends Component {
     handleFormChange = changedFields => {
         this.props.setNodeData({...this.props.nodeData, ...changedFields});
     };
-    componentWillMount() {
+    componentDidMount() {
         this.getOptionsData("orgtypecode");
         this.getOptionsData("target_path");
     }

@@ -38,16 +38,6 @@ class ModuleFromCard extends Component {
             }
         });
     };
-    getFromData = () => {
-        const {getFieldsValue, validateFields} = this.props.form;
-        let flag = false;
-        validateFields((err, values) => {
-            if (!err) {
-                flag = true;
-            }
-        });
-        return flag ? getFieldsValue() : null;
-	};
 	/**
      * 表单任一字段值改变操作
      * @param {String|Object} changedFields 改变的字段及值

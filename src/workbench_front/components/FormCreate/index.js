@@ -32,7 +32,9 @@ class ReferShow extends Component {
         // console.log(this.props);
         return (
             <div>
-                {this.props.value&&this.props.value.refname ? this.props.value.refname : ""}
+                {this.props.value && this.props.value.refname
+                    ? this.props.value.refname
+                    : ""}
             </div>
         );
     }
@@ -104,7 +106,7 @@ class FormContent extends Component {
                                     message: "此字段为必输项！"
                                 },
                                 {
-                                validator: check?check:null
+                                    validator: check ? check : null
                                 }
                             ]
                         })(isedit ? <Input /> : <NormalShow />)}
@@ -171,10 +173,10 @@ class FormContent extends Component {
                     </FormItem>
                 );
             case "chooseImage":
-                return isedit ? (
+                return (
                     <FormItem label={label}>
                         {getFieldDecorator(code, {
-                            initialValue: '',
+                            initialValue: "",
                             rules: [
                                 {
                                     required: isRequired,
@@ -182,17 +184,19 @@ class FormContent extends Component {
                                 }
                             ]
                         })(
-                            <ChooseImageForForm
-                                data={item.options}
-                                title={"图标选择"}
-                            />
+                            isedit ? (
+                                <ChooseImageForForm
+                                    data={item.options}
+                                    title={"图标选择"}
+                                />
+                            ) : (
+                                <ChooseImageForForm
+                                    data={item.options}
+                                    title={"已选"}
+                                />
+                            )
                         )}
                     </FormItem>
-                ) : (
-                    <ChooseImageForForm
-                        data={item.options}
-                        title={"已选"}
-                    />
                 );
             default:
                 break;
@@ -211,9 +215,9 @@ class FormContent extends Component {
      * 创建表单项
      */
     createFormItem = () => {
-        let children = this.props.formData.map((item) => {
-            let {xs = 24, md = 12, lg = 12, code, hidden=false} = item;
-            if(hidden === true){
+        let children = this.props.formData.map(item => {
+            let {xs = 24, md = 12, lg = 12, code, hidden = false} = item;
+            if (hidden === true) {
                 return null;
             }
             return (

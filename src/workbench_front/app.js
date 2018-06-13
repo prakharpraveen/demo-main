@@ -10,7 +10,7 @@ import store from "./store";
 import Routes from "./routes";
 import Notice from "Components/Notice";
 import moment from "moment";
-import {CreateQuery} from 'Pub/js/utils.js';
+import {CreateQuery} from "Pub/js/utils.js";
 import "moment/locale/zh-cn";
 import "Assets/iconfont/iconfont.js";
 import "Pub/css/public.less";
@@ -33,7 +33,8 @@ class App extends Component {
         if (
             name === "应用注册" ||
             name === "菜单注册" ||
-            name === "个性化注册"
+            name === "个性化注册" ||
+            name === "模板设置"
         ) {
             type = "own";
         }
@@ -78,7 +79,9 @@ class App extends Component {
                                     pageurl
                                 )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
-                                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
+                                )}&c=${encodeURIComponent(
+                                    code
+                                )}${breadcrumbInfo}`;
                                 break;
                             case "own":
                                 // 浏览器当前页打开
