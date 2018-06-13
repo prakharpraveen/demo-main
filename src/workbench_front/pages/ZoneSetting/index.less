@@ -307,9 +307,12 @@
 // 		padding: 10px;
 // 	}
 // }
-.interModal {
+.zonesetting-interModal {
 	.ant-modal-body {
 		display: flex;
+		.inter-label{
+			margin:0 10px 0 30px;
+		}
 		.ant-input {
 			margin-left: 10px;
 			width: 30%;
@@ -317,7 +320,7 @@
 		}
 	}
 }
-.moneyModal {
+.zonesetting-moneyModal {
 	.descrip_label {
 		padding: 10px;
 		margin-bottom: 10px;
@@ -327,22 +330,25 @@
 	.mdcontent {
 		display: flex;
 		div {
-			width: 50%;
-			span {
+			.money-label{
+				margin: 0 10px 0 20px;
+			}
+			//width: 50%;
+			/* span {
 				display: inline-block;
 				min-width: 73px;
 				text-align: right;
 				margin-right: 10px;
-			}
+			} */
 		}
 	}
-	.ant-input {
+	/* .ant-input {
 		max-width: 55%;
 		margin-right: 20px;
-	}
+	} */
 }
 
-.referModal {
+.zonesetting-referModal {
 	.descrip_label {
 		padding: 10px;
 		margin-bottom: 10px;
@@ -352,7 +358,7 @@
 	.mdcontent {
 		display: flex;
 		div {
-			span {
+			.refer_label {
 				display: inline-block;
 				margin-right: 10px;
 				text-align: right;
@@ -365,7 +371,7 @@
 	}
 }
 
-.customModal {
+.zonesetting-customModal {
 	.ant-modal-body {
 		height: 100px;
 		.refer {

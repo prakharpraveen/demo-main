@@ -31,7 +31,7 @@ class CustomModal extends Component {
 			<Modal
 				title='自定义文档'
 				mask={false}
-				wrapClassName='customModal'
+				wrapClassName='zonesetting-customModal'
 				visible={this.props.modalVisibel}
 				onOk={this.onOkDialog}
 				destroyOnClose = {true}
