@@ -102,6 +102,15 @@ class ChooseImageForForm extends Component {
             return item;
         }));
     };
+    componentWillReceiveProps(nextProps){
+        let {data, value} = nextProps;
+        this.value = value;
+        let listData = this.updateListData(data, value);
+        this.setState({
+            listData,
+            value
+        });
+    }
     componentWillMount() {
         let {data, value} = this.props;
         this.value = value;

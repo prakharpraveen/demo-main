@@ -232,7 +232,7 @@ class AppRegister extends Component {
             this.props.setNodeData(dataTransfer(data));
             this.setState({
                 isedit: false,
-                isNew: false
+                isNew: false,
             });
             Notice({status: "success"});
         };
@@ -369,20 +369,19 @@ class AppRegister extends Component {
             okType: "danger",
             cancelText: "取消",
             onOk() {
-                let data, nodeData;
                 let {
                     optype,
-                    nodeInfo: {id, code, name}
+                    nodeInfo: {id}
                 } = _this.state;
-                nodeData = dataRestore(_this.props.nodeData);
                 let delFun = data => {
                     Notice({
                         status: "success",
                         msg: data.true
                     });
-                    _this.props.delTreeData(nodeData);
+                    _this.delTreeData(id);
+                    _this.props.setNodeData({});
                     _this.setState({
-                        optype: this.historyOptype
+                        optype: ''
                     });
                 };
                 if (optype === "1" || optype === "2") {
@@ -564,10 +563,11 @@ class AppRegister extends Component {
     };
     /**
      * 更新树数组
+     * @param {Object} obj  需要更新的树节点
      */
     updateTreeData = obj => {
         let treeDataArray = this.props.treeData;
-        treeDataArray = treeDataArray.map((item, index) => {
+        treeDataArray = treeDataArray.map((item) => {
             if (item.moduleid === obj.moduleid) {
                 item = obj;
             }
@@ -575,6 +575,21 @@ class AppRegister extends Component {
         });
         this.props.setTreeData(treeDataArray);
     };
+    /**
+     * 删除树数指定节点
+     * 
+     */
+    delTreeData = (id)=>{
+        let treeDataArray = this.props.treeData;
+        treeDataArray = treeDataArray.filter((item) => item.moduleid !== id);
+        this.props.setTreeData(treeDataArray);
+    }
+    /**
+     * 树查询
+     */
+    handleTreeSearch = ()=>{
+        
+    }
     componentDidMount() {
         this.reqTreeData();
     }
@@ -643,7 +658,7 @@ class AppRegister extends Component {
                     </PageLayoutHeader>
                 }>
                 <PageLayoutLeft>
-                    <SearchTree onSelect={this.handleTreeNodeSelect} />
+                    <SearchTree onSelect={this.handleTreeNodeSelect} onSearch={this.handleTreeSearch}/>
                 </PageLayoutLeft>
                 <PageLayoutRight>{this.switchFrom()}</PageLayoutRight>
             </PageLayout>

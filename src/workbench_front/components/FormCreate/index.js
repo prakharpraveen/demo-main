@@ -203,15 +203,6 @@ class FormContent extends Component {
                 break;
         }
     };
-    // // 绑定下拉
-    // triggerChange = (changedValue) => {
-    //     // Should provide an event to pass value to Form.
-    //     const onChange = this.props.onChange;
-    //     console.log(onChange);
-    //     if (onChange) {
-    //         onChange(Object.assign({}, {value:changedValue}));
-    //     }
-    // }
     /**
      * 创建表单项
      */
@@ -234,7 +225,6 @@ class FormContent extends Component {
      * @param {Array} options 下拉项数组
      */
     createOption = options => {
-        console.log(options);
         return options.map((item, index) => {
             return (
                 <Option key={item.value} value={item.value}>

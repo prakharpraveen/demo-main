@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Form} from "antd";
 import {setNodeData} from "Store/AppRegister/action";
-import {FormCreate,dataRestore} from "Components/FormCreate";
+import {FormCreate, dataRestore} from "Components/FormCreate";
 import Ajax from "Pub/js/ajax";
 import AppTable from "./AppTable";
 let timeout;
@@ -54,34 +54,34 @@ const IMGS = [
  * @param {*} value
  * @param {*} callback
  */
-function fetch(value, callback) {
-    if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-    }
-    function fake() {
-        Ajax({
-            url: `/nccloud/platform/appregister/querymdid.do`,
-            info: {
-                name: "元数据ID",
-                action: "查询"
-            },
-            data: {search_content: value},
-            success: ({data: {success, data}}) => {
-                if (success && data) {
-                    callback(data.rows);
-                }
-            }
-        });
-    }
-    timeout = setTimeout(fake, 300);
-}
+// function fetch(value, callback) {
+//     if (timeout) {
+//         clearTimeout(timeout);
+//         timeout = null;
+//     }
+//     function fake() {
+//         Ajax({
+//             url: `/nccloud/platform/appregister/querymdid.do`,
+//             info: {
+//                 name: "元数据ID",
+//                 action: "查询"
+//             },
+//             data: {search_content: value},
+//             success: ({data: {success, data}}) => {
+//                 if (success && data) {
+//                     callback(data.rows);
+//                 }
+//             }
+//         });
+//     }
+//     timeout = setTimeout(fake, 300);
+// }
 class AppFromCard extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             orgtypecode: [],
-            mdid: [],
+            // mdid: [],
             target_path: []
         };
     }
@@ -89,12 +89,21 @@ class AppFromCard extends Component {
      * 获取组织类型 下拉数据
      * @param {String} code
      */
-    getOptionsData = code => {
-		let url, data, info;
-		let nodeData = dataRestore(this.props.nodeData);
+    getOptionsData = (code, nodeData) => {
+        let url, data, info;
+        if (
+            this.state.target_path.length > 0 &&
+            this.state.orgtypecode.length > 0
+        ) {
+            return;
+        }
+        if (JSON.stringify(nodeData) === "{}") {
+            return;
+        }
+        nodeData = dataRestore(nodeData);
         if (code === "target_path") {
             url = `/nccloud/platform/appregister/querypagesel.do`;
-            data = {pk_appregister: nodeData.moduleid};
+            data = {pk_appregister: nodeData.pk_appregister};
             info = {
                 name: "默认页面",
                 action: "查询"
@@ -128,24 +137,24 @@ class AppFromCard extends Component {
             }
         });
     };
-    /**
-     * 关联元数据 ID
-     * @param {String} value
-     */
-    handleSearch = searchValue => {
-        this.props.form.setFieldsValue({
-            mdid: searchValue
-        });
-        fetch(searchValue, options => {
-            options = options.map((option, i) => {
-                return {
-                    value: option.refpk,
-                    text: `${option.refname} ${option.refcode}`
-                };
-            });
-            this.setState({mdid: options});
-        });
-    };
+    // /**
+    //  * 关联元数据 ID
+    //  * @param {String} value
+    //  */
+    // handleSearch = searchValue => {
+    //     this.props.form.setFieldsValue({
+    //         mdid: searchValue
+    //     });
+    //     fetch(searchValue, options => {
+    //         options = options.map((option, i) => {
+    //             return {
+    //                 value: option.refpk,
+    //                 text: `${option.refname} ${option.refcode}`
+    //             };
+    //         });
+    //         this.setState({mdid: options});
+    //     });
+    // };
 
     /**
      * 表单任一字段值改变操作
@@ -154,9 +163,13 @@ class AppFromCard extends Component {
     handleFormChange = changedFields => {
         this.props.setNodeData({...this.props.nodeData, ...changedFields});
     };
+    componentWillReceiveProps(nextProps) {
+        this.getOptionsData("orgtypecode", nextProps.nodeData);
+        this.getOptionsData("target_path", nextProps.nodeData);
+    }
     componentDidMount() {
-        this.getOptionsData("orgtypecode");
-        this.getOptionsData("target_path");
+        this.getOptionsData("orgtypecode", this.props.nodeData);
+        this.getOptionsData("target_path", this.props.nodeData);
     }
 
     render() {
@@ -248,12 +261,16 @@ class AppFromCard extends Component {
             },
             {
                 label: "关联元数据ID",
-                type: "search",
+                type: "refer",
                 code: "mdid",
                 isRequired: false,
-                placeholder: "请输入元数据名称过滤",
-                search: this.handleSearch,
-                options: this.state.mdid,
+                options: {
+                    queryTreeUrl:
+                        "/nccloud/riart/ref/mdmainEntityRefTreeAction.do",
+                    refType: "tree",
+                    placeholder: "关联元数据ID",
+                    isTreelazyLoad: false
+                },
                 isedit: this.props.isedit
             },
             {
@@ -328,6 +345,7 @@ class AppFromCard extends Component {
                 isedit: this.props.isedit
             }
         ];
+        console.log(this.props.nodeData);
         return (
             <div>
                 <FormCreate
@@ -350,13 +368,12 @@ class AppFromCard extends Component {
 }
 AppFromCard = Form.create()(AppFromCard);
 AppFromCard.propTypes = {
-	nodeData: PropTypes.object.isRequired,
-	setNodeData: PropTypes.func.isRequired,
+    nodeData: PropTypes.object.isRequired,
+    setNodeData: PropTypes.func.isRequired
 };
 export default connect(
-    state => {
-        let {nodeData} = state.AppRegisterData;
-        return {nodeData};
-    },
+    state => ({
+        nodeData: state.AppRegisterData.nodeData
+    }),
     {setNodeData}
 )(AppFromCard);

@@ -24,11 +24,11 @@ class SearchTree extends Component {
     onChange = e => {
         const value = e.target.value;
         this.setState({searchValue: value}, () => {
-            // this.props.onSearch(value, this.handleExpanded);
+            this.props.onSearch(value, this.handleExpanded);
         });
     };
     handleExpanded = dataList => {
-        const expandedKeys = dataList.map((item, index) => {
+        const expandedKeys = dataList.map((item) => {
             return item.code;
         });
         expandedKeys.push("00");
