@@ -235,7 +235,7 @@ class TemplateSetting extends Component {
 				this.props.history.push(`/Zone?templetid=${templatePks}`);
 			break;
 			case '新增':
-				this.props.history.push('/Zone');
+				this.props.history.push(`/Zone?status=${"templateSetting"}`);
 				break;
 			case '删除':
 				if(!templatePks){

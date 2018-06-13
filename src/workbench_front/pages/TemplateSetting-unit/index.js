@@ -183,7 +183,7 @@ class TemplateSetting extends Component {
 			  <Menu.Item key="设置默认">
 				<p>设置默认</p>
 			  </Menu.Item>
-			  <Menu.Divider />
+			  <Menu.Divider/>
 			  <Menu.Item key="取消默认"><p>取消默认</p></Menu.Item>
 			</Menu>
 		  )
@@ -235,7 +235,7 @@ class TemplateSetting extends Component {
 				this.props.history.push(`/Zone?templetid=${templatePks}`);
 			break;
 			case '新增':
-				this.props.history.push('/Zone');
+				this.props.history.push(`/Zone?status=${"templateSetting"}`);
 				break;
 			case '删除':
 				if(!templatePks){
@@ -274,6 +274,7 @@ class TemplateSetting extends Component {
 				break;
 			}
 		}
+	//复制模板，设置默认的值
 	setDefaultFun = (url, infoData, textInfo)=>{
 		let { pageCode }=this.state;
 		Ajax({
@@ -327,7 +328,11 @@ class TemplateSetting extends Component {
 			for (const key in treeObj) {
 				if (treeObj.hasOwnProperty(key)) {
 					if(item.templateId===treeObj[key][0].parentId){
-						item.children.push(treeObj[key][0]);
+						if(treeObj[key][0].type==='group'){
+							item.children[0].children.push(treeObj[key][0]);
+						}else{
+							item.children[1].children.push(treeObj[key][0]);
+						}
 					}
 				}
 			}
@@ -825,15 +830,17 @@ class TemplateSetting extends Component {
 								this.handdleRefChange(value, "org_df_biz");
 							}}
 						/>
-						{Btns.map((item, index) => {
-							item = this.setBtnsShow(item);
-							return this.creatBtn(item);
-						})}
-						<Dropdown overlay={this.menuFun()} trigger={['click']}>
-						<Button key="" className="margin-left-10" type="primary">
-							设置默认模板
-						</Button>
-						</Dropdown>
+						<div>
+							{Btns.map((item, index) => {
+								item = this.setBtnsShow(item);
+								return this.creatBtn(item);
+							})}
+							<Dropdown overlay={this.menuFun()} trigger={['click']}>
+								<Button key="" className="margin-left-10" type="primary">
+									设置默认模板
+								</Button>
+							</Dropdown>
+						</div>
 					</Header>
 					<Layout height={'100%'}>
 						<Sider

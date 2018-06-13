@@ -63,6 +63,21 @@ export function generateTemData(data){
 		if (parentId==='root') {
 			// 根据是否为叶子节点 来添加是否有 children 属性
 			item.children = [];
+			item.children=[
+				{
+					key: 'group1234567',
+					id: 'group1234567',
+					text: '集团',
+					name: '集团',
+					children: []
+				},{
+					key: 'organize1234567',
+					id: 'organize1234567',
+					text: '组织',
+					name: '组织',
+					children: []
+				}
+			];
 			treeArray.push(item);
 		} else {
 			treeObj[templateId] = [];
