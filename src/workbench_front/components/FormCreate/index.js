@@ -168,7 +168,8 @@ class FormContent extends Component {
                 return (
                     <FormItem>
                         {getFieldDecorator(code, {
-                            initialValue: false
+                            initialValue: false,
+                            valuePropName:'checked'
                         })(<Checkbox disabled={!isedit}>{label}</Checkbox>)}
                     </FormItem>
                 );
