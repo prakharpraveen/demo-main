@@ -177,40 +177,6 @@ class TemplateSetting extends Component {
 			templateNameVal:'',
 		});
 	}
-	menuFun  =()=>{
-		return(
-			<Menu onClick={this.settingClick.bind(this)}>
-			  <Menu.Item key="设置默认">
-				<p>设置默认</p>
-			  </Menu.Item>
-			  <Menu.Divider/>
-			  <Menu.Item key="取消默认"><p>取消默认</p></Menu.Item>
-			</Menu>
-		  )
-	};
-	settingClick = (key)=>{
-		let { templateNameVal, templatePks, pageCode } = this.state;
-		let infoDataSet={
-			"templateId": templatePks ,"pageCode":pageCode
-		}
-		const btnName=key.key;
-		if(!templatePks){
-			Notice({ status: 'warning', msg: "请选择模板数据" });
-			return;
-		}
-		switch (btnName) {
-			case '设置默认':
-				let urlSetting='/nccloud/platform/template/setDefaultTemplate.do';
-				this.setDefaultFun(urlSetting, infoDataSet, "设置成功");
-				break;
-			case '取消默认':
-				let urlCancel='/nccloud/platform/template/cancelDefaultTemplate.do';
-				this.setDefaultFun(urlCancel, infoDataSet, "取消成功");
-				break;
-			default:
-				break;
-		}
-	}
 	//按钮事件的触发
 	handleClick = (btnName) => {
 		let { templateNameVal, templatePks, pageCode } = this.state;
@@ -232,7 +198,7 @@ class TemplateSetting extends Component {
 					Notice({ status: 'warning', msg: "请选择模板数据" });
 					return;
 				}
-				this.props.history.push(`/Zone?templetid=${templatePks}`);
+				this.props.history.push(`/Zone?templetid=${templatePks}&status=${"templateSetting"}`);
 			break;
 			case '新增':
 				this.props.history.push(`/Zone?status=${"templateSetting"}`);
@@ -405,16 +371,16 @@ class TemplateSetting extends Component {
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
-		let {pageCode}=this.state;
+		let {pageCode, orgidObj}=this.state;
 		let infoData={
-			"pageCode": pageCode
+			"pageCode": pageCode,"orgId":orgidObj.refpk
 		}
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
 			data: infoData,
 			info:{
 				name:'模板设置',
-				action:'参数查询'
+				action:'模板数据查询'
 			},
 			success: ({
 				data
@@ -835,11 +801,6 @@ class TemplateSetting extends Component {
 								item = this.setBtnsShow(item);
 								return this.creatBtn(item);
 							})}
-							<Dropdown overlay={this.menuFun()} trigger={['click']}>
-								<Button key="" className="margin-left-10" type="primary">
-									设置默认模板
-								</Button>
-							</Dropdown>
 						</div>
 					</Header>
 					<Layout height={'100%'}>
@@ -930,6 +891,13 @@ class TemplateSetting extends Component {
 											<Option value="按角色和用户分配">按角色和用户分配</Option>
 											<Option value="按职责分配">按职责分配</Option>
 										</Select>
+										<BusinessUnitTreeRef
+											value={org_df_biz}
+											placeholder={"默认业务单元"}
+											onChange={value => {
+												this.handdleRefChange(value, "org_df_biz");
+											}}
+										/>
 									</div>
 									<div className='allocationPage-content-tree'>
 										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}

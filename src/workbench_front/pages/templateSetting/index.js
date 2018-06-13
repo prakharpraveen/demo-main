@@ -232,7 +232,7 @@ class TemplateSetting extends Component {
 					Notice({ status: 'warning', msg: "请选择模板数据" });
 					return;
 				}
-				this.props.history.push(`/Zone?templetid=${templatePks}`);
+				this.props.history.push(`/Zone?templetid=${templatePks}&status=${"templateSetting"}`);
 			break;
 			case '新增':
 				this.props.history.push(`/Zone?status=${"templateSetting"}`);
