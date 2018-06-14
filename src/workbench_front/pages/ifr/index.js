@@ -28,10 +28,10 @@ class Ifr extends Component {
 		let { ifr, ar, c } = GetQuery(this.props.location.search);
 		let queryUrl;
 		ifr = decodeURIComponent(ifr);
-		if(ifr.indexOf('#') != -1){
-			queryUrl = `${ifr}&ar=${ar}&c=${c}`;
-		}else{
+		if(ifr.indexOf('#') === -1){
 			queryUrl = `${ifr}?ar=${ar}&c=${c}`;
+		}else{
+			queryUrl = `${ifr}&ar=${ar}&c=${c}`;
 		}
 		return (
 			<div className='nc-workbench-iframe'>
