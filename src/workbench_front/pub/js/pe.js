@@ -134,8 +134,8 @@ function NCPE() {
 			return;
 		}
 		logQuene.push(touchPoint.toString());
-		console.log(touchPoint.toString());
-		console.log('quene length:' + logQuene.size());
+		// console.log(touchPoint.toString());
+		// console.log('quene length:' + logQuene.size());
 		if (logQuene.size() >= 10) {
 			this.commit();
 		}
@@ -158,15 +158,15 @@ function NCPE() {
 		xhttp.open('POST', NLINKURL, true);
 		/*stop logging in case of network error.*/
 		xhttp.onerror = () => {
-			console.log('commit pe error,failtimes=' + failTimes);
+			// console.log('commit pe error,failtimes=' + failTimes);
 			failTimes++;
 			if (failTimes > 3) {
 				isLog = false;
-				console.log('network is error,set islog=false');
+				// console.log('network is error,set islog=false');
 			}
 		};
 		xhttp.onload = () => {
-			console.log('sync over!');
+			// console.log('sync over!');
 		};
 		/*content type should be cloud*/
 		xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

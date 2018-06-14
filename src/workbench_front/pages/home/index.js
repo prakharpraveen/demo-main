@@ -268,7 +268,6 @@ class Home extends Component {
 
     render() {
         let {groups, layout} = this.state;
-        console.log(groups);
         return (
             <div className="nc-workbench-home-page">
                 <div className="nc-workbench-home-container">
