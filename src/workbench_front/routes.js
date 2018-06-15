@@ -36,7 +36,7 @@ const AppRegister = Loadable({
     loading: Loading
 });
 const AppRegister1 = Loadable({
-    loader: () => import("Pages/AppRegister.1"),
+    loader: () => import("Pages/AppRegister1"),
     loading: Loading
 });
 const Zone = Loadable({

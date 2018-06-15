@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';
 import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
@@ -22,7 +20,6 @@ class PreviewModal extends Component {
     onOkDialog = ()=>{
 		this.props.setModalVisibel(false)
 	}
-
 	createDom = () =>{
 		let { editTable, form, search } = this.props;
 		let { createForm } = form;
@@ -120,7 +117,6 @@ class PreviewModal extends Component {
 				footer={[
 					<Button
 						key='submit'
-						// disabled={}
 						type='primary'
 						onClick={this.onOkDialog}
 					>

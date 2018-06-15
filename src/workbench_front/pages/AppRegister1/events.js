@@ -1,14 +1,8 @@
 import Ajax from "Pub/js/ajax";
-// import getUrlParam from 'Components/getUrlParam';
 export default function(props) {
-    console.log(props);
-
-    // 获取templetId
-    // let templetid = getUrlParam('templetid');
     let url, data;
     url = "/nccloud/platform/templet/previewtemplet.do";
     data = {
-        //    previewList: array
         templetid: props.templetid
     };
     Ajax({

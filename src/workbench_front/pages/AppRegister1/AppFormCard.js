@@ -2,11 +2,10 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Form} from "antd";
-import {setNodeData} from "Store/AppRegister/action";
+import {setNodeData} from "Store/AppRegister1/action";
 import {FormCreate, dataRestore} from "Components/FormCreate";
-import Ajax from "Pub/js/ajax";
 import AppTable from "./AppTable";
-let timeout;
+import Ajax from "Pub/js/ajax";
 const IMGS = [
     {
         name: "img1",
@@ -49,39 +48,11 @@ const IMGS = [
         src: "jiaqin"
     }
 ];
-/**
- * 关联元数据 ID 数据查询
- * @param {*} value
- * @param {*} callback
- */
-// function fetch(value, callback) {
-//     if (timeout) {
-//         clearTimeout(timeout);
-//         timeout = null;
-//     }
-//     function fake() {
-//         Ajax({
-//             url: `/nccloud/platform/appregister/querymdid.do`,
-//             info: {
-//                 name: "元数据ID",
-//                 action: "查询"
-//             },
-//             data: {search_content: value},
-//             success: ({data: {success, data}}) => {
-//                 if (success && data) {
-//                     callback(data.rows);
-//                 }
-//             }
-//         });
-//     }
-//     timeout = setTimeout(fake, 300);
-// }
 class AppFromCard extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             orgtypecode: [],
-            // mdid: [],
             target_path: []
         };
     }
@@ -137,25 +108,6 @@ class AppFromCard extends Component {
             }
         });
     };
-    // /**
-    //  * 关联元数据 ID
-    //  * @param {String} value
-    //  */
-    // handleSearch = searchValue => {
-    //     this.props.form.setFieldsValue({
-    //         mdid: searchValue
-    //     });
-    //     fetch(searchValue, options => {
-    //         options = options.map((option, i) => {
-    //             return {
-    //                 value: option.refpk,
-    //                 text: `${option.refname} ${option.refcode}`
-    //             };
-    //         });
-    //         this.setState({mdid: options});
-    //     });
-    // };
-
     /**
      * 表单任一字段值改变操作
      * @param {String|Object} changedFields 改变的字段及值
@@ -173,6 +125,7 @@ class AppFromCard extends Component {
     }
 
     render() {
+        let isEdit = this.props.isEdit;
         let appFormData = [
             {
                 label: "应用编码",
@@ -186,14 +139,14 @@ class AppFromCard extends Component {
                         callback();
                     }
                 },
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用名称",
                 type: "string",
                 code: "name",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "组织类型",
@@ -201,7 +154,7 @@ class AppFromCard extends Component {
                 code: "orgtypecode",
                 isRequired: true,
                 options: this.state.orgtypecode,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "功能点类型",
@@ -226,7 +179,7 @@ class AppFromCard extends Component {
                         text: "管理+业务类应用"
                     }
                 ],
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用类型",
@@ -243,21 +196,21 @@ class AppFromCard extends Component {
                         text: "小部件"
                     }
                 ],
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用宽",
                 type: "string",
                 code: "width",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用高",
                 type: "string",
                 code: "height",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "关联元数据ID",
@@ -271,35 +224,35 @@ class AppFromCard extends Component {
                     placeholder: "关联元数据ID",
                     isTreelazyLoad: false
                 },
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "所属集团",
                 type: "string",
                 code: "pk_group",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "是否启用",
                 type: "checkbox",
                 code: "isenable",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "是否加载占用",
                 type: "checkbox",
                 code: "uselicense_load",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "是否CA用户可用",
                 type: "checkbox",
                 code: "iscauserusable",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "默认页面",
@@ -307,7 +260,7 @@ class AppFromCard extends Component {
                 code: "target_path",
                 isRequired: false,
                 options: this.state.target_path,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "多语字段",
@@ -321,7 +274,7 @@ class AppFromCard extends Component {
                 type: "string",
                 code: "help_name",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用描述",
@@ -331,7 +284,7 @@ class AppFromCard extends Component {
                 md: 24,
                 lg: 24,
                 xl: 24,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "图标路径",
@@ -342,10 +295,9 @@ class AppFromCard extends Component {
                 md: 24,
                 lg: 24,
                 xl: 24,
-                isedit: this.props.isedit
+                isedit: isEdit
             }
         ];
-        console.log(this.props.nodeData);
         return (
             <div>
                 <FormCreate
@@ -368,12 +320,14 @@ class AppFromCard extends Component {
 }
 AppFromCard = Form.create()(AppFromCard);
 AppFromCard.propTypes = {
+    isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
     setNodeData: PropTypes.func.isRequired
 };
 export default connect(
     state => ({
-        nodeData: state.AppRegisterData.nodeData
+        nodeData: state.AppRegisterData1.nodeData,
+        isEdit: state.AppRegisterData1.isEdit,
     }),
     {setNodeData}
 )(AppFromCard);

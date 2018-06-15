@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import { Form } from 'antd';
 import {FormCreate} from "Components/FormCreate";
-import {setNodeData} from "Store/AppRegister/action";
+import {setNodeData} from "Store/AppRegister1/action";
 import Ajax from "Pub/js/ajax";
 class ModuleFromCard extends Component {
     constructor(props) {
@@ -17,7 +17,6 @@ class ModuleFromCard extends Component {
      *
      */
     getOrgTypeCodeOptionsData = () => {
-        let {DOMDATA} = this.state;
         Ajax({
             url: `/nccloud/platform/appregister/queryorgtype.do`,
             info: {
@@ -49,13 +48,14 @@ class ModuleFromCard extends Component {
         this.getOrgTypeCodeOptionsData();
     }
     render() {
+        let isEdit = this.props.isEdit;
         let moduleFormData = [
             {
                 label: "模块编码",
                 type: "string",
                 code: "systypecode",
 				isRequired: true,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -70,7 +70,7 @@ class ModuleFromCard extends Component {
                         callback();
                     }
 				},
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -78,7 +78,7 @@ class ModuleFromCard extends Component {
                 type: "string",
                 code: "systypename",
 				isRequired: true,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -86,7 +86,7 @@ class ModuleFromCard extends Component {
                 type: "string",
                 code: "devmodule",
 				isRequired: false,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -104,7 +104,7 @@ class ModuleFromCard extends Component {
                         text: "集团"
                     }
 				],
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -113,7 +113,7 @@ class ModuleFromCard extends Component {
                 code: "orgtypecode",
                 isRequired: false,
 				options: this.state.orgtypecode,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -121,7 +121,7 @@ class ModuleFromCard extends Component {
                 type: "string",
                 code: "resid",
 				isRequired: false,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -129,7 +129,7 @@ class ModuleFromCard extends Component {
                 type: "checkbox",
                 code: "supportcloseaccbook",
 				isRequired: false,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             },
             {
@@ -137,7 +137,7 @@ class ModuleFromCard extends Component {
                 type: "checkbox",
                 code: "isaccount",
 				isRequired: false,
-				isedit:this.props.isedit,
+				isedit:isEdit,
                 lg: 8
             }
 		];
@@ -152,16 +152,15 @@ class ModuleFromCard extends Component {
 }
 ModuleFromCard = Form.create()(ModuleFromCard);
 ModuleFromCard.propTypes = {
-	setNodeData:PropTypes.func.isRequired,
+    isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
+	setNodeData:PropTypes.func.isRequired,
 };
 export default connect(
-    state => {
-        let {
-            nodeData,
-        } = state.AppRegisterData;
-        return {nodeData};
-    },
+    state => ({
+        nodeData: state.AppRegisterData1.nodeData,
+        isEdit: state.AppRegisterData1.isEdit,
+    }),
     {
         setNodeData
     }

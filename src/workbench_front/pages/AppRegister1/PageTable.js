@@ -6,7 +6,7 @@ import {DragDropContext, DragSource, DropTarget} from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import _ from "lodash";
-import {setPageButtonData, setPageTemplateData} from "Store/AppRegister/action";
+import {setPageButtonData, setPageTemplateData} from "Store/AppRegister1/action";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import PreviewModal from "./showPreview";
@@ -623,7 +623,7 @@ class PageTable extends Component {
         }
     }
     add() {
-        if (this.props.billStatus.isNew) {
+        if (this.props.isNew) {
             Notice({status: "warning", msg: "请先将页面进行保存！"});
             return;
         }
@@ -760,23 +760,21 @@ class PageTable extends Component {
     }
 }
 PageTable.propTypes = {
-    appType: PropTypes.number.isRequired,
-    billStatus: PropTypes.object.isRequired,
+    isNew: PropTypes.bool.isRequired,
+    nodeData: PropTypes.object.isRequired,
     appButtonVOs: PropTypes.array.isRequired,
     pageTemplets: PropTypes.array.isRequired,
     setPageTemplateData: PropTypes.func.isRequired,
     setPageButtonData: PropTypes.func.isRequired,
-    nodeData: PropTypes.object.isRequired
 };
 let DragFromeTable = DragDropContext(HTML5Backend)(PageTable);
 export default connect(
     state => {
         return {
-            appType: state.AppRegisterData.appType,
-            billStatus: state.AppRegisterData.billStatus,
+            isNew: state.AppRegisterData.isNew,
+            nodeData: state.AppRegisterData.nodeData,
             pageTemplets: state.AppRegisterData.pageTemplets,
             appButtonVOs: state.AppRegisterData.appButtonVOs,
-            nodeData: state.AppRegisterData.nodeData
         };
     },
     {setPageButtonData, setPageTemplateData}

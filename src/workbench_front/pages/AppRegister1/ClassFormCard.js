@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Form} from "antd";
 import {FormCreate} from "Components/FormCreate";
-import {setNodeData} from "Store/AppRegister/action";
+import {setNodeData} from "Store/AppRegister1/action";
 class ClassFromCard extends Component {
     constructor(props, context) {
         super(props, context);
@@ -16,6 +16,7 @@ class ClassFromCard extends Component {
         this.props.setNodeData({...this.props.nodeData, ...changedFields});
     };
     render() {
+        let isEdit = this.props.isEdit;
         let classFormData = [
             {
                 label: "应用编码",
@@ -29,35 +30,35 @@ class ClassFromCard extends Component {
                         callback();
                     }
                 },
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用名称",
                 type: "string",
                 code: "name",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "应用描述",
                 type: "string",
                 code: "app_desc",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "帮助文件名",
                 type: "string",
                 code: "help_name",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             }
         ];
         return (
@@ -71,14 +72,13 @@ class ClassFromCard extends Component {
 }
 ClassFromCard = Form.create()(ClassFromCard);
 ClassFromCard.propTypes = {
+    isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
 };
 export default connect(
-    state => {
-        let {
-            nodeData,
-        } = state.AppRegisterData;
-        return {nodeData};
-    },
+    state => ({
+        nodeData: state.AppRegisterData1.nodeData,
+        isEdit: state.AppRegisterData1.isEdit,
+    }),
     {setNodeData}
 )(ClassFromCard);

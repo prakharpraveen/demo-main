@@ -3,8 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Form} from "antd";
 import {FormCreate} from "Components/FormCreate";
-import {setNodeData} from "Store/AppRegister/action";
-import Ajax from "Pub/js/ajax";
+import {setNodeData} from "Store/AppRegister1/action";
 import PageTable from "./PageTable";
 class PageFormCard extends Component {
     constructor(props) {
@@ -19,6 +18,7 @@ class PageFormCard extends Component {
         this.props.setNodeData({...this.props.nodeData, ...changedFields});
     };
     render() {
+        let isEdit = this.props.isEdit;
         let pageFormData = [
             {
                 label: "页面编码",
@@ -32,35 +32,35 @@ class PageFormCard extends Component {
                         callback();
                     }
                 },
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "页面名称",
                 type: "string",
                 code: "pagename",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "设为默认页面",
                 type: "checkbox",
                 code: "isdefault",
                 isRequired: true,
-                isedit: this.props.isedit
+                isedit: isEdit
             },
             {
                 label: "页面描述",
                 type: "string",
                 code: "pagedesc",
                 isRequired: false,
-                isedit: this.props.isedit,
+                isedit: isEdit,
                 md: 24,
                 lg: 16,
                 xl: 16
@@ -70,7 +70,7 @@ class PageFormCard extends Component {
                 type: "string",
                 code: "pageurl",
                 isRequired: true,
-                isedit: this.props.isedit,
+                isedit: isEdit,
                 md: 24,
                 lg: 24,
                 xl: 24
@@ -98,13 +98,14 @@ class PageFormCard extends Component {
 }
 PageFormCard = Form.create()(PageFormCard);
 PageFormCard.propTypes = {
+    isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
     setNodeData: PropTypes.func.isRequired
 };
 export default connect(
-    state => {
-        let {nodeData} = state.AppRegisterData;
-        return {nodeData};
-    },
+    state => ({
+        nodeData: state.AppRegisterData1.nodeData,
+        isEdit: state.AppRegisterData1.isEdit,
+    }),
     {setNodeData}
 )(PageFormCard);
