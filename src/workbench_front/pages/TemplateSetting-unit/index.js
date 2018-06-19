@@ -142,13 +142,13 @@ class TemplateSetting extends Component {
 	};
 	//保存
 	handleOk = (e) => {
-		let { templateNameVal, templateTitleVal, templatePks, pageCode } = this.state;
+		let { templateNameVal, templateTitleVal, templatePks, pageCode, orgidObj } = this.state;
 		if(!templateNameVal){
 			Notice({ status: 'warning', msg: "请输入模板标题" });
 			return ;
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal
+			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal,'orgId':orgidObj.refpk
 		}
 		Ajax({
 			url: `/nccloud/platform/template/copyTemplate.do`,
