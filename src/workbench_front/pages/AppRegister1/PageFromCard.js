@@ -32,28 +32,32 @@ class PageFormCard extends Component {
                         callback();
                     }
                 },
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "页面名称",
                 type: "string",
                 code: "pagename",
                 isRequired: true,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "设为默认页面",
                 type: "checkbox",
                 code: "isdefault",
                 isRequired: true,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "页面描述",
