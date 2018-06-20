@@ -479,7 +479,8 @@ class AppRegister extends Component {
     let nodeInfo = {
       id: "",
       code: "",
-      name: ""
+      name: "",
+      parentId:""
     };
     if (obj) {
       switch (obj.flag) {
@@ -530,7 +531,8 @@ class AppRegister extends Component {
       nodeInfo = {
         id: obj.moduleid,
         code: obj.systypecode,
-        name: obj.name
+        name: obj.name,
+        parentId: obj.parentcode
       };
     }
     this.props.setIsNew(false);
@@ -645,7 +647,9 @@ class AppRegister extends Component {
   }
 }
 AppRegister.propTypes = {
+  isNew: PropTypes.bool.isRequired,
   isEdit: PropTypes.bool.isRequired,
+  nodeInfo: PropTypes.object.isRequired,
   nodeData: PropTypes.object.isRequired,
   treeData: PropTypes.array.isRequired,
   setTreeData: PropTypes.func.isRequired,
@@ -659,8 +663,9 @@ AppRegister.propTypes = {
 export default connect(
   state => ({
     nodeData: state.AppRegisterData1.nodeData,
-    nodeInfo: state.AppRegisterData1.nodeData,
+    nodeInfo: state.AppRegisterData1.nodeInfo,
     treeData: state.AppRegisterData1.treeData,
+    isNew: state.AppRegisterData1.isNew,
     isEdit: state.AppRegisterData1.isEdit
   }),
   {

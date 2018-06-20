@@ -9,7 +9,8 @@ let defaultState = {
   nodeInfo: {
     id: "",
     code: "",
-    name: ""
+    name: "",
+    parentId: ""
   },
   // 应用参数数据
   appParamVOs: [],
