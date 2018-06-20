@@ -94,7 +94,7 @@ class SearchTree extends Component {
             }
         ];
         return (
-            <div>
+            <div className={this.props.className}>
                 <Search
                     style={{marginBottom: 8}}
                     placeholder="应用查询"

@@ -648,6 +648,7 @@ class AppRegister extends Component {
       >
         <PageLayoutLeft>
           <SearchTree
+          className='appRegister-searchTree'
             onSelect={this.handleTreeNodeSelect}
             onSearch={this.handleTreeSearch}
           />
