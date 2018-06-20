@@ -62,4 +62,11 @@ export const setIsEdit = (data) => {
 		data
 	};
 };
+// 设置 树展开节点key数组
+export const setExpandedKeys = (data) => {
+	return {
+		type: AppRegister1.EXPANDEDKEYS,
+		data
+	};
+};
 

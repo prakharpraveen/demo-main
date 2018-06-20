@@ -10,7 +10,8 @@ import {
   setPageTemplateData,
   setAppParamData,
   setIsNew,
-  setIsEdit
+  setIsEdit,
+  setExpandedKeys
 } from "Store/AppRegister1/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -480,7 +481,7 @@ class AppRegister extends Component {
       id: "",
       code: "",
       name: "",
-      parentId:""
+      parentId: ""
     };
     if (obj) {
       switch (obj.flag) {
@@ -568,7 +569,19 @@ class AppRegister extends Component {
   /**
    * 树查询
    */
-  handleTreeSearch = () => {};
+  handleTreeSearch = value => {
+    let searchCallback = data => {
+      let expandedKeys = data.map(item => item.moduleid);
+      this.props.setTreeData(data);
+      this.props.setExpandedKeys(expandedKeys);
+    };
+    this.reqTreeNodeData(
+      { name: "应用注册", action: "应用查询" },
+      `/nccloud/platform/appregister/searchapps.do`,
+      { search_content: value },
+      searchCallback
+    );
+  };
   componentDidMount() {
     this.reqTreeData();
   }
@@ -637,6 +650,7 @@ class AppRegister extends Component {
       >
         <PageLayoutLeft>
           <SearchTree
+            className="appRegister-searchTree"
             onSelect={this.handleTreeNodeSelect}
             onSearch={this.handleTreeSearch}
           />
@@ -658,7 +672,8 @@ AppRegister.propTypes = {
   setPageTemplateData: PropTypes.func.isRequired,
   setAppParamData: PropTypes.func.isRequired,
   setIsNew: PropTypes.func.isRequired,
-  setIsEdit: PropTypes.func.isRequired
+  setIsEdit: PropTypes.func.isRequired,
+  setExpandedKeys: PropTypes.func.isRequired
 };
 export default connect(
   state => ({
@@ -676,6 +691,7 @@ export default connect(
     setPageTemplateData,
     setAppParamData,
     setIsNew,
-    setIsEdit
+    setIsEdit,
+    setExpandedKeys
   }
 )(AppRegister);

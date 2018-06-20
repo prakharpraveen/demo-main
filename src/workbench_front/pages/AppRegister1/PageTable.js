@@ -12,24 +12,12 @@ import {
   setPageTemplateData
 } from "Store/AppRegister1/action";
 import { dataTransfer, dataRestore } from "Components/FormCreate";
+import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import PreviewModal from "./showPreview";
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-const EditableInputCell = ({ editable, value, onChange }) => (
-  <div>
-    {editable ? (
-      <Input
-        style={{ margin: "-5px 0" }}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-      />
-    ) : (
-      value
-    )}
-  </div>
-);
 const EditableSelectCell = ({ editable, value, onChange }) => (
   <div>
     {editable ? (
@@ -169,7 +157,8 @@ class PageTable extends Component {
       batchSettingModalVisibel: false,
       templetid: "",
       visible: false,
-      templateCode: ""
+      templateCode: "",
+      iserror:false
     };
     this.columnsBtn = [
       {
@@ -210,12 +199,6 @@ class PageTable extends Component {
         width: "10%",
         render: (text, record) => this.renderColumns(text, record, "btnarea")
       },
-      // {
-      // 	title: 'pagecode',
-      // 	dataIndex: 'pagecode',
-      // 	width: '10%',
-      // 	render: (text, record) => this.renderColumns(text, record, 'pagecode')
-      // },
       {
         title: "按钮功能描述",
         dataIndex: "btndesc",
@@ -319,12 +302,6 @@ class PageTable extends Component {
                 </span>
               ) : (
                 <span>
-                  <a
-                    className="margin-right-5"
-                    onClick={() => this.edit(record)}
-                  >
-                    编辑
-                  </a>
                   <Popconfirm
                     title="确定删除?"
                     cancelText={"取消"}
@@ -352,7 +329,7 @@ class PageTable extends Component {
                       className="margin-right-5"
                       onClick={() => this.setDefault(record)}
                     >
-                      设置为默认模板
+                      设为默认模板
                     </a>
                   )}
                 </span>
@@ -436,13 +413,18 @@ class PageTable extends Component {
   renderColumns(text, record, column, type = "input") {
     record = _.cloneDeep(record);
     if (type === "input") {
-      return (
-        <EditableInputCell
-          editable={record.editable}
-          value={text}
-          onChange={value => this.handleChange(value, record, column)}
-        />
-      );
+      if (record.editable) {
+        return (
+          <EditableCell
+            value={text}
+            hasError={this.state.iserror}
+            onChange={this.onCellChange(record, column)}
+            onCheck={this.onCellCheck(record, column)}
+          />
+        );
+      } else {
+        return <div>{text}</div>;
+      }
     } else if (type === "select") {
       return (
         <EditableSelectCell
@@ -453,6 +435,39 @@ class PageTable extends Component {
       );
     }
   }
+  /**
+   * 单元格编辑校验
+   */
+  onCellCheck = (record, dataIndex) => {
+    return value => {
+      const listData = this.getNewData();
+      const target = listData.find(
+        item =>
+          (item.num !== record.num && item[dataIndex] === value) ||
+          value.length === 0
+      );
+      if (target) {
+        this.setState({ iserror: true });
+        return true;
+      } else {
+        this.setState({ iserror: false });
+        return false;
+      }
+    };
+  };
+  /**
+   * 单元格编辑方法
+   */
+  onCellChange = (record, column) => {
+    return value => {
+      let newData = this.getNewData();
+      const target = newData.filter(item => record.num === item.num)[0];
+      if (target) {
+        target[column] = value;
+        this.setNewData(newData);
+      }
+    };
+  };
   handleChange(value, record, column) {
     let newData = this.getNewData();
     const target = newData.filter(item => record.num === item.num)[0];
@@ -461,6 +476,9 @@ class PageTable extends Component {
       this.setNewData(newData);
     }
   }
+
+
+
   edit(record) {
     let newData = this.getNewData();
     const dataList = newData.filter(item => item.editable === true);
@@ -645,7 +663,7 @@ class PageTable extends Component {
       this.setNewData(newData);
     } else if (activeKey === "2") {
       this.props.history.push(
-        `/Zone?&pid=${id}&pcode=${pagecode}&n=设置页面模板`
+        `/Zone?&pid=${id}&pcode=${code}&n=设置页面模板`
       );
     }
   }

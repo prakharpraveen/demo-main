@@ -16,4 +16,6 @@ export const PAGETEMPLATEDATA = 'PAGETEMPLATEDATA';
 export const ISNEW = 'ISNEW';
 // 是否是编辑
 export const ISEDIT = 'ISEDIT';
+// 树展开节点key数组
+export const EXPANDEDKEYS = 'EXPANDEDKEYS';
 

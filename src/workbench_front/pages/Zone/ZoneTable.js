@@ -8,7 +8,7 @@ import update from 'immutability-helper';
 import _ from 'lodash'; 
 import {setNewList } from 'Store/Zone/action'; 
 import Ajax from 'Pub/js/ajax';
-import MdDefaultClassEntityRef from "Components/Refers/mdMainEntityRef";
+import MdDefaultClassEntityRef from "Components/Refers/mdDefaultClassEntityRef";
 import Notice from 'Components/Notice';
  import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
