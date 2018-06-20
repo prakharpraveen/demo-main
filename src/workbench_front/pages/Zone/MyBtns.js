@@ -60,8 +60,8 @@ class MyBtns extends Component {
 
 		// 校验为空
 		_.forEach(list, (v, i) => {
-			if (!v.code){
-				Notice({ status: 'warning', msg: '区域编码不能为空' });
+			if (!v.code || !v.name){
+				Notice({ status: 'warning', msg: '区域编码或名称不能为空' });
 				result = false;
 				return result
 			}

@@ -296,13 +296,13 @@ class ZoneTable extends React.Component {
 			{
 				title: '序号',
 				dataIndex: 'position',
-				width: '10%',
+				width: '5%',
 			},
 			{
 			title: '区域编码',
 			className:'required-tableCell',
 			dataIndex: 'code',
-			width: '20%',
+			width: '15%',
 			render: (text, record) => (
 				<EditableCell
 					value={text}
@@ -312,7 +312,7 @@ class ZoneTable extends React.Component {
 		}, {
 			title: '区域名称',
 			dataIndex: 'name',
-			width: '20%',
+			width: '15%',
 			render: (text, record) => (
 				<EditableCell
 					value={text}
@@ -323,7 +323,7 @@ class ZoneTable extends React.Component {
 		 {
 			title: '区域类型',
 			dataIndex: 'areatype', 
-			width: '10%',
+			width: '15%',
 			render: (text, record) => {
 				if (record.pk_area){
 					return (<span>{switchType(text)}</span>)
@@ -338,7 +338,7 @@ class ZoneTable extends React.Component {
 			{
 			title: '关联区域编码',
 			dataIndex: 'relationcode', 
-			width: '10%',
+			width: '15%',
 			render: (text, record) => {
 				return(
 				<RelateSelect
@@ -353,7 +353,7 @@ class ZoneTable extends React.Component {
 			{
 			title: '区域状态',
 			dataIndex: 'areastatus', 
-			width: '10%',
+			width: '15%',
 			render: (text, record) => {
 				return(
 				<RelateSelect
@@ -367,7 +367,7 @@ class ZoneTable extends React.Component {
 			{
 				title: '关联元数据',
 				dataIndex: 'metaname', 
-				width: '10%',
+				width: '15%',
 				render: (text, record) => {
 					if(record.pk_area) {
 						return (<span>{switchType(record)}</span>)
@@ -380,7 +380,7 @@ class ZoneTable extends React.Component {
 			},  
 			{
 			title: '操作',
-			width: '10%',
+			width: '5%',
 			dataIndex: 'operation',
 			render: (text, record) => {
 				return (
