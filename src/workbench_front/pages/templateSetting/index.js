@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
@@ -12,6 +12,7 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+const TabPane = Tabs.TabPane;
 const initRoTreeData = {
 	key: 'abc1234567',
 	id: 'abc1234567',
@@ -63,6 +64,10 @@ const Btns = [
 	{
 		name: '分配',
 		type: 'primary'
+	},
+	{
+		name: '浏览',
+		type: 'primary'
 	}
 ];
 class TemplateSetting extends Component {
@@ -99,7 +104,8 @@ class TemplateSetting extends Component {
 			allowedTreeKey:'',
 			orgidObj:{},
 			treeRoDataObj:{},
-			parentIdcon:''
+			parentIdcon:'',
+			activeKey: "1"
 		};
 	}
 	// 按钮显隐性控制
@@ -136,6 +142,9 @@ class TemplateSetting extends Component {
 				}
 				break;
 			case '设置默认模板':
+				isShow = true;
+				break;
+			case '浏览':
 				isShow = true;
 				break;
 			default:
@@ -290,6 +299,13 @@ class TemplateSetting extends Component {
 					alloVisible:true
 				})
 				break;
+			case '浏览':
+				if(!templatePks){
+					Notice({ status: 'warning', msg: "请选择模板数据" });
+					return;
+				}
+				this.props.history.push(`/Zone?templetid=${templatePks}&status=${"templateSetting"}`);
+				break;
 			default:
 				break;
 			}
@@ -434,6 +450,9 @@ class TemplateSetting extends Component {
 		let infoData={
 			"pageCode": pageCode
 		}
+		if(!infoData.pageCode){
+			return;
+		}
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
 			data: infoData,
@@ -447,7 +466,7 @@ class TemplateSetting extends Component {
 				if (data.success) {
 					this.setState({
 						treeTemDataArray: data.data
-					}, this.restoreTreeTemData);
+					}, this.restoreTreeTemData)
 				}
 			}
 		});
@@ -834,7 +853,8 @@ class TemplateSetting extends Component {
 			treeResData,
 			treeRoVisible,
 			allowDataArray,
-			treeAllowedData
+			treeAllowedData,
+			activeKey
 		} = this.state;
 		return (
 			<PageLayout className="nc-workbench-templateSetting">
@@ -866,7 +886,34 @@ class TemplateSetting extends Component {
 							{treeData.length >0&&treeData[0].children.length > 0 &&this.treeResAndUser(treeData,'systemOnselect')}
 						</Sider>
 						<Content style={{ padding: '20px', minHeight: 280 }}>
-							{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
+							<Tabs
+								defaultActiveKey="1"
+								onChange={activeKey => {
+									this.setState({activeKey});
+								}}
+								activeKey={this.state.activeKey}
+								//tabBarExtraContent={this.creatAddLineBtn()}
+							>
+								<TabPane tab="页面模板" key="1">
+									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
+								</TabPane>
+								<TabPane tab="查询模板" key="2">
+									<div>
+										<p>asfasdfdasfddyett</p>
+										<p>asfasdfdasfddyett</p>
+										<p>asfasdfdasfddyett</p>
+										<p>asfasdfdasfddyett</p>
+									</div>
+								</TabPane>
+								<TabPane tab="打印模板" key="3">
+									<div>
+										<p>1111111111</p>
+										<p>2222222222</p>
+										<p>3333333333</p>
+										<p>44444444444</p>
+									</div>
+								</TabPane>
+							</Tabs>
 						</Content>
 						<Modal
 							title="请录入正确的模板名称和标题"
