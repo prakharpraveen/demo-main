@@ -1,8 +1,14 @@
-export const checkInContainer = (GridX, GridY, col, w) => {
-
-    /**防止元素出container */
-    if (GridX + w > col - 1) GridX = col - w //右边界
-    if (GridX < 0) GridX = 0//左边界
-    if (GridY < 0) GridY = 0//上边界
-    return { GridX, GridY }
-}
+/**
+ * 防止元素溢出容器
+ * @param {Int} gridX
+ * @param {Int} gridY 
+ * @param {Int} col
+ * @param {Int} w 卡片宽度
+ * @returns {Object} gridX，gridY的单元格坐标对象
+ */
+export const checkInContainer = (gridX, gridY, col, w) => {
+	if (gridX + w > col - 1) gridX = col - w; //右边界
+	if (gridX < 0) gridX = 0; //左边界
+	if (gridY < 0) gridY = 0; //上边界
+	return { gridX, gridY };
+};

@@ -2,18 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import './index.less';
-//ant
 import { Button } from 'antd';
+import { connect } from 'react-redux';
+import { updateShadowCard, updateGroupList, updateCurrEditID, updateLayout } from 'Store/test/action';
 //自定义组件
 import { layoutCheck } from './collision';
 import { compactLayout, compactLayoutHorizontal } from './compact';
-import { checkInContainer } from './correction';
-import GroupItem from './groupItem';
-
-import { connect } from 'react-redux';
-import { updateShadowCard, updateGroupList, updateCurrEditID, updateLayout } from 'Store/test/action';
 import * as utilService from './utilService';
-
+import GroupItem from './groupItem';
 import MyContentAnchor from './anchor';
 import MyFooter from './footer';
 
@@ -24,27 +20,15 @@ class MyContent extends Component {
 		super(props);
 		this.state = {};
 	}
-	//通过坐标x，y计算所在的单元格
-	calGridXY(x, y, width) {
-		const { margin, containerWidth, col, rowHeight } = this.props.layout;
-
-		/**坐标转换成格子的时候，无须计算margin */
-		//向下取整
-		let GridX = Math.floor(x / containerWidth * col);
-		let GridY = Math.floor(y / (rowHeight + (margin ? margin[1] : 0)));
-
-		// /**防止元素出container */
-		return checkInContainer(GridX, GridY, col, width);
-	}
 	//拖拽中卡片在组上移动
 	moveCardInGroupItem = (dragItem, hoverItem, x, y) => {
 		let groups = this.props.groups;
 		let shadowCard = this.props.shadowCard;
-		const { GridX, GridY } = this.calGridXY(x, y, shadowCard.width);
-		if (GridX === shadowCard.gridx && GridY === shadowCard.gridy) {
+		const { margin, containerWidth, col, rowHeight } = this.props.layout;
+		const { gridX, gridY } = utilService.calGridXY(x, y, shadowCard.width, margin, containerWidth, col, rowHeight);
+		if (gridX === shadowCard.gridx && gridY === shadowCard.gridy) {
 			return;
 		}
-		// shadowCard = _.cloneDeep(shadowCard);
 		let groupIndex = hoverItem.index;
 		//先判断组内有没有相同的appID
 		const pk_appregister = shadowCard.pk_appregister;
@@ -60,10 +44,8 @@ class MyContent extends Component {
 			});
 		});
 
+		shadowCard = { ...shadowCard, gridx: gridX, gridy: gridY };
 
-		// console.log(GridX, GridY);
-		shadowCard = { ...shadowCard, gridx: GridX, gridy: GridY };
-		
 		groups[groupIndex].apps.push(shadowCard);
 
 		const newlayout = layoutCheck(
@@ -75,7 +57,6 @@ class MyContent extends Component {
 
 		const compactedLayout = compactLayout(newlayout, shadowCard);
 		groups[groupIndex].apps = compactedLayout;
-		// console.log(shadowCard.gridx,shadowCard.gridy)
 		this.props.updateShadowCard(shadowCard);
 		this.props.updateGroupList(groups);
 	};
@@ -236,7 +217,7 @@ class MyContent extends Component {
 	handleLoad = () => {
 		if (!resizeWaiter) {
 			resizeWaiter = true;
-			setTimeout(()=>{
+			setTimeout(() => {
 				console.info('resize！');
 				resizeWaiter = false;
 				let clientWidth;
@@ -257,16 +238,11 @@ class MyContent extends Component {
 				const windowWidth = window.innerWidth - 60 * 2;
 				const col = utilService.calColCount(defaultCalWidth, windowWidth, containerPadding, margin);
 				const calWidth = utilService.calColWidth(clientWidth, col, containerPadding, margin);
-				// console.log(clientWidth,calWidth,col);
 
 				let { groups } = this.props;
 				groups = _.cloneDeep(groups);
 				_.forEach(groups, (g) => {
 					let compactedLayout = compactLayoutHorizontal(g.apps, col);
-
-					// const firstCard = compactedLayout[0];
-
-					// compactedLayout = compactLayout(compactedLayout, firstCard);
 					g.apps = compactedLayout;
 				});
 
@@ -290,7 +266,9 @@ class MyContent extends Component {
 		return (
 			<div className='nc-desktop-setting-content'>
 				<MyContentAnchor />
-				<div className='nc-workbench-home-container' id="nc-workbench-home-container">{this.initGroupItem(groups)}</div>
+				<div className='nc-workbench-home-container' id='nc-workbench-home-container'>
+					{this.initGroupItem(groups)}
+				</div>
 				<MyFooter relateidObj={relateidObj} />
 			</div>
 		);
