@@ -9,9 +9,8 @@ import { GetQuery } from 'Pub/js/utils';
 import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-
-
 const { Header } = Layout;
+
 /**
  * 工作桌面 配置模板区域
  */
@@ -37,26 +36,28 @@ class MyBtns extends Component {
 		};
 	}
 	
-	// 根据不同的状态 生成不同的按钮 
+	// 根据不同的按钮 绑定对应的事件 
 	creatBtns(Btns){
 	return	Btns && Btns.map((item,index) =>{
 			return (<Button key={index} className='margin-left-10' type={item.type} onClick={this.handleClick.bind(this, item.name)}>
 				{item.name}
 			</Button>)
 		})
-	
 	}
+
 	// 校验tableCode 
 	validateCode(list){
 		let foreCheck, afterCheck, result= true;
 		foreCheck = list && list.length;
 		afterCheck = _.uniqBy(list, 'code') && _.uniqBy(list, 'code').length;
+
 		// 校验code重复
 		if (foreCheck > afterCheck){
 			Notice({ status: 'warning', msg: '区域编码不能重复' });
 			result = false;
 			return result;
 		}
+
 		// 校验为空
 		_.forEach(list, (v, i) => {
 			if (!v.code){
@@ -67,6 +68,7 @@ class MyBtns extends Component {
 		})
 		return result;
 	}
+
 	// 保存 区域数据 
 	saveZoneData(list,form,type){
 		let param = GetQuery(this.props.location.search);
@@ -80,7 +82,8 @@ class MyBtns extends Component {
 				areaList:list,
 				...form,
 			}
-			
+
+	 //  校验 表格的合法性 
 		let validateResult = this.validateCode(list);
 		if (validateResult){
 			Ajax({
@@ -95,7 +98,6 @@ class MyBtns extends Component {
 						this.props.setZoneData({});
 						// type =1 代表保存  type =2 表示下一步 
 						type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
-						//Notice({ status: 'success', msg: data.data.true });
 					}
 				}
 			});
@@ -127,7 +129,6 @@ class MyBtns extends Component {
 				break; 
 			case '取消':
 				this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${datas.pagecode}&pid=${datas.pageid}`)
-			//	location.hash = '/ar';
 				break;
 			case '返回':
 				history.back();
@@ -151,11 +152,9 @@ MyBtns = withRouter(MyBtns);
 export default connect(
 	(state) => {
 		let { zoneFormData, newListData, zoneDatas } = state.zoneRegisterData;
-
 		return {
 			zoneFormData, newListData, zoneDatas
 		}
-		
 	},
 	{
 		setZoneData

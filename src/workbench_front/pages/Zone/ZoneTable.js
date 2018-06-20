@@ -117,11 +117,6 @@ class EditableSelect extends React.Component {
 								<Option value={'1'}>表单区</Option>
 								<Option value={'2'}>表格区</Option>
 							</Select>
-							{/* <Icon
-								type="check"
-								className="editable-cell-icon-check"
-								onClick={this.check}
-							/> */}
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
@@ -276,6 +271,7 @@ class ZoneTable extends React.Component {
 			},
 		}];
 	}
+
 	// 组件更新
 	componentWillReceiveProps(nextProps) { 
 		if (nextProps.zoneDatas.areaList){
@@ -283,10 +279,12 @@ class ZoneTable extends React.Component {
 				dataSource: nextProps.zoneDatas.areaList.map((v, i) => { v.key = i; return v }),
 				count: nextProps.zoneDatas.areaList.length,
 			});
+
 			// 设置初始 table数组 
 			this.props.setNewList(nextProps.zoneDatas.areaList)
 		}
 	}
+	
     // 闭包 只对具体的单元格修改 
 	onCellChange = (key, dataIndex) => {
 		return (value) => {
@@ -311,6 +309,7 @@ class ZoneTable extends React.Component {
 			() => { this.props.setNewList(this.state.dataSource)}
 	);
 	}
+
 	handleAdd = () => {
 		const { templetid } = this.props;
 		const { count, dataSource } = this.state;
@@ -344,13 +343,12 @@ class ZoneTable extends React.Component {
 ZoneTable.propTypes = {
 	zoneDatas: PropTypes.object.isRequired,
 };
-// let DragFromeTable = DragDropContext(HTML5Backend)(ZoneTable);
+
 export default connect(
 	(state) => {
 		return {
-		
-			templetid: state.zoneRegisterData.templetid, // 当前区域上级模板id 
-			zoneDatas: state.zoneRegisterData.zoneDatas, // 后台返回的数据 
+			templetid: state.zoneRegisterData.templetid, 
+			zoneDatas: state.zoneRegisterData.zoneDatas, 
 		};
 	},
 	{  setNewList }
