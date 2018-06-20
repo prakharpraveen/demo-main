@@ -52,12 +52,16 @@ class SearchTree extends Component {
         let expandedKeys = this.props.expandedKeys;
         const loop = data =>
             data.map(item => {
-                let {moduleid: code, systypename: name} = item;
+                let {flag,moduleid: code, systypename: name,systypecode} = item;
                 let itemContent;
                 if (code === "00") {
                     itemContent = `${name}`;
                 } else {
-                    itemContent = `${code} ${name}`;
+                    if(flag - 0 === 0 ){
+                        itemContent = `${code} ${name}`;
+                    }else{
+                        itemContent = `${systypecode} ${name}`;
+                    }
                 }
                 const index = itemContent.indexOf(searchValue);
                 const beforeStr = itemContent.substr(0, index);
