@@ -98,28 +98,42 @@ class TemplateSetting extends Component {
 			treeAllowedData:[],
 			allowedTreeKey:'',
 			orgidObj:{},
-			treeRoDataObj:{}
+			treeRoDataObj:{},
+			parentIdcon:''
 		};
 	}
 	// 按钮显隐性控制
 	setBtnsShow = (item) => {
+		let {parentIdcon} = this.state;
 		let { name } = item;
 		let isShow = false;
 		switch (name) {
 			case '新增':
-					isShow = true;
+				isShow = true;
 				break;
 			case '修改':
+				if(parentIdcon=='root'){
+					isShow = false;
+				}else{
 					isShow = true;
+				}
 				break;
 			case '删除':
+				if(parentIdcon=='root'){
+					isShow = false;
+				}else{
 					isShow = true;
+				}
 				break;
 			case '复制':
 					isShow = true;
 				break;
 			case '分配':
-				isShow = true;
+				if(parentIdcon=='root'){
+					isShow = false;
+				}else{
+					isShow = true;
+				}
 				break;
 			case '设置默认模板':
 				isShow = true;
@@ -177,14 +191,20 @@ class TemplateSetting extends Component {
 			templateNameVal:'',
 		});
 	}
-	menuFun  =()=>{
+	menuFun = ()=>{
+		let {templateNameVal} = this.state;
+		const len=templateNameVal.length;
+		let isButton = false;
+		if(templateNameVal.slice((len-3),(len-1))==='默认'){
+			isButton=true
+		}
 		return(
 			<Menu onClick={this.settingClick.bind(this)}>
 			  <Menu.Item key="设置默认">
-				<p>设置默认</p>
+				<button disabled={isButton}>设置默认</button>
 			  </Menu.Item>
 			  <Menu.Divider />
-			  <Menu.Item key="取消默认"><p>取消默认</p></Menu.Item>
+			  <Menu.Item key="取消默认"><button disabled={!isButton}>取消默认</button></Menu.Item>
 			</Menu>
 		  )
 	};
@@ -311,7 +331,9 @@ class TemplateSetting extends Component {
 	restoreTreeTemData = ()=>{
 		let {
 			treeTemData,
-			treeTemDataArray
+			treeTemDataArray,
+			selectedKeys,
+			parentIdcon
 		} = this.state;
 		treeTemDataArray.map((item)=>{
 			if(item.isDefault==='y'){
@@ -334,8 +356,15 @@ class TemplateSetting extends Component {
 		})
 		//处理树数据
 		treeTemData = treeInfo.treeArray;
+		if(treeTemData.length===0){
+			return;
+		}
 		treeTemData = generateTreeData(treeTemData);
+		let newinitKeyArray=[];
+		newinitKeyArray.push(treeTemData[0].key);
 		this.setState({
+			selectedKeys:newinitKeyArray,
+			parentIdcon:treeTemData[0].parentId,
 			treeTemData
 		});
 	}
@@ -423,26 +452,32 @@ class TemplateSetting extends Component {
 			}
 		});
 	}
-	onSelect = (key, e)=>{
+	onTemSelect = (key, e)=>{
 		this.setState({
 			selectedKeys:key,
 			templatePks: key[0]
 		},this.lookTemplateNameVal);
 	}
 	lookTemplateNameVal = ()=>{
-		let { templateNameVal, treeTemData, templatePks }=this.state;
+		let { templateNameVal, treeTemData, templatePks, parentIdcon }=this.state;
 		for(let i=0;i<treeTemData.length;i++){
+			if(treeTemData[i].templateId===templatePks){
+				parentIdcon=treeTemData[i].parentId;
+				templateNameVal=treeTemData[i].text;
+			}
 			if(treeTemData[i].children&&treeTemData[i].children.length>0){
 				let childrenDatas=treeTemData[i].children;
 				childrenDatas.map((ele)=>{
 					if(ele.templateId===templatePks){
 						templateNameVal=ele.text;
+						parentIdcon=ele.parentId;
 					}
 				})
 			}
 		}
 		this.setState({
-			templateNameVal
+			templateNameVal,
+			parentIdcon
 		})
 	}
 	/**
@@ -658,7 +693,25 @@ class TemplateSetting extends Component {
 			allowedTreeKey:key[0]
 		})
 	}
-	treeResAndUser = (data)=>{
+	onSelect = (typeSelect, key, e)=>{
+		switch(typeSelect){
+			case 'systemOnselect':
+				this.onSelectQuery(key, e)
+				break;
+			case 'templateOnselect':
+				this.onTemSelect(key, e);
+				break;
+			case 'resOnselect':
+				this.selectRoFun(key, e);
+				break;
+			case 'allowedOnselect':
+				this.onSelectedAllow(key, e);
+			default:
+			break;
+
+		}
+	}
+	treeResAndUser = (data, typeSelect, hideSearch)=>{
 		const {
 			expandedKeys,
 			autoExpandParent,
@@ -696,16 +749,16 @@ class TemplateSetting extends Component {
 				/>;
 			});
 		};
-		return (<div className='allocation-treeCom'>
-		<Search 
+		return (<div>
+			{ hideSearch?"":(<Search 
 			style = {{marginBottom: 8}}
 			placeholder = 'Search'
 			onChange = {this.onChange}
-		/> 
-		{data.length > 0 && data[0].children.length > 0 && ( 
+		/>) } 
+		{data.length > 0 && ( 
 			<Tree showLine onExpand = {this.onExpand}
 				expandedKeys = {expandedKeys}
-				onSelect = {this.selectRoFun}
+				onSelect = {this.onSelect.bind(this,typeSelect)}
 				autoExpandParent = {autoExpandParent}
 				selectedKeys = {selectedKeys} >
 				{loop(data)} 
@@ -770,10 +823,6 @@ class TemplateSetting extends Component {
 	};
 	render() {
 		const {
-			expandedKeys,
-			searchValue,
-			autoExpandParent,
-			selectedKeys,
 			treeData,
 			treeTemData,
 			templateNameVal,
@@ -787,50 +836,19 @@ class TemplateSetting extends Component {
 			allowDataArray,
 			treeAllowedData
 		} = this.state;
-		const loop = (data) => {
-			return data.map((item) => {
-				let {
-					text,
-					key,
-					children
-				} = item;
-				const index = text.indexOf(searchValue);
-				const beforeStr = text.substr(0, index);
-				const afterStr = text.substr(index + searchValue.length);
-				const title = index > -1 ? ( 
-					<span> 
-						{beforeStr} 
-						<span style = {{color: '#f50'}} > 
-							{searchValue} 
-						</span>
-							{afterStr} 
-					</span>
-				) : (
-					<div>
-						<span> {text} </span> 
-					</div>
-				);
-				if (children) {
-					return ( <TreeNode key = {key} title = {title} > {loop(children)} </TreeNode>
-					);
-				}
-				return <TreeNode key = {key} title = {title}
-				/>;
-			});
-		};
 		return (
 			<PageLayout className="nc-workbench-templateSetting">
 				<Layout>
 					<Header>
-						{Btns.map((item, index) => {
+						{treeTemData.length >0 && Btns.map((item, index) => {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
 						})}
-						<Dropdown overlay={this.menuFun()} trigger={['click']}>
+						{treeTemData.length >0 &&(<Dropdown overlay={this.menuFun()} trigger={['click']}>
 						<Button key="" className="margin-left-10" type="primary">
 							设置默认模板
 						</Button>
-						</Dropdown>
+						</Dropdown>)}
 					</Header>
 					<Layout height={'100%'}>
 						<Sider
@@ -845,32 +863,10 @@ class TemplateSetting extends Component {
 								padding: '20px'
 							}}
 						>
-							<div>
-								<Search 
-								style = {{marginBottom: 8}}
-								placeholder = 'Search'
-								onChange = {this.onChange}
-								/> 
-								{treeData.length > 0 && treeData[0].children.length > 0 && ( 
-									<Tree showLine onExpand = {this.onExpand}
-										expandedKeys = {expandedKeys}
-										onSelect = {this.onSelectQuery}
-										autoExpandParent = {autoExpandParent}
-										selectedKeys = {selectedKeys} >
-										{loop(treeData)} 
-									</Tree>
-								)} 
-							</div>
+							{treeData.length >0&&treeData[0].children.length > 0 &&this.treeResAndUser(treeData,'systemOnselect')}
 						</Sider>
 						<Content style={{ padding: '20px', minHeight: 280 }}>
-							<Tree showLine 
-								onExpand = {this.onExpand}
-								expandedKeys = {expandedKeys}
-								onSelect = {this.onSelect}
-								autoExpandParent = {autoExpandParent}
-								selectedKeys = {selectedKeys} >
-								{loop(treeTemData)} 
-							</Tree>
+							{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
 						</Content>
 						<Modal
 							title="请录入正确的模板名称和标题"
@@ -878,13 +874,12 @@ class TemplateSetting extends Component {
 							onOk={this.handleOk}
 							onCancel={this.handleCancel}
         				>
-							<div>
+							<div className="copyTemplate">
 								<Input value={templateNameVal}  onChange={(e)=>{
 									const templateNameVal = e.target.value;
 									this.setState({
 										templateNameVal
 									})
-								}} style={{marginBottom:"20px"
 								}}/>
 							</div>
         				</Modal>
@@ -929,7 +924,7 @@ class TemplateSetting extends Component {
                     					/>
 									</div>
 									<div className='allocationPage-content-tree'>
-										{treeRoVisible ?this.treeResAndUser(treeRoData) : this.treeResAndUser(treeResData)}
+										<div className='allocation-treeCom'>{treeRoVisible ?this.treeResAndUser(treeRoData,"resOnselect") : this.treeResAndUser(treeResData,"resOnselect")}</div>
 										<div className='allocation-button'>
 											<p><Button onClick={this.allowClick.bind(this, 'allowRole')}>
 												分配
@@ -939,14 +934,7 @@ class TemplateSetting extends Component {
 											</Button></p>
 										</div>
 										<div className='allocation-tree'>
-											<Tree showLine 
-												onExpand = {this.onExpand}
-												expandedKeys = {expandedKeys}
-												onSelect = {this.onSelectedAllow}
-												autoExpandParent = {autoExpandParent}
-												selectedKeys = {selectedKeys} >
-												{loop(treeAllowedData)}
-											</Tree>
+										{treeAllowedData.length >0 &&this.treeResAndUser(treeAllowedData,'allowedOnselect','hideSearch')}
 										</div>
 									</div>
 								</div>
