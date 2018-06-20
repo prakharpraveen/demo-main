@@ -1,199 +1,146 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DragSource} from 'react-dnd';
+import { DragSource } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { compactLayout,compactLayoutHorizontal } from './compact.js';
+import { compactLayout, compactLayoutHorizontal } from './compact.js';
 import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
 const noteSource = {
+	//开始拖拽，设置isShadow属性，shadowCard对象，更新groups
 	beginDrag(props, monitor, component) {
-		//
-		const dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID,  props.id);
+		const dragCard = utilService.getCardByGroupIDAndCardID(props.groups, props.groupID, props.id);
 		dragCard.isShadow = true;
 		props.updateShadowCard(dragCard);
 
-		return {id: props.id, type: props.type} ;
+		return { id: props.id, type: props.type };
 	},
+	//结束拖拽，设置isShadow属性，shadowCard对象，更新groups
 	endDrag(props, monitor, component) {
-		let {groups, groupIndex} = props;
-		groups = _.cloneDeep(groups);
-		utilService.setPropertyValueForCards(groups, 'isShadow', false);
-
-		// let compactedLayout = compactLayoutHorizontal( groups[groupIndex].apps, props.layout.col);
-		// groups[groupIndex].apps = compactedLayout;
-
-		props.updateShadowCard({});
-	    props.updateGroupList(groups);
-	},
-	// isDragging(props, monitor) {
-	// 	return props.dragCardID = monitor.getItem().id;
-	// }
+		//判断是否正常走了drop事件
+		if (!monitor.didDrop()) {
+			let { groups, groupIndex } = props;
+			groups = _.cloneDeep(groups);
+			utilService.setPropertyValueForCards(groups, 'isShadow', false);
+			props.updateShadowCard({});
+			props.updateGroupList(groups);
+		}
+	}
 };
-
-// const noteTarget = {
-// 	hover(targetProps, monitor, component) {
-// 		return;
-// 	},
-// 	drop(props, monitor, component) {
-// 		//获取结果来判断是否冒泡,有结果时为冒泡
-// 		if (!_.isNull(monitor.getDropResult())) {
-// 			return;
-// 		}
-// 		const dragItem = monitor.getItem();
-// 		const dropItem = props;
-// 		if (dragItem.type === 'group') {
-// 			// console.log('group in dropCard');
-// 		} else {
-// 			// console.log('card in dropCard');
-// 		}
-// 	}
-// };
-
-@DragSource('item', noteSource, (connect)=>({
+@DragSource('item', noteSource, (connect) => ({
 	connectDragSource: connect.dragSource()
 }))
-
 class Item extends Component {
 	constructor(props) {
 		super(props);
 	}
-	//依靠前后props中shadowCard状态（前为空对象，后为有对象，）来判断是否为beginDrag状态，来阻止dom刷新，从而使dragLayer不会变化
+	//依靠前后props中shadowCard状态（前为空对象，后为有对象）来判断是否为beginDrag状态，来阻止dom刷新，从而使dragLayer不会变化
 	shouldComponentUpdate(nextProps, nextState) {
-		const thisProps = this.props || {}, thisState = this.state || {};
-		// if (_.isEmpty(this.props.shadowCard) && !_.isEmpty(nextProps.shadowCard)) {
-		// 	return false;
-		// }
-		// //拖拽结束
-		// if (!_.isEmpty(this.props.shadowCard) && _.isEmpty(nextProps.shadowCard)&& this.props.shadowCard.id === this.props.id) {
-		// 	console.log("true")
-		// 	return true;
-		// }
-		if(this.props.isChecked !== nextProps.isChecked){
+		const thisProps = this.props || {},
+			thisState = this.state || {};
+		if (this.props.isChecked !== nextProps.isChecked) {
 			return true;
 		}
 		//全等判断值为false，使用isEqual判断
-		if(!_.isEqual(this.props.layout,nextProps.layout)){
-			return true
+		if (!_.isEqual(this.props.layout, nextProps.layout)) {
+			return true;
 		}
-		if(this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy){
-			return true
+		if (this.props.gridx !== nextProps.gridx || this.props.gridy !== nextProps.gridy) {
+			return true;
 		}
-		if(this.props.isShadow !== nextProps.isShadow){
-			return true
+		if (this.props.isShadow !== nextProps.isShadow) {
+			return true;
 		}
 		return false;
 	}
-	//依靠前后props的isOver来判断enter和leave，但是不好用，enter检测不精准
-	componentWillReceiveProps(nextProps) {
-		if (!this.props.isOver && nextProps.isOver) {
-			// You can use this as enter handler
-			// console.log('card enter');
-		}
-
-		if (this.props.isOver && !nextProps.isOver) {
-			// You can use this as leave handler
-			// console.log('card leave');
-
-		}
-	}
 	//删除卡片
-	deleteCard=()=> {
-		let {groups, groupIndex} = this.props;
+	deleteCard = () => {
+		let { groups, groupIndex } = this.props;
 		groups = _.cloneDeep(groups);
-		utilService.removeCardByGroupIndexAndCardID(groups, groupIndex, this.props.id)
+		utilService.removeCardByGroupIndexAndCardID(groups, groupIndex, this.props.id);
 
-		let compactedLayout = compactLayoutHorizontal( groups[groupIndex].apps,this.props.layout.col);
-		// const firstCard = compactedLayout[0];
-		// compactedLayout = compactLayout(compactedLayout, firstCard);
-
+		let compactedLayout = compactLayoutHorizontal(groups[groupIndex].apps, this.props.layout.col);
 		groups[groupIndex].apps = compactedLayout;
 		this.props.updateGroupList(groups);
-	}
-	//
-	onCheckboxChange=(e) =>{
-		let {groups,groupIndex, index} = this.props;
+	};
+	//选中卡片
+	onCheckboxChange = (e) => {
+		let { groups, groupIndex, index } = this.props;
 		groups = _.cloneDeep(groups);
-		const cardID = this.props.id;
 		const checked = e.target.checked;
-		groups[groupIndex].apps[index].isChecked = checked
+		groups[groupIndex].apps[index].isChecked = checked;
 		this.props.updateGroupList(groups);
-	}
+	};
 	render() {
-		const { connectDragSource, groupID, groupIndex, id,index, name, gridx, gridy, width, height, isShadow, isChecked, haspower} = this.props;
-		
+		const {
+			connectDragSource,
+			groupID,
+			groupIndex,
+			id,
+			index,
+			name,
+			gridx,
+			gridy,
+			width,
+			height,
+			isShadow,
+			isChecked,
+			haspower
+		} = this.props;
+
 		const { margin, rowHeight, calWidth } = this.props.layout;
-		const { x, y } = utilService.calGridItemPosition(gridx, gridy,margin, rowHeight, calWidth);
-		const { wPx, hPx } = utilService.calWHtoPx(width, height,margin, rowHeight, calWidth);
+		const { x, y } = utilService.calGridItemPosition(gridx, gridy, margin, rowHeight, calWidth);
+		const { wPx, hPx } = utilService.calWHtoPx(width, height, margin, rowHeight, calWidth);
 		let cardDom;
-		// if (isDragging && this.props.dragCardID === id) {
-		// 	return null;
-		// }
-		if(isShadow){
-			cardDom = (	<div
+		//是否为拖拽中的阴影卡片
+		if (isShadow) {
+			cardDom = (
+				<div
 					className='card-shadow'
 					style={{
 						width: wPx,
 						height: hPx,
-						transform: `translate(${x}px, ${y}px)`,
-						
+						transform: `translate(${x}px, ${y}px)`
 					}}
-				>
-				</div>
-			)
-		}else{
-			
-			const opacity = haspower === false ? 0.6: 1;
+				/>
+			);
+		} else {
+			const opacity = haspower === false ? 0.6 : 1;
 			cardDom = (
 				<div
 					className='card'
 					style={{
 						width: wPx,
 						height: hPx,
-						opacity : opacity,
-						transform: `translate(${x}px, ${y}px)`,
+						opacity: opacity,
+						transform: `translate(${x}px, ${y}px)`
 					}}
 				>
-					<div style={{ 'paddingLeft': '10px' }}>{name}</div>
+					<div style={{ paddingLeft: '10px' }}>{name}</div>
 					<div />
 					<div className='card-footer'>
-						<Checkbox
-							checked={isChecked}
-							onChange={this.onCheckboxChange}
-						/>
-						<Icon
-							type='delete'
-							className='card-delete'
-							onClick={this.deleteCard}
-						/>
+						<Checkbox checked={isChecked} onChange={this.onCheckboxChange} />
+						<Icon type='delete' className='card-delete' onClick={this.deleteCard} />
 					</div>
 				</div>
-			)
+			);
 		}
-		// return connectDragSource(
-		// 	connectDropTarget(
-		// 		cardDom
-		// 	)
-		// );
-		return connectDragSource(
-				cardDom
-		);
+		return connectDragSource(cardDom);
 	}
 }
 
-// const dragDropItem = DropTarget('item', noteTarget, collectTarget)(DragSource('item', noteSource, collectSource)(Item));
-const dragDropItem = ((Item));
+const dragDropItem = Item;
 
-export default (connect(
+export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		shadowCard: state.templateDragData.shadowCard,
-        layout: state.templateDragData.layout,
+		// shadowCard: state.templateDragData.shadowCard,
+		layout: state.templateDragData.layout
 	}),
 	{
 		updateShadowCard,
-		updateGroupList,
+		updateGroupList
 	}
-)(Item))
+)(Item);

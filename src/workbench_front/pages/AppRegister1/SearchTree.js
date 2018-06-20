@@ -3,37 +3,35 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Tree, Input} from "antd";
 import {createTree} from "Pub/js/createTree.js";
+import {setExpandedKeys} from 'Store/AppRegister1/action';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 class SearchTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ["00"],
             searchValue: "",
             autoExpandParent: true
         };
     }
     onExpand = expandedKeys => {
-        expandedKeys.push("00");
+        this.props.setExpandedKeys(expandedKeys);
         this.setState({
-            expandedKeys,
             autoExpandParent: false
         });
     };
     onChange = e => {
         const value = e.target.value;
         this.setState({searchValue: value}, () => {
-            this.props.onSearch(value, this.handleExpanded);
+            this.props.onSearch(value);
         });
     };
     handleExpanded = dataList => {
         const expandedKeys = dataList.map((item) => {
             return item.code;
         });
-        expandedKeys.push("00");
+        this.props.setExpandedKeys(expandedKeys);
         this.setState({
-            expandedKeys,
             autoExpandParent: true
         });
     };
@@ -50,15 +48,20 @@ class SearchTree extends Component {
         this.props.onSelect(selectedNode);
     };
     render() {
-        const {searchValue, expandedKeys, autoExpandParent} = this.state;
+        const {searchValue, autoExpandParent} = this.state;
+        let expandedKeys = this.props.expandedKeys;
         const loop = data =>
             data.map(item => {
-                let {moduleid: code, systypename: name} = item;
+                let {flag,moduleid: code, systypename: name,systypecode} = item;
                 let itemContent;
                 if (code === "00") {
                     itemContent = `${name}`;
                 } else {
-                    itemContent = `${code} ${name}`;
+                    if(flag - 0 === 0 ){
+                        itemContent = `${code} ${name}`;
+                    }else{
+                        itemContent = `${systypecode} ${name}`;
+                    }
                 }
                 const index = itemContent.indexOf(searchValue);
                 const beforeStr = itemContent.substr(0, index);
@@ -95,7 +98,7 @@ class SearchTree extends Component {
             }
         ];
         return (
-            <div>
+            <div className={this.props.className}>
                 <Search
                     style={{marginBottom: 8}}
                     placeholder="应用查询"
@@ -114,11 +117,14 @@ class SearchTree extends Component {
     }
 }
 SearchTree.propTypes = {
-    treeData: PropTypes.array.isRequired
+    treeData: PropTypes.array.isRequired,
+    expandedKeys:PropTypes.array.isRequired,
+    setExpandedKeys:PropTypes.func.isRequired,
 };
 export default connect(
     state => ({
-        treeData: state.AppRegisterData.treeData
+        treeData: state.AppRegisterData1.treeData,
+        expandedKeys: state.AppRegisterData1.expandedKeys,
     }),
-    {}
+    {setExpandedKeys}
 )(SearchTree);

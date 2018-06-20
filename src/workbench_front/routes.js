@@ -15,16 +15,8 @@ const Ifr = Loadable({
     loader: () => import("Pages/ifr"),
     loading: Loading
 });
-const drag = Loadable({
-    loader: () => import("Pages/drag"),
-    loading: Loading
-});
 const NotFound = Loadable({
     loader: () => import("Pages/404"),
-    loading: Loading
-});
-const Test = Loadable({
-    loader: () => import("Pages/test"),
     loading: Loading
 });
 const DesktopSetting = Loadable({
@@ -94,10 +86,6 @@ const routes = [
         component: NotFound
     },
     {
-        path: "/test",
-        component: Test
-    },
-    {
         path: "/ds",
         component: DesktopSetting
     },
@@ -110,10 +98,6 @@ const routes = [
         path: "/ar1",
         exact: true,
         component: AppRegister1
-    },
-    {
-        path: "/drag",
-        component: drag
     },
     {
         path: "/Zone",

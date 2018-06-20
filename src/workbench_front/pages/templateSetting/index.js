@@ -104,7 +104,7 @@ class TemplateSetting extends Component {
 			allowedTreeKey:'',
 			orgidObj:{},
 			treeRoDataObj:{},
-			parentIdcon:'',
+			parentIdcon:'',//树节点的key
 			activeKey: "1"
 		};
 	}
@@ -200,6 +200,7 @@ class TemplateSetting extends Component {
 			templateNameVal:'',
 		});
 	}
+	//设置默认模板菜单栏
 	menuFun = ()=>{
 		let {templateNameVal} = this.state;
 		const len=templateNameVal.length;
@@ -217,6 +218,7 @@ class TemplateSetting extends Component {
 			</Menu>
 		  )
 	};
+	//设置默认模板方法
 	settingClick = (key)=>{
 		let { templateNameVal, templatePks, pageCode } = this.state;
 		let infoDataSet={
@@ -310,6 +312,7 @@ class TemplateSetting extends Component {
 				break;
 			}
 		}
+	//设置默认模板的ajax请求
 	setDefaultFun = (url, infoData, textInfo)=>{
 		let { pageCode }=this.state;
 		Ajax({
@@ -372,15 +375,16 @@ class TemplateSetting extends Component {
 		})
 		//处理树数据
 		treeTemData = treeInfo.treeArray;
-		if(treeTemData.length===0){
-			return;
-		}
 		treeTemData = generateTreeData(treeTemData);
-		let newinitKeyArray=[];
-		newinitKeyArray.push(treeTemData[0].key);
+		if(treeTemData.length>0){
+			let newinitKeyArray=[];
+			newinitKeyArray.push(treeTemData[0].key);
+			this.setState({
+				selectedKeys:newinitKeyArray,
+				parentIdcon:treeTemData[0].parentId,
+			});
+		}
 		this.setState({
-			selectedKeys:newinitKeyArray,
-			parentIdcon:treeTemData[0].parentId,
 			treeTemData
 		});
 	}
@@ -464,6 +468,7 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success) {
+					console.log(data.data);
 					this.setState({
 						treeTemDataArray: data.data
 					}, this.restoreTreeTemData)
@@ -727,7 +732,6 @@ class TemplateSetting extends Component {
 				this.onSelectedAllow(key, e);
 			default:
 			break;
-
 		}
 	}
 	treeResAndUser = (data, typeSelect, hideSearch)=>{
@@ -891,6 +895,7 @@ class TemplateSetting extends Component {
 								onChange={activeKey => {
 									this.setState({activeKey});
 								}}
+								type="card"
 								activeKey={this.state.activeKey}
 								//tabBarExtraContent={this.creatAddLineBtn()}
 							>

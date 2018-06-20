@@ -18,6 +18,8 @@ let defaultState = {
   appButtonVOs: [],
   // 页面模板数据
   pageTemplets: [],
+  // 树展开树节点数组
+  expandedKeys:['00'],
   // 是否是新增
   isNew: false,
   // 是否是编辑
@@ -85,6 +87,13 @@ export const AppRegisterData1 = (state = defaultState, action = {}) => {
         ...state,
         ...{
           isEdit: action.data
+        }
+      };
+      case AppRegister1.EXPANDEDKEYS:
+      return {
+        ...state,
+        ...{
+          expandedKeys: action.data.concat(['00'])
         }
       };
     default:
