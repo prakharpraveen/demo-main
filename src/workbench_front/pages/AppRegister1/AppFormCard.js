@@ -139,14 +139,16 @@ class AppFromCard extends Component {
                         callback();
                     }
                 },
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "应用名称",
                 type: "string",
                 code: "name",
                 isRequired: true,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "组织类型",
@@ -154,7 +156,8 @@ class AppFromCard extends Component {
                 code: "orgtypecode",
                 isRequired: true,
                 options: this.state.orgtypecode,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "功能点类型",
@@ -179,7 +182,8 @@ class AppFromCard extends Component {
                         text: "管理+业务类应用"
                     }
                 ],
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "应用类型",
@@ -196,21 +200,24 @@ class AppFromCard extends Component {
                         text: "小部件"
                     }
                 ],
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "应用宽",
                 type: "string",
                 code: "width",
                 isRequired: true,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "应用高",
                 type: "string",
                 code: "height",
                 isRequired: true,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "关联元数据ID",
@@ -224,35 +231,40 @@ class AppFromCard extends Component {
                     placeholder: "关联元数据ID",
                     isTreelazyLoad: false
                 },
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "所属集团",
                 type: "string",
                 code: "pk_group",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "是否启用",
                 type: "checkbox",
                 code: "isenable",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "是否加载占用",
                 type: "checkbox",
                 code: "uselicense_load",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "是否CA用户可用",
                 type: "checkbox",
                 code: "iscauserusable",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "默认页面",
@@ -260,21 +272,24 @@ class AppFromCard extends Component {
                 code: "target_path",
                 isRequired: false,
                 options: this.state.target_path,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
                 isRequired: false,
-                isedit: this.props.isedit
+                isedit: this.props.isedit,
+                lg: 8
             },
             {
                 label: "帮助文件名",
                 type: "string",
                 code: "help_name",
                 isRequired: false,
-                isedit: isEdit
+                isedit: isEdit,
+                lg: 8
             },
             {
                 label: "应用描述",
