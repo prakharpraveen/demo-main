@@ -165,11 +165,8 @@ class Home extends Component {
     /**
      * 动态创建小应用
      * @param {Object} appOption // 小部件类型
-     * @param {Number} domWidth // 小应用宽度
-     * @param {Number} domHeight // 小应用高度
-     * @param {Boolean} isOwn //是否为系统预置应用 默认为 false 非系统预置应用
      */
-    createApp = (appOption, isOwn = false) => {
+    createApp = (appOption) => {
         const {gridx, gridy, width, height} = appOption;
         const {margin, rowHeight, calWidth} = this.state.layout;
         const {x, y} = calGridItemPosition(
@@ -233,7 +230,47 @@ class Home extends Component {
             </div>
         );
     };
-
+    /**
+     * 动态创建小部件
+     * @param {Object} appOption // 小部件类型
+     */
+    createWidget = (appOption)=>{
+        const {gridx, gridy, width, height} = appOption;
+        const {margin, rowHeight, calWidth} = this.state.layout;
+        const {x, y} = calGridItemPosition(
+            gridx,
+            gridy,
+            margin,
+            rowHeight,
+            calWidth
+        );
+        const {wPx, hPx} = calWHtoPx(
+            width,
+            height,
+            margin,
+            rowHeight,
+            calWidth
+        );
+        const {
+            name,
+            mountid,
+            target_path,
+            pk_appregister
+        } = appOption;
+        return (
+            <div
+                field="app-item" fieldname={name}
+                className="grid-item"
+                key={pk_appregister}
+                id={mountid}
+                style={{
+                    width: wPx,
+                    height: hPx,
+                    transform: `translate(${x}px, ${y}px)`
+                }}>
+            </div>
+        );
+    }
     /**
      * 动态创建小部件挂载容器
      * @param {Object} widgets // 小部件类型
@@ -244,21 +281,9 @@ class Home extends Component {
                 let {apptype, name} = item;
                 switch (Number(apptype)) {
                     case 1:
-                        // 系统预置的应用打开需要特殊处理
-                        if (name === "应用注册") {
-                            return this.createApp(item, true);
-                        }
                         return this.createApp(item);
-                        break;
                     case 2:
-                        // 目前先不渲染小部件
-                        // return (
-                        // 	<div className={`grid-item`} style={{ width: domWidth, height: domHeight }} id={item.mountid} />
-                        // );
-                        break;
-                    // case 3:
-                    // return this.createApp(item, domWidth, domHeight, true);
-                    // break;
+                        return this.createWidget(item);
                     default:
                         break;
                 }

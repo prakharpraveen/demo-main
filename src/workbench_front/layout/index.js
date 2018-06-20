@@ -49,14 +49,23 @@ class Layout extends Component {
       let nodeName = decodeURIComponent(n);
       this.setState({
         nodeName
+      },()=>{
+        this.updateTitle(`${nodeName} - NCCloud`);
       });
     } else {
       this.setState({
         nodeName: "首页"
+      },()=>{
+        this.updateTitle('首页 - NCCloud');
       });
     }
   };
-
+  /**
+   * 更新title显示名称
+    */
+  updateTitle = (title)=>{
+    document.title = title;
+  }
   componentDidMount() {
     this.handleUpdateTitleName();
     window.addEventListener("hashchange", this.handleUpdateTitleName);
