@@ -27,10 +27,32 @@ const switchType = (value) => {
 			return '表单区'
 		case '0':
 			return '查询区'
+		case 'browse':
+			return '浏览'
+		case 'edit':
+			return '编辑'
+		default:
+			return (typeof(value) ==='object')? (value.metaname): value;	
+	}
+}
+
+/**
+ * 区域编码类型
+ * @param {String} value 
+ */
+const switchRelate = (value) => {
+	switch (value) {
+		case '2':
+			return '表格区'
+		case '1':
+			return '表单区'
+		case '0':
+			return '查询区'
 		default:
 			return typeof(value ==='object')? (value.metaname): value;	
 	}
 }
+
 
 // 可编辑表格一个单项 
 class EditableCell extends React.Component {
@@ -120,7 +142,7 @@ class EditableSelect extends React.Component {
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
-							{(switchType(value)) || ' '}
+							  {value && (switchType(value)) || ' '}
 							<Icon
 								type="edit"
 								className="editable-cell-icon"
@@ -132,6 +154,76 @@ class EditableSelect extends React.Component {
 		);
 	}
 }
+
+// 关联项与区域状态
+class RelateSelect extends React.Component {
+	state = {
+		value: this.props.value,
+		editable: false,
+		type:this.props.type,
+		data:this.props.data,
+		num:this.props.num,
+	}
+	handleChange = (value) => {
+		this.setState({ value },()=>{this.check()});
+	}
+	check = () => { 
+		this.setState({ editable: false });
+		if (this.props.onChange) {
+			this.props.onChange(this.state.value);
+		}
+	}
+	edit = () => {
+		if (!this.state.editable){
+			this.setState({ editable: true });
+		}
+	}
+	render() {
+		const { value, editable,num,type } = this.state;
+		let {data} = this.props;
+		data = _.cloneDeep(data);
+	    data = data && data.filter((v,i)=>{return v.key !== num});
+		return (
+			<div className="editable-cell" onClick={this.edit}>
+				{
+					editable ?
+						<div className="editable-cell-input-wrapper">
+							{(() =>{
+								if(type === 'relationcode'){
+									return(
+											<Select showSearch optionFilterProp="children" value={value} style={{ width: 120 }} onChange={(selected) =>this.handleChange(selected)} filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+												{data && data.map((v,i)=>{
+													return(
+														<Option key ={i} value={v.code}>{v.code}</Option>
+													)
+												})}
+											</Select>
+									)
+								}else if(type ==='areastatus'){
+									return(
+											<Select showSearch optionFilterProp="children" value={value} style={{ width: 120 }} onChange={(selected) =>this.handleChange(selected)} filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+												<Option value={'browse'}>浏览</Option>
+												<Option value={'edit'}>编辑</Option>
+											</Select>
+									)
+								}
+							})()}
+						</div>
+						:
+						<div className="editable-cell-text-wrapper">
+					        {value && (switchType(value)) || ' '}
+							<Icon
+								type="edit"
+								className="editable-cell-icon"
+								onClick={this.edit}
+							/>
+						</div>
+				}
+			</div>
+		);
+	}
+}
+
 
 // 可编辑表格参照
 class EditableRefer extends React.Component {
@@ -179,7 +271,7 @@ class EditableRefer extends React.Component {
 						</div>
 						:
 						<div className="editable-cell-text-wrapper">
-							{(switchType(value)) || ' '}
+						   {value && (switchType(value)) || ' '}
 							<Icon
 								type="edit"
 								className="editable-cell-icon"
@@ -227,24 +319,55 @@ class ZoneTable extends React.Component {
 					onChange={this.onCellChange(record.key, 'name')}
 					/>
 				),
-		}, {
+		},
+		 {
 			title: '区域类型',
 			dataIndex: 'areatype', 
-			width: '20%',
+			width: '10%',
 			render: (text, record) => {
 				if (record.pk_area){
 					return (<span>{switchType(text)}</span>)
 				}
-				return(<EditableSelect
+				return(
+				<EditableSelect
 					value={text}
 					onChange={this.onCellChange(record.key, 'areatype')}
+				/>)
+				},
+			},
+			{
+			title: '关联区域编码',
+			dataIndex: 'relationcode', 
+			width: '10%',
+			render: (text, record) => {
+				return(
+				<RelateSelect
+					num = {record.key}
+					data = {this.state.dataSource}
+					type = 'relationcode'
+					value={text}
+					onChange={this.onCellChange(record.key, 'relationcode')}
+				/>)
+			},
+			},
+			{
+			title: '区域状态',
+			dataIndex: 'areastatus', 
+			width: '10%',
+			render: (text, record) => {
+				return(
+				<RelateSelect
+					num = {record.key}
+					type = 'areastatus'
+					value={text}
+					onChange={this.onCellChange(record.key, 'areastatus')}
 				/>)
 			},
 			},
 			{
 				title: '关联元数据',
 				dataIndex: 'metaname', 
-				width: '20%',
+				width: '10%',
 				render: (text, record) => {
 					if(record.pk_area) {
 						return (<span>{switchType(record)}</span>)
@@ -321,6 +444,8 @@ class ZoneTable extends React.Component {
 			metaid: '',
 			metaname:'',
 			areatype:'1',
+			areastatus:'browse',
+			relationcode:'',
 		};
 		this.setState({
 			dataSource: [...dataSource, newData],
@@ -339,10 +464,6 @@ class ZoneTable extends React.Component {
 		);
 	}
 }
-
-ZoneTable.propTypes = {
-	zoneDatas: PropTypes.object.isRequired,
-};
 
 export default connect(
 	(state) => {

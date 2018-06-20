@@ -32,7 +32,7 @@ class ReferModal extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					this.setState({ option: data.data })
+					this.setState({ option: data.data, optionKey: data.data[0].pk_refinfo })
 				} else {
 					Notice({ status: 'error', msg: data.data.true });
 				}
