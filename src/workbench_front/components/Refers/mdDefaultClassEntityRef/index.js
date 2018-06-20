@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { high } from 'nc-lightapp-front';
 const {Refer} = high;
 /**
- * 元数据(MDClassDefaultTreeModel)
+ * 元数据参照
  */
 export default function (props = {}) {
 	var conf = {
