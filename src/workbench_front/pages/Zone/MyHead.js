@@ -9,10 +9,10 @@ import Notice from 'Components/Notice';
 const { Header } = Layout;
 import { Steps } from 'antd';
 const Step = Steps.Step;
+
 /**
  * 工作桌面 完成步骤 
  */
-
 class MyHead extends Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +21,6 @@ class MyHead extends Component {
 			state:'browse'
 		};
 	}
-
 	render() {
 		return ( 
 		<Header>
@@ -36,7 +35,6 @@ class MyHead extends Component {
 			   );
 	     }
 }
-
 export default connect(
 	(state) => ({
 		zoneState: state.AppRegisterData.zoneState,
