@@ -4,31 +4,61 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { updateShadowCard,updateGroupList } from 'Store/test/action';
+import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 const noteSource = {
 	beginDrag(props, monitor, component) {
-		console.log(props);
-		const dragCard = {
-			pk_appregister: props.id,
-			width: props.width,
-			height: props.height,
-			name: props.name,
-			isShadow: true,
-			isChecked:false
-		};
-		props.updateShadowCard(dragCard)
-		return { id: dragCard.pk_appregister,};
+		let cardList = [
+			{
+				pk_appregister: props.id,
+				width: props.width,
+				height: props.height,
+				name: props.name,
+				isShadow: false,
+				isChecked: false,
+				gridx: 999,
+				gridy: 999
+			}
+		];
+		let { appGroupArr } = props;
+		let checkedAppList = [];
+		_.forEach(appGroupArr, (a) => {
+			_.forEach(a.children, (c) => {
+				if (c.checked) {
+					checkedAppList.push({
+						pk_appregister: c.value,
+						width: c.width,
+						height: c.height,
+						name: c.label,
+						isShadow: false,
+						isChecked: false,
+						gridx: 999,
+						gridy: 999
+					});
+				}
+			});
+		});
+		cardList = cardList.concat(checkedAppList);
+		return { type: 'cardlist', cardList: cardList };
 	},
 	endDrag(props, monitor, component) {
-
-		let groups = props.groups;
-		groups = _.cloneDeep(groups);
-		utilService.setPropertyValueForCards(groups, 'isShadow', false);
-
-		props.updateShadowCard({});
-		props.updateGroupList(groups);
-	},
+		//Drop成功
+		if (monitor.didDrop()) {
+			let { appGroupArr } = props;
+			appGroupArr = _.cloneDeep(appGroupArr);
+			let checkedAppList = [];
+			_.forEach(appGroupArr, (a) => {
+				_.forEach(a.children, (c) => {
+					if (c.checked) {
+						c.checked = false;
+					}
+				});
+				a.checkedAll = false;
+				a.indeterminate = false;
+			});
+			props.updateAppGroupArr(appGroupArr);
+		}
+	}
 };
 
 function collectSource(connect, monitor) {
@@ -44,26 +74,27 @@ class Item extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const thisProps = this.props || {}, thisState = this.state || {};
-		if(this.props.checked !== nextProps.checked){
-			return true
+		const thisProps = this.props || {},
+			thisState = this.state || {};
+		if (this.props.checked !== nextProps.checked) {
+			return true;
 		}
 		return false;
 	}
 
-	onChangeChecked=(e)=>{
+	onChangeChecked = (e) => {
 		const { index, parentIndex } = this.props;
-		this.props.onChangeChecked(e,parentIndex,index);
-	}
+		this.props.onChangeChecked(e, parentIndex, index);
+	};
 
 	render() {
 		const { connectDragSource } = this.props;
-        const { id,index, name, checked, parentIndex } = this.props;
+		const { id, index, name, checked, parentIndex } = this.props;
 		return connectDragSource(
-			<div className='list-item-content' >
+			<div className='list-item-content'>
 				<div className='title'>
 					<span className='title-name'>{name}</span>
-                    <Checkbox checked={checked}  onChange={this.onChangeChecked}/>
+					<Checkbox checked={checked} onChange={this.onChangeChecked} />
 				</div>
 			</div>
 		);
@@ -72,12 +103,11 @@ class Item extends Component {
 
 const dragDropItem = DragSource('item', noteSource, collectSource)(Item);
 
-export default (connect(
+export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups
 	}),
 	{
-		updateShadowCard,
 		updateGroupList
 	}
-)(dragDropItem))
+)(dragDropItem);

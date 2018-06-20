@@ -56,7 +56,7 @@ const groupItemTarget = {
 			props.moveGroupItem(dragIndex, hoverIndex);
 
 			monitor.getItem().index = hoverIndex;
-		} else {
+		} else if(dragItem.type === 'card') {
 			//卡片到组
 			const hoverItem = props;
 			const { x, y } = monitor.getClientOffset();
@@ -71,6 +71,10 @@ const groupItemTarget = {
 		const dropItem = props;
 		if (dragItem.type === 'group') {
 			props.onDrop(dragItem, dropItem);
+		}else if(dragItem.type === 'card'){
+			props.onCardDropInGroupItem(dragItem, dropItem);
+		}else if(dragItem.type === 'cardlist'){
+			props.onCardListDropInGroupItem(dragItem, dropItem);
 		}
 	}
 };
@@ -108,7 +112,8 @@ class GroupItem extends Component {
 			itemDoms.push(
 				<Card
 					dragCardID={-1}
-					type={c.apptype}
+					apptype={c.apptype}
+					type={'card'}
 					name={c.name}
 					id={c.pk_appregister}
 					groupID={groupID}

@@ -19,12 +19,14 @@ const noteSource = {
 	},
 	//结束拖拽，设置isShadow属性，shadowCard对象，更新groups
 	endDrag(props, monitor, component) {
-		let { groups, groupIndex } = props;
-		groups = _.cloneDeep(groups);
-		utilService.setPropertyValueForCards(groups, 'isShadow', false);
-
-		props.updateShadowCard({});
-		props.updateGroupList(groups);
+		//判断是否正常走了drop事件
+		if (!monitor.didDrop()) {
+			let { groups, groupIndex } = props;
+			groups = _.cloneDeep(groups);
+			utilService.setPropertyValueForCards(groups, 'isShadow', false);
+			props.updateShadowCard({});
+			props.updateGroupList(groups);
+		}
 	}
 };
 @DragSource('item', noteSource, (connect) => ({
@@ -134,7 +136,7 @@ const dragDropItem = Item;
 export default connect(
 	(state) => ({
 		groups: state.templateDragData.groups,
-		shadowCard: state.templateDragData.shadowCard,
+		// shadowCard: state.templateDragData.shadowCard,
 		layout: state.templateDragData.layout
 	}),
 	{

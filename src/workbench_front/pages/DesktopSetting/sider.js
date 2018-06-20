@@ -54,6 +54,9 @@ class MySider extends Component {
 			}
 		});
 	}
+	updateAppGroupArr = (appGroupArr)=>{
+		this.setState({appGroupArr:appGroupArr})
+	}
 	showModalVisible = () => {
 		this.setModalVisible(true);
 	};
@@ -235,9 +238,10 @@ class MySider extends Component {
 											index={i}
 											parentIndex={index}
 											name={child.label}
-											type={'new'}
+											appGroupArr = {this.state.appGroupArr}
 											checked={child.checked}
 											onChangeChecked={this.onChangeChecked}
+											updateAppGroupArr = {this.updateAppGroupArr}
 										/>
 									</div>
 								</div>

@@ -99,6 +99,38 @@ class MyContent extends Component {
 		groups[dropGroupIndex].apps.push(card);
 		this.props.updateGroupList(groups);
 	};
+	onCardDropInGroupItem = (dragItem, dropItem) => {
+		let { groups } = this.props;
+		groups = _.cloneDeep(groups);
+		const targetGroupIndex = dropItem.index;
+		const cardList = dragItem.cardList;
+
+		utilService.setPropertyValueForCards(groups, 'isShadow', false);
+		//目标组内重新布局
+		_.forEach(groups, (g, targetGroupIndex) => {
+			let compactedLayout = compactLayoutHorizontal(groups[targetGroupIndex].apps, this.props.col);
+			groups[targetGroupIndex].apps = compactedLayout;
+		});
+
+		this.props.updateGroupList(groups);
+		this.props.updateShadowCard({});
+	};
+	//释放CardList到分组中
+	onCardListDropInGroupItem = (dragItem, dropItem) => {
+		let { groups } = this.props;
+		groups = _.cloneDeep(groups);
+		const targetGroupIndex = dropItem.index;
+		const cardList = dragItem.cardList;
+
+		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, cardList);
+		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		//目标组内重新布局
+		let compactedLayout = compactLayoutHorizontal(groups[targetGroupIndex].apps, this.props.col);
+
+		groups[targetGroupIndex].apps = compactedLayout;
+
+		this.props.updateGroupList(groups);
+	};
 	//添加第一个组
 	addFirstGroupItem = () => {
 		let { groups } = this.props;
@@ -138,6 +170,8 @@ class MyContent extends Component {
 						groupname={g.groupname}
 						moveCardInGroupItem={this.moveCardInGroupItem}
 						onDrop={this.onDrop}
+						onCardDropInGroupItem={this.onCardDropInGroupItem}
+						onCardListDropInGroupItem={this.onCardListDropInGroupItem}
 						moveGroupItem={this.moveGroupItem}
 						upGroupItem={this.upGroupItem}
 						downGroupItem={this.downGroupItem}
@@ -280,7 +314,8 @@ export default connect(
 		groups: state.templateDragData.groups,
 		shadowCard: state.templateDragData.shadowCard,
 		layout: state.templateDragData.layout,
-		defaultLayout: state.templateDragData.defaultLayout
+		defaultLayout: state.templateDragData.defaultLayout,
+		col: state.templateDragData.layout.col
 	}),
 	{
 		updateGroupList,
