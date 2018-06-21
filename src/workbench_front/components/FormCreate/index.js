@@ -104,7 +104,13 @@ class FormContent extends Component {
                   message: "此字段为必输项！"
                 },
                 {
-                  validator: check ? check : null
+                  validator: check ? check : (rule, value, callback) => {
+                    if (value === "") {
+                        callback();
+                    } else {
+                        callback();
+                    }
+                }
                 }
               ]
             })(isedit ? <Input /> : <NormalShow />)}
@@ -158,7 +164,7 @@ class FormContent extends Component {
         );
       case "checkbox":
         return (
-          <FormItem>
+          <FormItem className="form-item margin-bottom-20">
             {getFieldDecorator(code, {
               initialValue: false,
               valuePropName: "checked"
