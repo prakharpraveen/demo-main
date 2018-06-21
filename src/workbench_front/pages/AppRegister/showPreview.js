@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';
 import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+
 class PreviewModal extends Component {
 	constructor(props) {
 		super(props);
@@ -22,7 +20,6 @@ class PreviewModal extends Component {
     onOkDialog = ()=>{
 		this.props.setModalVisibel(false)
 	}
-
 	createDom = () =>{
 		let { editTable, form, search } = this.props;
 		let { createForm } = form;
@@ -36,7 +33,7 @@ class PreviewModal extends Component {
 				result.push(
 				<div className='area' key={`form${i}`}>
 					<div className='descrip'>
-							<span> ▼ </span>{`表单区${i+1}_${val.name}`}
+							<span key={`forms${i}`}> ▼ </span>{`表单区${i+1}_${val.name}`}
 					</div>
 							{ createForm(val.id)}
 				</div>
@@ -49,7 +46,7 @@ class PreviewModal extends Component {
 				result.push(
 					<div className='area' key={`search${i}`}>
 						<div className='descrip'>
-							<span> ▼ </span>{`查询区${i+1}_${val.name}`}
+							<span key={`searchs${i}`} > ▼ </span>{`查询区${i+1}_${val.name}`}
 						</div>
 						{NCCreateSearch(val.id)}
 					</div>
@@ -62,7 +59,7 @@ class PreviewModal extends Component {
 				result.push(
 					<div className='area' key={`table${i}`}>
 						<div className='descrip'>
-							<span> ▼ </span>{`表格区${i+1}_${val.name}`}
+							<span key={`tables${i}`}> ▼ </span>{`表格区${i+1}_${val.name}`}
 						</div>
 						{createEditTable(val.id)}
 
@@ -113,14 +110,13 @@ class PreviewModal extends Component {
 			<Modal
 				title='预览区'
 				mask={false}
+				wrapClassName='myModal'
 				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
 				onCancel={this.showModalHidden}
-				width='100%'
 				footer={[
 					<Button
 						key='submit'
-						// disabled={}
 						type='primary'
 						onClick={this.onOkDialog}
 					>

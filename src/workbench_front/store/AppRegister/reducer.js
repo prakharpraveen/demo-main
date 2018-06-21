@@ -1,163 +1,102 @@
 import * as AppRegister from "./action-type";
 
 let defaultState = {
-    // 树数据
-    treeData: [],
-    // 树节点对象
-    nodeData: {},
-    // 应用参数数据
-    appParamVOs: [],
-    // 页面按钮数据
-    appButtonVOs: [],
-    // 页面模板数据
-    pageTemplets: [],
-
-    optype: "",
-    // 页面当前状态
-    billStatus: {
-        // 是否编辑态
-        isEdit: false,
-        // 是否新增
-        isNew: false
-    },
-    // 父节点信息
-    parentData: "",
-    // 父节点信息
-    pageParentCode: "",
-    // 应用类型 1 为 小应用 2 为 小部件
-    appType: 2,
-    // 更新树节点
-    updateTreeData: () => {},
-    // 请求树数据
-    reqTreeData: () => {},
-    // 获取表单数据
-    getFromData: () => {},
-    // 添加树节点
-    addTreeData: () => {},
-    // 删除树节点
-    delTreeData: () => {}
+  // 树数据
+  treeData: [],
+  // 树节点对象
+  nodeData: {},
+  // 树节点信息
+  nodeInfo: {
+    id: "",
+    code: "",
+    name: "",
+    parentId: ""
+  },
+  // 应用参数数据
+  appParamVOs: [],
+  // 页面按钮数据
+  appButtonVOs: [],
+  // 页面模板数据
+  pageTemplets: [],
+  // 树展开树节点数组
+  expandedKeys:['00'],
+  // 是否是新增
+  isNew: false,
+  // 是否是编辑
+  isEdit: false
 };
 // 首页表单数据
 export const AppRegisterData = (state = defaultState, action = {}) => {
-    switch (action.type) {
-        case AppRegister.CLEARDATA:
-            return {
-                ...state,
-                ...defaultState
-            };
-        case AppRegister.SETTREEDATA:
-            return {
-                ...state,
-                ...{
-                    treeData: action.data
-                }
-            };
-        case AppRegister.REQTREEDATA:
-            return {
-                ...state,
-                ...{
-                    reqTreeData: action.data
-                }
-            };
-        case AppRegister.SETNODEDATA:
-            return {
-                ...state,
-                ...{
-                    nodeData: action.data
-                }
-            };
-        case AppRegister.UPDATENODEDATA:
-            return {
-                ...state,
-                ...{
-                    updateTreeData: action.updateTreeData
-                }
-            };
-        case AppRegister.ADDNODEDATA:
-            return {
-                ...state,
-                ...{
-                    addTreeData: action.addTreeData
-                }
-            };
-        case AppRegister.DELNODEDATA:
-            return {
-                ...state,
-                ...{
-                    delTreeData: action.delTreeData
-                }
-            };
-        case AppRegister.BILLSTATUS:
-            return {
-                ...state,
-                ...{
-                    billStatus: action.billStatus
-                }
-            };
-        case AppRegister.PARENTDATA:
-            return {
-                ...state,
-                ...{
-                    parentData: action.parentData
-                }
-            };
-        case AppRegister.APPTYPE:
-            return {
-                ...state,
-                ...{
-                    appType: action.appType
-                }
-            };
-        case AppRegister.APPPARAMDATA:
-            return {
-                ...state,
-                ...{
-                    appParamVOs: action.data
-                }
-            };
-        case AppRegister.PAGEBUTTONDATA:
-            return {
-                ...state,
-                ...{
-                    appButtonVOs: action.data
-                }
-            };
-        case AppRegister.PAGETEMPLATEDATA:
-            return {
-                ...state,
-                ...{
-                    pageTemplets: action.data
-                }
-            };
-        case AppRegister.PRINTTEMPLATEDATA:
-            return {
-                ...state,
-                ...{
-                    printSystemplateVO: action.data
-                }
-            };
-        case AppRegister.GETFROMDATA:
-            return {
-                ...state,
-                ...{
-                    getFromData: action.getFromData
-                }
-            };
-        case AppRegister.SETOPTYPE:
-            return {
-                ...state,
-                ...{
-                    optype: action.data
-                }
-            };
-        case AppRegister.PAGEPARENTCODE:
-            return {
-                ...state,
-                ...{
-                    pageParentCode: action.data
-                }
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case AppRegister.CLEARDATA:
+      return {
+        ...state,
+        ...defaultState
+      };
+    case AppRegister.SETTREEDATA:
+      return {
+        ...state,
+        ...{
+          treeData: action.data
+        }
+      };
+    case AppRegister.SETNODEINFO:
+      return {
+        ...state,
+        ...{
+          nodeInfo: action.data
+        }
+      };
+    case AppRegister.SETNODEDATA:
+      return {
+        ...state,
+        ...{
+          nodeData: action.data
+        }
+      };
+    case AppRegister.APPPARAMDATA:
+      return {
+        ...state,
+        ...{
+          appParamVOs: action.data
+        }
+      };
+    case AppRegister.PAGEBUTTONDATA:
+      return {
+        ...state,
+        ...{
+          appButtonVOs: action.data
+        }
+      };
+    case AppRegister.PAGETEMPLATEDATA:
+      return {
+        ...state,
+        ...{
+          pageTemplets: action.data
+        }
+      };
+    case AppRegister.ISNEW:
+      return {
+        ...state,
+        ...{
+          isNew: action.data
+        }
+      };
+    case AppRegister.ISEDIT:
+      return {
+        ...state,
+        ...{
+          isEdit: action.data
+        }
+      };
+      case AppRegister.EXPANDEDKEYS:
+      return {
+        ...state,
+        ...{
+          expandedKeys: action.data.concat(['00'])
+        }
+      };
+    default:
+      return state;
+  }
 };

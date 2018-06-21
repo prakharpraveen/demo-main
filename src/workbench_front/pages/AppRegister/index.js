@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Modal, Button, Layout } from "antd";
+import { Modal } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
-    setNodeData,
-    setBillStatus,
-    setOpType,
-    setAppParamData,
-    setPageButtonData,
-    setPageTemplateData,
-    setParentData
+  setTreeData,
+  setNodeInfo,
+  setNodeData,
+  setPageButtonData,
+  setPageTemplateData,
+  setAppParamData,
+  setIsNew,
+  setIsEdit,
+  setExpandedKeys
 } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -18,659 +19,688 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
-import { PageLayout } from "Components/PageLayout";
+import { dataTransfer, dataRestore, dataCheck } from "Components/FormCreate";
+import {
+  PageLayout,
+  PageLayoutHeader,
+  PageLayoutLeft,
+  PageLayoutRight
+} from "Components/PageLayout";
+import ButtonCreate from "Components/ButtonCreate";
 import Notice from "Components/Notice";
 import "./index.less";
-const { Header, Footer, Sider, Content } = Layout;
 const confirm = Modal.confirm;
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
  */
-const Btns = [
-    {
-        name: "增加模块",
-        type: "primary"
-    },
-    {
-        name: "增加应用分类",
-        type: "primary"
-    },
-    {
-        name: "增加应用",
-        type: "primary"
-    },
-    {
-        name: "增加页面",
-        type: "primary"
-    },
-    {
-        name: "保存",
-        type: "primary"
-    },
-    {
-        name: "取消"
-    },
-    {
-        name: "删除",
-        type: "primary"
-    },
-    {
-        name: "修改",
-        type: "primary"
-    }
-];
 
 class AppRegister extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            siderHeight: "280"
-        };
-        this.nodeData;
-        this.optype;
-        this.actionType;
+  constructor(props) {
+    super(props);
+    this.state = {
+      optype: ""
+    };
+    this.historyOptype;
+    this.historyNodeData;
+  }
+  /**
+   * 按钮点击事件
+   * @param {String} code
+   */
+  handleClick = code => {
+    switch (code) {
+      case "addModule":
+        this.addModule();
+        break;
+      case "addAppClass":
+        this.addAppClass();
+        break;
+      case "addApp":
+        this.addApp();
+        break;
+      case "addPage":
+        this.addPage();
+        break;
+      case "save":
+        this.save();
+        break;
+      case "cancel":
+        this.props.setNodeData(this.historyNodeData);
+        this.props.setIsNew(false);
+        this.props.setIsEdit(false);
+        this.setState({
+          optype: this.historyOptype
+        });
+        break;
+      case "del":
+        this.del();
+        break;
+      case "edit":
+        this.historyNodeData = this.props.nodeData;
+        this.historyOptype = this.state.optype;
+        this.props.setIsNew(false);
+        this.props.setIsEdit(true);
+        break;
+      default:
+        break;
     }
-    handleClick = btnName => {
-        let url, Obj;
-        switch (btnName) {
-            case "增加模块":
-                this.actionType = 1;
-                this.nodeData = this.props.nodeData;
-                if (!this.props.parentData) {
-                    this.props.setParentData(this.nodeData.moduleid);
-                }
-                this.optype = this.props.optype;
-                let moduleData = {
-                    systypecode: "",
-                    moduleid: "",
-                    systypename: "",
-                    orgtypecode: undefined,
-                    appscope: undefined,
-                    isaccount: false,
-                    supportcloseaccbook: false,
-                    resid: "",
-                    dr: 0
-                };
-                this.props.setNodeData(moduleData);
-                this.props.setOpType("module");
-                this.props.setBillStatus({
-                    isEdit: true,
-                    isNew: true
-                });
-                break;
-            case "增加应用分类":
-                this.actionType = 2;
-                this.nodeData = this.props.nodeData;
-                if (this.props.parentData === this.nodeData.parentcode) {
-                    this.props.setParentData(this.nodeData.moduleid);
-                }
-                this.optype = this.props.optype;
-                let classData = {
-                    apptype: 0,
-                    isenable: true,
-                    code: "",
-                    name: "",
-                    app_desc: "",
-                    resid: "",
-                    help_name: ""
-                };
-                this.props.setNodeData(classData);
-                this.props.setOpType("classify");
-                this.props.setBillStatus({
-                    isEdit: true,
-                    isNew: true
-                });
-                break;
-            case "增加应用":
-                this.actionType = 3;
-                this.nodeData = this.props.nodeData;
-                this.props.setParentData(this.nodeData.pk_appregister);
-
-                this.optype = this.props.optype;
-                let appData = {
-                    code: "",
-                    name: "",
-                    orgtypecode: undefined,
-                    funtype: undefined,
-                    app_desc: "",
-                    help_name: "",
-                    isenable: true,
-                    iscauserusable: false,
-                    uselicense_load: true,
-                    pk_group: "",
-                    width: "1",
-                    height: "1",
-                    target_path: "",
-                    apptype: 1,
-                    resid: "",
-                    image_src: ""
-                };
-                this.props.setAppParamData([]);
-                this.props.setNodeData(appData);
-                this.props.setOpType("app");
-                this.props.setBillStatus({
-                    isEdit: true,
-                    isNew: true
-                });
-                break;
-            case "增加页面":
-                this.actionType = 4;
-                this.optype = this.props.optype;
-                this.nodeData = this.props.nodeData;
-                this.props.setParentData(this.nodeData.pk_appregister);
-                let pageData = {
-                    pagecode: "",
-                    pagename: "",
-                    pagedesc: "",
-                    pageurl: "",
-                    resid: "",
-                    isdefault: false
-                };
-                this.props.setPageButtonData([]);
-                this.props.setPageTemplateData([]);
-                this.props.setNodeData(pageData);
-                this.props.setOpType("page");
-                this.props.setBillStatus({
-                    isEdit: true,
-                    isNew: true
-                });
-                break;
-            case "保存":
-                let fromData = this.props.getFromData();
-                if (!fromData) {
-                    return;
-                }
-
-                let isNew = this.props.billStatus.isNew;
-                let reqData, info;
-                /**
-                 * @param {Number} this.actionType
-                 *
-                 * 1 -> 模块
-                 * 2 -> 应用分类
-                 * 3 -> 应用
-                 * 4 -> 页面
-                 */
-                switch (this.actionType) {
-                    case 1:
-                        if (isNew) {
-                            url = `/nccloud/platform/appregister/insertmodule.do`;
-                            info = {
-                                name: "模块",
-                                action: "新增"
-                            };
-                        } else {
-                            url = `/nccloud/platform/appregister/editmodule.do`;
-                            info = {
-                                name: "模块",
-                                action: "编辑"
-                            };
-                        }
-                        if (this.props.parentData) {
-                            fromData.parentcode = this.props.parentData;
-                        }
-                        reqData = fromData;
-                        break;
-                    case 2:
-                        if (isNew) {
-                            url = `/nccloud/platform/appregister/insertapp.do`;
-                            info = {
-                                name: "应用",
-                                action: "新增"
-                            };
-                        } else {
-                            url = `/nccloud/platform/appregister/editapp.do`;
-                            info = {
-                                name: "应用",
-                                action: "编辑"
-                            };
-                        }
-                        if (this.optype === "module") {
-                            fromData.parent_id = this.nodeData.moduleid;
-                        } else {
-                            fromData.parent_id = this.props.parentData;
-                        }
-                        reqData = { ...this.props.nodeData, ...fromData };
-                        break;
-                    case 3:
-                        if (isNew) {
-                            url = `/nccloud/platform/appregister/insertapp.do`;
-                            info = {
-                                name: "应用",
-                                action: "新增"
-                            };
-                        } else {
-                            url = `/nccloud/platform/appregister/editapp.do`;
-                            info = {
-                                name: "应用",
-                                action: "编辑"
-                            };
-                        }
-                        fromData.parent_id = this.props.parentData;
-                        reqData = { ...this.props.nodeData, ...fromData };
-                        break;
-                    case 4:
-                        if (isNew) {
-                            url = `/nccloud/platform/appregister/insertpage.do`;
-                            info = {
-                                name: "页面",
-                                action: "新增"
-                            };
-                        } else {
-                            url = `/nccloud/platform/appregister/editpage.do`;
-                            info = {
-                                name: "页面",
-                                action: "编辑"
-                            };
-                        }
-                        fromData.parentcode = this.props.pageParentCode;
-                        fromData.parent_id = this.props.parentData;
-                        reqData = { ...this.props.nodeData, ...fromData };
-                        break;
-                    default:
-                        break;
-                }
-                Ajax({
-                    url: url,
-                    data: reqData,
-                    info: info,
-                    alert: true,
-                    success: ({ data }) => {
-                        if (data.success && data.data) {
-                            Notice({ status: "success" });
-                            this.props.setBillStatus({
-                                isEdit: false,
-                                isNew: false
-                            });
-                            if (isNew) {
-                                this.props.reqTreeData();
-                                this.props.setNodeData(data.data);
-                            } else {
-                                if (
-                                    this.props.optype === "classify" ||
-                                    this.props.optype === "app"
-                                ) {
-                                    let treeData = {
-                                        moduleid: reqData.pk_appregister,
-                                        parentcode: this.props.parentData,
-                                        systypecode: reqData.code,
-                                        systypename: reqData.name,
-                                        flag: "1"
-                                    };
-                                    this.props.updateTreeData(treeData);
-                                } else if (this.props.optype === "page") {
-                                    let treeData = {
-                                        moduleid: data.data.pk_apppage,
-                                        parentcode: this.props.parentData,
-                                        systypecode: data.data.pagecode,
-                                        systypename: data.data.pagename,
-                                        flag: "2"
-                                    };
-                                    this.props.updateTreeData(treeData);
-                                } else {
-                                    this.props.updateTreeData({
-                                        ...reqData,
-                                        flag: "0"
-                                    });
-                                }
-                                this.props.setNodeData(reqData);
-                            }
-                        } else {
-                            Notice({ status: "error", msg: res.error.message });
-                        }
-                    }
-                });
-                // 保存成功之后记得更新数据 获取到当前节点id 之后 选中 新增的节点
-                // console.log(reqData);
-                break;
-            case "取消":
-                this.props.setOpType(this.optype);
-                this.props.setNodeData(this.nodeData);
-                this.props.setBillStatus({
-                    isEdit: false,
-                    isNew: false
-                });
-                break;
-            case "删除":
-                let _this = this;
-                confirm({
-                    title: "是否要删除?",
-                    content: "",
-                    okText: "确认",
-                    okType: "danger",
-                    cancelText: "取消",
-                    onOk() {
-                        let data, nodeData;
-                        let {
-                            pk_appregister,
-                            code,
-                            name
-                        } = _this.props.nodeData;
-                        switch (_this.props.optype) {
-                            case "module":
-                                url = `/nccloud/platform/appregister/deletemodule.do`;
-                                info = {
-                                    name: "模块",
-                                    action: "删除"
-                                };
-                                data = {
-                                    moduleid: _this.props.nodeData.moduleid
-                                };
-                                nodeData = _this.props.nodeData;
-                                break;
-                            case "classify":
-                                url = `/nccloud/platform/appregister/deleteapp.do`;
-                                info = {
-                                    name: "应用",
-                                    action: "删除"
-                                };
-                                data = {
-                                    pk_appregister: pk_appregister
-                                };
-                                nodeData = {
-                                    moduleid: pk_appregister,
-                                    parentcode: _this.props.parentData,
-                                    systypecode: code,
-                                    systypename: name
-                                };
-                                break;
-                            case "app":
-                                url = `/nccloud/platform/appregister/deleteapp.do`;
-                                info = {
-                                    name: "应用",
-                                    action: "删除"
-                                };
-                                data = {
-                                    pk_appregister: pk_appregister
-                                };
-                                nodeData = {
-                                    moduleid: pk_appregister,
-                                    parentcode: _this.props.parentData,
-                                    systypecode: code,
-                                    systypename: name
-                                };
-                                break;
-                            case "page":
-                                url = `/nccloud/platform/appregister/deletepage.do`;
-                                info = {
-                                    name: "页面",
-                                    action: "删除"
-                                };
-                                data = {
-                                    pk_apppage: _this.props.nodeData.pk_apppage
-                                };
-                                nodeData = {
-                                    moduleid: _this.props.nodeData.pk_apppage,
-                                    parentcode: _this.props.parentData,
-                                    systypecode: _this.props.nodeData.pagecode,
-                                    systypename: _this.props.nodeData.pagename
-                                };
-                                break;
-                            default:
-                                break;
-                        }
-                        Ajax({
-                            url: url,
-                            data: data,
-                            info: info,
-                            success: ({ data }) => {
-                                if (data.success && data.data) {
-                                    Notice({
-                                        status: "success",
-                                        msg: data.data.true
-                                    });
-                                    _this.props.delTreeData(nodeData);
-                                    _this.props.setOpType(null);
-                                } else {
-                                    Notice({
-                                        status: "error",
-                                        msg: data.data.true
-                                    });
-                                }
-                            }
-                        });
-                    },
-                    onCancel() {
-                        console.log("Cancel");
-                    }
-                });
-
-                break;
-            case "修改":
-                this.nodeData = this.props.nodeData;
-                this.optype = this.props.optype;
-                switch (this.optype) {
-                    case "module":
-                        this.actionType = 1;
-                        break;
-                    case "classify":
-                        this.actionType = 2;
-                        break;
-                    case "app":
-                        this.actionType = 3;
-                        break;
-                    case "page":
-                        this.actionType = 4;
-                        break;
-                    default:
-                        break;
-                }
-                this.props.setBillStatus({
-                    isEdit: true,
-                    isNew: false
-                });
-                break;
-            default:
-                break;
-        }
-    };
-    creatBtn = btnObj => {
-        let { name, isShow, type } = btnObj;
-        if (isShow) {
-            return (
-                <Button
-                    key={name}
-                    className="margin-left-10"
-                    type={type}
-                    onClick={this.handleClick.bind(this, name)}
-                >
-                    {name}
-                </Button>
-            );
-        }
-    };
-    /**
-     * 右侧表单选择
-     */
-    switchFrom = () => {
-        let optype = this.props.optype;
-        switch (optype) {
-            case "module":
-                return <ModuleFormCard />;
-                break;
-            case "classify":
-                return <ClassFormCard />;
-            case "app":
-                return <AppFormCard />;
-            case "page":
-                return <PageFromCard />;
-            default:
-                return "";
-        }
-    };
-    // 按钮显隐性控制
-    setBtnsShow = item => {
-        let { name } = item;
-        let { optype, parentData, billStatus } = this.props;
-        let { isEdit, isNew } = billStatus;
-        let isShow = false;
-        switch (name) {
-            case "增加模块":
-                if (isEdit) {
-                    isShow = false;
-                } else {
-                    if (optype === "" || (optype === "module" && !parentData)) {
-                        isShow = true;
-                    } else {
-                        isShow = false;
-                    }
-                }
-                break;
-            case "增加应用分类":
-                if (isEdit) {
-                    isShow = false;
-                } else {
-                    if (
-                        optype === "module" &&
-                        parentData &&
-                        parentData.length === 2
-                    ) {
-                        isShow = true;
-                    } else {
-                        isShow = false;
-                    }
-                }
-                break;
-            case "增加应用":
-                if (isEdit) {
-                    isShow = false;
-                } else {
-                    if (optype === "classify") {
-                        isShow = true;
-                    } else {
-                        isShow = false;
-                    }
-                }
-                break;
-            case "增加页面":
-                if (isEdit) {
-                    isShow = false;
-                } else {
-                    if (optype === "app") {
-                        isShow = true;
-                    } else {
-                        isShow = false;
-                    }
-                }
-                break;
-            case "保存":
-                if (isEdit) {
-                    isShow = true;
-                } else {
-                    isShow = false;
-                }
-                break;
-            case "取消":
-                if (isEdit) {
-                    isShow = true;
-                } else {
-                    isShow = false;
-                }
-                break;
-            case "删除":
-                if (isNew) {
-                    isShow = false;
-                } else {
-                    if (optype === "") {
-                        isShow = false;
-                    } else {
-                        isShow = true;
-                    }
-                }
-                break;
-            case "修改":
-                if (isNew || isEdit) {
-                    isShow = false;
-                } else {
-                    if (optype === "") {
-                        isShow = false;
-                    } else {
-                        isShow = true;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-        return { ...item, isShow };
-    };
-    componentDidMount() {
-        
+  };
+  /**
+   * 添加模块
+   */
+  addModule = () => {
+    let optype = this.state.optype;
+    this.historyOptype = optype;
+    if (optype === "") {
+      optype = "1";
+    } else if (optype === "1") {
+      optype = "2";
     }
-
-    render() {
-        return (
-            <PageLayout className="nc-workbench-appRegister">
-                <Layout>
-                    <Header>
-                        {Btns.map((item, index) => {
-                            item = this.setBtnsShow(item);
-                            return this.creatBtn(item);
-                        })}
-                    </Header>
-                    <Layout height={"100%"}>
-                        <Sider
-                            width={280}
-                            height={"100%"}
-                            style={{
-                                background: "#fff",
-                                width: "500px",
-                                minHeight: "calc(100vh - 64px - 48px)",
-                                height: `${this.state.siderHeight}px`,
-                                overflowY: "auto",
-                                padding: "20px"
-                            }}
-                        >
-                            <SearchTree />
-                        </Sider>
-                        <Content style={{ padding: "20px", minHeight: 280 }}>
-                            {this.switchFrom()}
-                        </Content>
-                    </Layout>
-                </Layout>
-            </PageLayout>
+    this.historyNodeData = this.props.nodeData;
+    let moduleData = {
+      systypecode: "",
+      moduleid: "",
+      systypename: "",
+      orgtypecode: undefined,
+      appscope: undefined,
+      isaccount: false,
+      supportcloseaccbook: false,
+      resid: "",
+      dr: 0
+    };
+    this.props.setNodeData(dataTransfer(moduleData));
+    this.props.setIsNew(true);
+    this.props.setIsEdit(true);
+    this.setState({
+      optype
+    });
+  };
+  /**
+   * 添加应用分类
+   */
+  addAppClass = () => {
+    let optype = this.state.optype;
+    this.historyOptype = optype;
+    if (optype === "2") {
+      optype = "3";
+    }
+    this.historyNodeData = this.props.nodeData;
+    let classData = {
+      apptype: 0,
+      isenable: true,
+      code: "",
+      name: "",
+      app_desc: "",
+      resid: "",
+      help_name: ""
+    };
+    this.props.setNodeData(dataTransfer(classData));
+    this.props.setIsNew(true);
+    this.props.setIsEdit(true);
+    this.setState({
+      optype
+    });
+  };
+  /**
+   * 添加页面
+   */
+  addApp = () => {
+    let optype = this.state.optype;
+    this.historyOptype = optype;
+    if (optype === "3") {
+      optype = "4";
+    }
+    this.historyNodeData = this.props.nodeData;
+    let appData = {
+      code: "",
+      name: "",
+      orgtypecode: "",
+      funtype: "",
+      app_desc: "",
+      help_name: "",
+      isenable: true,
+      iscauserusable: false,
+      uselicense_load: true,
+      pk_group: "",
+      width: "1",
+      height: "1",
+      target_path: "",
+      apptype: "1",
+      resid: "",
+      image_src: ""
+    };
+    this.props.setAppParamData([]);
+    this.props.setNodeData(dataTransfer(appData));
+    this.props.setIsNew(true);
+    this.props.setIsEdit(true);
+    this.setState({
+      optype
+    });
+  };
+  /**
+   * 添加页面
+   */
+  addPage = () => {
+    let optype = this.state.optype;
+    this.historyOptype = optype;
+    if (optype === "4") {
+      optype = "5";
+    }
+    this.historyNodeData = this.props.nodeData;
+    let pageData = {
+      pagecode: "",
+      pagename: "",
+      pagedesc: "",
+      pageurl: "",
+      resid: "",
+      isdefault: false
+    };
+    this.props.setPageButtonData([]);
+    this.props.setPageTemplateData([]);
+    this.props.setNodeData(dataTransfer(pageData));
+    this.props.setIsNew(true);
+    this.props.setIsEdit(true);
+    this.setState({
+      optype
+    });
+  };
+  /**
+   * 保存
+   */
+  save = () => {
+    if (dataCheck(this.props.nodeData)) {
+      return;
+    }
+    let fromData = dataRestore(this.props.nodeData);
+    if (fromData.children) {
+      delete fromData.children;
+    }
+    let { id, code } = this.props.nodeInfo;
+    let { optype } = this.state;
+    //  新增保存回调
+    let newSaveFun = data => {
+      this.reqTreeData();
+      this.props.setNodeData(dataTransfer(data));
+      this.props.setIsNew(false);
+      this.props.setIsEdit(false);
+      Notice({ status: "success" });
+    };
+    //  对应树节点前两层 模块编辑保存成功回调
+    let moduleEditFun = data => {
+      this.reqTreeData();
+      Notice({ status: "success", msg: data.msg });
+      this.props.setIsNew(false);
+      this.props.setIsEdit(false);
+    };
+    //  对应树节点中间两层 应用分类 及 应用编辑后保存
+    let appEditFun = data => {
+      let treeData = {
+        moduleid: data.pk_appregister,
+        parentcode: code,
+        systypecode: data.code,
+        systypename: data.name,
+        flag: "1"
+      };
+      this.updateTreeData(treeData);
+      Notice({ status: "success" });
+      this.props.setIsNew(false);
+      this.props.setIsEdit(false);
+    };
+    //  对应树节点中间两层 应用分类 及 应用编辑后保存
+    let pageEditFun = data => {
+      let treeData = {
+        moduleid: data.pk_apppage,
+        parentcode: data.code,
+        systypecode: data.pagecode,
+        systypename: data.pagename,
+        flag: "2"
+      };
+      this.updateTreeData(treeData);
+      Notice({ status: "success" });
+      this.props.setIsNew(false);
+      this.props.setIsEdit(false);
+    };
+    if (this.props.isNew) {
+      if (optype === "1" || optype === "2") {
+        if (id !== "00" && id.length > 0) {
+          fromData.parentcode = id;
+        }
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "模块新增"
+          },
+          `/nccloud/platform/appregister/insertmodule.do`,
+          fromData,
+          newSaveFun
         );
+      }
+      if (optype === "3" || optype === "4") {
+        if (id.length > 0) {
+          fromData.parent_id = id;
+        }
+        // 将元数据id参照的refpk 赋给 mdid 字段
+        if(fromData.hasOwnProperty('mdid')){
+          fromData.mdid = fromData.mdidRef.refpk;
+        }
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "应用新增"
+          },
+          `/nccloud/platform/appregister/insertapp.do`,
+          fromData,
+          newSaveFun
+        );
+      }
+      if (optype === "5") {
+        if (id.length > 0) {
+          fromData.parent_id = id;
+          fromData.parentcode = code;
+        }
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "页面新增"
+          },
+          `/nccloud/platform/appregister/insertpage.do`,
+          fromData,
+          newSaveFun
+        );
+      }
+    } else {
+      if (optype === "1" || optype === "2") {
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "模块编辑"
+          },
+          `/nccloud/platform/appregister/editmodule.do`,
+          fromData,
+          moduleEditFun
+        );
+      }
+      if (optype === "3" || optype === "4") {
+        // 将元数据id参照的refpk 赋给 mdid 字段
+        if(fromData.hasOwnProperty('mdid')){
+          fromData.mdid = fromData.mdidRef.refpk;
+        }
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "应用编辑"
+          },
+          `/nccloud/platform/appregister/editapp.do`,
+          fromData,
+          appEditFun
+        );
+      }
+      if (optype === "5") {
+        this.reqTreeNodeData(
+          {
+            name: "应用注册",
+            action: "页面编辑"
+          },
+          `/nccloud/platform/appregister/editpage.do`,
+          fromData,
+          pageEditFun
+        );
+      }
     }
+  };
+  /**
+   * 删除
+   */
+  del = () => {
+    let _this = this;
+    confirm({
+      title: "是否要删除?",
+      content: "",
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        let { optype } = _this.state;
+        let { id } = _this.props.nodeInfo;
+        let delFun = data => {
+          Notice({
+            status: "success",
+            msg: data.true
+          });
+          _this.delTreeData(id);
+          _this.props.setNodeData({});
+          _this.setState({
+            optype: ""
+          });
+        };
+        if (optype === "1" || optype === "2") {
+          _this.reqTreeNodeData(
+            {
+              name: "应用注册",
+              action: "模块删除"
+            },
+            `/nccloud/platform/appregister/deletemodule.do`,
+            {
+              moduleid: id
+            },
+            delFun
+          );
+        }
+        if (optype === "3" || optype === "4") {
+          _this.reqTreeNodeData(
+            {
+              name: "应用注册",
+              action: "应用删除"
+            },
+            `/nccloud/platform/appregister/deleteapp.do`,
+            {
+              pk_appregister: id
+            },
+            delFun
+          );
+        }
+        if (optype === "5") {
+          _this.reqTreeNodeData(
+            {
+              name: "应用注册",
+              action: "页面删除"
+            },
+            `/nccloud/platform/appregister/deletepage.do`,
+            {
+              pk_apppage: id
+            },
+            delFun
+          );
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      }
+    });
+  };
+  /**
+   * 右侧表单选择
+   */
+  switchFrom = () => {
+    switch (this.state.optype) {
+      // 对应树结构中的第一层
+      case "1":
+        return <ModuleFormCard />;
+        对应树结构中的第二层;
+      case "2":
+        return <ModuleFormCard />;
+      // 对应树结构的第三层
+      case "3":
+        return <ClassFormCard />;
+      // 对应树结构的第四层
+      case "4":
+        return <AppFormCard />;
+      // 对应树结构的第五层
+      case "5":
+        return <PageFromCard />;
+      default:
+        return "";
+    }
+  };
+  /**
+   * tree 数据请求
+   */
+  reqTreeData = () => {
+    Ajax({
+      url: `/nccloud/platform/appregister/querymodules.do`,
+      info: {
+        name: "应用注册模块",
+        action: "查询"
+      },
+      success: ({ data }) => {
+        if (data.success && data.data.length > 0) {
+          this.props.setTreeData(data.data);
+        }
+      }
+    });
+  };
+  /**
+   * 树节点详细信息请求
+   * @param {Object} info 接口描述
+   * @param {String} url 请求地址
+   * @param {Object} data 请求数据
+   * @param {Function} callback 成功回调
+   */
+  reqTreeNodeData = (info, url, data, callback) => {
+    Ajax({
+      url,
+      data,
+      info,
+      success: ({ data: { data } }) => {
+        if (data) {
+          callback(data);
+        }
+      }
+    });
+  };
+  /**
+   * 数据点选择事件
+   * @param {Object} obj 选中的数节点对象
+   */
+  handleTreeNodeSelect = obj => {
+    let optype = "";
+    let nodeInfo = {
+      id: "",
+      code: "",
+      name: "",
+      parentId: ""
+    };
+    if (obj) {
+      switch (obj.flag) {
+        // 对应树的前两层
+        case "0":
+          if (obj.moduleid.length === 2) {
+            optype = "1";
+          } else {
+            optype = "2";
+          }
+          this.props.setNodeData(dataTransfer(obj));
+          break;
+        // 对应树的3、4层
+        case "1":
+          let appCallBack = data => {
+            this.props.setNodeData(dataTransfer(data.appRegisterVO));
+            this.props.setAppParamData(data.appParamVOs);
+          };
+          optype = "3";
+          if (obj.parentcode.length > 4) {
+            optype = "4";
+          }
+          this.reqTreeNodeData(
+            { name: "应用注册", action: "应用查询" },
+            `/nccloud/platform/appregister/query.do`,
+            { pk_appregister: obj.moduleid },
+            appCallBack
+          );
+          break;
+        // 对应树的最后一层
+        case "2":
+          let pageCallBack = data => {
+            this.props.setNodeData(dataTransfer(data.apppageVO));
+            this.props.setPageButtonData(data.appButtonVOs);
+            this.props.setPageTemplateData(data.pageTemplets);
+          };
+          this.reqTreeNodeData(
+            { name: "应用注册", action: "应用页面查询" },
+            `/nccloud/platform/appregister/querypagedetail.do`,
+            { pk_apppage: obj.moduleid },
+            pageCallBack
+          );
+          optype = "5";
+          break;
+        default:
+          break;
+      }
+      nodeInfo = {
+        id: obj.moduleid,
+        code: obj.systypecode,
+        name: obj.name,
+        parentId: obj.parentcode
+      };
+    }
+    this.props.setIsNew(false);
+    this.props.setIsEdit(false);
+    this.props.setNodeInfo(nodeInfo);
+    this.setState({
+      optype
+    });
+  };
+  /**
+   * 更新树数组
+   * @param {Object} obj  需要更新的树节点
+   */
+  updateTreeData = obj => {
+    let treeDataArray = this.props.treeData;
+    treeDataArray = treeDataArray.map(item => {
+      if (item.moduleid === obj.moduleid) {
+        item = obj;
+      }
+      return item;
+    });
+    this.props.setTreeData(treeDataArray);
+  };
+  /**
+   * 删除树数指定节点
+   *
+   */
+  delTreeData = id => {
+    let treeDataArray = this.props.treeData;
+    treeDataArray = treeDataArray.filter(item => item.moduleid !== id);
+    this.props.setTreeData(treeDataArray);
+  };
+  /**
+   * 树查询
+   */
+  handleTreeSearch = value => {
+    let searchCallback = data => {
+      let expandedKeys = data.map(item => item.moduleid);
+      this.props.setTreeData(data);
+      this.props.setExpandedKeys(expandedKeys);
+    };
+    this.reqTreeNodeData(
+      { name: "应用注册", action: "应用查询" },
+      `/nccloud/platform/appregister/searchapps.do`,
+      { search_content: value },
+      searchCallback
+    );
+  };
+  componentDidMount() {
+    console.log('载入。。。。。');
+    this.reqTreeData();
+  }
+  render() {
+    let { optype } = this.state;
+    let isEdit = this.props.isEdit;
+    let btnList = [
+      {
+        code: "addModule",
+        name: "增加模块",
+        type: "primary",
+        isshow: !isEdit && (optype === "" || optype === "1")
+      },
+      {
+        code: "addAppClass",
+        name: "增加应用分类",
+        type: "primary",
+        isshow: !isEdit && optype === "2"
+      },
+      {
+        code: "addApp",
+        name: "增加应用",
+        type: "primary",
+        isshow: !isEdit && optype === "3"
+      },
+      {
+        code: "addPage",
+        name: "增加页面",
+        type: "primary",
+        isshow: !isEdit && optype === "4"
+      },
+      {
+        code: "cancel",
+        name: "取消",
+        type: "",
+        isshow: isEdit
+      },
+      {
+        code: "save",
+        name: "保存",
+        type: "primary",
+        isshow: isEdit
+      },
+      {
+        code: "del",
+        name: "删除",
+        type: "primary",
+        isshow: !isEdit && optype !== ""
+      },
+      {
+        code: "edit",
+        name: "修改",
+        type: "primary",
+        isshow: !isEdit && optype !== ""
+      }
+    ];
+    return (
+      <PageLayout
+        className="nc-workbench-appRegister"
+        header={
+          <PageLayoutHeader>
+            <div>应用注册</div>
+            <ButtonCreate dataSource={btnList} onClick={this.handleClick} />
+          </PageLayoutHeader>
+        }
+      >
+        <PageLayoutLeft>
+          <SearchTree
+            className="appRegister-searchTree"
+            onSelect={this.handleTreeNodeSelect}
+            onSearch={this.handleTreeSearch}
+          />
+        </PageLayoutLeft>
+        <PageLayoutRight>{this.switchFrom()}</PageLayoutRight>
+      </PageLayout>
+    );
+  }
 }
 AppRegister.propTypes = {
-    optype: PropTypes.string.isRequired,
-    pageParentCode: PropTypes.string.isRequired,
-    billStatus: PropTypes.object.isRequired,
-    setBillStatus: PropTypes.func.isRequired,
-    parentData: PropTypes.string.isRequired,
-    setOpType: PropTypes.func.isRequired,
-    nodeData: PropTypes.object.isRequired,
-    setAppParamData: PropTypes.func.isRequired,
-    setPageButtonData: PropTypes.func.isRequired,
-    setPageTemplateData: PropTypes.func.isRequired,
-    getFromData: PropTypes.func.isRequired,
-    addTreeData: PropTypes.func.isRequired,
-    delTreeData: PropTypes.func.isRequired,
-    updateTreeData: PropTypes.func.isRequired,
-    setParentData: PropTypes.func.isRequired,
-    reqTreeData: PropTypes.func.isRequired
+  isNew: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
+  nodeInfo: PropTypes.object.isRequired,
+  nodeData: PropTypes.object.isRequired,
+  treeData: PropTypes.array.isRequired,
+  setTreeData: PropTypes.func.isRequired,
+  setNodeData: PropTypes.func.isRequired,
+  setPageButtonData: PropTypes.func.isRequired,
+  setPageTemplateData: PropTypes.func.isRequired,
+  setAppParamData: PropTypes.func.isRequired,
+  setIsNew: PropTypes.func.isRequired,
+  setIsEdit: PropTypes.func.isRequired,
+  setExpandedKeys: PropTypes.func.isRequired
 };
 export default connect(
-    state => ({
-        optype: state.AppRegisterData.optype,
-        billStatus: state.AppRegisterData.billStatus,
-        parentData: state.AppRegisterData.parentData,
-        nodeData: state.AppRegisterData.nodeData,
-        getFromData: state.AppRegisterData.getFromData,
-        addTreeData: state.AppRegisterData.addTreeData,
-        delTreeData: state.AppRegisterData.delTreeData,
-        updateTreeData: state.AppRegisterData.updateTreeData,
-        reqTreeData: state.AppRegisterData.reqTreeData,
-        pageParentCode:state.AppRegisterData.pageParentCode
-    }),
-    {
-        setNodeData,
-        setBillStatus,
-        setOpType,
-        setAppParamData,
-        setPageButtonData,
-        setPageTemplateData,
-        setParentData
-    }
+  state => ({
+    nodeData: state.AppRegisterData.nodeData,
+    nodeInfo: state.AppRegisterData.nodeInfo,
+    treeData: state.AppRegisterData.treeData,
+    isNew: state.AppRegisterData.isNew,
+    isEdit: state.AppRegisterData.isEdit
+  }),
+  {
+    setTreeData,
+    setNodeData,
+    setNodeInfo,
+    setPageButtonData,
+    setPageTemplateData,
+    setAppParamData,
+    setIsNew,
+    setIsEdit,
+    setExpandedKeys
+  }
 )(AppRegister);

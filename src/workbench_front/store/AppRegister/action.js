@@ -13,6 +13,13 @@ export const setTreeData = (data)=>{
 		data
 	}
 }
+// 设置 树 数据
+export const setNodeInfo = (data)=>{
+	return {
+		type: AppRegister.SETNODEINFO,
+		data
+	}
+}
 // 设置 树节点 数据
 export const setNodeData = (data) => {
 	return {
@@ -41,80 +48,25 @@ export const setAppParamData = (data) => {
 		data
 	};
 };
-
-
-
-// 设置表单类型
-export const setOpType = (data)=>{
+// 设置页面是否是新增
+export const setIsNew = (data) => {
 	return {
-		type: AppRegister.SETOPTYPE,
+		type: AppRegister.ISNEW,
 		data
-	}
-}
-// 获取树数据
-export const reqTreeData = (data)=>{
+	};
+};
+// 设置 页面是否是编辑
+export const setIsEdit = (data) => {
 	return {
-		type: AppRegister.REQTREEDATA,
+		type: AppRegister.ISEDIT,
 		data
-	}
-}
-
-// 更新 树节点 数据
-export const updateTreeData = (updateTreeData) => {
-	return {
-		type: AppRegister.UPDATENODEDATA,
-		updateTreeData
 	};
 };
-// 新增 树节点 数据
-export const addTreeData = (addTreeData) => {
+// 设置 树展开节点key数组
+export const setExpandedKeys = (data) => {
 	return {
-		type: AppRegister.ADDNODEDATA,
-		addTreeData
-	};
-};
-// 新增 树节点 数据
-export const delTreeData = (delTreeData) => {
-	return {
-		type: AppRegister.DELNODEDATA,
-		delTreeData
-	};
-};
-// 操作类型 数据
-export const setBillStatus = (billStatus) => {
-	return {
-		type: AppRegister.BILLSTATUS,
-		billStatus
-	};
-};
-// 父节点 数据
-export const setParentData = (parentData) => {
-	return {
-		type: AppRegister.PARENTDATA,
-		parentData
-	};
-};
-// 设置 appTtype 数据
-export const setAppType = (appType) => {
-	return {
-		type: AppRegister.APPTYPE,
-		appType
-	};
-};
-
-
-// 获取表单数据
-export const getFromDataFunc = (getFromData)=>{
-	return {
-		type: AppRegister.GETFROMDATA,
-		getFromData
-	}
-}
-
-// 获取页面父节点code
-export const getPageParentCode = (data)=>{
-	return {
-		type: AppRegister.PAGEPARENTCODE,
+		type: AppRegister.EXPANDEDKEYS,
 		data
-	}
-}
+	};
+};
+

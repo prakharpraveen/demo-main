@@ -1,104 +1,84 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Row, Form } from 'antd';
-import { getFromDataFunc } from 'Store/AppRegister/action';
-import { createForm } from './CreatForm';
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import {Form} from "antd";
+import {FormCreate} from "Components/FormCreate";
+import {setNodeData} from "Store/AppRegister/action";
 class ClassFromCard extends Component {
-	constructor(props, context) {
-		super(props, context);
-		this.state ={
-			DOMDATA:[
-				{
-					lable: '应用编码',
-					type: 'input',
-					code: 'code',
-					required: true,
-					md: 24,
-					lg: 24,
-					xl: 12,
-					check:(rule, value, callback)=>{
-						if(value === this.props.parentData){
-							callback('不能与父节点编码重复');
-						}else{
-							callback();
-						}
-					}
-				},
-				{
-					lable: '应用名称',
-					type: 'input',
-					code: 'name',
-					required: true,
-					md: 24,
-					lg: 24,
-					xl: 12
-				},
-				{
-					lable: '多语字段',
-					type: 'input',
-					code: 'resid',
-					required: false,
-					md: 24,
-					lg: 24,
-					xl: 12
-				},
-				{
-					lable: '应用描述',
-					type: 'input',
-					code: 'app_desc',
-					required: false,
-					md: 24,
-					lg: 24,
-					xl: 12
-				},
-				{
-					lable: '帮助文件名',
-					type: 'input',
-					code: 'help_name',
-					required: false,
-					md: 24,
-					lg: 24,
-					xl: 12
-				}
-			]
-		}
-	}
-	getFromData = () => {
-		const { getFieldsValue, validateFields } = this.props.form;
-		let flag = false;
-		validateFields((err, values) => {
-			if (!err) {
-				flag = true;
-			}
-		});
-		return flag ? getFieldsValue() : null;
-	};
-
-	componentWillMount() {
-		this.props.getFromDataFunc(this.getFromData);
-	}
-
-	render() {
-		return (
-			<Form className='from-card'>
-				<Row gutter={24}>{createForm(this.state.DOMDATA,this.props)}</Row>
-			</Form>
-		);
-	}
+    constructor(props, context) {
+        super(props, context);
+    }
+    /**
+     * 表单任一字段值改变操作
+     * @param {String|Object} changedFields 改变的字段及值
+     */
+    handleFormChange = changedFields => {
+        this.props.setNodeData({...this.props.nodeData, ...changedFields});
+    };
+    render() {
+        let isEdit = this.props.isEdit;
+        let classFormData = [
+            {
+                label: "应用编码",
+                type: "string",
+                code: "code",
+                isRequired: true,
+                check: (rule, value, callback) => {
+                    if (value === this.props.parentData) {
+                        callback("不能与父节点编码重复");
+                    } else {
+                        callback();
+                    }
+                },
+                isedit: isEdit
+            },
+            {
+                label: "应用名称",
+                type: "string",
+                code: "name",
+                isRequired: true,
+                isedit: isEdit
+            },
+            {
+                label: "多语字段",
+                type: "string",
+                code: "resid",
+                isRequired: false,
+                isedit: isEdit
+            },
+            {
+                label: "应用描述",
+                type: "string",
+                code: "app_desc",
+                isRequired: false,
+                isedit: isEdit
+            },
+            {
+                label: "帮助文件名",
+                type: "string",
+                code: "help_name",
+                isRequired: false,
+                isedit: isEdit
+            }
+        ];
+        return (
+            <FormCreate
+                formData={classFormData}
+                fields={this.props.nodeData}
+                onChange={this.handleFormChange}
+            />
+        );
+    }
 }
 ClassFromCard = Form.create()(ClassFromCard);
 ClassFromCard.propTypes = {
-	updateTreeData: PropTypes.func.isRequired,
-	nodeData: PropTypes.object.isRequired,
-	billStatus: PropTypes.object.isRequired,
-	getFromDataFunc: PropTypes.func.isRequired,
-	parentData:PropTypes.string.isRequired,
+    isEdit: PropTypes.bool.isRequired,
+    nodeData: PropTypes.object.isRequired,
 };
 export default connect(
-	(state) => {
-		let { nodeData, updateTreeData, billStatus,parentData } = state.AppRegisterData;
-		return { nodeData, updateTreeData, billStatus,parentData };
-	},
-	{ getFromDataFunc }
+    state => ({
+        nodeData: state.AppRegisterData.nodeData,
+        isEdit: state.AppRegisterData.isEdit,
+    }),
+    {setNodeData}
 )(ClassFromCard);
