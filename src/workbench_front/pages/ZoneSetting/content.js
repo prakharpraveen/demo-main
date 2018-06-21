@@ -46,22 +46,17 @@ class MyContent extends Component {
 					if (success && data && data.length > 0) {
 						let areaList = [];
 						// 实施态 
-						if(this.props.status ==='search'){
+						if (this.props.status ==='searchTemplate'){
 							_.forEach(data, (d) => {
 								let tmpArea = {
 									...d
 								}
 								if (tmpArea.areatype === '0') {
-									// tmpArea.queryPropertyList = d.formPropertyList;
-									// _.forEach(tmpArea.queryPropertyList, (q) => {
-									// 	q.pk_query_property = q.pk_form_property,
-									// 		q.myMetaPath = ''
-									// })
 									areaList.push(tmpArea)
 								}
 							
 							})
-						} else if (this.props.status ==='nosearch'){
+						} else if (this.props.status ==='billTemplate'){
 							_.forEach(data, (d) => {
 								let tmpArea = {
 									...d
