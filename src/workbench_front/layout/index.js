@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import intl from "react-intl-universal";
 import { Select, AutoComplete, Icon } from "antd";
-import Drawer from "react-motion-drawer";
 import PropTypes from "prop-types";
 import { GetQuery } from "Pub/js/utils";
 import { withRouter } from "react-router-dom";
 import { changeDrawer } from "Store/appStore/action";
-import IntlCom from "./../intl";
 import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
@@ -18,7 +14,6 @@ import { sprLog } from "./spr";
 import "./index.less";
 import Ajax from "Pub/js/ajax";
 const Option = Select.Option;
-
 let resizeWaiter = false;
 /**
  * 工作桌面整体布局组件
@@ -38,7 +33,7 @@ class Layout extends Component {
    * @param {String} value 选中组织的value值
    */
   handleChange = value => {
-    console.log(`selected ${value}`);
+    console.log(value);
   };
   /**
    * 更新标题名称
@@ -66,13 +61,22 @@ class Layout extends Component {
   updateTitle = (title)=>{
     document.title = title;
   }
+  /**
+   * 监听storage变化
+   * 
+   */
+  handleStorageChange =()=>{
+    console.log(1);
+  }
   componentDidMount() {
     this.handleUpdateTitleName();
     window.addEventListener("hashchange", this.handleUpdateTitleName);
+    window.addEventListener("storage", this.handleStorageChange);
   }
 
   componentWillUnmount() {
     window.removeEventListener("hashchange", this.handleUpdateTitleName);
+    window.removeEventListener("storage", this.handleStorageChange);
   }
 
   changeSearchInput = () => {
