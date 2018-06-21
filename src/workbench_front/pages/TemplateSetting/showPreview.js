@@ -14,18 +14,13 @@ class PreviewModal extends Component {
 			forms:[],
 			searchs:[],
 			tables:[],
-			showVisible: props.batchSettingModalVisibel
 		};
 	}
 	showModalHidden = ()=>{
-        this.setState({
-			showVisible: false			
-		})
+        this.props.setModalVisibel(false)
     }
     onOkDialog = ()=>{
-		this.setState({
-			showVisible: false			
-		})
+		this.props.setModalVisibel(false)
 	}
 	createDom = () =>{
 		let { editTable, form, search } = this.props;
@@ -77,6 +72,7 @@ class PreviewModal extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		let { showVisible }=this.state;
 		if (nextProps.previewData){
 			let reviewData = nextProps.previewData;
 			let search = [], form = [], table = [];
@@ -99,7 +95,7 @@ class PreviewModal extends Component {
 					}
 				}
 			});
-			//  更新state; 
+			//  更新state;
 			this.setState({
 				searchs:search,
 				tables:table,
@@ -108,7 +104,6 @@ class PreviewModal extends Component {
 		}
 	} 
 	render() {
-		let { showVisible }=this.state;
 		let { editTable, form, search } = this.props;
 		let { createForm } = form;
 		let { createEditTable } = editTable;
@@ -117,7 +112,7 @@ class PreviewModal extends Component {
 			<Modal
 				title='预览区'
 				mask={false}
-				visible={showVisible}
+				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
 				onCancel={this.showModalHidden}
 				width='100%'

@@ -849,8 +849,8 @@ class TemplateSetting extends Component {
 		},this.reqRoTreeData);
 	};
 	//预览摸态框显示方法
-	setModalVisibel = () => {
-        this.setState({batchSettingModalVisibel: true});
+	setModalVisibel = visibel => {
+		this.setState({batchSettingModalVisibel: visibel});
 	};
 	render() {
 		const {
