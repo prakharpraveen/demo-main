@@ -129,9 +129,30 @@ body {
 	.ant-steps{
 		margin-top: 10px;
 	}
-	/* .required-tableCell::before{
+	.required-tableCell{
+				&::before{
 							content: '*';
 							color:red;
 							margin-right: 5px;
-						} */
+						}
+				.editable-cell-text-wrapper{
+					width: 80%;
+					display: flex;
+					position: absolute;
+					top:-34px;
+					margin-left:15px;
+					justify-content: space-between;
+				}	
+				.editable-cell-input-wrapper{
+					width: 80%;
+					display: inline-block;
+					position: absolute;
+					top:-34px;
+					margin-left:20px;
+				}
+				.editable-cell-icon{
+					position: relative;
+					top:5px;
+				}	
+	}
 }
