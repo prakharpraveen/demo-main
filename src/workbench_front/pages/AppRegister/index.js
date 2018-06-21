@@ -578,11 +578,18 @@ class AppRegister extends Component {
     );
   };
   componentDidMount() {
-    let { selectedKeys, setSelectedKeys, optype, setOptype,treeData,nodeInfo } = this.props;
+    let {
+      selectedKeys,
+      setSelectedKeys,
+      optype,
+      setOptype,
+      treeData,
+      nodeInfo
+    } = this.props;
     if (optype !== "") {
       setSelectedKeys(selectedKeys);
       setOptype(optype);
-      let historyNode = treeData.find((item)=>item.moduleid === nodeInfo.id);
+      let historyNode = treeData.find(item => item.moduleid === nodeInfo.id);
       this.handleTreeNodeSelect(historyNode);
     } else {
       setSelectedKeys(["00"]);
@@ -593,7 +600,9 @@ class AppRegister extends Component {
   render() {
     let optype = this.props.optype;
     let isEdit = this.props.isEdit;
-    let nodeData = this.props.nodeData.hasOwnProperty('ts')?dataRestore(this.props.nodeData):{};
+    let nodeData = this.props.nodeData.hasOwnProperty("ts")
+      ? dataRestore(this.props.nodeData)
+      : {};
     let btnList = [
       {
         code: "addModule",

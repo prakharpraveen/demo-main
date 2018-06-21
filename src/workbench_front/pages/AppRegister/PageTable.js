@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { Tabs, Button, Table, Input, Popconfirm, Select } from "antd";
+import { Tabs, Button, Table, Input, Popconfirm, Select, Modal } from "antd";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import withDragDropContext from "Pub/js/withDragDropContext";
 import update from "immutability-helper";
@@ -10,7 +10,7 @@ import _ from "lodash";
 import {
   setPageButtonData,
   setPageTemplateData,
-  setPageActiveKey,
+  setPageActiveKey
 } from "Store/AppRegister/action";
 import { dataTransfer, dataRestore } from "Components/FormCreate";
 import EditableCell from "Components/EditableCell";
@@ -158,7 +158,7 @@ class PageTable extends Component {
       templetid: "",
       visible: false,
       templateCode: "",
-      iserror:false
+      iserror: false
     };
     this.columnsBtn = [
       {
@@ -476,9 +476,6 @@ class PageTable extends Component {
       this.setNewData(newData);
     }
   }
-
-
-
   edit(record) {
     let newData = this.getNewData();
     const dataList = newData.filter(item => item.editable === true);
@@ -662,9 +659,7 @@ class PageTable extends Component {
       });
       this.setNewData(newData);
     } else if (activeKey === "2") {
-      this.props.history.push(
-        `/Zone?&pid=${id}&pcode=${code}&n=设置页面模板`
-      );
+      this.props.history.push(`/Zone?&pid=${id}&pcode=${code}&n=设置页面模板`);
     }
   }
   getNewData() {
@@ -837,6 +832,33 @@ class PageTable extends Component {
               columns={this.columnsSt}
               size="middle"
             />
+            <Modal
+              title="导入页面模板"
+              okText="确认"
+              cancelText="取消"
+              mask= {false}
+              wrapClassName="vertical-center-modal template-code-add"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+            >
+              <div className="template-item">
+                <label htmlFor="">模板编码：</label>
+                <Input
+                  placeholder="模板编码"
+                  value={this.state.templateCode}
+                  onChange={this.handleTemplateCodeChange}
+                />
+              </div>
+              <div className="template-item">
+                <label htmlFor="">页面编码：</label>
+                <span>{this.props.nodeInfo.code}</span>
+              </div>
+              <div className="template-item">
+                <label htmlFor="">页面主键：</label>
+                <span>{this.props.nodeInfo.id}</span>
+              </div>
+            </Modal>
           </TabPane>
         </Tabs>
         {batchSettingModalVisibel && (
@@ -858,7 +880,7 @@ PageTable.propTypes = {
   pageTemplets: PropTypes.array.isRequired,
   setPageTemplateData: PropTypes.func.isRequired,
   setPageButtonData: PropTypes.func.isRequired,
-  setPageActiveKey: PropTypes.func.isRequired,
+  setPageActiveKey: PropTypes.func.isRequired
 };
 let DragFromeTable = withDragDropContext(PageTable);
 export default connect(
@@ -869,8 +891,8 @@ export default connect(
       nodeInfo: state.AppRegisterData.nodeInfo,
       pageTemplets: state.AppRegisterData.pageTemplets,
       appButtonVOs: state.AppRegisterData.appButtonVOs,
-      pageActiveKey: state.AppRegisterData.pageActiveKey,
+      pageActiveKey: state.AppRegisterData.pageActiveKey
     };
   },
-  { setPageButtonData, setPageTemplateData,setPageActiveKey }
+  { setPageButtonData, setPageTemplateData, setPageActiveKey }
 )(withRouter(DragFromeTable));
