@@ -45,19 +45,53 @@ class MyContent extends Component {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
 						let areaList = [];
-						_.forEach(data,(d)=>{
-							let tmpArea = {
-								...d
-							}
-							if(tmpArea.areatype !== '0'){
-								tmpArea.queryPropertyList = d.formPropertyList;
-								_.forEach(tmpArea.queryPropertyList,(q)=>{
-									q.pk_query_property = q.pk_form_property,
-									q.myMetaPath=''
-								})
-							}
-							areaList.push(tmpArea)
-						})
+						// 实施态 
+						if(this.props.status ==='search'){
+							_.forEach(data, (d) => {
+								let tmpArea = {
+									...d
+								}
+								if (tmpArea.areatype === '0') {
+									// tmpArea.queryPropertyList = d.formPropertyList;
+									// _.forEach(tmpArea.queryPropertyList, (q) => {
+									// 	q.pk_query_property = q.pk_form_property,
+									// 		q.myMetaPath = ''
+									// })
+									areaList.push(tmpArea)
+								}
+							
+							})
+						} else if (this.props.status ==='nosearch'){
+							_.forEach(data, (d) => {
+								let tmpArea = {
+									...d
+								}
+								if (tmpArea.areatype !== '0') {
+									tmpArea.queryPropertyList = d.formPropertyList;
+									_.forEach(tmpArea.queryPropertyList, (q) => {
+										q.pk_query_property = q.pk_form_property,
+											q.myMetaPath = ''
+									})
+									areaList.push(tmpArea)
+								}
+							})
+						} 
+						// 开发态
+						else{
+							_.forEach(data, (d) => {
+								let tmpArea = {
+									...d
+								}
+								if (tmpArea.areatype !== '0') {
+									tmpArea.queryPropertyList = d.formPropertyList;
+									_.forEach(tmpArea.queryPropertyList, (q) => {
+										q.pk_query_property = q.pk_form_property,
+											q.myMetaPath = ''
+									})
+								}
+								areaList.push(tmpArea)
+							})
+						}	
 						this.props.updateAreaList(areaList)
 					}
 				}

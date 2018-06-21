@@ -58,6 +58,10 @@ class MyHeader extends Component {
 				const { data, success } = res.data;
 				if (success) {
 					Notice({ status: 'success', msg:data });
+					if(this.props.status){
+						this.props.history.push(`/templateSetting`);
+						return ;
+					}
 					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}`);
 				}else{
 					Notice({ status: 'error', msg: data });
