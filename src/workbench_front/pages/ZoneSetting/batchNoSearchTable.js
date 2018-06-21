@@ -297,7 +297,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '多行文本显示行数',
 				dataIndex: 'textrows',
-				width: 150,
+				width: 200,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -311,7 +311,7 @@ class BatchSearchTable extends React.Component {
 				width: 150,
 				render: (text, record) => (
 					<EditableCell
-							value={text}
+						value={text}
 						onChange={this.onCellChange(record.key, 'leftspace')}
 					/>
 				),
@@ -354,6 +354,21 @@ class BatchSearchTable extends React.Component {
 						) }
 					},
 			},  
+			{
+				title: '元数据属性',
+				dataIndex: 'metadataproperty',
+				width: 150,
+				render: (text, record) => {
+					if (!record.metapath) {
+						return (
+							<EditableCell
+								value={text}
+								onChange={this.onCellChange(record.key, 'metadataproperty')}
+							/>
+						)
+					}
+				},
+			}, 
 			{
 				title: '自定义项1',
 				dataIndex: 'define1',
@@ -412,7 +427,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2600, y: 400 }} />
+			<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 2850, y: 400 }} />
 		);
 	}
 }

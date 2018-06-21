@@ -307,7 +307,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否包含下级',
 				dataIndex: 'containlower',
-				width: 150,
+				width: 200,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -318,7 +318,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否自动检查',
 				dataIndex: 'ischeck',
-				width: 150,
+				width: 200,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -329,7 +329,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '参照是否跨集团',
 				dataIndex: 'isbeyondorg',
-				width: 150,
+				width: 200,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -340,7 +340,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '是否使用系统函数',
 				dataIndex: 'usefunc',
-				width: 150,
+				width: 200,
 				render: (text, record) => (
 					<EditableCheck
 						value={text}
@@ -373,9 +373,24 @@ class BatchSearchTable extends React.Component {
 				),
 			},
 			{
+				title: '元数据属性',
+				dataIndex: 'metadataproperty',
+				width: 150,
+				render: (text, record) => {
+					if (!record.metapath) {
+						return (
+							<EditableCell
+								value={text}
+								onChange={this.onCellChange(record.key, 'metadataproperty')}
+							/>
+						)
+					}
+				},
+			}, 
+			{
 				title: '自定义项1',
 				dataIndex: 'define1',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -386,7 +401,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '自定义项2',
 				dataIndex: 'define2',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -397,7 +412,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '自定义项3',
 				dataIndex: 'define3',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -408,7 +423,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '自定义项4',
 				dataIndex: 'define4',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -419,7 +434,7 @@ class BatchSearchTable extends React.Component {
 			{
 				title: '自定义项5',
 				dataIndex: 'define5',
-				width: 100,
+				width: 150,
 				render: (text, record) => (
 					<EditableCell
 						value={text}
@@ -451,7 +466,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3100, y:400 }} />
+				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3800, y:400 }} />
 		);
 	}
 }

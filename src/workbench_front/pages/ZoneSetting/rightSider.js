@@ -210,7 +210,7 @@ class MyRightSider extends Component {
 			_.forEach(val.queryPropertyList, (v, i) => {
 				if (selectCard.areaid === v.areaid) {
 					result = val.areatype;
-					//	return ;
+					
 				}
 			});
 		});
@@ -289,6 +289,8 @@ class MyRightSider extends Component {
 						<li>
 							<Checkbox checked={selectCard.metapath === ''} disabled />
 						</li>
+						<li>元数据属性</li>
+						<li>{this.getMyInput('元数据属性', 'metadataproperty')}</li>
 						<li>编码</li>
 						<li>{this.getMyInput('编码', 'code')}</li>
 						<li>操作符编码</li>
@@ -391,7 +393,7 @@ class MyRightSider extends Component {
 			/>
 		);
 	};
-	//非查询区，元数据属性||非元数据
+	//非查询区，元数据属性||非元数据 	
 	getDom3 = (areaType, isMetaData) => {
 		const { selectCard } = this.props;
 		const isShowRelateMeta = selectCard.datatype === '204' ? 'block' : 'none';
@@ -404,6 +406,16 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>编码</li>
 						<li>{this.getMyInput('编码', 'code')}</li>
+						{(() => {
+							if (!isMetaData) {
+								return <li>元数据属性</li>;
+							}
+						})()}
+						{(() => {
+							if (!isMetaData) {
+								return <li>{this.getMyInput('元数据属性', 'metadataproperty')}</li>;
+							}
+						})()}
 						<li>组件长度</li>
 						{(() => {
 							if (areaType === '1') {
