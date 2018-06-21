@@ -9,7 +9,8 @@ import update from "immutability-helper";
 import _ from "lodash";
 import {
   setPageButtonData,
-  setPageTemplateData
+  setPageTemplateData,
+  setPageActiveKey,
 } from "Store/AppRegister/action";
 import { dataTransfer, dataRestore } from "Components/FormCreate";
 import EditableCell from "Components/EditableCell";
@@ -153,7 +154,6 @@ class PageTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: "1",
       batchSettingModalVisibel: false,
       templetid: "",
       visible: false,
@@ -496,7 +496,7 @@ class PageTable extends Component {
   del(record) {
     if (record.pk_btn || record.pk_page_templet) {
       let url, data, info;
-      let { activeKey } = this.state;
+      let activeKey = this.props.pageActiveKey;
       let newData = this.getNewData();
       if (activeKey === "1") {
         url = `/nccloud/platform/appregister/deletebutton.do`;
@@ -542,7 +542,7 @@ class PageTable extends Component {
     }
   }
   save(record) {
-    let { activeKey } = this.state;
+    let activeKey = this.props.pageActiveKey;
     let newData = this.getNewData();
     if (activeKey === "1") {
       let arrayBtn = newData.filter(item => record.btncode === item.btncode);
@@ -644,7 +644,7 @@ class PageTable extends Component {
       return;
     }
     this.cacheData = _.cloneDeep(newData);
-    let { activeKey } = this.state;
+    let activeKey = this.props.pageActiveKey;
     let { parentId, id, code } = this.props.nodeInfo;
     if (activeKey === "1") {
       newData.push({
@@ -668,7 +668,7 @@ class PageTable extends Component {
     }
   }
   getNewData() {
-    let { activeKey } = this.state;
+    let activeKey = this.props.pageActiveKey;
     let { appButtonVOs, pageTemplets } = this.props;
     if (activeKey === "1") {
       return _.cloneDeep(appButtonVOs);
@@ -677,7 +677,7 @@ class PageTable extends Component {
     }
   }
   setNewData(newData) {
-    let { activeKey } = this.state;
+    let activeKey = this.props.pageActiveKey;
     if (activeKey === "1") {
       this.props.setPageButtonData(newData);
     } else if (activeKey === "2") {
@@ -768,14 +768,15 @@ class PageTable extends Component {
    * 创建按钮
    */
   creatAddLineBtn = () => {
+    let activeKey = this.props.pageActiveKey;
     return (
       <div>
-        {this.state.activeKey === "1" ? (
+        {activeKey === "1" ? (
           <span style={{ color: "#e14c46" }}>
             提示：按钮可通过拖拽进行排序！
           </span>
         ) : null}
-        {this.state.activeKey === "2" ? (
+        {activeKey === "2" ? (
           <Button
             type="primary"
             onClick={() => {
@@ -800,16 +801,9 @@ class PageTable extends Component {
       <div>
         <Tabs
           onChange={activeKey => {
-            if (activeKey === "3") {
-              Notice({
-                status: "warning",
-                msg: "功能正在开发中。。。"
-              });
-              return;
-            }
-            this.setState({ activeKey });
+            this.props.setPageActiveKey(activeKey);
           }}
-          activeKey={this.state.activeKey}
+          activeKey={this.props.pageActiveKey}
           type="card"
           tabBarExtraContent={this.creatAddLineBtn()}
         >
@@ -863,7 +857,8 @@ PageTable.propTypes = {
   appButtonVOs: PropTypes.array.isRequired,
   pageTemplets: PropTypes.array.isRequired,
   setPageTemplateData: PropTypes.func.isRequired,
-  setPageButtonData: PropTypes.func.isRequired
+  setPageButtonData: PropTypes.func.isRequired,
+  setPageActiveKey: PropTypes.func.isRequired,
 };
 let DragFromeTable = withDragDropContext(PageTable);
 export default connect(
@@ -873,8 +868,9 @@ export default connect(
       nodeData: state.AppRegisterData.nodeData,
       nodeInfo: state.AppRegisterData.nodeInfo,
       pageTemplets: state.AppRegisterData.pageTemplets,
-      appButtonVOs: state.AppRegisterData.appButtonVOs
+      appButtonVOs: state.AppRegisterData.appButtonVOs,
+      pageActiveKey: state.AppRegisterData.pageActiveKey,
     };
   },
-  { setPageButtonData, setPageTemplateData }
+  { setPageButtonData, setPageTemplateData,setPageActiveKey }
 )(withRouter(DragFromeTable));

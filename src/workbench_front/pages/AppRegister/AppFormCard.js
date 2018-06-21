@@ -126,6 +126,11 @@ class AppFromCard extends Component {
 
     render() {
         let isEdit = this.props.isEdit;
+        let resNodeData = dataRestore(this.props.nodeData);
+        let apptype = "1";
+        if(resNodeData){
+            apptype = resNodeData.apptype;
+        }
         let appFormData = [
             {
                 label: "应用编码",
@@ -204,6 +209,15 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
+                label: "挂载ID",
+                type: "string",
+                code: "mountid",
+                isRequired: apptype === "2",
+                hidden: apptype === "1",
+                isedit: isEdit,
+                lg: 8
+            },
+            {
                 label: "应用宽",
                 type: "string",
                 code: "width",
@@ -266,10 +280,10 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: "默认页面",
-                type: "select",
+                label: apptype === "1"?"默认页面":"小部件路径",
+                type: apptype === "1"?"select":"string",
                 code: "target_path",
-                isRequired: false,
+                isRequired: apptype === "2",
                 options: this.state.target_path,
                 isedit: isEdit,
                 lg: 8
@@ -279,7 +293,7 @@ class AppFromCard extends Component {
                 type: "string",
                 code: "resid",
                 isRequired: false,
-                isedit: this.props.isedit,
+                isedit: isEdit,
                 lg: 8
             },
             {
@@ -304,8 +318,9 @@ class AppFromCard extends Component {
                 label: "图标路径",
                 type: "chooseImage",
                 code: "image_src",
-                isRequired: true,
+                isRequired: apptype === "1",
                 options: IMGS,
+                hidden: apptype === "2",
                 md: 24,
                 lg: 24,
                 xl: 24,

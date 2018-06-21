@@ -20,6 +20,12 @@ let defaultState = {
   pageTemplets: [],
   // 树展开树节点数组
   expandedKeys:['00'],
+  // 树选中节点数组
+  selectedKeys:['00'],
+  // 节点类型
+  optype:'',
+  // 页面节点页签激活项
+  pageActiveKey:'1',
   // 是否是新增
   isNew: false,
   // 是否是编辑
@@ -89,11 +95,32 @@ export const AppRegisterData = (state = defaultState, action = {}) => {
           isEdit: action.data
         }
       };
-      case AppRegister.EXPANDEDKEYS:
+    case AppRegister.EXPANDEDKEYS:
       return {
         ...state,
         ...{
           expandedKeys: action.data.concat(['00'])
+        }
+      };
+    case AppRegister.SELECTEDKEYS:
+      return {
+        ...state,
+        ...{
+          selectedKeys: action.data
+        }
+      };
+    case AppRegister.OPTYPE:
+      return {
+        ...state,
+        ...{
+          optype: action.data
+        }
+      };
+    case AppRegister.PAGEACTIVEKEY:
+      return {
+        ...state,
+        ...{
+          pageActiveKey: action.data
         }
       };
     default:

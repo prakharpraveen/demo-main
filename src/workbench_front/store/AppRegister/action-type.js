@@ -18,4 +18,10 @@ export const ISNEW = 'ISNEW';
 export const ISEDIT = 'ISEDIT';
 // 树展开节点key数组
 export const EXPANDEDKEYS = 'EXPANDEDKEYS';
+// 树选中节点key数组
+export const SELECTEDKEYS = 'SELECTEDKEYS';
+// 节点类型
+export const OPTYPE = 'OPTYPE';
+// 页面节点页面
+export const PAGEACTIVEKEY = 'PAGEACTIVEKEY';
 

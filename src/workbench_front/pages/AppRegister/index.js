@@ -11,7 +11,9 @@ import {
   setAppParamData,
   setIsNew,
   setIsEdit,
-  setExpandedKeys
+  setExpandedKeys,
+  setSelectedKeys,
+  setOptype
 } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -38,9 +40,7 @@ const confirm = Modal.confirm;
 class AppRegister extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      optype: ""
-    };
+    this.state = {};
     this.historyOptype;
     this.historyNodeData;
   }
@@ -69,16 +69,14 @@ class AppRegister extends Component {
         this.props.setNodeData(this.historyNodeData);
         this.props.setIsNew(false);
         this.props.setIsEdit(false);
-        this.setState({
-          optype: this.historyOptype
-        });
+        this.props.setOptype(this.historyOptype);
         break;
       case "del":
         this.del();
         break;
       case "edit":
         this.historyNodeData = this.props.nodeData;
-        this.historyOptype = this.state.optype;
+        this.historyOptype = this.props.optype;
         this.props.setIsNew(false);
         this.props.setIsEdit(true);
         break;
@@ -90,7 +88,7 @@ class AppRegister extends Component {
    * 添加模块
    */
   addModule = () => {
-    let optype = this.state.optype;
+    let optype = this.props.optype;
     this.historyOptype = optype;
     if (optype === "") {
       optype = "1";
@@ -112,15 +110,13 @@ class AppRegister extends Component {
     this.props.setNodeData(dataTransfer(moduleData));
     this.props.setIsNew(true);
     this.props.setIsEdit(true);
-    this.setState({
-      optype
-    });
+    this.props.setOptype(optype);
   };
   /**
    * 添加应用分类
    */
   addAppClass = () => {
-    let optype = this.state.optype;
+    let optype = this.props.optype;
     this.historyOptype = optype;
     if (optype === "2") {
       optype = "3";
@@ -138,15 +134,13 @@ class AppRegister extends Component {
     this.props.setNodeData(dataTransfer(classData));
     this.props.setIsNew(true);
     this.props.setIsEdit(true);
-    this.setState({
-      optype
-    });
+    this.props.setOptype(optype);
   };
   /**
    * 添加页面
    */
   addApp = () => {
-    let optype = this.state.optype;
+    let optype = this.props.optype;
     this.historyOptype = optype;
     if (optype === "3") {
       optype = "4";
@@ -168,21 +162,20 @@ class AppRegister extends Component {
       target_path: "",
       apptype: "1",
       resid: "",
-      image_src: ""
+      image_src: "",
+      mountid: undefined
     };
     this.props.setAppParamData([]);
     this.props.setNodeData(dataTransfer(appData));
     this.props.setIsNew(true);
     this.props.setIsEdit(true);
-    this.setState({
-      optype
-    });
+    this.props.setOptype(optype);
   };
   /**
    * 添加页面
    */
   addPage = () => {
-    let optype = this.state.optype;
+    let optype = this.props.optype;
     this.historyOptype = optype;
     if (optype === "4") {
       optype = "5";
@@ -201,9 +194,7 @@ class AppRegister extends Component {
     this.props.setNodeData(dataTransfer(pageData));
     this.props.setIsNew(true);
     this.props.setIsEdit(true);
-    this.setState({
-      optype
-    });
+    this.props.setOptype(optype);
   };
   /**
    * 保存
@@ -217,7 +208,7 @@ class AppRegister extends Component {
       delete fromData.children;
     }
     let { id, code } = this.props.nodeInfo;
-    let { optype } = this.state;
+    let optype = this.props.optype;
     //  新增保存回调
     let newSaveFun = data => {
       this.reqTreeData();
@@ -281,7 +272,7 @@ class AppRegister extends Component {
           fromData.parent_id = id;
         }
         // 将元数据id参照的refpk 赋给 mdid 字段
-        if(fromData.hasOwnProperty('mdid')){
+        if (fromData.hasOwnProperty("mdid")) {
           fromData.mdid = fromData.mdidRef.refpk;
         }
         this.reqTreeNodeData(
@@ -323,7 +314,7 @@ class AppRegister extends Component {
       }
       if (optype === "3" || optype === "4") {
         // 将元数据id参照的refpk 赋给 mdid 字段
-        if(fromData.hasOwnProperty('mdid')){
+        if (fromData.hasOwnProperty("mdid")) {
           fromData.mdid = fromData.mdidRef.refpk;
         }
         this.reqTreeNodeData(
@@ -361,7 +352,7 @@ class AppRegister extends Component {
       okType: "danger",
       cancelText: "取消",
       onOk() {
-        let { optype } = _this.state;
+        let optype = _this.props.optype;
         let { id } = _this.props.nodeInfo;
         let delFun = data => {
           Notice({
@@ -370,9 +361,7 @@ class AppRegister extends Component {
           });
           _this.delTreeData(id);
           _this.props.setNodeData({});
-          _this.setState({
-            optype: ""
-          });
+          _this.props.setOptype(optype);
         };
         if (optype === "1" || optype === "2") {
           _this.reqTreeNodeData(
@@ -423,7 +412,7 @@ class AppRegister extends Component {
    * 右侧表单选择
    */
   switchFrom = () => {
-    switch (this.state.optype) {
+    switch (this.props.optype) {
       // 对应树结构中的第一层
       case "1":
         return <ModuleFormCard />;
@@ -547,9 +536,7 @@ class AppRegister extends Component {
     this.props.setIsNew(false);
     this.props.setIsEdit(false);
     this.props.setNodeInfo(nodeInfo);
-    this.setState({
-      optype
-    });
+    this.props.setOptype(optype);
   };
   /**
    * 更新树数组
@@ -591,12 +578,22 @@ class AppRegister extends Component {
     );
   };
   componentDidMount() {
-    console.log('载入。。。。。');
+    let { selectedKeys, setSelectedKeys, optype, setOptype,treeData,nodeInfo } = this.props;
+    if (optype !== "") {
+      setSelectedKeys(selectedKeys);
+      setOptype(optype);
+      let historyNode = treeData.find((item)=>item.moduleid === nodeInfo.id);
+      this.handleTreeNodeSelect(historyNode);
+    } else {
+      setSelectedKeys(["00"]);
+      setOptype("");
+    }
     this.reqTreeData();
   }
   render() {
-    let { optype } = this.state;
+    let optype = this.props.optype;
     let isEdit = this.props.isEdit;
+    let nodeData = this.props.nodeData.hasOwnProperty('ts')?dataRestore(this.props.nodeData):{};
     let btnList = [
       {
         code: "addModule",
@@ -620,7 +617,8 @@ class AppRegister extends Component {
         code: "addPage",
         name: "增加页面",
         type: "primary",
-        isshow: !isEdit && optype === "4"
+        isshow:
+          !isEdit && optype === "4" && nodeData && nodeData.apptype === "1"
       },
       {
         code: "cancel",
@@ -682,7 +680,11 @@ AppRegister.propTypes = {
   setAppParamData: PropTypes.func.isRequired,
   setIsNew: PropTypes.func.isRequired,
   setIsEdit: PropTypes.func.isRequired,
-  setExpandedKeys: PropTypes.func.isRequired
+  setExpandedKeys: PropTypes.func.isRequired,
+  setSelectedKeys: PropTypes.func.isRequired,
+  optype: PropTypes.string.isRequired,
+  setOptype: PropTypes.func.isRequired,
+  selectedKeys: PropTypes.array.isRequired
 };
 export default connect(
   state => ({
@@ -690,7 +692,9 @@ export default connect(
     nodeInfo: state.AppRegisterData.nodeInfo,
     treeData: state.AppRegisterData.treeData,
     isNew: state.AppRegisterData.isNew,
-    isEdit: state.AppRegisterData.isEdit
+    isEdit: state.AppRegisterData.isEdit,
+    selectedKeys: state.AppRegisterData.selectedKeys,
+    optype: state.AppRegisterData.optype
   }),
   {
     setTreeData,
@@ -701,6 +705,8 @@ export default connect(
     setAppParamData,
     setIsNew,
     setIsEdit,
-    setExpandedKeys
+    setExpandedKeys,
+    setSelectedKeys,
+    setOptype
   }
 )(AppRegister);

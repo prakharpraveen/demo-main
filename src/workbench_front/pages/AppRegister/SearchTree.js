@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Tree, Input} from "antd";
 import {createTree} from "Pub/js/createTree.js";
-import {setExpandedKeys} from 'Store/AppRegister/action';
+import {setExpandedKeys,setSelectedKeys,setPageActiveKey} from 'Store/AppRegister/action';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 class SearchTree extends Component {
@@ -44,12 +44,16 @@ class SearchTree extends Component {
         if(info['selectedNodes'].length>0){
             selectedNode = info['selectedNodes'][0]['props']['refData'];
         }
+        this.props.setSelectedKeys(selectedKey);
+        // 当树节点切换时 重置 页面节点 激活页签
+        this.props.setPageActiveKey('1');
         // 为父组件返回选中的树节点对象
         this.props.onSelect(selectedNode);
     };
     render() {
         const {searchValue, autoExpandParent} = this.state;
         let expandedKeys = this.props.expandedKeys;
+        let selectedKeys = this.props.selectedKeys;
         const loop = data =>
             data.map(item => {
                 let {flag,moduleid: code, systypename: name,systypecode} = item;
@@ -109,6 +113,7 @@ class SearchTree extends Component {
                     onExpand={this.onExpand}
                     expandedKeys={expandedKeys}
                     onSelect={this.handleSelect}
+                    selectedKeys={selectedKeys}
                     autoExpandParent={autoExpandParent}>
                     {loop(newTreeData)}
                 </Tree>
@@ -119,12 +124,16 @@ class SearchTree extends Component {
 SearchTree.propTypes = {
     treeData: PropTypes.array.isRequired,
     expandedKeys:PropTypes.array.isRequired,
+    selectedKeys:PropTypes.array.isRequired,
     setExpandedKeys:PropTypes.func.isRequired,
+    setSelectedKeys:PropTypes.func.isRequired,
+    setPageActiveKey:PropTypes.func.isRequired,
 };
 export default connect(
     state => ({
         treeData: state.AppRegisterData.treeData,
         expandedKeys: state.AppRegisterData.expandedKeys,
+        selectedKeys: state.AppRegisterData.selectedKeys,
     }),
-    {setExpandedKeys}
+    {setExpandedKeys,setSelectedKeys,setPageActiveKey}
 )(SearchTree);

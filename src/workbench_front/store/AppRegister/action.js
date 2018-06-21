@@ -69,4 +69,24 @@ export const setExpandedKeys = (data) => {
 		data
 	};
 };
-
+// 设置 树展开节点key数组
+export const setSelectedKeys = (data) => {
+	return {
+		type: AppRegister.SELECTEDKEYS,
+		data
+	};
+};
+// 设置 节点类型
+export const setOptype = (data) => {
+	return {
+		type: AppRegister.OPTYPE,
+		data
+	};
+};
+// 设置 页面节点页签激活项
+export const setPageActiveKey = (data) => {
+	return {
+		type: AppRegister.PAGEACTIVEKEY,
+		data
+	};
+};
