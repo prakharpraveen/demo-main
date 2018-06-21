@@ -8,6 +8,7 @@ import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
 import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+import PreviewModal from "./showPreview";
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -104,13 +105,14 @@ class TemplateSetting extends Component {
 			allowedTreeKey:'',
 			orgidObj:{},
 			treeRoDataObj:{},
-			parentIdcon:'',//树节点的key
-			activeKey: "1"
+			parentIdcon:'', //树节点的key
+			activeKey: "1",
+			batchSettingModalVisibel:false //控制预览摸态框的显隐属性
 		};
 	}
 	// 按钮显隐性控制
 	setBtnsShow = (item) => {
-		let {parentIdcon} = this.state;
+		let {parentIdcon, activeKey} = this.state;
 		let { name } = item;
 		let isShow = false;
 		switch (name) {
@@ -118,14 +120,14 @@ class TemplateSetting extends Component {
 				isShow = true;
 				break;
 			case '修改':
-				if(parentIdcon=='root'){
+				if(parentIdcon==='root'){
 					isShow = false;
 				}else{
 					isShow = true;
 				}
 				break;
 			case '删除':
-				if(parentIdcon=='root'){
+				if(parentIdcon==='root'){
 					isShow = false;
 				}else{
 					isShow = true;
@@ -135,7 +137,7 @@ class TemplateSetting extends Component {
 					isShow = true;
 				break;
 			case '分配':
-				if(parentIdcon=='root'){
+				if(parentIdcon==='root'){
 					isShow = false;
 				}else{
 					isShow = true;
@@ -200,7 +202,7 @@ class TemplateSetting extends Component {
 			templateNameVal:'',
 		});
 	}
-	//设置默认模板菜单栏
+	//设置默认模板 菜单栏
 	menuFun = ()=>{
 		let {templateNameVal} = this.state;
 		const len=templateNameVal.length;
@@ -306,7 +308,9 @@ class TemplateSetting extends Component {
 					Notice({ status: 'warning', msg: "请选择模板数据" });
 					return;
 				}
-				this.props.history.push(`/Zone?templetid=${templatePks}&status=${"templateSetting"}`);
+				this.setState({
+					batchSettingModalVisibel: true
+				});
 				break;
 			default:
 				break;
@@ -433,6 +437,7 @@ class TemplateSetting extends Component {
 			autoExpandParent: false
 		});
 	};
+	//tree的查询方法
 	onChange = (e) => {
 		const value = e.target.value;
 		this.setState({
@@ -468,7 +473,6 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success) {
-					console.log(data.data);
 					this.setState({
 						treeTemDataArray: data.data
 					}, this.restoreTreeTemData)
@@ -844,6 +848,10 @@ class TemplateSetting extends Component {
 			orgidObj
 		},this.reqRoTreeData);
 	};
+	//预览摸态框显示方法
+	setModalVisibel = () => {
+        this.setState({batchSettingModalVisibel: true});
+	};
 	render() {
 		const {
 			treeData,
@@ -858,7 +866,9 @@ class TemplateSetting extends Component {
 			treeRoVisible,
 			allowDataArray,
 			treeAllowedData,
-			activeKey
+			activeKey,
+			templatePks,
+			batchSettingModalVisibel
 		} = this.state;
 		return (
 			<PageLayout className="nc-workbench-templateSetting">
@@ -920,6 +930,13 @@ class TemplateSetting extends Component {
 								</TabPane>
 							</Tabs>
 						</Content>
+						{batchSettingModalVisibel && (
+							<PreviewModal
+								templetid={templatePks}
+								batchSettingModalVisibel={batchSettingModalVisibel}
+								setModalVisibel={this.setModalVisibel}
+							/>
+                		)}
 						<Modal
 							title="请录入正确的模板名称和标题"
 							visible={visible}
