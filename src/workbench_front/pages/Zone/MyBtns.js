@@ -79,6 +79,7 @@ class MyBtns extends Component {
 				pk_page_templet: zoneDatas.pk_page_templet,
 				pagecode: zoneDatas.pagecode || param.pcode, 
 				pageid: zoneDatas.pageid || param.pid ,
+				parentid: zoneDatas.parentid || 'root',
 				areaList:list,
 				...form,
 			}
