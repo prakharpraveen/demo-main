@@ -34,7 +34,8 @@ class App extends Component {
             name === "应用注册" ||
             name === "菜单注册" ||
             name === "个性化注册" ||
-            name === "模板设置"
+            name === "模板设置"||
+            name === "应用管理"
         ) {
             type = "own";
         }
