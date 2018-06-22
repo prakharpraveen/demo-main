@@ -69,6 +69,10 @@ const Btns = [
 	{
 		name: '浏览',
 		type: 'primary'
+	},
+	{
+		name: '刷新',
+		type: 'primary'
 	}
 ];
 class TemplateSetting extends Component {
@@ -156,6 +160,11 @@ class TemplateSetting extends Component {
 				break;
 			case '浏览':
 				isShow = true;
+				break;
+			case '刷新':
+				if(activeKey==="3"){
+					isShow = true;
+				}
 				break;
 			default:
 				break;
@@ -489,8 +498,12 @@ class TemplateSetting extends Component {
 		if(!infoData.pageCode){
 			return;
 		}
-		if(activeKey==="1"){
-
+		if(activeKey==='1'){
+			infoData.templateType = 'bill';
+		}else if(activeKey==='2'){
+			infoData.templateType = 'query';
+		}else if(activeKey==='3'){
+			infoData.templateType = 'print';
 		}
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
@@ -559,6 +572,7 @@ class TemplateSetting extends Component {
 			}
 		});
 	};
+	//已分配用户和职责的数据请求
 	reqAllowTreeData = ()=>{
 		let { pageCode, templatePks, orgidObj, activeKey }=this.state;
 		let infoData={
@@ -589,6 +603,7 @@ class TemplateSetting extends Component {
 			}
 		});
 	}
+	//已分配用户和职责的数据的组装
 	restoreAllowedTree = ()=>{
 		let { allowDataArray, treeAllowedData }=this.state;
 		allowDataArray.map((item)=>{
@@ -600,9 +615,10 @@ class TemplateSetting extends Component {
 			treeAllowedData
 		});
 	};
+	//角色和用户职责的数据请求
 	reqRoTreeData = ()=>{
 		let { orgidObj }=this.state;
-		let infoData={
+		let infoData = {
 			"orgId": orgidObj.refpk
 		}
 		Ajax({
@@ -631,6 +647,7 @@ class TemplateSetting extends Component {
 			}
 		});
 	}
+	//职责树的数据组装
 	restoreResTreeData = (data)=>{
 		let {
 			treeResData
@@ -652,6 +669,7 @@ class TemplateSetting extends Component {
 			treeResData
 		});
 	}
+	//用户和角色数据的组装
 	restoreRoTreeData = (data)=>{
 		let {
 			treeRoData,
@@ -669,12 +687,14 @@ class TemplateSetting extends Component {
 			treeRoData
 		});
 	}
+	//用户和角色的树点击方法
 	selectRoFun = (key, e)=>{
 		this.setState({
 			selectedKeys:key,
 			dataRoKey: key[0]
 		},this.lookDataFun)
 	}
+	//在角色和职责树中找到当前选中树数据
 	lookDataFun = ()=>{
 		let {dataRoKey, dataRoObj, roleUserDatas}=this.state;
 		if(!dataRoKey){
@@ -701,6 +721,7 @@ class TemplateSetting extends Component {
 			dataRoObj
 		})
 	}
+	//分配和取消分配方法
 	allowClick = (name)=>{
 		let { dataRoObj, allowDataArray, treeAllowedData, allowedTreeKey}=this.state;
 		let allowDataObj={};
@@ -752,12 +773,14 @@ class TemplateSetting extends Component {
 			allowDataArray
 		})
 	}
+	//已分配树节点的选中方法
 	onSelectedAllow = (key)=>{
 		this.setState({
 			selectedKeys:key,
 			allowedTreeKey:key[0]
 		})
 	}
+	//树点击事件的汇总
 	onSelect = (typeSelect, key, e)=>{
 		switch(typeSelect){
 			case 'systemOnselect':
@@ -775,6 +798,7 @@ class TemplateSetting extends Component {
 			break;
 		}
 	}
+	//树组件的封装
 	treeResAndUser = (data, typeSelect, hideSearch)=>{
 		const {
 			expandedKeys,
