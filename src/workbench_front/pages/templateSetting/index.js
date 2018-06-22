@@ -98,16 +98,16 @@ class TemplateSetting extends Component {
 			},
 			treeRoVisible: true,
 			dataRoKey: '',
-			dataRoObj:{},
-			roleUserDatas:{},
-			allowDataArray:[],
-			treeAllowedData:[],
-			allowedTreeKey:'',
-			orgidObj:{},
-			treeRoDataObj:{},
-			parentIdcon:'', //树节点的key
+			dataRoObj: {},
+			roleUserDatas: {},
+			allowDataArray: [],
+			treeAllowedData: [],
+			allowedTreeKey: '',
+			orgidObj: {},
+			treeRoDataObj: {},
+			parentIdcon: '', //树节点的key
 			activeKey: "1",
-			batchSettingModalVisibel:false //控制预览摸态框的显隐属性
+			batchSettingModalVisibel: false //控制预览摸态框的显隐属性
 		};
 	}
 	// 按钮显隐性控制
@@ -120,21 +120,29 @@ class TemplateSetting extends Component {
 				isShow = true;
 				break;
 			case '修改':
-				if(parentIdcon==='root'){
+				if(activeKey==="3"){
 					isShow = false;
 				}else{
-					isShow = true;
+					if(parentIdcon==='root'){
+						isShow = false;
+					}else{
+						isShow = true;
+					}
 				}
 				break;
 			case '删除':
-				if(parentIdcon==='root'){
+				if(activeKey==="3"){
 					isShow = false;
 				}else{
-					isShow = true;
+					if(parentIdcon==='root'){
+						isShow = false;
+					}else{
+						isShow = true;
+					}
 				}
 				break;
 			case '复制':
-					isShow = true;
+				isShow = true;
 				break;
 			case '分配':
 				if(parentIdcon==='root'){
@@ -265,10 +273,10 @@ class TemplateSetting extends Component {
 					Notice({ status: 'warning', msg: "请选择模板数据" });
 					return;
 				}
-				this.props.history.push(`/Zone?templetid=${templatePks}&status=${"templateSetting"}`);
-			break;
+				this.props.history.push(`/ZoneSetting?templetid=${templatePks}&status=${"billTemplate"}`);
+				break;
 			case '新增':
-				this.props.history.push(`/Zone?status=${"templateSetting"}`);
+				this.props.history.push(`/ZoneSetting?status=${"templateSetting"}`);
 				break;
 			case '删除':
 				if(!templatePks){
@@ -316,7 +324,12 @@ class TemplateSetting extends Component {
 				break;
 			}
 		}
-	//设置默认模板的ajax请求
+	/**
+	 * 设置默认模板的ajax请求
+	 * @param 请求路径
+	 * @param 请求参数
+	 * @param 请求成功后的提示信息
+	 */
 	setDefaultFun = (url, infoData, textInfo)=>{
 		let { pageCode }=this.state;
 		Ajax({
@@ -455,12 +468,15 @@ class TemplateSetting extends Component {
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
-		let {pageCode}=this.state;
+		let { pageCode, activeKey } = this.state;
 		let infoData={
 			"pageCode": pageCode
 		}
 		if(!infoData.pageCode){
 			return;
+		}
+		if(activeKey==="1"){
+
 		}
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
@@ -906,19 +922,14 @@ class TemplateSetting extends Component {
 									this.setState({activeKey});
 								}}
 								type="card"
-								activeKey={this.state.activeKey}
+								activeKey={activeKey}
 								//tabBarExtraContent={this.creatAddLineBtn()}
 							>
 								<TabPane tab="页面模板" key="1">
 									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
 								</TabPane>
 								<TabPane tab="查询模板" key="2">
-									<div>
-										<p>asfasdfdasfddyett</p>
-										<p>asfasdfdasfddyett</p>
-										<p>asfasdfdasfddyett</p>
-										<p>asfasdfdasfddyett</p>
-									</div>
+									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
 								</TabPane>
 								<TabPane tab="打印模板" key="3">
 									<div>
