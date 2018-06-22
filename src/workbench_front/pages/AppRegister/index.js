@@ -163,7 +163,6 @@ class AppRegister extends Component {
       apptype: "1",
       resid: "",
       image_src: "",
-      mountid: undefined
     };
     this.props.setAppParamData([]);
     this.props.setNodeData(dataTransfer(appData));

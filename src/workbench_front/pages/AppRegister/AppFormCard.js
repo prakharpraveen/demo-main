@@ -209,15 +209,6 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: "挂载ID",
-                type: "string",
-                code: "mountid",
-                isRequired: apptype === "2",
-                hidden: apptype === "1",
-                isedit: isEdit,
-                lg: 8
-            },
-            {
                 label: "应用宽",
                 type: "string",
                 code: "width",

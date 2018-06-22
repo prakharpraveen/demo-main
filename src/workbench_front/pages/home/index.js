@@ -201,7 +201,15 @@ class Home extends Component {
           transform: `translate(${x}px, ${y}px)`
         }}
       >
-        <div field="app-item" fieldname={name} id={mountid} />
+        <iframe
+          field="app-item"
+          fieldname={name}
+          src={target_path}
+          style={{ width: "100%", height: "100%" }}
+          frameBorder="0"
+          scrolling="no"
+          className="app-item"
+        />
       </div>
     );
   };
@@ -253,7 +261,7 @@ class Home extends Component {
               a.width = Number(a.width);
             });
           });
-          this.setState({ groups: data[0].groups },this.createScript);
+          this.setState({ groups: data[0].groups }, this.createScript);
           this.props.updateGroupList(data[0].groups);
           this.handleHomeLoad();
         } else {
@@ -296,7 +304,7 @@ class Home extends Component {
   }
 }
 
-Home.propTypes = {};
+Home.propTypes = { updateGroupList: PropTypes.func.isRequired };
 export default connect(
   state => ({}),
   {
