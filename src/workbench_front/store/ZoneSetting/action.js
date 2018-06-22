@@ -25,3 +25,9 @@ export const updatePreviewData = (previewData) => {
 		previewData: previewData
 	};
 };
+// 清空数据
+export const clearData = () => {
+	return {
+		type: zonesetting.CLEARDATA
+	};
+};

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
+import { updateSelectCard, updateAreaList, clearData } from 'Store/ZoneSetting/action';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
 // import { DragDropContext } from 'react-dnd';
@@ -31,6 +31,7 @@ class MyContent extends Component {
 	}
 
 	componentDidMount() {
+		this.props.clearData();
 		Ajax({
 			url: `/nccloud/platform/templet/querytempletpro.do`,
 			info: {
@@ -43,7 +44,7 @@ class MyContent extends Component {
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
-					if (success && data && data.length > 0) {
+					if (success && data && data.length >= 0) {
 						let areaList = [];
 						// 实施态 
 						if (this.props.status ==='searchTemplate'){
@@ -230,6 +231,7 @@ export default connect((state) => ({
 	areaList: state.zoneSettingData.areaList,
 	// selectCard: state.zoneSettingData.selectCard
 }), {
+		clearData,
 	updateAreaList,
 	updateSelectCard
 })(withDragDropContext(MyContent));

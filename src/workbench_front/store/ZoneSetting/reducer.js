@@ -17,6 +17,11 @@ export const zoneSettingData = (state = defaultState, action = {}) => {
 			return { ...state,...{areaList: action.areaList} };
 		case zonesetting.PREVIEWDATA:
 			return { ...state, ...{ previewData: action.previewData } };
+		case zonesetting.CLEARDATA:
+			return {
+				...state,
+				...defaultState
+			};
 		default:
 			return state;
 	}
