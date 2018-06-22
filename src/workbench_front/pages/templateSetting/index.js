@@ -175,13 +175,20 @@ class TemplateSetting extends Component {
 	};
 	//保存
 	handleOk = (e) => {
-		let { templateNameVal, templateTitleVal, templatePks, pageCode } = this.state;
+		let { templateNameVal, templateTitleVal, templatePks, pageCode, activeKey } = this.state;
 		if(!templateNameVal){
 			Notice({ status: 'warning', msg: "请输入模板标题" });
 			return ;
 		}
 		let infoData={
 			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal
+		}
+		if(activeKey==='1'){
+			infoData.templateType = 'bill';
+		}else if(activeKey==='2'){
+			infoData.templateType = 'query';
+		}else if(activeKey==='3'){
+			infoData.templateType = 'print';
 		}
 		Ajax({
 			url: `/nccloud/platform/template/copyTemplate.do`,
@@ -331,7 +338,14 @@ class TemplateSetting extends Component {
 	 * @param 请求成功后的提示信息
 	 */
 	setDefaultFun = (url, infoData, textInfo)=>{
-		let { pageCode }=this.state;
+		let { pageCode, activeKey }=this.state;
+		if(activeKey==='1'){
+			infoData.templateType = 'bill';
+		}else if(activeKey==='2'){
+			infoData.templateType = 'query';
+		}else if(activeKey==='3'){
+			infoData.templateType = 'print';
+		}
 		Ajax({
 			url: url,
 			data: infoData,
@@ -546,9 +560,16 @@ class TemplateSetting extends Component {
 		});
 	};
 	reqAllowTreeData = ()=>{
-		let { pageCode, templatePks, orgidObj }=this.state;
+		let { pageCode, templatePks, orgidObj, activeKey }=this.state;
 		let infoData={
 			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks
+		}
+		if(activeKey==='1'){
+			infoData.templateType = 'bill';
+		}else if(activeKey==='2'){
+			infoData.templateType = 'query';
+		}else if(activeKey==='3'){
+			infoData.templateType = 'print';
 		}
 		Ajax({
 			url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -810,7 +831,7 @@ class TemplateSetting extends Component {
 	</div>)
 	}
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode, treeAllowedData, orgidObj } = this.state;
+		let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey } = this.state;
 		if(!treeAllowedData){
 			Notice({ status: 'warning', msg: "请选中信息" });
 			return ;
@@ -828,6 +849,13 @@ class TemplateSetting extends Component {
 			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk
 		}
 		infoData.targets=targets;
+		if(activeKey==='1'){
+			infoData.templateType = 'bill';
+		}else if(activeKey==='2'){
+			infoData.templateType = 'query';
+		}else if(activeKey==='3'){
+			infoData.templateType = 'print';
+		}
 		Ajax({
 			url: `/nccloud/platform/template/assignTemplate.do`,
 			data: infoData,
