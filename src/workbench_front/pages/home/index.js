@@ -253,7 +253,7 @@ class Home extends Component {
               a.width = Number(a.width);
             });
           });
-          this.setState({ groups: data[0].groups });
+          this.setState({ groups: data[0].groups },this.createScript);
           this.props.updateGroupList(data[0].groups);
           this.handleHomeLoad();
         } else {
@@ -265,9 +265,6 @@ class Home extends Component {
         }
       }
     });
-  }
-  componentDidUpdate() {
-    this.createScript();
   }
   render() {
     let { groups, layout } = this.state;

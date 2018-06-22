@@ -78,7 +78,7 @@ class App extends Component {
                                 // 浏览器当前页打开
                                 window.location.hash = `#/ifr?ifr=${encodeURIComponent(
                                     pageurl
-                                )}&${query}&ar=${pk_appregister}&n=${encodeURIComponent(
+                                )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
                                 )}&c=${encodeURIComponent(
                                     code
