@@ -83,8 +83,9 @@ class Item extends Component {
 	}
 
 	onChangeChecked = (e) => {
+		const checked = e.target.checked;
 		const { index, parentIndex } = this.props;
-		this.props.onChangeChecked(e, parentIndex, index);
+		this.props.onChangeChecked(checked, parentIndex, index);
 	};
 
 	render() {

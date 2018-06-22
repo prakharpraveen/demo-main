@@ -16,29 +16,34 @@
 			position: fixed;
 			overflow-x: auto;
 			overflow-y: hidden;
-			a {
+			.anchor{
 				margin-left: 5px;
-				height: 32px;
-				text-align: center;
-				white-space: nowrap;
 				padding: 0 10px;
-				color: #474d54;
-			}
-			.active {
-				position: relative;
-				span {
-					display: flex;
-					justify-content: center;
-					&::after {
-						content: "";
-						display: block;
-						width: 20px;
-						height: 4px;
-						background: rgba(221,55,48,1);;
-						border-radius: 4px;
+				height: 35px;
+				a {
+					
+					height: 32px;
+					text-align: center;
+					white-space: nowrap;
+					color: #474d54;
+				}
+				.active {
+					position: relative;
+					span {
+						display: flex;
+						justify-content: center;
+						&::after {
+							content: "";
+							display: block;
+							width: 20px;
+							height: 4px;
+							background: rgba(221,55,48,1);;
+							border-radius: 4px;
+						}
 					}
 				}
 			}
+			
 		}
 		.nc-workbench-home-container {
 			padding: 5px 10px 20px;
@@ -158,7 +163,7 @@
 
 	.nc-workbench-home-sider {
 		background: #fff;
-		overflow: auto;
+		// overflow: auto;
 		.sider-content {
 			margin: 10px 5px 15px;
 			padding: 10px 8px 0;
@@ -197,6 +202,8 @@
 				}
 			}
 			.sider-result {
+				overflow: auto;
+				height: calc(100vh - 85px - 52px - 53px - 15px);
 				.result-group-list {
 					border-bottom: 1px solid #e9e9e9;
 					.result-header {

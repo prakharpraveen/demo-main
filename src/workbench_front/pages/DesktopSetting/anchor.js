@@ -2,9 +2,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import './index.less';
+import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';
 import { Link } from 'react-scroll';
 
+const anchorTarget = {
+	drop(props, monitor, component) {
+		const dragItem = monitor.getItem();
+		const dropItem = props;
+		if (dragItem.type === 'cardlist') {
+			props.onCardListDropInGroupItem(dragItem, dropItem);
+		}
+	},
+	canDrop(props, monitor) {
+		// You can disallow drop based on props or item
+		//retutrn false,则monitor.didDrop()为undefined
+		const dragItem = monitor.getItem();
+		if (dragItem.type === 'cardlist') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+};
+
+@DropTarget('item', anchorTarget, (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver()
+}))
 class AnchorLi extends Component {
 	constructor(props) {
 		super(props);
@@ -23,22 +48,28 @@ class AnchorLi extends Component {
 		if (this.props.index !== nextProps.index) {
 			return true;
 		}
+		if (this.props.isOver !== nextProps.isOver) {
+			return true;
+		}
 		return false;
 	}
 	render() {
-		const { name, id } = this.props;
-		return (
-			<Link
-				activeClass='active'
-				to={`a${id}`}
-				offset={-133}
-				spy={true}
-				smooth={true}
-				duration={250}
-				containerId='nc-workbench-home-container'
-			>
-				{name}<span></span>
-			</Link>
+		const { connectDropTarget, isOver, name, id } = this.props;
+		return connectDropTarget(
+			<span className='anchor' style={{ background: isOver ? 'rgb(204, 204, 204)' : '' }}>
+				<Link
+					activeClass='active'
+					to={`a${id}`}
+					offset={-133}
+					spy={true}
+					smooth={true}
+					duration={250}
+					containerId='nc-workbench-home-container'
+				>
+					{name}
+					<span />
+				</Link>
+			</span>
 		);
 	}
 }
@@ -53,7 +84,7 @@ class MyContentAnchor extends Component {
 		return (
 			<div className='content-anchor'>
 				{groups.map((g, i) => {
-					return <AnchorLi key={g.pk_app_group} id={g.pk_app_group} index={i} name={g.groupname} />;
+					return <AnchorLi onCardListDropInGroupItem={this.props.onCardListDropInGroupItem} key={g.pk_app_group} id={g.pk_app_group} index={i} name={g.groupname} />;
 				})}
 			</div>
 		);

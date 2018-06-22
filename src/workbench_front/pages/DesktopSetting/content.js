@@ -299,7 +299,7 @@ class MyContent extends Component {
 		const { groups, relateidObj } = this.props;
 		return (
 			<div className='nc-desktop-setting-content'>
-				<MyContentAnchor />
+				<MyContentAnchor onCardListDropInGroupItem={this.onCardListDropInGroupItem} />
 				<div className='nc-workbench-home-container' id='nc-workbench-home-container'>
 					{this.initGroupItem(groups)}
 				</div>

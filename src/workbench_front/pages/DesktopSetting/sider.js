@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Layout, Cascader, Input, Icon, Checkbox, Switch } from 'antd';
+import { Layout, Cascader, Input, Icon, Checkbox, Menu, Dropdown } from 'antd';
 import SiderCard from './siderCard.js';
 import { connect } from 'react-redux';
 import { collision, layoutCheck } from './collision';
 import { compactLayout } from './compact';
 import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
-import {GetQuery} from 'Pub/js/utils';
+import { GetQuery } from 'Pub/js/utils';
 import MyModal from './modal';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
@@ -28,14 +28,12 @@ class MySider extends Component {
 	componentDidMount() {
 		const relateidObj = this.props.relateidObj;
 		const ajaxData =
-			relateidObj.type === 'userID'
-				? { userid: relateidObj.data }
-				: { pk_responsibility: relateidObj.data }
+			relateidObj.type === 'userID' ? { userid: relateidObj.data } : { pk_responsibility: relateidObj.data };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
-				name:'工作桌面配置',
-				action:'查询一二级领域模块'
+				name: '工作桌面配置',
+				action: '查询一二级领域模块'
 			},
 			data: ajaxData,
 			success: (res) => {
@@ -43,10 +41,10 @@ class MySider extends Component {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
 						this.setState({ domainArr: data });
-					}else{
-						if(data.length === 0){
+					} else {
+						if (data.length === 0) {
 							Notice({ status: 'error', msg: '领域模块数据为空' });
-						}else{
+						} else {
 							Notice({ status: 'error', msg: data });
 						}
 					}
@@ -54,9 +52,9 @@ class MySider extends Component {
 			}
 		});
 	}
-	updateAppGroupArr = (appGroupArr)=>{
-		this.setState({appGroupArr:appGroupArr})
-	}
+	updateAppGroupArr = (appGroupArr) => {
+		this.setState({ appGroupArr: appGroupArr });
+	};
 	showModalVisible = () => {
 		this.setModalVisible(true);
 	};
@@ -71,7 +69,7 @@ class MySider extends Component {
 	};
 	//应用名模糊搜索
 	onInputSearch = () => {
-		if(this.state.searchValue === ''){
+		if (this.state.searchValue === '') {
 			return;
 		}
 		const relateidObj = this.props.relateidObj;
@@ -82,13 +80,13 @@ class MySider extends Component {
 		Ajax({
 			url: `/nccloud/platform/appregister/searchapp.do`,
 			info: {
-				name:'工作桌面配置',
-				action:'模糊搜索应用和部件'
+				name: '工作桌面配置',
+				action: '模糊搜索应用和部件'
 			},
 			data: ajaxData,
 			success: (res) => {
 				const { data, success } = res.data;
-				if (success && data && data.children &&data.children.length>0) {
+				if (success && data && data.children && data.children.length > 0) {
 					data.isShow = true;
 					data.checkedAll = false;
 					data.indeterminate = false;
@@ -97,11 +95,11 @@ class MySider extends Component {
 						c.height = Number(c.height);
 						c.width = Number(c.width);
 					});
-					this.setState({ appGroupArr: [data], isAllShow: true });
-				}else{
-					if(data && data.children &&data.children.length === 0){
+					this.setState({ appGroupArr: [ data ], isAllShow: true });
+				} else {
+					if (data && data.children && data.children.length === 0) {
 						Notice({ status: 'error', msg: '数据为空' });
-					}else{
+					} else {
 						Notice({ status: 'error', msg: data });
 					}
 				}
@@ -111,7 +109,7 @@ class MySider extends Component {
 	};
 	//领域模块搜索
 	onCascaderChange = (value) => {
-		if(value && value.length===0){
+		if (value && value.length === 0) {
 			return;
 		}
 		let cascaderValueArr = value;
@@ -127,8 +125,8 @@ class MySider extends Component {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
-				name:'工作桌面配置',
-				action:'查询模块下应用和部件'
+				name: '工作桌面配置',
+				action: '查询模块下应用和部件'
 			},
 			data: ajaxData,
 			success: (res) => {
@@ -145,10 +143,10 @@ class MySider extends Component {
 						});
 					});
 					this.setState({ appGroupArr: data, isAllShow: true });
-				}else{
-					if(data && data.length === 0){
+				} else {
+					if (data && data.length === 0) {
 						Notice({ status: 'error', msg: '数据为空' });
-					}else{
+					} else {
 						Notice({ status: 'error', msg: data });
 					}
 				}
@@ -158,8 +156,8 @@ class MySider extends Component {
 	//切换搜索状态
 	switchSearch = () => {
 		const { showSearch } = this.state;
-		this.setState({ showSearch: !showSearch },()=>{
-			if(this.state.showSearch){
+		this.setState({ showSearch: !showSearch }, () => {
+			if (this.state.showSearch) {
 				this.refs.searchInput.focus();
 			}
 		});
@@ -171,7 +169,7 @@ class MySider extends Component {
 			itemDom = (
 				<div className='sider-search'>
 					<Search
-						ref = 'searchInput'
+						ref='searchInput'
 						placeholder='请输入应用名称'
 						style={{ width: '230px' }}
 						onChange={this.onInputChange}
@@ -191,9 +189,10 @@ class MySider extends Component {
 						options={this.state.domainArr}
 						onChange={this.onCascaderChange}
 						placeholder='请选择领域-模块'
+						expandTrigger='hover'
 					/>
 					<span className='switch-search' onClick={this.switchSearch}>
-						<Icon type='search' title="切换至名称搜索"/>
+						<Icon type='search' title='切换至名称搜索' />
 					</span>
 				</div>
 			);
@@ -214,15 +213,15 @@ class MySider extends Component {
 							}}
 						/>
 						<strong>
-						<span
-							className='result-header-name'
-							onClick={() => {
-								this.onChangeShowHide(index);
-							}}
-						>
-							&nbsp;{item.label}&nbsp;
-							{item.isShow ? <Icon type='down' /> : <Icon type='right' />}
-						</span>
+							<span
+								className='result-header-name'
+								onClick={() => {
+									this.onChangeShowHide(index);
+								}}
+							>
+								&nbsp;{item.label}&nbsp;
+								{item.isShow ? <Icon type='down' /> : <Icon type='right' />}
+							</span>
 						</strong>
 					</h4>
 					<div className='result-app-list' style={{ display: item.isShow ? 'flex' : 'none' }}>
@@ -238,10 +237,10 @@ class MySider extends Component {
 											index={i}
 											parentIndex={index}
 											name={child.label}
-											appGroupArr = {this.state.appGroupArr}
+											appGroupArr={this.state.appGroupArr}
 											checked={child.checked}
 											onChangeChecked={this.onChangeChecked}
-											updateAppGroupArr = {this.updateAppGroupArr}
+											updateAppGroupArr={this.updateAppGroupArr}
 										/>
 									</div>
 								</div>
@@ -281,8 +280,7 @@ class MySider extends Component {
 		this.setState({ appGroupArr });
 	};
 	//单个卡片的选择
-	onChangeChecked = (e, groupIndex, index) => {
-		const checked = e.target.checked;
+	onChangeChecked = (checked, groupIndex, index) => {
 		let { appGroupArr } = this.state;
 		let selectGroup = appGroupArr[groupIndex];
 		let child = selectGroup.children[index];
@@ -297,7 +295,6 @@ class MySider extends Component {
 
 		selectGroup.checkedAll = checkCount === selectGroup.children.length;
 		selectGroup.indeterminate = !!checkCount && checkCount < selectGroup.children.length;
-		console.log(selectGroup.indeterminate);
 		this.setState({ appGroupArr });
 	};
 	//sider中有checked的卡片
@@ -317,30 +314,39 @@ class MySider extends Component {
 		});
 		return flag;
 	}
+	allShowOrHideMenu = (
+		<Menu>
+			<Menu.Item key='0'>
+				<span
+					onClick={() => {
+						this.allShowOrHide(true);
+					}}
+				>
+					全部展开
+				</span>
+			</Menu.Item>
+			<Menu.Item key='1'>
+				<span
+					onClick={() => {
+						this.allShowOrHide(false);
+					}}
+				>
+					全部收起
+				</span>
+			</Menu.Item>
+		</Menu>
+	);
 	render() {
 		const contentHeight = this.props.contentHeight;
 		return (
-			<Sider
-				className='nc-workbench-home-sider'
-				width= {300}
-				style={{ height: contentHeight }}
-			>
+			<Sider className='nc-workbench-home-sider' width={300} style={{ height: contentHeight }}>
 				<div className='sider-content'>
 					{this.getSearchDom()}
 					<div className='add-item'>
-						<Switch
-							checkedChildren='展开'
-							checked={this.state.isAllShow}
-							unCheckedChildren='收缩'
-							className={this.state.appGroupArr.length === 0 ? 'cannot-add' : 'aaa'}
-							onChange={this.allShowOrHide}
-						/>
-						<Icon
-							className={this.hasChechedItem() ? 'add' : 'cannot-add'}
-							type='plus-circle-o'
-							title='添加应用到分组'
-							onClick={this.showModalVisible}
-						/>
+						<span>选择下方应用拖拽至右侧分组</span>
+						<Dropdown trigger={[ 'click' ]} overlay={this.allShowOrHideMenu} placement='bottomCenter'>
+							<Icon type='menu-unfold' />
+						</Dropdown>
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 				</div>
@@ -355,7 +361,7 @@ class MySider extends Component {
 }
 export default connect(
 	(state) => ({
-		userID : state.appData.userID
+		userID: state.appData.userID
 	}),
 	{}
 )(MySider);
