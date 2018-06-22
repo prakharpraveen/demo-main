@@ -29,6 +29,7 @@ export const CreateQuery = (object) => {
 			arg += `&${key}=${element}`;
 		}
 	}
+	arg[0] = '#';
 	return arg;
 };
 /**
