@@ -22,8 +22,6 @@ class MenuTree extends Component {
         return;
       }
       let copyNodeData = dataRestore(this.props.copyNodeData);
-      console.log(selectedNode);
-      
       let newMenuItemCode = `${selectedNode.refcode + Pad(1, 2)}`;
       if (selectedNode.children && selectedNode.children.length > 0) {
         newMenuItemCode = `${selectedNode["children"][
