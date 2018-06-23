@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend'
 import { findDOMNode } from 'react-dom';
 import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
@@ -64,6 +65,7 @@ const noteSource = {
 function collectSource(connect, monitor) {
 	return {
 		connectDragSource: connect.dragSource(),
+		connectDragPreview: connect.dragPreview(),
 		isDragging: monitor.isDragging()
 	};
 }
@@ -71,6 +73,15 @@ function collectSource(connect, monitor) {
 class Item extends Component {
 	constructor(props) {
 		super(props);
+	}
+	componentDidMount() {
+		// Use empty image as a drag preview so browsers don't draw it
+		// and we can draw whatever we want on the custom drag layer instead.
+		this.props.connectDragPreview(getEmptyImage(), {
+			// IE fallback: specify that we'd rather screenshot the node
+			// when it already knows it's being dragged so we can hide it with CSS.
+			captureDraggingState: true,
+		})
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

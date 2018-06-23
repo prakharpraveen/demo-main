@@ -15,6 +15,8 @@ import { connect } from 'react-redux';
 import * as utilService from './utilService';
 import { updateGroupList } from 'Store/test/action';
 import Notice from 'Components/Notice';
+import CustomDragLayer from './customDragLayer';
+
 // @withDragDropContext(HTML5Backend)
 class Test extends Component {
 	constructor(props) {
@@ -79,6 +81,7 @@ class Test extends Component {
 					
 					<MyContent relateidObj={this.state.relateidObj}/>
 					
+				<CustomDragLayer/>
 			</div>
 		);
 	}

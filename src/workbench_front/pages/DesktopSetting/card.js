@@ -94,6 +94,7 @@ class Item extends Component {
 		const { x, y } = utilService.calGridItemPosition(gridx, gridy, margin, rowHeight, calWidth);
 		const { wPx, hPx } = utilService.calWHtoPx(width, height, margin, rowHeight, calWidth);
 		let cardDom;
+		console.log('card');
 		//是否为拖拽中的阴影卡片
 		if (isShadow) {
 			cardDom = (
