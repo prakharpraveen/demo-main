@@ -14,7 +14,8 @@ import {
   setExpandedKeys,
   setSelectedKeys,
   setOptype,
-  setCopyNodeData
+  setCopyNodeData,
+  setMenuTreeData
 } from "Store/AppManagement/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -30,7 +31,7 @@ import {
   PageLayoutRight
 } from "Components/PageLayout";
 import ButtonCreate from "Components/ButtonCreate";
-import AppCopy from "./AppCopy";
+import AppCopy from "./AppCopy/index";
 import Notice from "Components/Notice";
 import "./index.less";
 const confirm = Modal.confirm;
@@ -55,7 +56,12 @@ class AppManagement extends Component {
   handleClick = code => {
     switch (code) {
       case "copy":
-        this.appCopy();
+        this.setState(
+          {
+            visible: true
+          },
+          this.reqMenuTreeData
+        );
         break;
       case "active":
         this.appActive();
@@ -72,7 +78,16 @@ class AppManagement extends Component {
         name: "应用复制",
         action: "菜单参照"
       },
-      success: ({ data: { data } }) => {}
+      success: ({
+        data: {
+          data: { rows }
+        }
+      }) => {
+        if (rows.length > 0) {
+          this.props.setMenuTreeData(rows);
+          this.appCopy();
+        }
+      }
     });
   };
   // 应用复制
@@ -85,9 +100,6 @@ class AppManagement extends Component {
       menuname: ""
     };
     this.props.setCopyNodeData(dataTransfer(copyNodeData));
-    this.setState({
-      visible: true
-    });
   };
   // 应用停启用
   appActive = () => {};
@@ -306,6 +318,10 @@ class AppManagement extends Component {
           <Modal
             title="应用复制"
             mask={false}
+            okText={"确认"}
+            cancelText={"取消"}
+            width={800}
+            wrapClassName="vertical-center-modal"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -336,6 +352,7 @@ AppManagement.propTypes = {
   setOptype: PropTypes.func.isRequired,
   selectedKeys: PropTypes.array.isRequired,
   setCopyNodeData: PropTypes.func.isRequired,
+  setMenuTreeData: PropTypes.func.isRequired
 };
 export default connect(
   state => ({
@@ -359,6 +376,7 @@ export default connect(
     setExpandedKeys,
     setSelectedKeys,
     setOptype,
-    setCopyNodeData
+    setCopyNodeData,
+    setMenuTreeData
   }
 )(AppManagement);

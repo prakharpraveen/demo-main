@@ -90,6 +90,13 @@ export const setPageActiveKey = (data) => {
 		data
 	};
 };
+// 菜单树数据
+export const setMenuTreeData = (data) => {
+	return {
+		type: AppManagement.MENUTREEDATA,
+		data
+	};
+};
 // 设置 菜单树选中节点数据
 export const setMenuTreeSelectedData = (data) => {
 	return {

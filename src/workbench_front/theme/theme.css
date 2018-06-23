@@ -35,30 +35,30 @@
     background-color: #b2332e;
     border-color: #b2332e;
 }
-#ncc .ant-tree li .ant-tree-node-content-wrapper:hover {
-    background-color: #fcedec;
+.ant-tree li .ant-tree-node-content-wrapper:hover {
+    background-color: #fcedec !important;
 }
-#ncc .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
-    background-color: #f4f5f7;
+.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+    background-color: #f4f5f7 !important;
     color: #e14c46;
 }
-#ncc .ant-checkbox-checked .ant-checkbox-inner,
-#ncc .ant-checkbox-indeterminate .ant-checkbox-inner {
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-indeterminate .ant-checkbox-inner {
     background-color: #4e5e68;
     border-color: #4e5e68;
 }
-#ncc .ant-checkbox-input:focus + .ant-checkbox-inner,
-#ncc .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-#ncc .ant-checkbox:hover .ant-checkbox-inner {
+.ant-checkbox-input:focus + .ant-checkbox-inner,
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner {
     border-color: #4e5e68;
 }
-#ncc .ant-checkbox-checked:after {
+.ant-checkbox-checked:after {
     border: 1px solid #4e5e68;
 }
-#ncc .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner:after {
+.ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner:after {
     border-color: #fff;
 }
-#ncc .ant-table-tbody > tr.ant-table-row-hover > td,
+.ant-table-tbody > tr.ant-table-row-hover > td,
 .ant-table-tbody > tr:hover > td,
 .ant-table-thead > tr.ant-table-row-hover > td,
 .ant-table-thead > tr:hover > td {

@@ -19,17 +19,8 @@ class MenuTree extends Component {
   render() {
     const loop = data =>
       data.map(item => {
-        let { flag, moduleid: code, systypename: name, systypecode } = item;
-        let itemContent;
-        if (code === "00") {
-          itemContent = `${name}`;
-        } else {
-          if (flag - 0 === 0) {
-            itemContent = `${code} ${name}`;
-          } else {
-            itemContent = `${systypecode} ${name}`;
-          }
-        }
+        let { refcode: code, refname: name } = item;
+        let itemContent = `${code} ${name}`;
         if (item.children) {
           return (
             <TreeNode key={code} title={itemContent} refData={item}>
@@ -39,29 +30,21 @@ class MenuTree extends Component {
         }
         return <TreeNode key={code} title={itemContent} refData={item} />;
       });
-    let newTreeData = [
-      {
-        /* 给树填个根 */
-        systypename: "应用节点",
-        moduleid: "00",
-        children: createTree(this.props.MenuTreeData, "moduleid", "parentcode")
-      }
-    ];
+    let newTreeData = createTree(this.props.menuTreeData, "refcode", "pid");
     return (
       <Tree showLine onSelect={this.handleSelect}>
-        >
         {loop(newTreeData)}
       </Tree>
     );
   }
 }
-MenuTree.prototype = {
+MenuTree.propTypes = {
   setMenuTreeSelectedData: PropTypes.func.isRequired,
-  MenuTreeData: PropTypes.array.isRequired
+  menuTreeData: PropTypes.array.isRequired
 };
 export default connect(
   state => ({
-    MenuTreeData: state.AppManagementData.MenuTreeData
+    menuTreeData: state.AppManagementData.menuTreeData
   }),
   { setMenuTreeSelectedData }
 )(MenuTree);

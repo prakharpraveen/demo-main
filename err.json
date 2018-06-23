@@ -1,42 +1,11 @@
 {
-  "mdidRef": {
-    "isleaf": true,
-    "pid": "xi",
-    "refcode": "uapportal",
-    "refname": "企业门户开发",
-    "refpk": "uapportal",
-    "children": null,
-    "_display": "企业门户开发"
+  "data": null,
+  "error": {
+    "exceptionClass": "nc.vo.pubapp.pattern.exception.TransferSqlException",
+    "message": "ORA-00904: \"FUN_PROPERTY\": 标识符无效\n",
+    "stack":
+      "java.sql.SQLException: 00904: \"FUN_PROPERTY\": 标识符无效\n\r\n\tat nc.bs.mw.sqltrans.TranslatorObject.getSqlException(TranslatorObject.java:116)\r\n\tat nc.bs.mw.sqltrans.SqlTranslator.getSqlException(SqlTranslator.java:146)\r\n\tat nc.jdbc.framework.crossdb.CrossDBStatement.executeQuery(CrossDBStatement.java:274)\r\n\tat nc.impl.pubapp.pattern.database.DataAccessUtils.query(DataAccessUtils.java:89)\r\n\tat nc.impl.pubapp.pattern.data.vo.VOQuery.query(VOQuery.java:511)\r\n\tat nc.impl.pub.util.db.QueryUtil.queryVOByCond(QueryUtil.java:364)\r\n\tat nccloud.pubimpl.platform.workbench.AppRegisterImpl.queryAppRegisterRefShowVO(AppRegisterImpl.java:169)\r\n\tat sun.reflect.GeneratedMethodAccessor339.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat nc.bs.framework.aop.rt.MethodProceedingJoinpoint$3.invoke(MethodProceedingJoinpoint.java:74)\r\n\tat nc.bs.framework.aop.rt.MethodProceedingJoinpoint.proceed(MethodProceedingJoinpoint.java:184)\r\n\tat nc.bs.framework.server.SecurityAspect.aroundMethod1(SecurityAspect.java:55)\r\n\tat sun.reflect.GeneratedMethodAccessor65.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat nc.bs.framework.aop.rt.AdviceHolder.invoke(AdviceHolder.java:182)\r\n\tat nc.bs.framework.aop.rt.MethodProceedingJoinpoint.proceed(MethodProceedingJoinpoint.java:129)\r\n\tat nc.bs.framework.aop.rt.MethodProceedingJoinpoint.proceed(MethodProceedingJoinpoint.java:135)\r\n\tat nc.bs.framework.aop.rt.AspectedProxy.invoke(AspectedProxy.java:59)\r\n\tat com.sun.proxy.$Proxy92.queryAppRegisterRefShowVO(Unknown Source)\r\n\tat sun.reflect.GeneratedMethodAccessor339.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat nc.bs.framework.ejb.CMTProxyImpl.delegate(CMTProxyImpl.java:22)\r\n\tat nc.itf.framework.ejb.CMTProxyEjbBean.delegate(CMTProxyEjbBean.java:44)\r\n\tat nc.itf.framework.ejb.CMTProxy_Local.delegate(CMTProxy_Local.java:70)\r\n\tat sun.reflect.GeneratedMethodAccessor106.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat nc.bs.framework.ejb.AbstractEJBServiceHandler.invoke(AbstractEJBServiceHandler.java:57)\r\n\tat nc.bs.framework.ejb.AbstractEJBServiceHandler.invoke(AbstractEJBServiceHandler.java:36)\r\n\tat com.sun.proxy.$Proxy14.delegate(Unknown Source)\r\n\tat nc.bs.framework.ejb.CMTEJBServiceHandler.invoke(CMTEJBServiceHandler.java:32)\r\n\tat com.sun.proxy.$Proxy93.queryAppRegisterRefShowVO(Unknown Source)\r\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat nccloud.framework.service.ServiceHandler.invoke(ServiceHandler.java:56)\r\n\tat com.sun.proxy.$Proxy93.queryAppRegisterRefShowVO(Unknown Source)\r\n\tat nccloud.web.platform.workbench.action.QueryAppRegisterAction.doAction(QueryAppRegisterAction.java:48)\r\n\tat nccloud.framework.web.action.excutor.CommonActionExcutor.excute(CommonActionExcutor.java:18)\r\n\tat nccloud.framework.web.action.entry.ActionExcutor.excute(ActionExcutor.java:93)\r\n\tat nccloud.framework.web.action.entry.Dispatcher.excute(Dispatcher.java:99)\r\n\tat nccloud.framework.web.action.entry.Dispatcher.doAction(Dispatcher.java:54)\r\n\tat nccloud.framework.web.action.entry.EntryController.doPost(EntryController.java:34)\r\n\tat sun.reflect.GeneratedMethodAccessor162.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:288)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:285)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat javax.security.auth.Subject.doAsPrivileged(Subject.java:536)\r\n\tat org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:320)\r\n\tat org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:175)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:297)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:55)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:191)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:187)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:186)\r\n\tat nccloud.framework.core.filter.LoginFilter.doFilter(LoginFilter.java:36)\r\n\tat sun.reflect.GeneratedMethodAccessor160.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:288)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:285)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat javax.security.auth.Subject.doAsPrivileged(Subject.java:536)\r\n\tat org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:320)\r\n\tat org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:260)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:237)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:55)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:191)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:187)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:186)\r\n\tat sun.reflect.GeneratedMethodAccessor160.invoke(Unknown Source)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:606)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:288)\r\n\tat org.apache.catalina.security.SecurityUtil$1.run(SecurityUtil.java:285)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat javax.security.auth.Subject.doAsPrivileged(Subject.java:536)\r\n\tat org.apache.catalina.security.SecurityUtil.execute(SecurityUtil.java:320)\r\n\tat org.apache.catalina.security.SecurityUtil.doAsPrivilege(SecurityUtil.java:260)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:237)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.access$000(ApplicationFilterChain.java:55)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:191)\r\n\tat org.apache.catalina.core.ApplicationFilterChain$1.run(ApplicationFilterChain.java:187)\r\n\tat java.security.AccessController.doPrivileged(Native Method)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:186)\r\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:219)\r\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:110)\r\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:169)\r\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103)\r\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116)\r\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:445)\r\n\tat org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1115)\r\n\tat org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:637)\r\n\tat org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:316)\r\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\r\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)\r\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\r\n\tat java.lang.Thread.run(Thread.java:745)\r\n",
+    "status": "1000"
   },
-  "pk_appregister": "0001Z510000000098MKA",
-  "code": "66013311",
-  "name": "测试应用",
-  "own_module": "6601",
-  "mountid": null,
-  "width": "1",
-  "height": "1",
-  "target_path": "0001Z510000000098YA1",
-  "apptype": "1",
-  "image_src": "toupiao",
-  "uselicense_load": true,
-  "orgtypecode": "GROUPORGTYPE00000000",
-  "funtype": "2",
-  "parent_id": "0001Z510000000098MK9",
-  "isenable": true,
-  "pk_group": null,
-  "app_desc": null,
-  "help_name": null,
-  "iscauserusable": false,
-  "mdid": "uapportal",
-  "haspower": null,
-  "source_app_code": "66013311",
-  "resid": null,
-  "creator": "1001A4100000000055NR",
-  "creationtime": "2018-06-14 14:23:40",
-  "modifier": "1001A4100000000055NR",
-  "modifiedtime": "2018-06-21 10:02:19",
-  "dr": "0",
-  "ts": "2018-06-21 10:02:19",
-  "status": "0",
-  "m_isDirty": false
+  "success": false
 }

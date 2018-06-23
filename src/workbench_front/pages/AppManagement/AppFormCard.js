@@ -165,6 +165,24 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
+                label: "功能性质",
+                type: "select",
+                code: "fun_property",
+                isRequired: true,
+                options:  [
+                    {
+                        value: "0",
+                        text: "可执行功能"
+                    },
+                    {
+                        value: "1",
+                        text: "附属功能"
+                    },
+                ],
+                isedit: isEdit,
+                lg: 8
+            },
+            {
                 label: "功能点类型",
                 type: "select",
                 code: "funtype",
@@ -248,14 +266,6 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: "所属集团",
-                type: "string",
-                code: "pk_group",
-                isRequired: false,
-                isedit: isEdit,
-                lg: 8
-            },
-            {
                 label: "是否启用",
                 type: "checkbox",
                 code: "isenable",
@@ -289,6 +299,14 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
+                label: "所属集团",
+                type: "string",
+                code: "pk_group",
+                isRequired: false,
+                isedit: isEdit,
+                lg: 8
+            },
+            {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
@@ -310,7 +328,7 @@ class AppFromCard extends Component {
                 code: "app_desc",
                 isRequired: false,
                 md: 24,
-                lg: 24,
+                lg: 16,
                 xl: 24,
                 isedit: isEdit
             },

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MenuTree from "./MenuTree";
 import { FormCreate, dataRestore } from "Components/FormCreate";
+import './index.less';
 class AppCopy extends Component {
   constructor(props) {
     super(props);
@@ -23,39 +24,39 @@ class AppCopy extends Component {
         code: "name",
         isRequired: true,
         isedit: true,
-        lg: 8
+        lg: 12
       },
       {
-        label: "节点名称",
+        label: "应用名称",
         type: "string",
         code: "width",
         isRequired: true,
         isedit: true,
-        lg: 8
+        lg: 12
       },
       {
-        label: "对应单据类型节点编码",
+        label: "对应应用编码",
         type: "string",
         code: "height",
         isRequired: true,
         isedit: true,
-        lg: 8
+        lg: 12
       },
       {
-        label: "对应单据类型节点名称",
+        label: "对应应用名称",
         type: "string",
         code: "mdidRef",
         isRequired: true,
         isedit: true,
-        lg: 8
+        lg: 12
       }
     ];
     return (
-      <div>
-        <div>
+      <div className='copyapp-content'>
+        <div className='copyapp-menutree'>
           <MenuTree />
         </div>
-        <div>
+        <div className='copyapp-form'>
           <FormCreate
             formData={appCopyFormData}
             fields={this.props.copyNodeData}
@@ -70,8 +71,8 @@ AppCopy.propTypes = {
   copyNodeData: PropTypes.object.isRequired
 };
 export default connect(
-  state => {
-    copyNodeData: state.AppManagement.copyNodeData;
-  },
+  state => ({
+    copyNodeData: state.AppManagementData.copyNodeData
+  }),
   {}
 )(AppCopy);

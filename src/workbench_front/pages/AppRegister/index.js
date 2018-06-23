@@ -161,6 +161,7 @@ class AppRegister extends Component {
       height: "1",
       target_path: "",
       apptype: "1",
+      fun_property: "0",
       resid: "",
       image_src: "",
     };

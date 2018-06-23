@@ -3,6 +3,8 @@ import * as AppManagement from "./action-type";
 let defaultState = {
   // 树数据
   treeData: [],
+  // 菜单树数据
+  menuTreeData: [],
   // 树节点对象
   nodeData: {},
   // 树节点信息
@@ -14,6 +16,8 @@ let defaultState = {
   },
   // 应用复制表单数据
   copyNodeData: {},
+  // 菜单选中节点
+  menuTreeSelectedData: {},
   // 应用参数数据
   appParamVOs: [],
   // 页面按钮数据
@@ -125,11 +129,18 @@ export const AppManagementData = (state = defaultState, action = {}) => {
           pageActiveKey: action.data
         }
       };
+    case AppManagement.MENUTREEDATA:
+      return {
+        ...state,
+        ...{
+          menuTreeData: action.data
+        }
+      };
     case AppManagement.MENUTREESELECTEDDATA:
       return {
         ...state,
         ...{
-          MenuTreeSelectedData: action.data
+          menuTreeSelectedData: action.data
         }
       };
     case AppManagement.COPYNODEDATA:
