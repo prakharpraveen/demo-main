@@ -102,7 +102,9 @@ class AppManagement extends Component {
     this.props.setCopyNodeData(dataTransfer(copyNodeData));
   };
   // 应用停启用
-  appActive = () => {};
+  appActive = () => {
+    /*调应用编辑的接口 */
+  };
   /**
    * 右侧表单选择
    */
