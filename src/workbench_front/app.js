@@ -96,8 +96,8 @@ class App extends Component {
                             default:
                                 // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
                                 win.location = `#/ifr?ifr=${encodeURIComponent(
-                                    pageurl
-                                )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
+                                    pageurl+query
+                                )}&ar=${pk_appregister}&n=${encodeURIComponent(
                                     b4
                                 )}&c=${encodeURIComponent(
                                     code

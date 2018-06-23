@@ -12,6 +12,8 @@ let defaultState = {
     name: "",
     parentId: ""
   },
+  // 应用复制表单数据
+  copyNodeData: {},
   // 应用参数数据
   appParamVOs: [],
   // 页面按钮数据
@@ -19,13 +21,13 @@ let defaultState = {
   // 页面模板数据
   pageTemplets: [],
   // 树展开树节点数组
-  expandedKeys:['00'],
+  expandedKeys: ["00"],
   // 树选中节点数组
-  selectedKeys:['00'],
+  selectedKeys: ["00"],
   // 节点类型
-  optype:'',
+  optype: "",
   // 页面节点页签激活项
-  pageActiveKey:'1',
+  pageActiveKey: "1",
   // 是否是新增
   isNew: false,
   // 是否是编辑
@@ -99,7 +101,7 @@ export const AppManagementData = (state = defaultState, action = {}) => {
       return {
         ...state,
         ...{
-          expandedKeys: action.data.concat(['00'])
+          expandedKeys: action.data.concat(["00"])
         }
       };
     case AppManagement.SELECTEDKEYS:
@@ -121,6 +123,20 @@ export const AppManagementData = (state = defaultState, action = {}) => {
         ...state,
         ...{
           pageActiveKey: action.data
+        }
+      };
+    case AppManagement.MENUTREESELECTEDDATA:
+      return {
+        ...state,
+        ...{
+          MenuTreeSelectedData: action.data
+        }
+      };
+    case AppManagement.COPYNODEDATA:
+      return {
+        ...state,
+        ...{
+          copyNodeData: action.data
         }
       };
     default:

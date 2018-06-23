@@ -13,7 +13,8 @@ import {
   setIsEdit,
   setExpandedKeys,
   setSelectedKeys,
-  setOptype
+  setOptype,
+  setCopyNodeData
 } from "Store/AppManagement/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -29,6 +30,7 @@ import {
   PageLayoutRight
 } from "Components/PageLayout";
 import ButtonCreate from "Components/ButtonCreate";
+import AppCopy from "./AppCopy";
 import Notice from "Components/Notice";
 import "./index.less";
 const confirm = Modal.confirm;
@@ -40,7 +42,9 @@ const confirm = Modal.confirm;
 class AppManagement extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visible: false
+    };
     this.historyOptype;
     this.historyNodeData;
   }
@@ -60,14 +64,33 @@ class AppManagement extends Component {
         break;
     }
   };
+  // 请求菜单树数据
+  reqMenuTreeData = () => {
+    Ajax({
+      url: `/nccloud/platform/appregister/menuitemregref.do`,
+      info: {
+        name: "应用复制",
+        action: "菜单参照"
+      },
+      success: ({ data: { data } }) => {}
+    });
+  };
   // 应用复制
-  appCopy=()=>{
-
-  }
+  appCopy = () => {
+    let { code } = this.props.nodeInfo;
+    let copyNodeData = {
+      code: code,
+      menucode: "",
+      name: "",
+      menuname: ""
+    };
+    this.props.setCopyNodeData(dataTransfer(copyNodeData));
+    this.setState({
+      visible: true
+    });
+  };
   // 应用停启用
-  appActive=()=>{
-
-  }
+  appActive = () => {};
   /**
    * 右侧表单选择
    */
@@ -214,6 +237,17 @@ class AppManagement extends Component {
       searchCallback
     );
   };
+  handleOk = e => {
+    console.log(dataRestore(this.props.copyNodeData));
+    this.setState({
+      visible: false
+    });
+  };
+  handleCancel = e => {
+    this.setState({
+      visible: false
+    });
+  };
   componentDidMount() {
     let {
       selectedKeys,
@@ -236,10 +270,6 @@ class AppManagement extends Component {
   }
   render() {
     let optype = this.props.optype;
-    let isEdit = this.props.isEdit;
-    let nodeData = this.props.nodeData.hasOwnProperty("ts")
-      ? dataRestore(this.props.nodeData)
-      : {};
     let btnList = [
       {
         code: "copy",
@@ -271,7 +301,18 @@ class AppManagement extends Component {
             onSearch={this.handleTreeSearch}
           />
         </PageLayoutLeft>
-        <PageLayoutRight>{this.switchFrom()}</PageLayoutRight>
+        <PageLayoutRight>
+          {this.switchFrom()}
+          <Modal
+            title="应用复制"
+            mask={false}
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <AppCopy />
+          </Modal>
+        </PageLayoutRight>
       </PageLayout>
     );
   }
@@ -293,7 +334,8 @@ AppManagement.propTypes = {
   setSelectedKeys: PropTypes.func.isRequired,
   optype: PropTypes.string.isRequired,
   setOptype: PropTypes.func.isRequired,
-  selectedKeys: PropTypes.array.isRequired
+  selectedKeys: PropTypes.array.isRequired,
+  setCopyNodeData: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
@@ -316,6 +358,7 @@ export default connect(
     setIsEdit,
     setExpandedKeys,
     setSelectedKeys,
-    setOptype
+    setOptype,
+    setCopyNodeData
   }
 )(AppManagement);
