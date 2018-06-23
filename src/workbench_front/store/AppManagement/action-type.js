@@ -25,8 +25,6 @@ export const OPTYPE = 'OPTYPE';
 // 页面节点激活页签
 export const PAGEACTIVEKEY = 'PAGEACTIVEKEY';
 // 菜单树选中数据
-export const MENUTREESELECTEDDATA = 'MENUTREESELECTEDDATA';
-// 菜单树选中数据
 export const MENUTREEDATA = 'MENUTREEDATA';
 // 应用复制表单数据
 export const COPYNODEDATA = 'COPYNODEDATA';

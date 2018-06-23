@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MenuTree from "./MenuTree";
+import { setCopyNodeData } from "Store/AppManagement/action";
 import { FormCreate, dataRestore } from "Components/FormCreate";
-import './index.less';
+import "./index.less";
 class AppCopy extends Component {
   constructor(props) {
     super(props);
@@ -14,49 +15,49 @@ class AppCopy extends Component {
    * @param {String|Object} changedFields 改变的字段及值
    */
   handleFormChange = changedFields => {
-    this.props.setNodeData({ ...this.props.copyNodeData, ...changedFields });
+    this.props.setCopyNodeData({ ...this.props.copyNodeData, ...changedFields });
   };
   render() {
     let appCopyFormData = [
       {
-        label: "菜单编码",
+        label: "新菜单编码",
         type: "string",
-        code: "name",
+        code: "newMenuItemCode",
         isRequired: true,
         isedit: true,
         lg: 12
       },
       {
-        label: "应用名称",
+        label: "新菜单名称",
         type: "string",
-        code: "width",
+        code: "newMenuItemName",
         isRequired: true,
         isedit: true,
         lg: 12
       },
       {
-        label: "对应应用编码",
+        label: "应用编码",
         type: "string",
-        code: "height",
+        code: "oldAppCode",
         isRequired: true,
-        isedit: true,
+        isedit: false,
         lg: 12
       },
       {
-        label: "对应应用名称",
+        label: "新应用名称",
         type: "string",
-        code: "mdidRef",
+        code: "newAppName",
         isRequired: true,
         isedit: true,
         lg: 12
       }
     ];
     return (
-      <div className='copyapp-content'>
-        <div className='copyapp-menutree'>
+      <div className="copyapp-content">
+        <div className="copyapp-menutree">
           <MenuTree />
         </div>
-        <div className='copyapp-form'>
+        <div className="copyapp-form">
           <FormCreate
             formData={appCopyFormData}
             fields={this.props.copyNodeData}
@@ -68,11 +69,12 @@ class AppCopy extends Component {
   }
 }
 AppCopy.propTypes = {
-  copyNodeData: PropTypes.object.isRequired
+  copyNodeData: PropTypes.object.isRequired,
+  setCopyNodeData: PropTypes.func.isRequired
 };
 export default connect(
   state => ({
     copyNodeData: state.AppManagementData.copyNodeData
   }),
-  {}
+  { setCopyNodeData }
 )(AppCopy);

@@ -97,13 +97,6 @@ export const setMenuTreeData = (data) => {
 		data
 	};
 };
-// 设置 菜单树选中节点数据
-export const setMenuTreeSelectedData = (data) => {
-	return {
-		type: AppManagement.MENUTREESELECTEDDATA,
-		data
-	};
-};
 // 应用复制表单数据设置
 export const setCopyNodeData = (data) => {
 	return {

@@ -92,12 +92,12 @@ class AppManagement extends Component {
   };
   // 应用复制
   appCopy = () => {
-    let { code } = this.props.nodeInfo;
+    let { code,name } = this.props.nodeInfo;
     let copyNodeData = {
-      code: code,
-      menucode: "",
-      name: "",
-      menuname: ""
+      oldAppCode: code,
+      newMenuItemCode: "",
+      newAppName: "",
+      newMenuItemName: ""
     };
     this.props.setCopyNodeData(dataTransfer(copyNodeData));
   };
@@ -249,10 +249,28 @@ class AppManagement extends Component {
       searchCallback
     );
   };
+  /**
+   * 应用复制确认事件
+   */
   handleOk = e => {
-    console.log(dataRestore(this.props.copyNodeData));
-    this.setState({
-      visible: false
+    let  copyNodeData = this.props.copyNodeData;
+    if(dataCheck(copyNodeData)){
+      return;
+    }
+    Ajax({
+      url:`/nccloud/platform/appregister/copyapp.do`,
+      data:copyNodeData,
+      info:{
+        name:'应用管理',
+        action:'应用复制'
+      },
+      success:({data:{data}})=>{
+        console.log(data);
+        this.setState({
+          visible: false
+        });
+        Notice({ status: "success" });
+      }
     });
   };
   handleCancel = e => {
@@ -352,7 +370,8 @@ AppManagement.propTypes = {
   setOptype: PropTypes.func.isRequired,
   selectedKeys: PropTypes.array.isRequired,
   setCopyNodeData: PropTypes.func.isRequired,
-  setMenuTreeData: PropTypes.func.isRequired
+  setMenuTreeData: PropTypes.func.isRequired,
+  copyNodeData: PropTypes.object.isRequired,
 };
 export default connect(
   state => ({
@@ -362,7 +381,8 @@ export default connect(
     isNew: state.AppManagementData.isNew,
     isEdit: state.AppManagementData.isEdit,
     selectedKeys: state.AppManagementData.selectedKeys,
-    optype: state.AppManagementData.optype
+    optype: state.AppManagementData.optype,
+    copyNodeData: state.AppManagementData.copyNodeData,
   }),
   {
     setTreeData,

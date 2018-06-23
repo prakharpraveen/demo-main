@@ -16,8 +16,6 @@ let defaultState = {
   },
   // 应用复制表单数据
   copyNodeData: {},
-  // 菜单选中节点
-  menuTreeSelectedData: {},
   // 应用参数数据
   appParamVOs: [],
   // 页面按钮数据
@@ -134,13 +132,6 @@ export const AppManagementData = (state = defaultState, action = {}) => {
         ...state,
         ...{
           menuTreeData: action.data
-        }
-      };
-    case AppManagement.MENUTREESELECTEDDATA:
-      return {
-        ...state,
-        ...{
-          menuTreeSelectedData: action.data
         }
       };
     case AppManagement.COPYNODEDATA:
