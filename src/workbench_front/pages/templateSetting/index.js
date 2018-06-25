@@ -86,7 +86,9 @@ class TemplateSetting extends Component {
 			treeData: [],
 			searchValue: '',
 			autoExpandParent: true,
-			treeTemData: [],
+			treeTemData: [],//单据模板数据
+			treeSearchTemData: [],//查询模板数据
+			treePrintTemData: [],
 			treeTemDataArray: [],
 			templatePks: '',
 			visible: false,
@@ -342,9 +344,9 @@ class TemplateSetting extends Component {
 		}
 	/**
 	 * 设置默认模板的ajax请求
-	 * @param 请求路径
-	 * @param 请求参数
-	 * @param 请求成功后的提示信息
+	 * @param url 请求路径
+	 * @param infoData 请求参数
+	 * @param textInfo 请求成功后的提示信息
 	 */
 	setDefaultFun = (url, infoData, textInfo)=>{
 		let { pageCode, activeKey }=this.state;
@@ -387,18 +389,21 @@ class TemplateSetting extends Component {
 		// };
 	};
 	//右侧树组装数据
-	restoreTreeTemData = ()=>{
+	restoreTreeTemData = (templateType)=>{
 		let {
 			treeTemData,
 			treeTemDataArray,
 			selectedKeys,
-			parentIdcon
+			parentIdcon,
+			activeKey,
+			treeSearchTemData
 		} = this.state;
 		treeTemDataArray.map((item)=>{
 			if(item.isDefault==='y'){
 				item.name=item.name+' [默认]'
 			}
 		})
+		let treeData=[];
 		let treeInfo = generateTemData(treeTemDataArray);
 		let {
 			treeArray,
@@ -414,19 +419,27 @@ class TemplateSetting extends Component {
 			}
 		})
 		//处理树数据
-		treeTemData = treeInfo.treeArray;
-		treeTemData = generateTreeData(treeTemData);
-		if(treeTemData.length>0){
+		treeData = treeInfo.treeArray;
+		treeData = generateTreeData(treeData);
+		if(treeData.length>0){
 			let newinitKeyArray=[];
-			newinitKeyArray.push(treeTemData[0].key);
+			newinitKeyArray.push(treeData[0].key);
 			this.setState({
 				selectedKeys:newinitKeyArray,
-				parentIdcon:treeTemData[0].parentId,
+				parentIdcon:treeData[0].parentId,
 			});
 		}
-		this.setState({
-			treeTemData
-		});
+		if(templateType==='bill'){
+			treeTemData=treeData;
+			this.setState({
+				treeTemData
+			});
+		}else if(templateType==='query'){
+			treeSearchTemData=treeData;
+			this.setState({
+				treeSearchTemData
+			});
+		}
 	}
 	 //将平铺树数组转换为树状数组
 	restoreTreeData = () => {
@@ -498,13 +511,17 @@ class TemplateSetting extends Component {
 		if(!infoData.pageCode){
 			return;
 		}
-		if(activeKey==='1'){
-			infoData.templateType = 'bill';
-		}else if(activeKey==='2'){
-			infoData.templateType = 'query';
-		}else if(activeKey==='3'){
+		infoData.templateType = 'bill';
+		this.reqTreeTemAjax(infoData, 'bill');
+		infoData.templateType = 'query';
+		this.reqTreeTemAjax(infoData, 'query');
+		if(activeKey==='3'){
 			infoData.templateType = 'print';
+			this.reqTreeTemAjax(infoData, 'print');
 		}
+	}
+	//请求右侧树数据ajax方法封装
+	reqTreeTemAjax = (infoData, templateType)=>{
 		Ajax({
 			url: `/nccloud/platform/template/getTemplatesOfPage.do`,
 			data: infoData,
@@ -518,7 +535,7 @@ class TemplateSetting extends Component {
 				if (data.success) {
 					this.setState({
 						treeTemDataArray: data.data
-					}, this.restoreTreeTemData)
+					}, this.restoreTreeTemData(templateType))
 				}
 			}
 		});
@@ -529,6 +546,7 @@ class TemplateSetting extends Component {
 			templatePks: key[0]
 		},this.lookTemplateNameVal);
 	}
+	//在模板数据中查找当前PK值的中文名称
 	lookTemplateNameVal = ()=>{
 		let { templateNameVal, treeTemData, templatePks, parentIdcon }=this.state;
 		for(let i=0;i<treeTemData.length;i++){
@@ -924,6 +942,7 @@ class TemplateSetting extends Component {
 		const {
 			treeData,
 			treeTemData,
+			treeSearchTemData,
 			templateNameVal,
 			visible,
 			alloVisible,
@@ -981,14 +1000,14 @@ class TemplateSetting extends Component {
 									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
 								</TabPane>
 								<TabPane tab="查询模板" key="2">
-									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
+									{treeSearchTemData.length >0 &&this.treeResAndUser(treeSearchTemData,'templateOnselect','hideSearch')}
 								</TabPane>
 								<TabPane tab="打印模板" key="3">
 									<div>
 										<p>1111111111</p>
 										<p>2222222222</p>
 										<p>3333333333</p>
-										<p>44444444444</p>
+										<p>44444444444</p> 
 									</div>
 								</TabPane>
 							</Tabs>
