@@ -29,6 +29,7 @@ class App extends Component {
    * @param {String} query - 需要传递的参数
    */
   openNewApp = (appOption, type, query) => {
+    // pk_appregister 应该从返回的数据中取 这部分需要删除
     let { code, name, pk_appregister } = appOption;
     if (
       name === "应用注册" ||
@@ -137,7 +138,7 @@ class App extends Component {
     };
     /**
      * 在新页签中打开
-     * @param　{String} appOption // 应用 描述信息 name 和 code 及 pk_appregister
+     * @param　{Object} appOption // 应用 描述信息 name 和 code 及 pk_appregister
      * @param　{String} type // current - 浏览器新页签打开 不传参数在当前页打开
      * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2
      */

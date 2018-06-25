@@ -42,41 +42,38 @@ class Layout extends Component {
     let { n } = GetQuery(this.props.location.search);
     if (n && n !== "null") {
       let nodeName = decodeURIComponent(n);
-      this.setState({
-        nodeName
-      },()=>{
-        this.updateTitle(`${nodeName} - NCCloud`);
-      });
+      this.setState(
+        {
+          nodeName
+        },
+        () => {
+          this.updateTitle(`${nodeName} - NCCloud`);
+        }
+      );
     } else {
-      this.setState({
-        nodeName: "首页"
-      },()=>{
-        this.updateTitle('首页 - NCCloud');
-      });
+      this.setState(
+        {
+          nodeName: "首页"
+        },
+        () => {
+          this.updateTitle("首页 - NCCloud");
+        }
+      );
     }
   };
   /**
    * 更新title显示名称
-    */
-  updateTitle = (title)=>{
-    document.title = title;
-  }
-  /**
-   * 监听storage变化
-   * 
    */
-  handleStorageChange =()=>{
-    console.log(1);
-  }
+  updateTitle = title => {
+    document.title = title;
+  };
   componentDidMount() {
     this.handleUpdateTitleName();
     window.addEventListener("hashchange", this.handleUpdateTitleName);
-    window.addEventListener("storage", this.handleStorageChange);
   }
 
   componentWillUnmount() {
     window.removeEventListener("hashchange", this.handleUpdateTitleName);
-    window.removeEventListener("storage", this.handleStorageChange);
   }
 
   changeSearchInput = () => {

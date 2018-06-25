@@ -175,7 +175,7 @@ class PageTable extends Component {
         title: "序号",
         dataIndex: "btnorder",
         width: "5%",
-        render: text => text + 1
+        render: text => text - 0 + 1
       },
       {
         title: RenderTableTitle("按钮编码"),
@@ -371,6 +371,9 @@ class PageTable extends Component {
   jumpPage = record => {
     this.props.history.push(`/Zone?t=${record.pk_page_templet}&n=设置页面模板`);
   };
+  /**
+   * 设置默认模板
+   */
   setDefault = record => {
     Ajax({
       url: `/nccloud/platform/templet/setdefaulttemplet.do`,
@@ -459,7 +462,7 @@ class PageTable extends Component {
           (isRequired && value.length === 0) ||
           (isRequired &&
             item.num !== record.num &&
-            item["parent_code"] === record["parent_code"])
+            item["btncode"] === record["btncode"])
         ) {
           return true;
         }
@@ -677,6 +680,7 @@ class PageTable extends Component {
         btnorder: newData.length
       });
       this.setNewData(newData);
+      this.setState({ iserror: false });
     } else if (activeKey === "2") {
       this.props.history.push(`/Zone?&pid=${id}&pcode=${code}&n=设置页面模板`);
     }
