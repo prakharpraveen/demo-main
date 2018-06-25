@@ -47,7 +47,7 @@ class Layout extends Component {
           nodeName
         },
         () => {
-          this.updateTitle(`${nodeName} - NCCloud`);
+          this.updateTitle(`${nodeName}`);
         }
       );
     } else {
@@ -56,7 +56,7 @@ class Layout extends Component {
           nodeName: "首页"
         },
         () => {
-          this.updateTitle("首页 - NCCloud");
+          this.updateTitle("首页");
         }
       );
     }

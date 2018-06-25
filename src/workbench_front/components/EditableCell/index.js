@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Input, Icon, Button, Popconfirm} from "antd";
 import Notice from "Components/Notice";
-
 import "./index.less";
 class EditableCell extends Component {
     constructor(props) {
