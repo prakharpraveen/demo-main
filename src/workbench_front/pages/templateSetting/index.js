@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
-import { PageLayout } from 'Components/PageLayout';
+import { PageLayout,
+  PageLayoutHeader,
+  PageLayoutLeft,
+  PageLayoutRight } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
@@ -958,9 +961,9 @@ class TemplateSetting extends Component {
 			batchSettingModalVisibel
 		} = this.state;
 		return (
-			<PageLayout className="nc-workbench-templateSetting">
-				<Layout>
-					<Header>
+			<PageLayout className="nc-workbench-templateSetting"
+				header={
+					<PageLayoutHeader>
 						{treeTemData.length >0 && Btns.map((item, index) => {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
@@ -970,48 +973,49 @@ class TemplateSetting extends Component {
 							设置默认模板
 						</Button>
 						</Dropdown>)}
-					</Header>
-					<Layout height={'100%'}>
-						<Sider
-							width={280}
-							height={'100%'}
-							style={{
-								background: '#fff',
-								width: '500px',
-								minHeight: 'calc(100vh - 64px - 48px)',
-								height: `${this.state.siderHeight}px`,
-								overflowY: 'auto',
-								padding: '20px'
-							}}
-						>
-							{treeData.length >0&&treeData[0].children.length > 0 &&this.treeResAndUser(treeData,'systemOnselect')}
-						</Sider>
-						<Content style={{ padding: '20px', minHeight: 280 }}>
-							<Tabs
-								defaultActiveKey="1"
-								onChange={activeKey => {
-									this.setState({activeKey});
-								}}
-								type="card"
-								activeKey={activeKey}
-								//tabBarExtraContent={this.creatAddLineBtn()}
-							>
-								<TabPane tab="页面模板" key="1">
-									{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
-								</TabPane>
-								<TabPane tab="查询模板" key="2">
-									{treeSearchTemData.length >0 &&this.treeResAndUser(treeSearchTemData,'templateOnselect','hideSearch')}
-								</TabPane>
-								<TabPane tab="打印模板" key="3">
-									<div>
-										<p>1111111111</p>
-										<p>2222222222</p>
-										<p>3333333333</p>
-										<p>44444444444</p> 
-									</div>
-								</TabPane>
-							</Tabs>
-						</Content>
+					</PageLayoutHeader>
+				}
+			>
+				<PageLayoutLeft
+					width={280}
+					height={'100%'}
+					style={{
+						background: '#fff',
+						width: '500px',
+						minHeight: 'calc(100vh - 64px - 48px)',
+						height: `${this.state.siderHeight}px`,
+						overflowY: 'auto',
+						padding: '20px'
+					}}
+				>
+					{treeData.length >0&&treeData[0].children.length > 0 &&this.treeResAndUser(treeData,'systemOnselect')}
+				</PageLayoutLeft>
+				<PageLayoutRight>
+					<Tabs
+						defaultActiveKey="1"
+						onChange={activeKey => {
+							this.setState({activeKey});
+						}}
+						type="card"
+						activeKey={activeKey}
+						//tabBarExtraContent={this.creatAddLineBtn()}
+					>
+						<TabPane tab="页面模板" key="1">
+							{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
+						</TabPane>
+						<TabPane tab="查询模板" key="2">
+							{treeSearchTemData.length >0 &&this.treeResAndUser(treeSearchTemData,'templateOnselect','hideSearch')}
+						</TabPane>
+						<TabPane tab="打印模板" key="3">
+							<div>
+								<p>1111111111</p>
+								<p>2222222222</p>
+								<p>3333333333</p>
+								<p>44444444444</p> 
+							</div>
+						</TabPane>
+					</Tabs>
+				</PageLayoutRight>
 						{batchSettingModalVisibel && (
 							<PreviewModal
 								templetid={templatePks}
@@ -1091,12 +1095,9 @@ class TemplateSetting extends Component {
 								</div>
 							</div>
         				</Modal>
-					</Layout>
-				</Layout>
 			</PageLayout>
 		);
 	}
 }
 export default TemplateSetting
-
 
