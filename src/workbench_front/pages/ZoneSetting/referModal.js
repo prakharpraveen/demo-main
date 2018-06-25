@@ -55,8 +55,9 @@ class ReferModal extends Component {
         this.props.setModalVisibel('refer',false)
     }
     onOkDialog = ()=>{
-		let { optionKey, isCheck } = this.state;
+		let { optionKey, isCheck, option } = this.state;
 		let initVal;
+		let refname;
 		if (isCheck){
 			initVal = optionKey + `,dp=Y`;
 		}else{
@@ -64,7 +65,35 @@ class ReferModal extends Component {
 		} 
 		this.setState({ initVal});
 		this.props.handleSelectChange(initVal, 'dataval');
+		
+		// 设置元数据关联属性
+		_.forEach(option,(v,i)=>{
+			if (v.pk_refinfo === optionKey ){
+				refname = v.name;
+				return ;
+			}
+		})
+		Ajax({
+			url: `/nccloud/platform/templet/getMetaByRefName.do`,
+			info: {
+				scode: '关联元数据',
+				action: '获取元数据数据'
+			},
+			data: {
+				iscode: isCheck?'N':'Y',
+				refname: refname,
+			},
+			success: (res) => {
+				if (res) {
+					let { data, success } = res.data;
+					if (success && data ) {
+						this.props.handleSelectChange(data, 'metadataproperty');
+					}
+				}
+			}
+		});
 		this.showModalHidden();
+
 	}
 	handleSelectChange = (val)=>{
 		this.setState({ optionKey:val})
