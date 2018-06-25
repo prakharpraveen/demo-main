@@ -92,7 +92,7 @@ class AppManagement extends Component {
   };
   // 应用复制
   appCopy = () => {
-    let { code,name } = this.props.nodeInfo;
+    let { code, name } = this.props.nodeInfo;
     let copyNodeData = {
       oldAppCode: code,
       newMenuItemCode: "",
@@ -103,7 +103,21 @@ class AppManagement extends Component {
   };
   // 应用停启用
   appActive = () => {
-    /*调应用编辑的接口 */
+    let nodeData = dataRestore(this.props.nodeData);
+    nodeData.isenable = !nodeData.isenable;
+    Ajax({
+      url: `/nccloud/platform/appregister/editapp.do`,
+      info: {
+        name: "应用管理",
+        action: "停启用"
+      },
+      data: nodeData,
+      success: ({ data: { data } }) => {
+        if (data.msg) {
+          this.props.setNodeData(dataTransfer(nodeData));
+        }
+      }
+    });
   };
   /**
    * 右侧表单选择
@@ -255,19 +269,26 @@ class AppManagement extends Component {
    * 应用复制确认事件
    */
   handleOk = e => {
-    let  copyNodeData = this.props.copyNodeData;
-    if(dataCheck(copyNodeData)){
+    let copyNodeData = this.props.copyNodeData;
+    if (dataCheck(copyNodeData)) {
       return;
     }
+    copyNodeData = dataRestore(copyNodeData);
+    for (const key in copyNodeData) {
+      if (copyNodeData.hasOwnProperty(key)) {
+        if(copyNodeData[key].length === 0){
+          return;
+        }
+      }
+    }
     Ajax({
-      url:`/nccloud/platform/appregister/copyapp.do`,
-      data:copyNodeData,
-      info:{
-        name:'应用管理',
-        action:'应用复制'
+      url: `/nccloud/platform/appregister/copyapp.do`,
+      data: copyNodeData,
+      info: {
+        name: "应用管理",
+        action: "应用复制"
       },
-      success:({data:{data}})=>{
-        console.log(data);
+      success: ({ data: { data } }) => {
         this.setState({
           visible: false
         });
@@ -302,6 +323,9 @@ class AppManagement extends Component {
   }
   render() {
     let optype = this.props.optype;
+    let isenable = this.props.nodeData.isenable
+      ? dataRestore(this.props.nodeData).isenable
+      : false;
     let btnList = [
       {
         code: "copy",
@@ -311,7 +335,7 @@ class AppManagement extends Component {
       },
       {
         code: "active",
-        name: "停启用",
+        name: isenable ? "停用" : "启用",
         type: "primary",
         isshow: optype === "4"
       }
@@ -373,7 +397,7 @@ AppManagement.propTypes = {
   selectedKeys: PropTypes.array.isRequired,
   setCopyNodeData: PropTypes.func.isRequired,
   setMenuTreeData: PropTypes.func.isRequired,
-  copyNodeData: PropTypes.object.isRequired,
+  copyNodeData: PropTypes.object.isRequired
 };
 export default connect(
   state => ({
@@ -384,7 +408,7 @@ export default connect(
     isEdit: state.AppManagementData.isEdit,
     selectedKeys: state.AppManagementData.selectedKeys,
     optype: state.AppManagementData.optype,
-    copyNodeData: state.AppManagementData.copyNodeData,
+    copyNodeData: state.AppManagementData.copyNodeData
   }),
   {
     setTreeData,

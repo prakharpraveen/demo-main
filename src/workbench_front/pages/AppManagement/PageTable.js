@@ -112,11 +112,14 @@ class PageTable extends Component {
         title: "操作",
         dataIndex: "operation",
         render: (text, record) => {
-          const { editable } = record;
+          const { isenable } = record;
           return (
             <div className="editable-row-operations">
-              <a className="margin-right-5" onClick={() => this.btnActive(record)}>
-                起停用
+              <a
+                className="margin-right-5"
+                onClick={() => this.btnActive(record)}
+              >
+                {isenable ? "停用" : "启用"}
               </a>
             </div>
           );
@@ -151,9 +154,29 @@ class PageTable extends Component {
     this.cacheData;
   }
   // 按钮起停用
-  btnActive=(record)=>{
-    console.log(record);
-  }
+  btnActive = record => {
+    record.isenable = !record.isenable;
+    Ajax({
+      url: `/nccloud/platform/appregister/editbutton.do`,
+      info: {
+        name: "应用管理",
+        action: "按钮启停用"
+      },
+      data: record,
+      success: ({ data: { data } }) => {
+        if (data.msg) {
+          let { appButtonVOs, setPageButtonData } = this.props;
+          appButtonVOs = appButtonVOs.map(item => {
+            if (item.pk_btn === record.pk_btn) {
+              item = record;
+            }
+            return item;
+          });
+          setPageButtonData(appButtonVOs);
+        }
+      }
+    });
+  };
   renderColumns(text, record, column, type = "input") {
     record = _.cloneDeep(record);
     if (type === "input") {
