@@ -14,7 +14,7 @@ import { CreateQuery } from "Pub/js/utils.js";
 import "moment/locale/zh-cn";
 import "Assets/iconfont/iconfont.js";
 import "Pub/css/public.less";
-import "./theme/theme.css";
+import "./theme/theme.less";
 moment.locale("zh-cn");
 window.proxyAction = $NCPE.proxyAction;
 
