@@ -40,6 +40,16 @@ const EditableSelectCell = ({ editable, value, onChange }) => (
   </div>
 );
 /**
+ * 表格表头必输项渲染
+ * @param {String} title
+ */
+const RenderTableTitle = title => (
+  <div>
+    <span style={{ color: "#e14c46" }}>*</span>
+    <span>{title}</span>
+  </div>
+);
+/**
  * 按钮类型选择
  * @param {String} value
  */
@@ -168,23 +178,25 @@ class PageTable extends Component {
         render: text => text + 1
       },
       {
-        title: "按钮编码",
+        title: RenderTableTitle("按钮编码"),
         dataIndex: "btncode",
         width: "10%",
-        render: (text, record) => this.renderColumns(text, record, "btncode")
+        render: (text, record) =>
+          this.renderColumns(text, record, "btncode", "input", true)
       },
       {
-        title: "按钮名称",
+        title: RenderTableTitle("按钮名称"),
         dataIndex: "btnname",
         width: "10%",
-        render: (text, record) => this.renderColumns(text, record, "btnname")
+        render: (text, record) =>
+          this.renderColumns(text, record, "btnname", "input", true)
       },
       {
-        title: "按钮类型",
+        title: RenderTableTitle("按钮类型"),
         dataIndex: "btntype",
         width: "15%",
         render: (text, record) =>
-          this.renderColumns(text, record, "btntype", "select")
+          this.renderColumns(text, record, "btntype", "select", true)
       },
       {
         title: "父按钮编码",
@@ -194,10 +206,11 @@ class PageTable extends Component {
           this.renderColumns(text, record, "parent_code")
       },
       {
-        title: "按钮区域",
+        title: RenderTableTitle("按钮区域"),
         dataIndex: "btnarea",
         width: "10%",
-        render: (text, record) => this.renderColumns(text, record, "btnarea")
+        render: (text, record) =>
+          this.renderColumns(text, record, "btnarea", "input", true)
       },
       {
         title: "按钮功能描述",
@@ -410,7 +423,7 @@ class PageTable extends Component {
       }
     });
   };
-  renderColumns(text, record, column, type = "input") {
+  renderColumns(text, record, column, type = "input", isRequired = false) {
     record = _.cloneDeep(record);
     if (type === "input") {
       if (record.editable) {
@@ -419,7 +432,7 @@ class PageTable extends Component {
             value={text}
             hasError={this.state.iserror}
             onChange={this.onCellChange(record, column)}
-            onCheck={this.onCellCheck(record, column)}
+            onCheck={this.onCellCheck(record, column, isRequired)}
           />
         );
       } else {
@@ -438,14 +451,20 @@ class PageTable extends Component {
   /**
    * 单元格编辑校验
    */
-  onCellCheck = (record, dataIndex) => {
+  onCellCheck = (record, dataIndex, isRequired) => {
     return value => {
       const listData = this.getNewData();
-      const target = listData.find(
-        item =>
-          (item.num !== record.num && item[dataIndex] === value) ||
-          value.length === 0
-      );
+      const target = listData.find(item => {
+        if (
+          (isRequired && value.length === 0) ||
+          (isRequired &&
+            item.num !== record.num &&
+            item["parent_code"] === record["parent_code"])
+        ) {
+          return true;
+        }
+      });
+
       if (target) {
         this.setState({ iserror: true });
         return true;
@@ -836,7 +855,7 @@ class PageTable extends Component {
               title="导入页面模板"
               okText="确认"
               cancelText="取消"
-              mask= {false}
+              mask={false}
               wrapClassName="vertical-center-modal template-code-add"
               visible={this.state.visible}
               onOk={this.handleOk}
