@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { DragSource, DropTarget } from 'react-dnd';
 import Card from './card';
 import _ from 'lodash';
-import { Icon, Input, Button, Checkbox } from 'antd';
+import { Icon, Input, Button, Checkbox, Popconfirm } from 'antd';
 import { collision, layoutCheck } from './collision';
 import { compactLayout } from './compact.js';
 import { updateCurrEditID } from 'Store/test/action';
@@ -56,7 +56,7 @@ const groupItemTarget = {
 			props.moveGroupItem(dragIndex, hoverIndex);
 
 			monitor.getItem().index = hoverIndex;
-		} else if(dragItem.type === 'card') {
+		} else if (dragItem.type === 'card') {
 			//卡片到组
 			const hoverItem = props;
 			const { x, y } = monitor.getClientOffset();
@@ -71,9 +71,9 @@ const groupItemTarget = {
 		const dropItem = props;
 		if (dragItem.type === 'group') {
 			props.onDrop(dragItem, dropItem);
-		}else if(dragItem.type === 'card'){
+		} else if (dragItem.type === 'card') {
 			props.onCardDropInGroupItem(dragItem, dropItem);
-		}else if(dragItem.type === 'cardlist'){
+		} else if (dragItem.type === 'cardlist') {
 			props.onCardListDropInGroupItem(dragItem, dropItem);
 		}
 	}
@@ -199,7 +199,7 @@ class GroupItem extends Component {
 						<Input
 							ref='editInputDom'
 							size='small'
-							placeholder='分组名称'
+							placeholder='分组名称，回车确定'
 							defaultValue={groupname}
 							onPressEnter={this.changeGroupName}
 							onChange={this.getGroupName}
@@ -252,12 +252,19 @@ class GroupItem extends Component {
 							/>
 						</div>
 						<div className='group-item-title-edit'>
-							<Icon
-								type='close-square-o'
-								title='分组删除'
-								className='group-item-icon'
-								onClick={this.deleteGroupItem}
-							/>
+							<Popconfirm
+								title='确定删除该分组？'
+								onConfirm={this.deleteGroupItem}
+								placement="topRight"
+								okText='确定'
+								cancelText='取消'
+							>
+								<Icon
+									type='close-square-o'
+									title='分组删除'
+									className='group-item-icon'
+								/>
+							</Popconfirm>
 						</div>
 					</div>
 				</div>

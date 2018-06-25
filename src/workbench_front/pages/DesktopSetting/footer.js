@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Button, Modal, Radio } from 'antd';
+import { Button, Modal, Radio, Popconfirm } from 'antd';
 import Ajax from 'Pub/js/ajax';
 //自定义组件
 import { layoutCheck } from './collision';
-import { compactLayout,compactLayoutHorizontal } from './compact.js';
+import { compactLayout, compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
 import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
 import * as utilService from './utilService';
@@ -25,12 +25,12 @@ class MyFooter extends Component {
 		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
 		utilService.removeCheckedCardsInGroups(groups);
-		_.forEach(groups,(g)=>{
-			let compactedLayout = compactLayoutHorizontal( g.apps,this.props.col);
+		_.forEach(groups, (g) => {
+			let compactedLayout = compactLayoutHorizontal(g.apps, this.props.col);
 
 			g.apps = compactedLayout;
-		})
-		
+		});
+
 		this.props.updateGroupList(groups);
 	};
 	getGroupItemNameRadio = (groups) => {
@@ -58,7 +58,7 @@ class MyFooter extends Component {
 	showModalVisible = () => {
 		this.setModalVisible(true);
 	};
-	showModalHidden = ()=>{
+	showModalHidden = () => {
 		this.setModalVisible(false);
 	};
 	setModalVisible = (modalVisible) => {
@@ -71,7 +71,7 @@ class MyFooter extends Component {
 		if (targetGroupID === 0) {
 			return;
 		}
-		let { groups} = this.props;
+		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
 		//需要重新布局的组，需要把目标组也加进来
 		let sourceGroupIDArr = [];
@@ -83,16 +83,16 @@ class MyFooter extends Component {
 			let flag = false;
 			if (g.pk_app_group === targetGroupID) {
 				targetGroupIndex = i;
-				sourceGroupIDArr.push(g.pk_app_group)
+				sourceGroupIDArr.push(g.pk_app_group);
 				return;
 			}
 			const tmpArr = _.remove(g.apps, (a) => {
-				if(a.isChecked){
+				if (a.isChecked) {
 					flag = true;
 				}
 				return a.isChecked;
 			});
-			if(flag && sourceGroupIDArr.indexOf(g.pk_app_group) === -1){
+			if (flag && sourceGroupIDArr.indexOf(g.pk_app_group) === -1) {
 				sourceGroupIDArr.push(g.pk_app_group);
 			}
 			moveCardArr = _.concat(moveCardArr, tmpArr);
@@ -113,7 +113,7 @@ class MyFooter extends Component {
 			if (g.apps.length === 0) {
 				return;
 			}
-			let compactedLayout = compactLayoutHorizontal( g.apps,this.props.col);
+			let compactedLayout = compactLayoutHorizontal(g.apps, this.props.col);
 
 			// const firstCard = compactedLayout[0];
 
@@ -125,11 +125,11 @@ class MyFooter extends Component {
 		this.setModalVisible(modalVisible);
 	};
 	cancleSave = () => {
-		if(this.props.relateidObj.type === 'userID'){
-			this.props.history.push(`/`)
-		}else{
-			self.opener=null;
-            self.close();
+		if (this.props.relateidObj.type === 'userID') {
+			this.props.history.push(`/`);
+		} else {
+			self.opener = null;
+			self.close();
 		}
 	};
 	hasCheckedCardInGroups = () => {};
@@ -139,7 +139,7 @@ class MyFooter extends Component {
 		const { groups } = this.props;
 		const isDisabled = utilService.hasCheckedCardInGroups(groups);
 		tmpDom = (
-			<Button className="footer-button" disabled={!isDisabled} onClick={fn}>
+			<Button className='footer-button' disabled={!isDisabled} onClick={fn}>
 				{text}
 			</Button>
 		);
@@ -172,41 +172,41 @@ class MyFooter extends Component {
 		});
 		const saveData = {
 			relateid: this.props.relateidObj.data,
-			isuser: this.props.relateidObj.type === 'userID'?'1':'0', //1用户 0职责，
+			isuser: this.props.relateidObj.type === 'userID' ? '1' : '0', //1用户 0职责，
 			data: tmpData
 		};
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
 			info: {
-				name:'工作桌面配置',
-				action:'保存'
+				name: '工作桌面配置',
+				action: '保存'
 			},
 			data: saveData,
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success) {
 					setTimeout(() => {
-						if(this.props.relateidObj.type === 'userID'){
-							this.props.history.push(`/`)
-						}else{
-							self.opener=null;
+						if (this.props.relateidObj.type === 'userID') {
+							this.props.history.push(`/`);
+						} else {
+							self.opener = null;
 							self.close();
 						}
 					}, 1000);
-					
-					Notice({ status: 'success', msg:data });
-				}else{
+
+					Notice({ status: 'success', msg: data });
+				} else {
 					Notice({ status: 'error', msg: data });
 				}
 			}
 		});
 	};
-	toBeDefault = ()=>{
+	toBeDefault = () => {
 		Ajax({
 			url: `/nccloud/platform/appregister/resetworkbench.do`,
 			info: {
-				name:'工作桌面配置',
-				action:'恢复默认'
+				name: '工作桌面配置',
+				action: '恢复默认'
 			},
 			data: {
 				relateid: this.props.relateidObj.data
@@ -214,20 +214,20 @@ class MyFooter extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success) {
-					Notice({ status: 'success', msg:'恢复默认成功' });
+					Notice({ status: 'success', msg: '恢复默认成功' });
 					setTimeout(() => {
 						location.reload();
 					}, 500);
-				}else{
+				} else {
 					Notice({ status: 'error', msg: data });
 				}
 			}
 		});
-	}
+	};
 	render() {
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
-		const isShowToBeDefault = this.props.relateidObj.type === 'userID'?'block':'none'
+		const isShowToBeDefault = this.props.relateidObj.type === 'userID' ? 'block' : 'none';
 		return (
 			<div className='nc-workbench-home-footer'>
 				<div className='footer-left'>
@@ -239,12 +239,27 @@ class MyFooter extends Component {
 						保存
 					</Button>
 					{/* <Button className='right-button'>预览</Button> */}
-					<Button style={{ display: isShowToBeDefault }} className='right-button footer-button' onClick={this.toBeDefault}>
-					恢复默认
-					</Button>
-					<Button className='right-button footer-button' onClick={this.cancleSave}>
-						取消
-					</Button>
+					<Popconfirm
+						title='确认恢复至出厂设置的桌面吗？'
+						onConfirm={this.toBeDefault}
+						placement='topRight'
+						okText='确定'
+						cancelText='取消'
+					>
+						<Button style={{ display: isShowToBeDefault }} className='right-button footer-button'>
+							恢复默认
+						</Button>
+					</Popconfirm>
+
+					<Popconfirm
+						title='取消编辑工作桌面？'
+						onConfirm={this.cancleSave}
+						placement='topRight'
+						okText='确定'
+						cancelText='取消'
+					>
+						<Button className='right-button footer-button'>取消</Button>
+					</Popconfirm>
 				</div>
 				<Modal
 					title='移动到'

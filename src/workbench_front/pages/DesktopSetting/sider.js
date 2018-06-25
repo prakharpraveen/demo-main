@@ -9,6 +9,7 @@ import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import { GetQuery } from 'Pub/js/utils';
 import MyModal from './modal';
+import NoResultImg from 'Assets/images/no-search-result.jpg';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
 const Search = Input.Search;
@@ -22,7 +23,8 @@ class MySider extends Component {
 			searchValue: '',
 			appGroupArr: [],
 			modalVisible: false,
-			isShowAll: true
+			isShowAll: true,
+			domainModuleSelect: []
 		};
 	}
 	componentDidMount() {
@@ -40,7 +42,9 @@ class MySider extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data && data.length > 0) {
-						this.setState({ domainArr: data });
+						const domainModuleSelect = [ data[0].value, data[0].children[0].value ];
+						this.onCascaderChange(domainModuleSelect);
+						this.setState({ domainArr: data, domainModuleSelect: domainModuleSelect });
 					} else {
 						if (data.length === 0) {
 							Notice({ status: 'error', msg: '领域模块数据为空' });
@@ -98,7 +102,7 @@ class MySider extends Component {
 					this.setState({ appGroupArr: [ data ], isAllShow: true });
 				} else {
 					if (data && data.children && data.children.length === 0) {
-						Notice({ status: 'error', msg: '数据为空' });
+						this.setState({ appGroupArr: [], isAllShow: true });
 					} else {
 						Notice({ status: 'error', msg: data });
 					}
@@ -142,10 +146,10 @@ class MySider extends Component {
 							c.width = Number(c.width);
 						});
 					});
-					this.setState({ appGroupArr: data, isAllShow: true });
+					this.setState({ appGroupArr: data, isAllShow: true, domainModuleSelect: value });
 				} else {
 					if (data && data.length === 0) {
-						Notice({ status: 'error', msg: '数据为空' });
+						this.setState({ appGroupArr: [], isAllShow: true, domainModuleSelect: value });
 					} else {
 						Notice({ status: 'error', msg: data });
 					}
@@ -170,7 +174,7 @@ class MySider extends Component {
 				<div className='sider-search'>
 					<Search
 						ref='searchInput'
-						placeholder='请输入应用名称'
+						placeholder='请输入应用名称，回车搜索'
 						style={{ width: '230px' }}
 						onChange={this.onInputChange}
 						onSearch={this.onInputSearch}
@@ -186,6 +190,9 @@ class MySider extends Component {
 					<Cascader
 						className='search-cascader'
 						style={{ width: '230px' }}
+						allowClear={false}
+						defaultValue={this.state.defaultValue}
+						value={this.state.domainModuleSelect}
 						options={this.state.domainArr}
 						onChange={this.onCascaderChange}
 						placeholder='请选择领域-模块'
@@ -201,55 +208,65 @@ class MySider extends Component {
 	}
 	//搜索结果
 	getResultDom() {
-		return this.state.appGroupArr.map((item, index) => {
-			return (
-				<div className='result-group-list' key={index}>
-					<h4 className='result-header'>
-						<Checkbox
-							checked={item.checkedAll}
-							indeterminate={item.indeterminate}
-							onChange={(e) => {
-								this.onCheckAllChange(e, index);
-							}}
-						/>
-						<strong>
-							<span
-								className='result-header-name'
-								onClick={() => {
-									this.onChangeShowHide(index);
+		if (this.state.appGroupArr.length > 0) {
+			return this.state.appGroupArr.map((item, index) => {
+				return (
+					<div className='result-group-list' key={index}>
+						<h4 className='result-header'>
+							<Checkbox
+								checked={item.checkedAll}
+								indeterminate={item.indeterminate}
+								onChange={(e) => {
+									this.onCheckAllChange(e, index);
 								}}
-							>
-								&nbsp;{item.label}&nbsp;
-								{item.isShow ? <Icon type='down' /> : <Icon type='right' />}
-							</span>
-						</strong>
-					</h4>
-					<div className='result-app-list' style={{ display: item.isShow ? 'flex' : 'none' }}>
-						{item.children.map((child, i) => {
-							return (
-								<div className='app-col' key={i}>
-									<div className='list-item'>
-										<SiderCard
-											id={child.value}
-											key={child.value}
-											width={child.width}
-											height={child.height}
-											index={i}
-											parentIndex={index}
-											name={child.label}
-											appGroupArr={this.state.appGroupArr}
-											checked={child.checked}
-											onChangeChecked={this.onChangeChecked}
-											updateAppGroupArr={this.updateAppGroupArr}
-										/>
+							/>
+							<strong>
+								<span
+									className='result-header-name'
+									onClick={() => {
+										this.onChangeShowHide(index);
+									}}
+								>
+									&nbsp;{item.label}&nbsp;
+									{item.isShow ? <Icon type='down' /> : <Icon type='right' />}
+								</span>
+							</strong>
+						</h4>
+						<div className='result-app-list' style={{ display: item.isShow ? 'flex' : 'none' }}>
+							{item.children.map((child, i) => {
+								return (
+									<div className='app-col' key={i}>
+										<div className='list-item'>
+											<SiderCard
+												id={child.value}
+												key={child.value}
+												width={child.width}
+												height={child.height}
+												index={i}
+												parentIndex={index}
+												name={child.label}
+												appGroupArr={this.state.appGroupArr}
+												checked={child.checked}
+												onChangeChecked={this.onChangeChecked}
+												updateAppGroupArr={this.updateAppGroupArr}
+											/>
+										</div>
 									</div>
-								</div>
-							);
-						})}
+								);
+							})}
+						</div>
+					</div>
+				);
+			});
+		} else {
+			return (
+				<div className='result-group-list'>
+					<div className='no-result'>
+						<img src={NoResultImg} alt='无匹配结果' />
 					</div>
 				</div>
 			);
-		});
+		}
 	}
 
 	//所有结果展开/收缩显示
@@ -344,7 +361,7 @@ class MySider extends Component {
 					{this.getSearchDom()}
 					<div className='add-item'>
 						<span>选择下方应用拖拽至右侧分组</span>
-						<Dropdown trigger={[ 'click' ]} overlay={this.allShowOrHideMenu} placement='bottomCenter'>
+						<Dropdown trigger={[ 'hover' ]} overlay={this.allShowOrHideMenu} placement='bottomCenter'>
 							<Icon type='menu-unfold' />
 						</Dropdown>
 					</div>

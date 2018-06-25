@@ -25,7 +25,7 @@ const noteSource = {
 		let checkedAppList = [];
 		_.forEach(appGroupArr, (a) => {
 			_.forEach(a.children, (c) => {
-				if (c.checked) {
+				if (c.checked && c.value !== cardList[0].pk_appregister) {
 					checkedAppList.push({
 						pk_appregister: c.value,
 						width: c.width,
