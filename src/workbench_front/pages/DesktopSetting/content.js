@@ -233,6 +233,7 @@ class MyContent extends Component {
 		};
 		groups.splice(insertIndex + 1, 0, tmpItem);
 		this.props.updateGroupList(groups);
+		this.props.updateCurrEditID(tmpItem.pk_app_group);
 	};
 	//改变组名
 	changeGroupName = (groupIndex, groupname) => {

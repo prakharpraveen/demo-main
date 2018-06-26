@@ -81,7 +81,6 @@ export default class CustomDragLayer extends Component {
 	}
 	render() {
 		const { item, itemType, isDragging } = this.props;
-		console.log('layer');
 		if (!isDragging || item.type !== 'cardlist') {
 			return null;
 		}

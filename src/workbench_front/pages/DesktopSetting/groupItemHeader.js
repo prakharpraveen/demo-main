@@ -2,15 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
-import { Icon, Input, Checkbox, Popconfirm } from 'antd';
+import { Icon, Input, Checkbox, Popconfirm, Tooltip } from 'antd';
 import { updateCurrEditID } from 'Store/test/action';
+import { findDomNode } from 'react-dom';
+const defaultNormalPopTitle = '请输入分组名称，回车确定';
+const defaultErrorPoptitle = "分组名不能为空"
 
 class GroupItemHeader extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			groupName: props.groupname
+            groupName: props.groupname,
+			popTitle: defaultNormalPopTitle
 		};
+    }
+    componentDidMount() {
+        if(this.props.currEditID === this.props.id){
+            this.editGroupItemName()
+        }
+		
 	}
 	//向上移动组
 	upGroupItem = () => {
@@ -27,49 +37,77 @@ class GroupItemHeader extends Component {
 	//获得组名
 	getGroupName = (e) => {
 		let _groupName = e.target.value;
-		// console.log(_groupName);
-		this.setState({ groupName: _groupName });
+		if (_groupName === '') {
+			this.setState({ popTitle: defaultErrorPoptitle });
+		}else{
+            this.setState({ popTitle: defaultNormalPopTitle });
+        }
+        this.setState({ groupName: _groupName });
 	};
 	//组名进入编辑状态
 	editGroupItemName = () => {
 		this.props.updateCurrEditID(this.props.id);
 		setTimeout(() => {
 			this.refs.editInputDom.focus();
-		}, 0);
+			// dom节点调用
+			if (this.refs.editInputDom && this.refs.editInputDom.input) {
+				this.refs.editInputDom.input.select();
+			}
+        }, 0);
 	};
 	//改变组名
 	changeGroupName = () => {
 		let index = this.props.index;
 		let groupname = this.state.groupName;
-		this.props.changeGroupName(index, groupname);
+		if (groupname === '') {
+            this.setState({ popTitle: defaultErrorPoptitle });
+		} else {
+            this.setState({ popTitle: defaultNormalPopTitle });
+			this.props.changeGroupName(index, groupname);
+		}
 	};
 	//取消编辑组名
 	cancelGroupName = () => {
 		this.props.updateCurrEditID('');
-	};
+    };
+    //
+	shouldComponentUpdate(nextProps, nextState) {
+		const thisProps = this.props || {},
+			thisState = this.state || {};
+		if (this.props.groupname !== nextProps.groupname) {
+			return true;
+		}
+		if (this.props.currEditID !== nextProps.currEditID) {
+			return true;
+		}
+		if (this.props.index !== nextProps.index) {
+			return true;
+		}
+		if (this.state.popTitle !== nextState.popTitle) {
+			return true;
+		}
+		return false;
+	}
 
 	render() {
-		console.log('group')
-		const {
-			groupname,
-			id,
-			index,
-			length,
-			currEditID
-		} = this.props;
+		const { groupname, id, index, length, currEditID } = this.props;
+		// console.log('groupHeader', groupname);
 		let groupItemTitle;
 		if (currEditID === id) {
 			groupItemTitle = (
 				<div className='group-item-title-container-no-edit'>
-					<div className='title-left'>
-						<Input
-							ref='editInputDom'
-							size='small'
-							placeholder='分组名称，回车确定'
-							defaultValue={groupname}
-							onPressEnter={this.changeGroupName}
-							onChange={this.getGroupName}
-						/>
+					<div className='title-left' ref='titleLeft'>
+						<Tooltip trigger={[ 'focus' ]} getPopupContainer={()=>{return this.refs.titleLeft}} title={this.state.popTitle} placement='topLeft'>
+							<Input
+								ref='editInputDom'
+								size='small'
+								placeholder='分组名称，回车确定'
+								defaultValue={groupname}
+								onPressEnter={this.changeGroupName}
+								onChange={this.getGroupName}
+							/>
+						</Tooltip>
+
 						<Icon
 							type='check-square-o'
 							className='group-item-icon'
@@ -90,7 +128,9 @@ class GroupItemHeader extends Component {
 				<div className='group-item-title-container-no-edit'>
 					<div className='title-left'>
 						{/* <Checkbox checked={}></Checkbox> */}
-						<span className="group-item-title" onClick={this.editGroupItemName}>{groupname}</span>
+						<span className='group-item-title' onClick={this.editGroupItemName}>
+							{groupname}
+						</span>
 						<div className='group-item-title-edit'>
 							<Icon
 								type='edit'
@@ -121,15 +161,11 @@ class GroupItemHeader extends Component {
 							<Popconfirm
 								title='确定删除该分组？'
 								onConfirm={this.deleteGroupItem}
-								placement="topRight"
+								placement='topRight'
 								okText='确定'
 								cancelText='取消'
 							>
-								<Icon
-									type='close-square-o'
-									title='分组删除'
-									className='group-item-icon'
-								/>
+								<Icon type='close-square-o' title='分组删除' className='group-item-icon' />
 							</Popconfirm>
 						</div>
 					</div>
@@ -137,9 +173,7 @@ class GroupItemHeader extends Component {
 			);
 		}
 
-		return (
-            groupItemTitle
-        )
+		return groupItemTitle;
 	}
 }
 

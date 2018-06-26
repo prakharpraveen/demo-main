@@ -154,7 +154,6 @@ class GroupItem extends Component {
 	};
 
 	render() {
-		console.log('group');
 		
 		const {
 			isDragging,
@@ -170,6 +169,8 @@ class GroupItem extends Component {
 			layout,
 			cards
 		} = this.props;
+		
+		// console.log('group',groupname);
 		const containerHeight = utilService.getContainerMaxHeight(cards, layout.rowHeight, layout.margin);
 		const opacity = isDragging ? 0 : 1;
 		const groupItemClassName = currEditID===id?"group-item edit-group-item":"group-item"
