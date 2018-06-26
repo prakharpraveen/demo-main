@@ -81,6 +81,8 @@ class MyBtns extends Component {
 				pageid: zoneDatas.pageid || param.pid ,
 				parentid: zoneDatas.parentid || 'root',
 				areaList:list,
+				isdefault: zoneDatas.isdefault,
+				appcode: param.appcode || zoneDatas.appcode,
 				...form,
 			}
 
