@@ -30,6 +30,11 @@ let defaultState = {
 // 首页表单数据
 export const templateDragData = (state = defaultState, action = {}) => {
 	switch (action.type) {
+		case templateStore.CLEARDATA:
+			return {
+				...state,
+				...defaultState
+			};
 		case templateStore.UPDATESHADOWCARD:
 			return { ...state, ...{ shadowCard: action.shadowCard } };
 		case templateStore.UPDATEGROUPLIST:

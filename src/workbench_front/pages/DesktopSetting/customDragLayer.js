@@ -13,6 +13,9 @@ let resizeWaiter = false;
 export default class CustomDragLayer extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			layerStyle: { display: 'none' }
+		};
 	}
 	renderItem(type, item) {
 		switch (type) {
@@ -45,9 +48,7 @@ export default class CustomDragLayer extends Component {
 			};
 		}
 		let { x, y } = clientOffset;
-		// console.log(clientOffset);
 		const transform = `translate(${x}px, ${y}px)`;
-		// this.requestedFrame = null
 		return {
 			transform,
 			WebkitTransform: transform
@@ -57,20 +58,33 @@ export default class CustomDragLayer extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const thisProps = this.props || {},
 			thisState = this.state || {};
-		if (this.props.isDragging !== nextProps.isDragging) {
+		if (this.props.item && this.props.item.type === 'cardlist' && this.props.isDragging !== nextProps.isDragging) {
 			return true;
 		}
-		if (this.props.clientOffset !== nextProps.clientOffset) {
-			return true;
+		if (
+			this.props.item &&
+			this.props.item.type === 'cardlist' &&
+			this.props.currentOffset !== nextProps.currentOffset
+		) {
+			if (
+				nextProps.currentOffset &&
+				Math.pow(
+					Math.pow(this.props.clientOffset.x - nextProps.clientOffset.x, 2) +
+						Math.pow(this.props.clientOffset.y - nextProps.clientOffset.y, 2),
+					0.5
+				) > 1.5
+			) {
+				return true;
+			}
 		}
 		return false;
 	}
 	render() {
 		const { item, itemType, isDragging } = this.props;
+		console.log('layer');
 		if (!isDragging || item.type !== 'cardlist') {
 			return null;
 		}
-		// console.log('render');
 		return (
 			<div className='desk-setting-layer'>
 				<div style={this.getItemStyles()}>{this.renderItem(itemType, item)}</div>

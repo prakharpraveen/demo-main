@@ -1,3 +1,5 @@
+// 清空数据
+export const CLEARDATA = 'CLEARDATA';
 // 更新
 export const UPDATESHADOWCARD = 'UPDATESHADOWCARD';
 //更新GroupList数据

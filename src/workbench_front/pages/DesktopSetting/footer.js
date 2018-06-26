@@ -240,7 +240,7 @@ class MyFooter extends Component {
 					</Button>
 					{/* <Button className='right-button'>预览</Button> */}
 					<Popconfirm
-						title='确认恢复至出厂设置的桌面吗？'
+						title='确认恢复至管理员配置的桌面吗？'
 						onConfirm={this.toBeDefault}
 						placement='topRight'
 						okText='确定'
@@ -252,7 +252,7 @@ class MyFooter extends Component {
 					</Popconfirm>
 
 					<Popconfirm
-						title='取消编辑工作桌面？'
+						title='确认取消编辑工作桌面？'
 						onConfirm={this.cancleSave}
 						placement='topRight'
 						okText='确定'

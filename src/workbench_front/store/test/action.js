@@ -1,5 +1,10 @@
 import * as actionType from './action-type';
-
+// 清空数据
+export const clearData = () => {
+	return {
+		type: actionType.CLEARDATA
+	};
+};
 // 初始化数据
 export const updateShadowCard = (shadowCard) => {
 	return {

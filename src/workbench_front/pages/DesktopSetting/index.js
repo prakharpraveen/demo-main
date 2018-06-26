@@ -13,7 +13,7 @@ import MyContent from './content';
 import {GetQuery} from 'Pub/js/utils';
 import { connect } from 'react-redux';
 import * as utilService from './utilService';
-import { updateGroupList } from 'Store/test/action';
+import { updateGroupList,clearData } from 'Store/test/action';
 import Notice from 'Components/Notice';
 import CustomDragLayer from './customDragLayer';
 
@@ -33,7 +33,7 @@ class Test extends Component {
 	}
 
 	componentDidMount() {
-		
+		this.props.clearData();
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapp.do`,
 			info: {
@@ -93,6 +93,7 @@ export default connect(
 	(state) => ({
 	}),
 	{
-		updateGroupList
+		updateGroupList,
+		clearData
 	}
 )(withDragDropContext(Test));
