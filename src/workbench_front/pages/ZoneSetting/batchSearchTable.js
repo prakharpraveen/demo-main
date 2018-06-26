@@ -110,7 +110,27 @@ class SelectCell extends React.Component {
 					</Select>
 				);
 				break;
-		
+			case 'itemtype':
+				result_div = (
+					<Select
+						value={
+							this.props.value ? this.props.value : utilService['itemtypeObj'][0].value
+						}
+						onChange={(value) => {
+							this.handleSelectChange(value);
+						}}
+
+					>
+						{utilService['itemtypeObj'].map((c, index) => {
+							return (
+								<Option key={index} value={c.value}>
+									{c.name}
+								</Option>
+							);
+						})}
+					</Select>
+				);
+				break;
 			default:
 				break;
 		}
@@ -365,13 +385,28 @@ class BatchSearchTable extends React.Component {
 				dataIndex: 'returntype',
 				width: 150,
 				render: (text, record) => (
-					<EditableCell
+					<SelectCell
 						value={text}
 						type='showtype'
 						onChange={this.onCellChange(record.key, 'returntype')}
 					/>
 				),
 			},
+			{
+				title: '组件类型',
+				dataIndex: 'itemtype',
+				width: 150,
+				render: (text, record) => {
+					return (
+						<SelectCell
+							value={text}
+							type='itemtype'
+							onChange={this.onCellChange(record.key, 'itemtype')}
+						/>
+					)
+
+				},
+			},  
 			{
 				title: '元数据属性',
 				dataIndex: 'metadataproperty',
@@ -466,7 +501,7 @@ class BatchSearchTable extends React.Component {
 		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
 		const columns = this.columns;
 		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3800, y:400 }} />
+				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3950, y:400 }} />
 		);
 	}
 }

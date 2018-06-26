@@ -258,7 +258,7 @@ class MyRightSider extends Component {
 						<li>使用系统函数</li>
 						<li>{this.getMyCheckbox('usefunc')}</li>
 						<li>组件类型</li>
-						<li>{this.getMySelect(utilService.itemtypeObj, 'itemtypeObj')}</li>
+						<li>{this.getMySelect(utilService.itemtypeObj, 'itemtype')}</li>
 						<li>显示类型</li>
 						<li>{this.getMySelect(utilService.showAndReturnType, 'showtype')}</li>
 						<li>返回类型</li>
@@ -437,7 +437,7 @@ class MyRightSider extends Component {
 						<li>必输项</li>
 						<li>{this.getMyCheckbox('required')}</li>
 						<li>组件类型</li>
-						<li>{this.getMySelect(utilService.itemtypeObj, 'itemtypeObj')}</li>
+						<li>{this.getMySelect(utilService.itemtypeObj, 'itemtype')}</li>
 						<li>可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>多行文本显示行数</li>
