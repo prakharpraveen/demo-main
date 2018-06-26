@@ -75,7 +75,7 @@ class MyBtns extends Component {
 		let url, datas;
 		url = '/nccloud/platform/templet/settempletarea.do';
 		let { zoneDatas } = this.props;
-			datas = { 
+			datas = {
 				pk_page_templet: zoneDatas.pk_page_templet,
 				pagecode: zoneDatas.pagecode || param.pcode, 
 				pageid: zoneDatas.pageid || param.pid ,
@@ -83,6 +83,8 @@ class MyBtns extends Component {
 				areaList:list,
 				isdefault: zoneDatas.isdefault,
 				appcode: param.appcode || zoneDatas.appcode,
+				clazz: zoneDatas.clazz,
+				mateid:zoneDatas.mateid,
 				...form,
 			}
 
