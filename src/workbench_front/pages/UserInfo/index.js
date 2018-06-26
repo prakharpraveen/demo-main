@@ -1,13 +1,101 @@
 import React, { Component } from "react";
-import { Form, Input, Select } from "antd";
+import { Form, Modal, Button } from "antd";
 import { PageLayout, PageLayoutHeader } from "Components/PageLayout";
+import InfoForm from "./InfoForm";
+import PasswordEdit from "./PasswordEdit";
+import PhoneEdit from "./PhoneEdit";
+import EmailEdit from "./EmailEdit";
 import "./index.less";
-const FormItem = Form.Item;
-const Option = Select.Option;
-class UserInfo extends Component {
+class SwitchInfo extends Component {
   constructor(props) {
     super(props);
   }
+  render() {
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+      }
+    };
+    switch (this.props.infoType) {
+      // 密码修改
+      case "0":
+        return (
+          <PasswordEdit
+            layout={formItemLayout}
+            fieldDecorator={this.props.fieldDecorator}
+          />
+        );
+      // 手机修改
+      case "1":
+        return (
+          <PhoneEdit
+            layout={formItemLayout}
+            fieldDecorator={this.props.fieldDecorator}
+          />
+        );
+      // 邮箱修改
+      case "2":
+        return (
+          <EmailEdit
+            layout={formItemLayout}
+            fieldDecorator={this.props.fieldDecorator}
+          />
+        );
+      default:
+        return "";
+    }
+  }
+}
+class UserInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editData: {},
+      infoType: "",
+      modalTitle: "",
+      visible: false
+    };
+  }
+  /**
+   * 弹框标题选择
+   */
+  switchTitle = key => {
+    switch (key) {
+      case "0":
+        return "密码修改";
+      case "1":
+        return "手机修改";
+      case "2":
+        return "电子邮箱修改";
+      default:
+        break;
+    }
+  };
+  showModal = infoType => {
+    let modalTitle = this.switchTitle(infoType);
+    this.setState({
+      visible: true,
+      infoType,
+      modalTitle
+    });
+  };
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
   // 表单提交
   handleSubmit = e => {
     e.preventDefault();
@@ -19,81 +107,25 @@ class UserInfo extends Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 }
-      }
-    };
-    const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "86"
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    );
     return (
       <PageLayout header={<PageLayoutHeader>个人信息</PageLayoutHeader>}>
         <div className="workbench-userinfo">
-          <Form className="userinfo-container" onSubmit={this.handleSubmit}>
-            <div className="userinfo-item userinfo-name">
-              <span>用户名</span>
-            </div>
-            <FormItem
-              className="userinfo-item"
-              {...formItemLayout}
-              label="密码"
-            >
-              {getFieldDecorator("email", {
-                rules: [
-                  {
-                    type: "email",
-                    message: "The input is not valid E-mail!"
-                  },
-                  {
-                    required: true,
-                    message: "Please input your E-mail!"
-                  }
-                ]
-              })(<Input />)}
-            </FormItem>
-            <FormItem
-              className="userinfo-item"
-              {...formItemLayout}
-              label="手机号"
-            >
-              {getFieldDecorator("phone", {
-                rules: [
-                  { required: false, message: "Please input your phone number!" }
-                ]
-              })(
-                <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
-              )}
-            </FormItem>
-            <FormItem
-              className="userinfo-item"
-              {...formItemLayout}
-              label="邮箱"
-            >
-              {getFieldDecorator("email", {
-                rules: [
-                  {
-                    type: "email",
-                    message: "The input is not valid E-mail!"
-                  },
-                  {
-                    required: false,
-                    message: "Please input your E-mail!"
-                  }
-                ]
-              })(<Input />)}
-            </FormItem>
-          </Form>
+          <InfoForm infoSetting={this.showModal} />
+          <Modal
+            title={this.state.modalTitle}
+            mask={false}
+            wrapClassName="vertical-center-modal"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            okText={"确认"}
+            cancelText={"取消"}
+          >
+            <SwitchInfo
+              infoType={this.state.infoType}
+              fieldDecorator={getFieldDecorator}
+            />
+          </Modal>
         </div>
       </PageLayout>
     );

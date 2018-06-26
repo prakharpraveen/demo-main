@@ -1,16 +1,29 @@
 .workbench-userinfo {
   height: calc(100vh - 160px);
+  min-height: 500px;
   background: #fff;
   display: flex;
   justify-content: center;
-  align-items: center;
   .userinfo-container {
+    margin-top: 100px;
     min-width: 600px;
-    height: 300px;
+    height: 350;
     .userinfo-item {
       padding: 10px;
       margin-bottom: 20px;
       min-width: 240px;
+      .userinfo-item-label {
+        padding: 10px 5px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .userinfo-item-content {
+        padding: 10px 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
     .userinfo-name {
       display: flex;
