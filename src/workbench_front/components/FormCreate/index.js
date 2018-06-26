@@ -135,6 +135,7 @@ class FormContent extends Component {
             })(isedit ? <Refer {...item.options} /> : <ReferShow />)}
           </FormItem>
         );
+        
       case "select":
         return (
           <FormItem className="form-item margin-bottom-20" label={label}>

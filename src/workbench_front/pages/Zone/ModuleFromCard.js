@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Form } from 'antd';
-import { setZoneData,setZoneDataFun} from 'Store/Zone/action';
+import { Row, Form, Select } from 'antd';
+import { setZoneData, setZoneDataFun } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import { createForm } from './CreatForm';
+const Option = Select.Option;
 
 class ModuleFromCard extends Component {
 	constructor(props, context) {
@@ -34,10 +35,18 @@ class ModuleFromCard extends Component {
 					type: 'input',
 					code: 'templetdesc',
 					required: false
+				},
+				{
+					lable: '设置表头',
+					type: 'select',
+					code: 'headcode',
+					options: [],
+					required: true
 				}
 			]
 		};
 	}
+
 	/**
 	 * 传递 表单的值  
 	 */
@@ -55,10 +64,54 @@ class ModuleFromCard extends Component {
 		this.props.setZoneDataFun(this.getFromData);
 	}
 
+	/**
+	 * @param {*} DOMDATA
+	 * 添加表头
+	*/
+	getFormItem = (DOMDATA) => {
+		let { newListData } = this.props,
+			form = [], table = [];
+		newListData && newListData.map((v, i) => {
+			if (v.areatype === '1') {
+				form.push(v);
+			} else if (v.areatype === '2') {
+				table.push(v)
+			}
+		});
+
+		// 过滤掉表头列
+		if (!form.length || !table.length) {
+			DOMDATA = DOMDATA && DOMDATA.filter((v, i) => v.code !=='headcode');
+
+		}
+
+		else if (form.length && table.length) {
+			let item = DOMDATA.find(item => item.code === 'headcode');
+			if (item) {
+				item.options = creatOption();
+			}
+		}
+		function creatOption() {
+			let newArray = newListData && newListData.filter((v, i) => {
+				return v.areatype === '1'
+			})
+			return (newArray && newArray.map((item, i) => {
+				return (
+					<Option key={item.code} value={item.code}>
+						{item.name}
+					</Option>
+				);
+			}))
+		}
+		return DOMDATA;
+	}
 	render() {
+
+		let { DOMDATA } = this.state;
+		DOMDATA = this.getFormItem(DOMDATA);
 		return (
 			<Form className='from-card'>
-				<Row  gutter={24}>{createForm(this.state.DOMDATA, this.props)}</Row>
+				<Row gutter={24}>{createForm(DOMDATA, this.props)}</Row>
 			</Form>
 		);
 	}
@@ -72,8 +125,8 @@ ModuleFromCard.PropTypes = {
 };
 export default connect(
 	(state) => {
-		let { zoneDatas, zoneFormData } = state.zoneRegisterData;
-		return { zoneDatas, zoneFormData };
+		let { zoneDatas, zoneFormData, newListData } = state.zoneRegisterData;
+		return { zoneDatas, zoneFormData, newListData };
 	},
 	{
 		setZoneDataFun

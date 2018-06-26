@@ -94,3 +94,21 @@ export const defaultvarObj = [
 	{ name: '@SYSUSER', value: '@SYSUSER' },
 	{ name: '@SYSDEPT', value: '@SYSDEPT' }
 ];
+export const itemtypeObj = [ 
+	{ name: '复选', value: 'checkbox' },
+	{ name: '单选日期', value: 'datepicker' },
+	{ name: '文本输入框', value: 'input' },
+	{ name: '静态文本', value: 'label' },
+	{ name: '数值输入框', value: 'number' },
+	{ name: '日期范围', value:'rangepicker'},
+	{ name: '参照', value: 'refer' },
+	{ name: '下拉', value: 'select' },
+	{ name: '开关', value: 'switch' },
+	{ name: '多行文本', value: 'textarea' },
+	{ name: '开始日期时间', value: 'NCTZDatePickerStart' },
+	{ name: '结束日期时间', value: 'NCTZDatePickerEnd' },
+	{ name: '开关型复选框', value: 'checkbox_switch' }, 
+	{ name: '开关(编辑)', value: 'switch_browse' },
+	{ name: '多语文本', value: 'residtxt' },
+	{ name: '密码框', value: 'password' },
+];

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import { setZoneData, setZoneTempletid } from 'Store/Zone/action';
+import { setZoneData, setZoneTempletid, setNewList } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import ModuleFromCard from './ModuleFromCard';
 import { PageLayout } from 'Components/PageLayout';
@@ -45,6 +45,7 @@ class ZoneRegister extends Component {
 				success: ({ data }) => {
 					if (data.success && data.data) {
 						this.props.setZoneData(data.data);
+						this.props.setNewList(data.data.areaList);
 					} else {
 						Notice({ status: 'error', msg: data.data.true });
 					}
@@ -75,5 +76,6 @@ class ZoneRegister extends Component {
 }
 export default connect((state) => ({}), {
 	setZoneData,
-	setZoneTempletid
+	setZoneTempletid,
+	setNewList
 })(ZoneRegister);
