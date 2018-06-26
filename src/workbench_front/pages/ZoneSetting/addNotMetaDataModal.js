@@ -20,6 +20,7 @@ class AddNotMetaDataModal extends Component {
 		let queryPropertyList = areaList[areaIndex].queryPropertyList;
 		let cardObj = {};
 		if(this.props.areatype === '0'){
+			//查询区
 			cardObj = {
 				pk_query_property: 'newNotMetaData' + new Date().getTime(),
 				areaid: areaList[areaIndex].pk_area,
@@ -46,9 +47,10 @@ class AddNotMetaDataModal extends Component {
 				define2: "",
 				define3: "",
 				define4: "",
-				define5: ""
+				define5: "",
+				itemtype:'input'
 			}
-		}else{
+		}else{//非查询区
 			cardObj = {
 				pk_query_property: 'newNotMetaData' + new Date().getTime(),
 				areaid: areaList[areaIndex].pk_area,
@@ -71,7 +73,8 @@ class AddNotMetaDataModal extends Component {
 				defaultvar: '',
 				define1: "",
 				define2: "",
-				define3: ""
+				define3: "",
+				itemtype:'input'
 			}
 		}
 		if(this.props.targetAreaType === '2'){

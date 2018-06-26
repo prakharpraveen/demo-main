@@ -319,6 +319,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('isbeyondorg')}</li>
 						<li>使用系统函数</li>
 						<li>{this.getMyCheckbox('usefunc')}</li>
+						<li>组件类型</li>
+						<li>{this.getMySelect(utilService.itemtypeObj, 'itemtype')}</li>
 						<li>显示类型</li>
 						<li>{this.getMySelect(utilService.showAndReturnType, 'showtype')}</li>
 						<li>返回类型</li>

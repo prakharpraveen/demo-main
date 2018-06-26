@@ -34,6 +34,7 @@ class TreeModal extends Component {
 			const { myUniqID, datatype, refname, refcode, pid,refpk,isLeaf } = s.props.dataRef;
 			let cardObj = {}
 			if(this.props.targetAreaType === '0'){
+				//查询区
 				cardObj = {
 					pk_query_property: `newMetaData_${myUniqID}`,
 					areaid: targetAreaID,
@@ -59,10 +60,11 @@ class TreeModal extends Component {
 					define2:"",
 					define3:"",
 					define4:"",
-					define5:""
+					define5:"",
+					itemtype:'input'
 					
 				}
-			}else{
+			}else{//非查询区
 				cardObj = {
 					pk_query_property: `newMetaData_${myUniqID}`,
 					areaid: targetAreaID,
@@ -84,7 +86,8 @@ class TreeModal extends Component {
 					defaultvar:'',
 					define1:"",
 					define2:"",
-					define3:""
+					define3:"",
+					itemtype:'input'
 				}
 			}
 			if(this.props.targetAreaType === '2'){
