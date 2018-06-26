@@ -121,10 +121,12 @@ class UserInfo extends Component {
             okText={"确认"}
             cancelText={"取消"}
           >
-            <SwitchInfo
-              infoType={this.state.infoType}
-              fieldDecorator={getFieldDecorator}
-            />
+            <div className="userinfo-modal-content">
+              <SwitchInfo
+                infoType={this.state.infoType}
+                fieldDecorator={getFieldDecorator}
+              />
+            </div>
           </Modal>
         </div>
       </PageLayout>

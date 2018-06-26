@@ -67,7 +67,7 @@ class PhoneEdit extends Component {
           {getFieldDecorator("phone", {
             rules: [
               {
-                required: false,
+                required: true,
                 message: "Please input your phone number!"
               }
             ]
