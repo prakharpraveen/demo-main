@@ -964,7 +964,7 @@ class TemplateSetting extends Component {
 			<PageLayout className="nc-workbench-templateSetting"
 				header={
 					<PageLayoutHeader>
-						{treeTemData.length >0 && Btns.map((item, index) => {
+						{(treeTemData.length >0||treeSearchTemData.length >0) && Btns.map((item, index) => {
 							item = this.setBtnsShow(item);
 							return this.creatBtn(item);
 						})}

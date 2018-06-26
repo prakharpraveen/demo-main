@@ -22,6 +22,7 @@ export function generateData(data) {
 		} else {
 			item.text = `${moduleid} ${systypename}`;
 		}
+		item.title = item.text;
 		item.key = systypecode;
 		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
 		if (parentcode) {
@@ -59,25 +60,10 @@ export function generateTemData(data){
 		}
 		item.key = templateId;
 		item.text = code+" "+name;
-		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组为值
+		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
 		if (parentId==='root') {
 			// 根据是否为叶子节点 来添加是否有 children 属性
 			item.children = [];
-			item.children=[
-				{
-					key: 'group1234567',
-					id: 'group1234567',
-					text: '集团',
-					name: '集团',
-					children: []
-				},{
-					key: 'organize1234567',
-					id: 'organize1234567',
-					text: '组织',
-					name: '组织',
-					children: []
-				}
-			];
 			treeArray.push(item);
 		} else {
 			treeObj[templateId] = [];
@@ -100,6 +86,7 @@ export function generateRoData(data){
 		} = item;
 		item.key = id;
 		item.text = name+code;
+		item.title = item.text;
 		treeArray.push(item)
 	});
 	return treeArray;
@@ -118,5 +105,44 @@ export function generateTreeData(data) {
 			item.isLeaf = true;
 		}
 		return item;
+	});
+};
+ // 将平铺树数组转换为树状数组
+export function restoreTreeData() {
+	let {
+		treeData,
+		treeDataArray
+	} = this.state;
+	let treeInfo = generateData(treeDataArray);
+	let {
+		treeArray,
+		treeObj
+	} = treeInfo;
+	for (const key in treeObj) {
+		if (treeObj.hasOwnProperty(key)) {
+			const element = treeObj[key];
+			if (element.length > 0) {
+				treeObj[key] = element.map((item, index) => {
+					if (treeObj[item.moduleid]) {
+						item.children = treeObj[item.moduleid];
+					} else if (treeObj[item.systypecode]) {
+						item.children = treeObj[item.systypecode];
+					}
+					return item;
+				});
+			}
+		}
+	}
+	treeArray = treeArray.map((item, index) => {
+		if (treeObj[item.moduleid]) {
+			item.children = treeObj[item.moduleid];
+		}
+		return item;
+	});
+	// 处理树数据
+	treeData[0].children = treeInfo.treeArray;
+	treeData = generateTreeData(treeData);
+	this.setState({
+		treeData
 	});
 };

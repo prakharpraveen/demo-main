@@ -5,14 +5,11 @@ body {
 	box-sizing:border-box
 }
 .nc-workbench-templateSetting {
-	.ant-layout {
-		background: #ffffff;
-	}
-	& > .ant-layout {
-		border: 1px solid #edecec;
-		border-radius: 4px;
-	}
-	.ant-layout-header {
+	display: flex;
+    justify-content: flex-start;
+    background: #fff;
+	height: calc(100vh - 160px);
+	.nc-workbench-page-header {
 		height: 60px;
 		line-height: 60px;
 		padding: 0 20px;
@@ -22,43 +19,73 @@ body {
 		justify-content: space-between;
 		align-items: center;
 	}
-	.ant-layout-sider {
-		border-right: 1px solid #edecec;
-	}
-	.from-card {
-		padding: 24px;
-		background: #fbfbfb;
-		border-radius: 6px;
-	}
-
-	.from-card .ant-form-item {
-		display: flex;
-	}
-
-	.from-card .ant-form-item-control-wrapper {
-		flex: 1;
-	}
-	.ant-form-item {
-		margin-bottom: 16px;
-	}
-	.ant-form-item-with-help {
-		margin-bottom: 0;
-	}
-	.ant-form-explain {
-		font-size: 12px;
-	}
-	.ant-checkbox-disabled + span {
-		color: rgba(0, 0, 0, .65);
-	}
-	.ant-form-item-label {
-		min-width: 96px;
-	}
-	.ant-checkbox-wrapper {
-		margin-left: 70px;
+  .nc-workbench-ownpage-left {
+    height: 100%;
+    .appRegister-searchTree {
+      padding: 20px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: 100%;
+    }
+  }
+  .nc-workbench-ownpage-right {
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .ant-form {
+      padding: 24px;
+      background: #fbfbfb;
+      border-radius: 6px;
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+    .ant-form-item-with-help {
+      margin-bottom: 0;
+    }
+    .ant-form-explain {
+      font-size: 12px;
+    }
+    .ant-checkbox-disabled + span {
+      color: rgba(0, 0, 0, 0.65);
+    }
+    .ant-form-item-label {
+      min-width: 96px;
+    }
+    .ant-checkbox-wrapper {
+      margin-left: 70px;
+    }
+  }
+	.ant-tree {
+		li{
+			.ant-tree-node-content-wrapper.ant-tree-node-selected{
+				color:#e14c46;
+			}
+		}
 	}
 }
 .ant-modal-mask{
 	background: none;
+}
+//设置默认模板弹框
+.ant-dropdown{
+	ul.ant-dropdown-menu{
+		li.ant-dropdown-menu-item{
+			button{
+				text-align-last: center;
+				font-size: 13px;
+				border: 0;
+				background-color:inherit;
+				width: 100%;
+			}
+			button:disabled{
+				color:#ccc;
+			}
+		}
+	}
 }
 //分配组件的摸态框
 .allocationPage{
@@ -101,4 +128,9 @@ body {
 			}
 		}
 	}
+}
+//复制模板弹框
+.copyTemplate{
+	display:flex;
+	align-items: center
 }
