@@ -108,7 +108,7 @@ class UserInfo extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <PageLayout header={<PageLayoutHeader>个人信息</PageLayoutHeader>}>
+      <PageLayout header={<PageLayoutHeader>账户设置</PageLayoutHeader>}>
         <div className="workbench-userinfo">
           <InfoForm infoSetting={this.showModal} />
           <Modal
