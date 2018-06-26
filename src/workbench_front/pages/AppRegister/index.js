@@ -478,7 +478,7 @@ class AppRegister extends Component {
       id: "",
       code: "",
       name: "",
-      parentId: ""
+      parentId: "",
     };
     if (obj) {
       switch (obj.flag) {

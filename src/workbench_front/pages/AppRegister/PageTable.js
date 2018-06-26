@@ -665,6 +665,7 @@ class PageTable extends Component {
     this.cacheData = _.cloneDeep(newData);
     let activeKey = this.props.pageActiveKey;
     let { parentId, id, code } = this.props.nodeInfo;
+    let parentcode = this.props.nodeData.parentcode.value;
     if (activeKey === "1") {
       newData.push({
         editable: true,
@@ -682,7 +683,9 @@ class PageTable extends Component {
       this.setNewData(newData);
       this.setState({ iserror: false });
     } else if (activeKey === "2") {
-      this.props.history.push(`/Zone?&pid=${id}&pcode=${code}&n=设置页面模板`);
+      this.props.history.push(
+        `/Zone?&pid=${id}&pcode=${code}&appcode=${parentcode}&n=设置页面模板`
+      );
     }
   }
   getNewData() {

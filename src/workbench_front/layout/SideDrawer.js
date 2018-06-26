@@ -64,7 +64,7 @@ class SideDrawer extends Component {
 								<i className="iconfont icon-bianji"></i>
 								<span field="setting" fieldname="个人配置">个人配置</span>
 							</div>
-							<div  className='setting-btn'>
+							<div onClick={()=>{this.handeleSkipPage('/ui?n=账户设置')}} className='setting-btn'>
 								<i className="iconfont icon-shezhi"></i>
 								<span field="account" fieldname="账户设置">账户设置</span>
 							</div>

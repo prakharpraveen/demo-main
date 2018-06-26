@@ -2,9 +2,6 @@ import React from "react";
 import {HashRouter as Router, Route, Link, Switch} from "react-router-dom";
 import Loadable from "react-loadable";
 import Layout from "./layout";
-// import Main from 'Pages/main';
-// import Ifr from 'Pages/ifr';
-
 import Loading from "Components/Loading";
 
 const Home = Loadable({
@@ -71,6 +68,10 @@ const IndividuationRegister = Loadable({
     loader: () => import("Pages/IndividuationRegister"),
     loading: Loading
 });
+const UserInfo = Loadable({
+    loader: () => import("Pages/UserInfo"),
+    loading: Loading
+});
 const routes = [
     {
         path: "/",
@@ -98,6 +99,11 @@ const routes = [
         path: "/am",
         exact: true,
         component: AppManagement
+    },
+    {
+        path: "/ui",
+        exact: true,
+        component: UserInfo
     },
     {
         path: "/Zone",
