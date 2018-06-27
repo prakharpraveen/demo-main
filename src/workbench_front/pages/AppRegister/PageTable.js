@@ -715,6 +715,7 @@ class PageTable extends Component {
       return;
     }
     let { id, code } = this.props.nodeInfo;
+    let parentcode = this.props.nodeData.parentcode.value;
     Ajax({
       url: `/nccloud/platform/templet/addpagetemplate.do`,
       info: {
@@ -722,6 +723,7 @@ class PageTable extends Component {
         action: "导入模板"
       },
       data: {
+        appcode: parentcode,
         pageid: id,
         code: templateCode,
         pagecode: code
