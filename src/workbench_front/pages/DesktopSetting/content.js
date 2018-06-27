@@ -12,6 +12,7 @@ import * as utilService from './utilService';
 import GroupItem from './groupItem';
 import MyContentAnchor from './anchor';
 import MyFooter from './footer';
+import { scroller } from 'react-scroll';
 
 let resizeWaiter = false;
 
@@ -73,7 +74,7 @@ class MyContent extends Component {
 		groups.splice(hoverIndex, 0, dragCard);
 		this.props.updateGroupList(groups);
 	};
-	//拖拽组
+	//释放分组到分组
 	onDrop = (dragItem, dropItem) => {
 		if (dragItem.type === dropItem.type) {
 			return;
@@ -99,6 +100,7 @@ class MyContent extends Component {
 		groups[dropGroupIndex].apps.push(card);
 		this.props.updateGroupList(groups);
 	};
+	//释放卡片到分组
 	onCardDropInGroupItem = (dragItem, dropItem) => {
 		let { groups } = this.props;
 		groups = _.cloneDeep(groups);
@@ -232,9 +234,22 @@ class MyContent extends Component {
 			apps: []
 		};
 		groups.splice(insertIndex + 1, 0, tmpItem);
-		this.props.updateGroupList(groups);
+		//更新数组redux之后，scroll滚动
+		this.asyncUpdateGroupList(groups).then(() => {
+			scroller.scrollTo(`a${tmpItem.pk_app_group}`, {
+				offset: -139,
+				spy: true,
+				smooth: true,
+				duration: 250,
+				containerId: 'nc-workbench-home-container'
+			});
+		});
 		this.props.updateCurrEditID(tmpItem.pk_app_group);
 	};
+	async asyncUpdateGroupList(groups) {
+		let user = await this.props.updateGroupList(groups);
+		return user;
+	}
 	//改变组名
 	changeGroupName = (groupIndex, groupname) => {
 		let { groups } = this.props;

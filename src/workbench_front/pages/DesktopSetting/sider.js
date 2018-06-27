@@ -8,7 +8,7 @@ import { compactLayout } from './compact';
 import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import { GetQuery } from 'Pub/js/utils';
-import MyModal from './modal';
+// import MyModal from './modal';
 import NoResultImg from 'Assets/images/no-search-result.jpg';
 import Ajax from 'Pub/js/ajax';
 const { Sider } = Layout;
@@ -29,15 +29,12 @@ class MySider extends Component {
 	}
 	componentDidMount() {
 		const relateidObj = this.props.relateidObj;
-		const ajaxData =
-			relateidObj.type === 'userID' ? { userid: relateidObj.data } : { pk_responsibility: relateidObj.data };
-		Ajax({
+		let ajaxObj = {
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
 				name: '工作桌面配置',
 				action: '查询一二级领域模块'
 			},
-			data: ajaxData,
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
@@ -47,14 +44,18 @@ class MySider extends Component {
 						this.setState({ domainArr: data, domainModuleSelect: domainModuleSelect });
 					} else {
 						if (data.length === 0) {
-							Notice({ status: 'error', msg: '领域模块数据为空' });
+							Notice({ status: 'warning', msg: '领域模块数据为空' });
 						} else {
 							Notice({ status: 'error', msg: data });
 						}
 					}
 				}
 			}
-		});
+		};
+		if (relateidObj.type !== 'userID') {
+			ajaxObj.data = { pk_responsibility: relateidObj.data };
+		}
+		Ajax(ajaxObj);
 	}
 	updateAppGroupArr = (appGroupArr) => {
 		this.setState({ appGroupArr: appGroupArr });
@@ -68,7 +69,6 @@ class MySider extends Component {
 	//搜索框文本改变
 	onInputChange = (e) => {
 		let _serachText = e.target.value;
-		// console.log(_groupName);
 		this.state.searchValue = _serachText;
 	};
 	//应用名模糊搜索
@@ -79,7 +79,7 @@ class MySider extends Component {
 		const relateidObj = this.props.relateidObj;
 		const ajaxData =
 			relateidObj.type === 'userID'
-				? { search_content: this.state.searchValue, userid: relateidObj.data }
+				? { search_content: this.state.searchValue }
 				: { search_content: this.state.searchValue, pk_responsibility: relateidObj.data };
 		Ajax({
 			url: `/nccloud/platform/appregister/searchapp.do`,
@@ -109,7 +109,6 @@ class MySider extends Component {
 				}
 			}
 		});
-		console.log(this.state.searchValue, '搜索开始');
 	};
 	//领域模块搜索
 	onCascaderChange = (value) => {
@@ -124,7 +123,7 @@ class MySider extends Component {
 		const ownModuleID = cascaderValueArr[1];
 		const ajaxData =
 			relateidObj.type === 'userID'
-				? { own_module: ownModuleID, userid: relateidObj.data }
+				? { own_module: ownModuleID }
 				: { own_module: ownModuleID, pk_responsibility: relateidObj.data };
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
@@ -367,18 +366,17 @@ class MySider extends Component {
 					</div>
 					<div className='sider-result'>{this.getResultDom()}</div>
 				</div>
-				<MyModal
+				{/* <MyModal
 					appGroupArr={this.state.appGroupArr}
 					setModalVisible={this.setModalVisible}
 					modalVisible={this.state.modalVisible}
-				/>
+				/> */}
 			</Sider>
 		);
 	}
 }
 export default connect(
 	(state) => ({
-		userID: state.appData.userID
 	}),
 	{}
 )(MySider);

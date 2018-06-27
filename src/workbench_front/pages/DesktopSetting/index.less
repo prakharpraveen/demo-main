@@ -2,7 +2,8 @@
 	margin-top: 85px;
 	display: flex;
 	flex-flow: row;
-	height: calc(100vh - 85px);
+	height: calc(100vh - 88px);
+	overflow: hidden;
 	.nc-desktop-setting-content {
 		flex: 1;
 		.content-anchor {
@@ -46,7 +47,7 @@
 		.nc-workbench-home-container {
 			padding: 5px 10px 20px;
 			margin-top: 48px;
-			height: calc(100vh - 176px);
+			height: calc(100vh - 175px);
 			overflow-y: auto;
 			.group-item-add {
 				width: 100%;
@@ -74,7 +75,7 @@
 							display: flex;
 							align-items: center;
 							position: relative;
-							.group-item-title{
+							.group-item-title {
 								cursor: pointer;
 								line-height: 22px;
 							}
@@ -129,7 +130,10 @@
 					}
 				}
 			}
-			.edit-group-item{
+			.group-item:last-child{
+				margin-bottom: calc(100vh - 468px);
+			}
+			.edit-group-item {
 				box-shadow: 0px 0px 6px #1890ff;
 			}
 		}
@@ -210,11 +214,11 @@
 			.sider-result {
 				overflow: auto;
 				height: calc(100vh - 85px - 52px - 53px - 15px);
-				.no-result{
+				.no-result {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					img{
+					img {
 						width: 50%;
 					}
 				}
@@ -244,6 +248,20 @@
 									padding: 3px 4px;
 									border: 1px solid rgba(204, 204, 204, 1);
 									border-radius: 4px;
+									position: relative;
+									cursor: pointer;
+									.triangle-bottom-right {
+										width: 0;
+										height: 0;
+										border: 6px solid red;
+										border-top: 4px solid transparent;
+										border-left: 9px solid transparent;
+										border-bottom-right-radius: 3px;
+										position: absolute;
+										right: 0;
+										bottom: 0px;
+									}
+									//IE10
 									.title {
 										display: flex;
 										justify-content: space-between;
@@ -252,11 +270,6 @@
 											max-width: 100%;
 											flex-shrink: 1;
 										}
-									}
-									.img {
-										height: 120px;
-										background-size: contain;
-										border-top: solid 1px #ccc;
 									}
 								}
 							}
@@ -267,7 +280,7 @@
 		}
 	}
 }
-.desk-setting-layer{
+.desk-setting-layer {
 	position: fixed;
 	pointer-events: none;
 	z-index: 100;
@@ -285,7 +298,7 @@
 			justify-content: center;
 			.layer-card-span {
 				background: #fe4343;
-				color:#fff;
+				color: #fff;
 				border-radius: 50%;
 				width: 30px;
 				height: 30px;

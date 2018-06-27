@@ -10,7 +10,7 @@ let defaultState = {
 	currEditID: '',
 	layout: {
 		containerWidth: 1200,
-		containerHeight: 300,
+		containerHeight: 200,
 		calWidth: 175,
 		rowHeight: 175,
 		col: 6,
@@ -19,7 +19,7 @@ let defaultState = {
 	},
 	defaultLayout: {
 		containerWidth: 1200,
-		containerHeight: 300,
+		containerHeight: 200,
 		calWidth: 175,
 		rowHeight: 175,
 		col: 6,

@@ -60,7 +60,7 @@ class AnchorLi extends Component {
 				<Link
 					activeClass='active'
 					to={`a${id}`}
-					offset={-133}
+					offset={-139}
 					spy={true}
 					smooth={true}
 					duration={250}

@@ -297,7 +297,7 @@ export const hasScrolled = (el, direction = 'vertical') => {
 };
 
 /**
- * 判断卡片是否在分组内
+ * 判断分组内是否有选中的卡片
  * @param {Array} groups
  * @returns {Boolean}
  */
@@ -349,4 +349,25 @@ export const getRelateidObj = (pk_responsibility, userID) => {
 		};
 	}
 	return relateidObj;
+};
+/**
+ * 判断所有分组内是否有某卡片
+ * @param {Array} groups
+ * @param {String} cardID
+ * @returns {Boolean}
+ */
+export const hasCardContainInGroups = (groups,cardID) => {
+	let flag = false;
+	_.forEach(groups, (g) => {
+		_.forEach(g.apps, (a) => {
+			if (a.pk_appregister === cardID) {
+				flag = true;
+				return false;
+			}
+		});
+		if (flag) {
+			return false;
+		}
+	});
+	return flag;
 };

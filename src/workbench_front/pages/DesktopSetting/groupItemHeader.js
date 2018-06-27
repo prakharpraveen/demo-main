@@ -46,15 +46,18 @@ class GroupItemHeader extends Component {
 	};
 	//组名进入编辑状态
 	editGroupItemName = () => {
-		this.props.updateCurrEditID(this.props.id);
-		setTimeout(() => {
+		this.asyncUpdateCurrEditID(this.props.id).then(() => {
 			this.refs.editInputDom.focus();
 			// dom节点调用
 			if (this.refs.editInputDom && this.refs.editInputDom.input) {
 				this.refs.editInputDom.input.select();
 			}
-        }, 0);
+		});
 	};
+	async asyncUpdateCurrEditID(id) {
+		let user = await this.props.updateCurrEditID(id);;
+		return user;
+	}
 	//改变组名
 	changeGroupName = () => {
 		let index = this.props.index;
@@ -97,7 +100,7 @@ class GroupItemHeader extends Component {
 			groupItemTitle = (
 				<div className='group-item-title-container-no-edit'>
 					<div className='title-left' ref='titleLeft'>
-						<Tooltip trigger={[ 'focus' ]} getPopupContainer={()=>{return this.refs.titleLeft}} title={this.state.popTitle} placement='topLeft'>
+						<Tooltip trigger={[ 'focus' ]} autoAdjustOverflow={false} getPopupContainer={()=>{return this.refs.titleLeft}} title={this.state.popTitle} placement='bottomLeft'>
 							<Input
 								ref='editInputDom'
 								size='small'

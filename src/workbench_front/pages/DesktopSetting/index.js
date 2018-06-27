@@ -63,7 +63,7 @@ class Test extends Component {
 							this.props.updateGroupList(data[0].groups);
 						}else{
 							if(success && data && data.length === 0){
-								Notice({ status: 'error', msg: '工作桌面为空，请配置' });
+								Notice({ status: 'warning', msg: '工作桌面为空，请配置' });
 							}else{
 								Notice({ status: 'error', msg: data });
 							}

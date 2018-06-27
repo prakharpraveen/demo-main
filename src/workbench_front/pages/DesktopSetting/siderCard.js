@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend'
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import { findDOMNode } from 'react-dom';
 import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
 import { updateGroupList } from 'Store/test/action';
-import * as utilService from './utilService';
+import { hasCardContainInGroups } from './utilService';
 const noteSource = {
 	beginDrag(props, monitor, component) {
 		let cardList = [
@@ -80,14 +80,17 @@ class Item extends Component {
 		this.props.connectDragPreview(getEmptyImage(), {
 			// IE fallback: specify that we'd rather screenshot the node
 			// when it already knows it's being dragged so we can hide it with CSS.
-			captureDraggingState: true,
-		})
+			captureDraggingState: true
+		});
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const thisProps = this.props || {},
 			thisState = this.state || {};
 		if (this.props.checked !== nextProps.checked) {
+			return true;
+		}
+		if (hasCardContainInGroups(this.props.groups, this.props.id)!==hasCardContainInGroups(nextProps.groups, this.props.id)) {
 			return true;
 		}
 		return false;
@@ -98,16 +101,23 @@ class Item extends Component {
 		const { index, parentIndex } = this.props;
 		this.props.onChangeChecked(checked, parentIndex, index);
 	};
-
+	clickSiderCard = () => {
+		const { index, parentIndex, checked } = this.props;
+		this.props.onChangeChecked(!checked, parentIndex, index);
+	};
+	checkContainInGroups = () => {
+		const { index, parentIndex } = this.props;
+	};
 	render() {
-		const { connectDragSource } = this.props;
-		const { id, index, name, checked, parentIndex } = this.props;
+		const { connectDragSource, groups, id, index, name, checked, parentIndex } = this.props;
+		const isContainInGroups = hasCardContainInGroups(groups, id) ? <div className='triangle-bottom-right' /> : <div></div>;
 		return connectDragSource(
-			<div className='list-item-content'>
+			<div className='list-item-content' onClick={this.clickSiderCard}>
 				<div className='title'>
 					<span className='title-name'>{name}</span>
-					<Checkbox checked={checked} onChange={this.onChangeChecked} />
+					<Checkbox checked={checked} />
 				</div>
+				{isContainInGroups}
 			</div>
 		);
 	}
