@@ -163,6 +163,7 @@ class MenuItem extends Component {
             urlData = `/nccloud/platform/appregister/insertappmenuitem.do`;
             if (fields.appcodeRef) {
                 resData.appcode = appcodeRef.refcode;
+                resData.appid = appcodeRef.refpk;
             }
         } else {
             urlData = `/nccloud/platform/appregister/editappmenuitem.do`;
@@ -177,6 +178,7 @@ class MenuItem extends Component {
             };
             if (fields.appcodeRef) {
                 resData.appcode = appcodeRef.refcode;
+                resData.appid = appcodeRef.refpk;
             }
         }
         Ajax({
