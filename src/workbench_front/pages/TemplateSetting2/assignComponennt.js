@@ -44,6 +44,7 @@ class AssignComponennt extends Component {
 			autoExpandParent: true,
 			templatePks: this.props.templatePks,
 			pageCode: this.props.pageCode,
+			appCode:this.props.appCode,
 			treeRoData: [],
 			treeResData: [],
             org_df_biz: {// 默认业务单元
@@ -67,14 +68,16 @@ class AssignComponennt extends Component {
 		this.setState({
 			templatePks: nextProps.templatePks,
 			pageCode: nextProps.pageCode,
-			activeKey: nextProps.activeKey
+			activeKey: nextProps.activeKey,
+			appCode: nextProps.appCode
 		})
 	}
 	//已分配用户和职责的数据请求
 	reqAllowTreeData = ()=>{
-		let { pageCode, templatePks, orgidObj, activeKey }=this.state;
+		let { pageCode, templatePks, orgidObj, activeKey, appCode }=this.state;
 		let infoData={
-			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks
+			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks,
+			"appCode":appCode
 		}
 		if(activeKey==='1'){
 			infoData.templateType = 'bill';
@@ -352,7 +355,7 @@ class AssignComponennt extends Component {
 	}
 	//模态框确定按钮方法
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey } = this.state;
+		let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode } = this.state;
 		if(!treeAllowedData){
 			Notice({ status: 'warning', msg: "请选中信息" });
 			return ;
@@ -367,7 +370,8 @@ class AssignComponennt extends Component {
 			}
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk
+			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk,
+			"appCode": appCode
 		}
 		infoData.targets=targets;
 		if(activeKey==='1'){

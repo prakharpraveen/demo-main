@@ -77,6 +77,7 @@ class TemplateSetting extends Component {
 			visible: false,
 			templateNameVal: '',
 			pageCode: '',
+			appCode: '',
 			alloVisible: false,
             org_df_biz: {// 默认业务单元
                 refcode: "",
@@ -159,13 +160,13 @@ class TemplateSetting extends Component {
 	};
 	//保存
 	handleOk = (e) => {
-		let { templateNameVal, templateTitleVal, templatePks, pageCode, activeKey } = this.state;
+		let { templateNameVal, templateTitleVal, templatePks, pageCode, activeKey, appCode } = this.state;
 		if(!templateNameVal){
 			Notice({ status: 'warning', msg: "请输入模板标题" });
 			return ;
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal
+			"pageCode": pageCode,"templateId": templatePks ,"name":templateNameVal, "appCode":appCode
 		}
 		if(activeKey==='1'){
 			infoData.templateType = 'bill';
@@ -221,9 +222,9 @@ class TemplateSetting extends Component {
 	};
 	//设置默认模板方法
 	settingClick = (key)=>{
-		let { templateNameVal, templatePks, pageCode } = this.state;
+		let { templateNameVal, templatePks, pageCode, appCode } = this.state;
 		let infoDataSet={
-			"templateId": templatePks ,"pageCode":pageCode
+			"templateId": templatePks ,"pageCode":pageCode, "appCode":appCode
 		}
 		const btnName=key.key;
 		if(!templatePks){
@@ -430,10 +431,8 @@ class TemplateSetting extends Component {
 				const element = treeObj[key];
 				if (element.length > 0) {
 					treeObj[key] = element.map((item, index) => {
-						if (treeObj[item.moduleid]) {
-							item.children = treeObj[item.moduleid];
-						} else if (treeObj[item.systypecode]) {
-							item.children = treeObj[item.systypecode];
+						if (treeObj[item.code]) {
+							item.children = treeObj[item.code];
 						}
 						return item;
 					});
@@ -441,8 +440,8 @@ class TemplateSetting extends Component {
 			}
 		}
 		treeArray = treeArray.map((item, index) => {
-			if (treeObj[item.moduleid]) {
-				item.children = treeObj[item.moduleid];
+			if (treeObj[item.code]) {
+				item.children = treeObj[item.code];
 			}
 			return item;
 		});
@@ -472,14 +471,15 @@ class TemplateSetting extends Component {
 	onSelectQuery = (key, e) => {
 		this.setState({
 			selectedKeys:key,
-			pageCode:key[0]
+			pageCode:key[0].split("+")[0],
+			appCode:key[0].split("+")[1]
 		},this.reqTreeTemData)
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
-		let { pageCode, activeKey } = this.state;
+		let { pageCode, activeKey, appCode } = this.state;
 		let infoData={
-			"pageCode": pageCode
+			"pageCode": pageCode, "appCode":appCode
 		}
 		if(!infoData.pageCode){
 			return;
@@ -547,7 +547,7 @@ class TemplateSetting extends Component {
 	 */
 	reqTreeData = () => {
 		Ajax({
-			url: `/nccloud/platform/appregister/querymodules.do`,
+			url: `/nccloud/platform/appregister/querymenuitemstree.do`,
 			info: {
 				name:'应用注册模块',
 				action:'查询'
@@ -572,11 +572,6 @@ class TemplateSetting extends Component {
 			case 'templateOnselect':
 				this.onTemSelect(key, e);
 				break;
-			case 'resOnselect':
-				this.selectRoFun(key, e);
-				break;
-			case 'allowedOnselect':
-				this.onSelectedAllow(key, e);
 			default:
 			break;
 		}
@@ -657,21 +652,25 @@ class TemplateSetting extends Component {
 			org_df_biz,
 			activeKey,
 			templatePks,
-			batchSettingModalVisibel
+			batchSettingModalVisibel,
+			appCode
 		} = this.state;
 		return (
 			<PageLayout className="nc-workbench-templateSetting"
 				header={
 					<PageLayoutHeader>
-						{(treeTemData.length >0||treeSearchTemData.length >0) && Btns.map((item, index) => {
-							item = this.setBtnsShow(item);
-							return this.creatBtn(item);
-						})}
-						{treeTemData.length >0 &&(<Dropdown overlay={this.menuFun()} trigger={['click']}>
-						<Button key="" className="margin-left-10" type="primary">
-							设置默认模板
-						</Button>
-						</Dropdown>)}
+						<div>模板设置-集团</div>
+						<div className="buttons-component">
+							{(treeTemData.length >0||treeSearchTemData.length >0) && Btns.map((item, index) => {
+								item = this.setBtnsShow(item);
+								return this.creatBtn(item);
+							})}
+							{treeTemData.length >0 &&(<Dropdown overlay={this.menuFun()} trigger={['click']}>
+							<Button key="" className="margin-left-10" type="primary">
+								设置默认模板
+							</Button>
+							</Dropdown>)}
+						</div>
 					</PageLayoutHeader>
 				}
 			>
@@ -743,6 +742,7 @@ class TemplateSetting extends Component {
 							setAssignModalVisible = {this.setAssignModalVisible}
 							pageCode = {pageCode}
 							activeKey = {activeKey}
+							appCode = {appCode}
 							/>
 						)
 						}
