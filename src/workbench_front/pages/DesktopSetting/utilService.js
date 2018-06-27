@@ -52,7 +52,7 @@ export const getCardByGroupIDAndCardID = (groups, groupID, cardID) => {
 		}
 	});
 	_.forEach(tmpGroup.apps, (a) => {
-		if (a.pk_appregister === cardID) {
+		if (a.cardid === cardID) {
 			resultCard = a;
 			return false;
 		}
@@ -69,7 +69,7 @@ export const getCardByGroupIDAndCardID = (groups, groupID, cardID) => {
 export const removeCardInGroupByCardID = (group, cardID) => {
 	let resultCardArr = [];
 	resultCardArr = _.remove(group.apps, (a) => {
-		return a.pk_appregister === cardID;
+		return a.cardid === cardID;
 	});
 	return resultCardArr[0];
 };
@@ -85,7 +85,7 @@ export const removeCardByGroupIndexAndCardID = (groups, groupIndex, cardID) => {
 	let tmpGroupIndex = groupIndex;
 	let resultCardArr = [];
 	resultCardArr = _.remove(groups[tmpGroupIndex].apps, (a) => {
-		return a.pk_appregister === cardID;
+		return a.cardid === cardID;
 	});
 	return resultCardArr[0];
 };
@@ -125,7 +125,7 @@ export const setPropertyValueForCardsInCards = (cards, property, value) => {
 export const checkCardContainInGroup = (groups, cardID) => {
 	let tmpFlag = false;
 	_.forEach(groups.apps, (a) => {
-		if (a.pk_appregister === cardID && a.isShadow === false) {
+		if (a.cardid === cardID && a.isShadow === false) {
 			tmpFlag = true;
 		}
 	});
@@ -360,7 +360,7 @@ export const hasCardContainInGroups = (groups,cardID) => {
 	let flag = false;
 	_.forEach(groups, (g) => {
 		_.forEach(g.apps, (a) => {
-			if (a.pk_appregister === cardID) {
+			if (a.cardid === cardID) {
 				flag = true;
 				return false;
 			}

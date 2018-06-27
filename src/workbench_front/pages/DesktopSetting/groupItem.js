@@ -115,7 +115,7 @@ class GroupItem extends Component {
 					apptype={c.apptype}
 					type={'card'}
 					name={c.name}
-					id={c.pk_appregister}
+					id={c.cardid}
 					groupID={groupID}
 					groupIndex={index}
 					index={i}
@@ -126,7 +126,7 @@ class GroupItem extends Component {
 					haspower={c.haspower}
 					isShadow={c.isShadow}
 					isChecked={c.isChecked}
-					key={`${groupID}_${c.pk_appregister}`}
+					key={`${groupID}_${c.cardid}`}
 				/>
 			);
 		});

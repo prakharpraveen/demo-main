@@ -104,7 +104,7 @@ class MyFooter extends Component {
 		utilService.setGridXGridYMaxInCards(moveCardArr);
 
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, moveCardArr);
-		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'cardid');
 		//循环所有改变的组，进行重新布局
 		_.forEach(groups, (g) => {
 			if (sourceGroupIDArr.indexOf(g.pk_app_group) === -1) {
@@ -158,12 +158,12 @@ class MyFooter extends Component {
 				tmp.pk_app_group = g.pk_app_group;
 			}
 			_.forEach(g.apps, (a) => {
-				if (a.pk_appregister.indexOf('_') !== -1) {
-					const tmpIDArr = a.pk_appregister.split('_');
-					a.pk_appregister = tmpIDArr[0];
+				if (a.cardid.indexOf('_') !== -1) {
+					const tmpIDArr = a.cardid.split('_');
+					a.cardid = tmpIDArr[0];
 				}
 				tmp.apps.push({
-					pk_appregister: a.pk_appregister,
+					cardid: a.cardid,
 					gridx: a.gridx,
 					gridy: a.gridy
 				});

@@ -42,9 +42,9 @@ export const layoutCheck = (function() {
 		let movedItem = [];
 
 		let newlayout = layout.map((item, index) => {
-			if (item.pk_appregister !== cardID) {
+			if (item.cardid !== cardID) {
 				if (collision(item, layoutItem)) {
-					keyArr.push(item.pk_appregister);
+					keyArr.push(item.cardid);
 
 					let offsetY = item.gridy + 1;
 					// 移动模块位于循环检测方块中

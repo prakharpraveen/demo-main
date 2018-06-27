@@ -23,9 +23,6 @@ class AllApps extends Component {
 				name:'所有应用',
 				action:'查询一二级领域模块'
 			},
-			data: {
-				userid: this.props.userID
-			},
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
@@ -50,7 +47,6 @@ class AllApps extends Component {
 			success: (res) => {
 				const { data, success } = res.data;
 				if (success && data && data.length > 0) {
-					console.log(data);
 					this.setState({ contentData: data});
 				}
 			}

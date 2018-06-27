@@ -32,8 +32,8 @@ class MyContent extends Component {
 		}
 		let groupIndex = hoverItem.index;
 		//先判断组内有没有相同的appID
-		const pk_appregister = shadowCard.pk_appregister;
-		const isContain = utilService.checkCardContainInGroup(groups[groupIndex], pk_appregister);
+		const cardid = shadowCard.cardid;
+		const isContain = utilService.checkCardContainInGroup(groups[groupIndex], cardid);
 
 		if (isContain) {
 			return;
@@ -52,8 +52,8 @@ class MyContent extends Component {
 		const newlayout = layoutCheck(
 			groups[groupIndex].apps,
 			shadowCard,
-			shadowCard.pk_appregister,
-			shadowCard.pk_appregister
+			shadowCard.cardid,
+			shadowCard.cardid
 		);
 
 		const compactedLayout = compactLayout(newlayout, shadowCard);
@@ -89,7 +89,7 @@ class MyContent extends Component {
 			}
 			for (let j = 0, len2 = groups[i].apps.length; j < len2; j++) {
 				let apps = groups[i].apps;
-				if (apps[j].pk_appregister === dragItem.id) {
+				if (apps[j].cardid === dragItem.id) {
 					card = apps[j];
 					dragCardIndex = j;
 					dragCardFromGroupIndex = i;
@@ -125,7 +125,7 @@ class MyContent extends Component {
 		const cardList = dragItem.cardList;
 
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, cardList);
-		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'cardid');
 		//目标组内重新布局
 		let compactedLayout = compactLayoutHorizontal(groups[targetGroupIndex].apps, this.props.col);
 

@@ -11,7 +11,7 @@ const noteSource = {
 	beginDrag(props, monitor, component) {
 		let cardList = [
 			{
-				pk_appregister: props.id,
+				cardid: props.id,
 				width: props.width,
 				height: props.height,
 				name: props.name,
@@ -25,9 +25,9 @@ const noteSource = {
 		let checkedAppList = [];
 		_.forEach(appGroupArr, (a) => {
 			_.forEach(a.children, (c) => {
-				if (c.checked && c.value !== cardList[0].pk_appregister) {
+				if (c.checked && c.value !== cardList[0].cardid) {
 					checkedAppList.push({
-						pk_appregister: c.value,
+						cardid: c.value,
 						width: c.width,
 						height: c.height,
 						name: c.label,

@@ -42,7 +42,7 @@ class MyModal extends Component {
 			_.forEach(a.children, (c) => {
 				if (c.checked) {
 					checkedAppList.push({
-						pk_appregister: c.value,
+						cardid: c.value,
 						width: c.width,
 						height: c.height,
 						name: c.label,
@@ -58,7 +58,7 @@ class MyModal extends Component {
 		});
 
 		groups[targetGroupIndex].apps = _.concat(groups[targetGroupIndex].apps, checkedAppList);
-		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'pk_appregister');
+		groups[targetGroupIndex].apps = _.uniqBy(groups[targetGroupIndex].apps, 'cardid');
 		//目标组内重新布局
 		let compactedLayout = compactLayoutHorizontal( groups[targetGroupIndex].apps, this.props.col);
 

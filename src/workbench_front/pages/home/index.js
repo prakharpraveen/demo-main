@@ -135,11 +135,11 @@ class Home extends Component {
       calWidth
     );
     const { wPx, hPx } = calWHtoPx(width, height, margin, rowHeight, calWidth);
-    const { image_src, name, mountid, target_path, pk_appregister } = appOption;
+    const { image_src, name, mountid, target_path, cardid } = appOption;
     return (
       <div
         className="grid-item"
-        key={pk_appregister}
+        key={cardid}
         style={{
           width: wPx,
           height: hPx,
@@ -190,11 +190,11 @@ class Home extends Component {
       calWidth
     );
     const { wPx, hPx } = calWHtoPx(width, height, margin, rowHeight, calWidth);
-    const { name, mountid, target_path, pk_appregister } = appOption;
+    const { name, mountid, target_path, cardid } = appOption;
     return (
       <div
         className="grid-item"
-        key={pk_appregister}
+        key={cardid}
         style={{
           width: wPx,
           height: hPx,
