@@ -190,10 +190,17 @@ class AssignComponennt extends Component {
 	}
 	//用户和角色的树点击方法
 	selectRoFun = (key, e)=>{
-		this.setState({
-			selectedKeys:key,
-			dataRoKey: key[0]
-		},this.lookDataFun)
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				dataRoKey: key[0]
+			},this.lookDataFun)
+		}else{
+			this.setState({
+				selectedKeys:key,
+				dataRoKey: ""
+			})
+		}
 	}
 	//在角色和职责树中找到当前选中树数据
 	lookDataFun = ()=>{
@@ -276,19 +283,20 @@ class AssignComponennt extends Component {
 	}
 	//已分配树节点的选中方法
 	onSelectedAllow = (key)=>{
-		this.setState({
-			selectedKeys:key,
-			allowedTreeKey:key[0]
-		})
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				allowedTreeKey:key[0]
+			})
+		}else{
+			this.setState({
+				selectedKeys:key,
+				allowedTreeKey:""
+			})
+		}
 	}
 	onSelect = (typeSelect, key, e)=>{
 		switch(typeSelect){
-			case 'systemOnselect':
-				this.onSelectQuery(key, e)
-				break;
-			case 'templateOnselect':
-				this.onTemSelect(key, e);
-				break;
 			case 'resOnselect':
 				this.selectRoFun(key, e);
 				break;

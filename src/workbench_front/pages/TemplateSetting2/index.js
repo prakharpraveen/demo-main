@@ -69,8 +69,8 @@ class TemplateSetting extends Component {
 			treeData: [],
 			searchValue: '',
 			autoExpandParent: true,
-			treeTemData: [],//单据模板数据
-			treeSearchTemData: [],//查询模板数据
+			treeTemBillData: [],//单据模板数据
+			treeTemQueryData: [],//查询模板数据
 			treePrintTemData: [],
 			treeTemDataArray: [],
 			templatePks: '',
@@ -365,12 +365,12 @@ class TemplateSetting extends Component {
 	//右侧树组装数据
 	restoreTreeTemData = (templateType)=>{
 		let {
-			treeTemData,
+			treeTemBillData,
 			treeTemDataArray,
 			selectedKeys,
 			parentIdcon,
 			activeKey,
-			treeSearchTemData
+			treeTemQueryData
 		} = this.state;
 		treeTemDataArray.map((item)=>{
 			if(item.isDefault==='y'){
@@ -404,14 +404,14 @@ class TemplateSetting extends Component {
 			});
 		}
 		if(templateType==='bill'){
-			treeTemData=treeData;
+			treeTemBillData=treeData;
 			this.setState({
-				treeTemData
+				treeTemBillData
 			});
 		}else if(templateType==='query'){
-			treeSearchTemData=treeData;
+			treeTemQueryData=treeData;
 			this.setState({
-				treeSearchTemData
+				treeTemQueryData
 			});
 		}
 	}
@@ -469,11 +469,20 @@ class TemplateSetting extends Component {
 	};
 	//加载右侧模板数据
 	onSelectQuery = (key, e) => {
-		this.setState({
-			selectedKeys:key,
-			pageCode:key[0].split("+")[0],
-			appCode:key[0].split("+")[1]
-		},this.reqTreeTemData)
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				pageCode:key[0].split("+")[0],
+				appCode:key[0].split("+")[1]
+			},this.reqTreeTemData)
+		}else{
+			this.setState({
+				selectedKeys:key,
+				pageCode:'',
+				appCode:''
+			})
+		}
+		
 	};
 	//请求右侧树数据
 	reqTreeTemData = (key)=>{
@@ -484,9 +493,9 @@ class TemplateSetting extends Component {
 		if(!infoData.pageCode){
 			return;
 		}
-		infoData.templateType = 'bill';
+		infoData.templateType='bill';
 		this.reqTreeTemAjax(infoData, 'bill');
-		infoData.templateType = 'query';
+		infoData.templateType='query';
 		this.reqTreeTemAjax(infoData, 'query');
 		if(activeKey==='3'){
 			infoData.templateType = 'print';
@@ -514,27 +523,25 @@ class TemplateSetting extends Component {
 		});
 	}
 	onTemSelect = (key, e)=>{
-		this.setState({
-			selectedKeys:key,
-			templatePks: key[0]
-		},this.lookTemplateNameVal);
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				templatePks: key[0]
+			},this.lookTemplateNameVal);
+		}else{
+			this.setState({
+				selectedKeys:key,
+				templatePks: ''
+			});
+		}
 	}
 	//在模板数据中查找当前PK值的中文名称
 	lookTemplateNameVal = ()=>{
-		let { templateNameVal, treeTemData, templatePks, parentIdcon }=this.state;
-		for(let i=0;i<treeTemData.length;i++){
-			if(treeTemData[i].templateId===templatePks){
-				parentIdcon=treeTemData[i].parentId;
-				templateNameVal=treeTemData[i].text;
-			}
-			if(treeTemData[i].children&&treeTemData[i].children.length>0){
-				let childrenDatas=treeTemData[i].children;
-				childrenDatas.map((ele)=>{
-					if(ele.templateId===templatePks){
-						templateNameVal=ele.text;
-						parentIdcon=ele.parentId;
-					}
-				})
+		let { templateNameVal, treeTemDataArray, templatePks, parentIdcon }=this.state;
+		for(let i=0;i<treeTemDataArray.length;i++){
+			if(treeTemDataArray[i].templateId===templatePks){
+				parentIdcon=treeTemDataArray[i].parentId;
+				templateNameVal=treeTemDataArray[i].name;
 			}
 		}
 		this.setState({
@@ -624,7 +631,7 @@ class TemplateSetting extends Component {
 		{data.length > 0 && ( 
 			<Tree showLine onExpand = {this.onExpand}
 				expandedKeys = {expandedKeys}
-				onSelect = {this.onSelect.bind(this,typeSelect)}
+				onSelect = {(key,node)=>{this.onSelect(typeSelect,key,node)}}
 				autoExpandParent = {autoExpandParent}
 				selectedKeys = {selectedKeys} >
 				{loop(data)} 
@@ -643,8 +650,8 @@ class TemplateSetting extends Component {
 	render() {
 		const {
 			treeData,
-			treeTemData,
-			treeSearchTemData,
+			treeTemBillData,
+			treeTemQueryData,
 			templateNameVal,
 			visible,
 			alloVisible,
@@ -661,11 +668,11 @@ class TemplateSetting extends Component {
 					<PageLayoutHeader>
 						<div>模板设置-集团</div>
 						<div className="buttons-component">
-							{(treeTemData.length >0||treeSearchTemData.length >0) && Btns.map((item, index) => {
+							{(treeTemBillData.length >0||treeTemQueryData.length >0) && Btns.map((item, index) => {
 								item = this.setBtnsShow(item);
 								return this.creatBtn(item);
 							})}
-							{treeTemData.length >0 &&(<Dropdown overlay={this.menuFun()} trigger={['click']}>
+							{treeTemBillData.length >0 &&(<Dropdown overlay={this.menuFun()} trigger={['click']}>
 							<Button key="" className="margin-left-10" type="primary">
 								设置默认模板
 							</Button>
@@ -698,10 +705,10 @@ class TemplateSetting extends Component {
 						activeKey={activeKey}
 					>
 						<TabPane tab="页面模板" key="1">
-							{treeTemData.length >0 &&this.treeResAndUser(treeTemData,'templateOnselect','hideSearch')}
+							{treeTemBillData.length >0 &&this.treeResAndUser(treeTemBillData,'templateOnselect','hideSearch')}
 						</TabPane>
 						<TabPane tab="查询模板" key="2">
-							{treeSearchTemData.length >0 &&this.treeResAndUser(treeSearchTemData,'templateOnselect','hideSearch')}
+							{treeTemQueryData.length >0 &&this.treeResAndUser(treeTemQueryData,'templateOnselect','hideSearch')}
 						</TabPane>
 						<TabPane tab="打印模板" key="3">
 							<div>
