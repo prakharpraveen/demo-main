@@ -1,136 +1,126 @@
 body {
-	background-color: #f0f2f5;
+    background-color: #f0f2f5;
 }
-*{
-	box-sizing:border-box
+* {
+    box-sizing: border-box;
 }
 .nc-workbench-templateSetting {
-	display: flex;
+    display: flex;
     justify-content: flex-start;
     background: #fff;
-	height: calc(100vh - 160px);
-	.nc-workbench-page-header {
-		height: 60px;
-		line-height: 60px;
-		padding: 0 20px;
-		background: #ffffff;
-		border-bottom: 1px solid #edecec;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-  .nc-workbench-ownpage-left {
-    height: 100%;
-    .appRegister-searchTree {
-      padding: 20px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 100%;
+    height: calc(100vh - 160px);
+    .nc-workbench-ownpage-left {
+        padding: 15px 20px;
+        height: 100%;
+        .appRegister-searchTree {
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 100%;
+        }
     }
-  }
-  .nc-workbench-ownpage-right {
-    padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    .ant-form {
-      padding: 24px;
-      background: #fbfbfb;
-      border-radius: 6px;
+    .nc-workbench-ownpage-right {
+        padding: 20px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        .ant-form {
+            padding: 24px;
+            background: #fbfbfb;
+            border-radius: 6px;
+        }
+        .ant-form-item-control-wrapper {
+            flex: 1;
+        }
+        .ant-form-item {
+            margin-bottom: 16px;
+        }
+        .ant-form-item-with-help {
+            margin-bottom: 0;
+        }
+        .ant-form-explain {
+            font-size: 12px;
+        }
+        .ant-checkbox-disabled + span {
+            color: rgba(0, 0, 0, 0.65);
+        }
+        .ant-form-item-label {
+            min-width: 96px;
+        }
+        .ant-checkbox-wrapper {
+            margin-left: 70px;
+        }
     }
-    .ant-form-item-control-wrapper {
-      flex: 1;
+    .ant-tree {
+        li {
+            .ant-tree-node-content-wrapper.ant-tree-node-selected {
+                color: #e14c46;
+            }
+        }
     }
-    .ant-form-item {
-      margin-bottom: 16px;
-    }
-    .ant-form-item-with-help {
-      margin-bottom: 0;
-    }
-    .ant-form-explain {
-      font-size: 12px;
-    }
-    .ant-checkbox-disabled + span {
-      color: rgba(0, 0, 0, 0.65);
-    }
-    .ant-form-item-label {
-      min-width: 96px;
-    }
-    .ant-checkbox-wrapper {
-      margin-left: 70px;
-    }
-  }
-	.ant-tree {
-		li{
-			.ant-tree-node-content-wrapper.ant-tree-node-selected{
-				color:#e14c46;
-			}
-		}
-	}
 }
-.ant-modal-mask{
-	background: none;
+.ant-modal-mask {
+    background: none;
 }
 //设置默认模板弹框
-.ant-dropdown{
-	ul.ant-dropdown-menu{
-		li.ant-dropdown-menu-item{
-			button{
-				text-align-last: center;
-				font-size: 13px;
-				border: 0;
-				background-color:inherit;
-				width: 100%;
-			}
-			button:disabled{
-				color:#ccc;
-			}
-		}
-	}
+.ant-dropdown {
+    ul.ant-dropdown-menu {
+        li.ant-dropdown-menu-item {
+            button {
+                text-align-last: center;
+                font-size: 13px;
+                border: 0;
+                background-color: inherit;
+                width: 100%;
+            }
+            button:disabled {
+                color: #ccc;
+            }
+        }
+    }
 }
 //分配组件的摸态框
-.allocationPage{
-	.pageCode-show{
-
-	}
-	.allocationPage-content{
-		.allocationPage-content-select{
-			display:flex;
-			justify-content:space-between;
-			padding:10px 20px;
-			border-top:1px solid #ccc
-		}
-		.allocationPage-content-tree{
-			display:flex;
-			justify-content:space-between;
-			.allocation-treeCom{
-				width:42%;
-				border:1px solid #ccc;
-				padding:15px;
-				max-height:370px;
-				min-height: 250px;
-				overflow:auto;
-			};
-			.allocation-button{
-				width:16%;
-				display: flex;
-				flex-direction:column ;
-				justify-content:center;
-				p{
-					text-align: center;
-				}
-			};
-			.allocation-tree{
-				min-height: 250px;
-				width:42%;
-				padding: 20px;
-				max-height: 370px;
-				border:1px solid #ccc
-			}
-		}
-	}
+.allocationPage {
+    .pageCode-show {
+    }
+    .allocationPage-content {
+        .allocationPage-content-select {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-top: 1px solid #ccc;
+        }
+        .allocationPage-content-tree {
+            display: flex;
+            justify-content: space-between;
+            .allocation-treeCom {
+                width: 42%;
+                border: 1px solid #ccc;
+                padding: 15px;
+                max-height: 370px;
+                min-height: 250px;
+                overflow: auto;
+            }
+            .allocation-button {
+                width: 16%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                p {
+                    text-align: center;
+                }
+            }
+            .allocation-tree {
+                min-height: 250px;
+                width: 42%;
+                padding: 20px;
+                max-height: 370px;
+                border: 1px solid #ccc;
+            }
+        }
+    }
 }
 //复制模板弹框
-.copyTemplate{
-	display:flex;
-	align-items: center
+.copyTemplate {
+    display: flex;
+    align-items: center;
 }
