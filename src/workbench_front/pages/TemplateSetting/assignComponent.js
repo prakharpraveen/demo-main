@@ -18,6 +18,7 @@ const initRoTreeData = {
 	id: 'abc1234567',
 	text: '角色',
 	name: '角色',
+	title: "角色",
 	children: []
 };
 const initUserTreeData = {
@@ -25,6 +26,7 @@ const initUserTreeData = {
 	id: 'abc2234567',
 	text: '用户',
 	name: '用户',
+	title: "用户",
 	children: []
 };
 const initAbiTreeData = {
@@ -32,6 +34,7 @@ const initAbiTreeData = {
 	id: 'abc3334567',
 	text: '职责',
 	name: '职责',
+	title: "职责",
 	children: []
 };
 class AssignComponent extends Component {
@@ -295,6 +298,7 @@ class AssignComponent extends Component {
 			})
 		}
 	}
+	//树点击事件的集合
 	onSelect = (typeSelect, key, e)=>{
 		switch(typeSelect){
 			case 'resOnselect':
@@ -307,6 +311,7 @@ class AssignComponent extends Component {
 		}
 	}
 	treeResAndUser = (data, typeSelect, hideSearch)=>{
+		console.log(data);
 		const {
 			expandedKeys,
 			autoExpandParent,

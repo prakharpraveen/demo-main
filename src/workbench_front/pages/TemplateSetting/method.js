@@ -20,11 +20,7 @@ export function generateData(data) {
 		}
 		item.text = `${code} ${name}`;
 		item.title = item.text;
-		if(appCode){
-			item.key = `${code}+${appCode}`;
-		}else{
-			item.key = `${code}+`;
-		}
+		item.key = code;
 		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
 		if (pid) {
 			if (!treeObj[pid]) {
@@ -108,6 +104,28 @@ export function generateTreeData(data) {
 		return item;
 	});
 };
+/**
+ * 生成新的树数据
+ * @param {Array} data 左侧菜单的树数据
+ */
+export function lookAppCodeFunFor (data, pageCode){
+	data.map((item, index)=>{
+		if(item.children){
+			if(item.code===pageCode){
+				if(item.appCode){
+					return item.appCode;
+				}
+			}
+			lookAppCodeFunFor(item.children, pageCode)
+		}else{
+			if(item.code===pageCode){
+				if(item.appCode){
+					return item.appCode;
+				}
+			}
+		}
+	})
+}
  // 将平铺树数组转换为树状数组
 export function restoreTreeData() {
 	let {
