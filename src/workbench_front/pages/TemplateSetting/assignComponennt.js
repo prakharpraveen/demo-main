@@ -8,6 +8,7 @@ import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
 import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -39,27 +40,44 @@ class AssignComponennt extends Component {
 		this.state = {
 			expandedKeys: ['0'],
 			selectedKeys: [],
-			treeDataArray: [],
-			treeData: [],
 			searchValue: '',
-			autoExpandParent: true
+			autoExpandParent: true,
+			templatePks: this.props.templatePks,
+			pageCode: this.props.pageCode,
+			appCode:this.props.appCode,
+			treeRoData: [],
+			treeResData: [],
+            org_df_biz: {// 默认业务单元
+                refcode: "",
+                refname: "",
+                refpk: ""
+			},
+			treeRoVisible: true,
+			dataRoKey: '',
+			dataRoObj: {},
+			roleUserDatas: {},
+			allowDataArray: [],
+			treeAllowedData: [],
+			allowedTreeKey: '',
+			orgidObj: {},
+			treeRoDataObj: {},
+			activeKey: this.props.activeKey
 		};
 	}
-	componentDidMount() {
-		let {
-			treeData
-		} = this.state;
-		treeData = initTreeData;
+	componentWillReceiveProps (nextProps){
 		this.setState({
-			treeData
-		}, this.reqTreeData);
-		this.props.reqTreeData(this.reqTreeData);
+			templatePks: nextProps.templatePks,
+			pageCode: nextProps.pageCode,
+			activeKey: nextProps.activeKey,
+			appCode: nextProps.appCode
+		})
 	}
 	//已分配用户和职责的数据请求
 	reqAllowTreeData = ()=>{
-		let { pageCode, templatePks, orgidObj, activeKey }=this.state;
+		let { pageCode, templatePks, orgidObj, activeKey, appCode }=this.state;
 		let infoData={
-			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks
+			"pageCode":pageCode,"orgId": orgidObj.refpk,"templateId":templatePks,
+			"appCode":appCode
 		}
 		if(activeKey==='1'){
 			infoData.templateType = 'bill';
@@ -172,10 +190,17 @@ class AssignComponennt extends Component {
 	}
 	//用户和角色的树点击方法
 	selectRoFun = (key, e)=>{
-		this.setState({
-			selectedKeys:key,
-			dataRoKey: key[0]
-		},this.lookDataFun)
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				dataRoKey: key[0]
+			},this.lookDataFun)
+		}else{
+			this.setState({
+				selectedKeys:key,
+				dataRoKey: ""
+			})
+		}
 	}
 	//在角色和职责树中找到当前选中树数据
 	lookDataFun = ()=>{
@@ -258,19 +283,20 @@ class AssignComponennt extends Component {
 	}
 	//已分配树节点的选中方法
 	onSelectedAllow = (key)=>{
-		this.setState({
-			selectedKeys:key,
-			allowedTreeKey:key[0]
-		})
+		if(key.length>0){
+			this.setState({
+				selectedKeys:key,
+				allowedTreeKey:key[0]
+			})
+		}else{
+			this.setState({
+				selectedKeys:key,
+				allowedTreeKey:""
+			})
+		}
 	}
 	onSelect = (typeSelect, key, e)=>{
 		switch(typeSelect){
-			case 'systemOnselect':
-				this.onSelectQuery(key, e)
-				break;
-			case 'templateOnselect':
-				this.onTemSelect(key, e);
-				break;
 			case 'resOnselect':
 				this.selectRoFun(key, e);
 				break;
@@ -337,7 +363,7 @@ class AssignComponennt extends Component {
 	}
 	//模态框确定按钮方法
 	handleAlloOk = ()=>{
-		let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey } = this.state;
+		let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode } = this.state;
 		if(!treeAllowedData){
 			Notice({ status: 'warning', msg: "请选中信息" });
 			return ;
@@ -352,7 +378,8 @@ class AssignComponennt extends Component {
 			}
 		}
 		let infoData={
-			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk
+			"pageCode": pageCode,"templateId": templatePks ,"orgId":orgidObj.refpk,
+			"appCode": appCode
 		}
 		infoData.targets=targets;
 		if(activeKey==='1'){
@@ -374,32 +401,43 @@ class AssignComponennt extends Component {
 			}) => {
 				if (data.success) {
 					Notice({ status: 'success', msg: '分配成功' });
-					this.setState({
-						alloVisible:false
-					})
+					this.props.setAssignModalVisible(false);
 				}
 			}
 		});
 	}
 	//摸态框取消按钮方法
 	handleOrlCancel = ()=>{
-		let { treeAllowedData, treeRoData, treeResData } = this.state;
-		this.setState({
-			alloVisible:false
-		})
+		this.props.setAssignModalVisible(false);
 	}
+	//业务单元参照回调方法
+	handdleRefChange = (value, type) => {
+		let {orgidObj}=this.state;
+        let {refname, refcode, refpk} = value;
+		orgidObj = {};
+        orgidObj["refname"] = refname;
+        orgidObj["refcode"] = refcode;
+        orgidObj["refpk"] = refpk;
+        this.setState({
+			orgidObj
+		},this.reqRoTreeData);
+	};
 	render() {
 		const {
-			expandedKeys,
-			searchValue,
-			autoExpandParent,
-			selectedKeys,
-			treeData
+			alloVisible,
+			pageCode,
+			org_df_biz,
+			treeRoData,
+			treeResData,
+			treeRoVisible,
+			allowDataArray,
+			treeAllowedData,
+			templatePks
 		} = this.state;
 		return(
 			<Modal
 				title="多角色和用户模板分配"
-				visible={alloVisible}
+				visible={this.props.alloVisible}
 				onOk={this.handleAlloOk}
 				onCancel={this.handleOrlCancel}
 				width={720}

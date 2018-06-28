@@ -72,7 +72,6 @@ class PreviewModal extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		let { showVisible }=this.state;
 		if (nextProps.previewData){
 			let reviewData = nextProps.previewData;
 			let search = [], form = [], table = [];
