@@ -1,5 +1,11 @@
 import * as mr from './action-type';
 
+(() => {
+	for (let key in mr) {
+		mr[key] = `MenuRegister/${mr[key]}`;
+	}
+})();
+
 let defaultState = {
 	menuItemData: {
 		"pk_menu": "",

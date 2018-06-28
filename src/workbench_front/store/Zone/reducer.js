@@ -1,5 +1,11 @@
 import * as ZoneRegister from './action-type';
 
+(() => {
+	for (let key in ZoneRegister) {
+		ZoneRegister[key] = `Zone/${ZoneRegister[key]}`;
+	}
+})();
+
 let defaultState = {
 	// 初始区域列表 
 	templatid:'',

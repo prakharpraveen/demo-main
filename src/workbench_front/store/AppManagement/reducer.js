@@ -1,5 +1,11 @@
 import * as AppManagement from "./action-type";
 
+(() => {
+	for (let key in AppManagement) {
+		AppManagement[key] = `AppManagement/${AppManagement[key]}`;
+	}
+})();
+
 let defaultState = {
   // 树数据
   treeData: [],

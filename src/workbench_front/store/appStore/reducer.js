@@ -1,5 +1,11 @@
 import * as appStore from './action-type';
 
+(() => {
+	for (let key in appStore) {
+		appStore[key] = `appStore/${appStore[key]}`;
+	}
+})();
+
 let defaultState = {
 	lang: 'zh-CN',
 	userInfo: 'xxx',

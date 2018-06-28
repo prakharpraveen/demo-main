@@ -1,5 +1,11 @@
 import * as home from './action-type';
 
+(() => {
+	for (let key in home) {
+		home[key] = `home/${home[key]}`;
+	}
+})();
+
 let defaultState = {
 	type: '', // 类型
 	path: '', // js 相对路径

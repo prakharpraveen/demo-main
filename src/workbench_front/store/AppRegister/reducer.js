@@ -1,5 +1,11 @@
 import * as AppRegister from "./action-type";
 
+(() => {
+	for (let key in AppRegister) {
+		AppRegister[key] = `AppRegister/${AppRegister[key]}`;
+	}
+})();
+
 let defaultState = {
   // 树数据
   treeData: [],

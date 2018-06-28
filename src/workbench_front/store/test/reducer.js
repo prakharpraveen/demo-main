@@ -1,5 +1,11 @@
 import * as templateStore from './action-type';
 
+(() => {
+	for (let key in templateStore) {
+		templateStore[key] = `test/${templateStore[key]}`;
+	}
+})();
+
 let defaultState = {
 	shadowCard: {},
 	groups: [],
