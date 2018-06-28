@@ -1,10 +1,6 @@
 import * as TemplateSetting from './action-type';
-
-(() => {
-	for (let key in TemplateSetting) {
-		TemplateSetting[key] = `TemplateSetting/${TemplateSetting[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(TemplateSetting,'TemplateSetting');
 
 let defaultState = {
 	// 树节点对象

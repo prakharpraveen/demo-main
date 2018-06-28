@@ -1,10 +1,6 @@
 import * as ifr from './action-type';
-
-(() => {
-	for (let key in ifr) {
-		ifr[key] = `ifr/${ifr[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(ifr,'ifr');
 
 let defaultState = {
 	ifrName: 'xxx', //窗口名称

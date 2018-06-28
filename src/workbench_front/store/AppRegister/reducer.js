@@ -1,10 +1,6 @@
 import * as AppRegister from "./action-type";
-
-(() => {
-	for (let key in AppRegister) {
-		AppRegister[key] = `AppRegister/${AppRegister[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(AppRegister,'AppRegister');
 
 let defaultState = {
   // 树数据

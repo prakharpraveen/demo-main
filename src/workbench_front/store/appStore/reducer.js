@@ -1,10 +1,6 @@
 import * as appStore from './action-type';
-
-(() => {
-	for (let key in appStore) {
-		appStore[key] = `appStore/${appStore[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(appStore,'appStore');
 
 let defaultState = {
 	lang: 'zh-CN',

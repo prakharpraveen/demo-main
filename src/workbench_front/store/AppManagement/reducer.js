@@ -1,11 +1,6 @@
 import * as AppManagement from "./action-type";
-
-(() => {
-	for (let key in AppManagement) {
-		AppManagement[key] = `AppManagement/${AppManagement[key]}`;
-	}
-})();
-
+import renameActionType from 'Store/renameActionType';
+renameActionType(AppManagement,'AppManagement');
 let defaultState = {
   // 树数据
   treeData: [],

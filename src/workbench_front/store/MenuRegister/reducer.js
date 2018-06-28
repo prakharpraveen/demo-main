@@ -1,10 +1,6 @@
 import * as mr from './action-type';
-
-(() => {
-	for (let key in mr) {
-		mr[key] = `MenuRegister/${mr[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(mr,'mr');
 
 let defaultState = {
 	menuItemData: {

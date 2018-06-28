@@ -1,10 +1,6 @@
 import * as home from './action-type';
-
-(() => {
-	for (let key in home) {
-		home[key] = `home/${home[key]}`;
-	}
-})();
+import renameActionType from 'Store/renameActionType';
+renameActionType(home,'home');
 
 let defaultState = {
 	type: '', // 类型
