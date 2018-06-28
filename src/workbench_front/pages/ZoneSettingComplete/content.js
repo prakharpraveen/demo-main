@@ -26,7 +26,7 @@ class MyContent extends Component {
 						}}>继续新增模板</a>
 						<a onClick={()=>{
 							let param = GetQuery(this.props.location.search);
-							this.props.history.push(`/ar?n=应用注册&c=102202APP&pcode=${param.pcode}&pid=${param.pid}`)
+							this.props.history.push(`/ar?n=应用注册&c=102202APP&b1=动态建模平台&b2=开发配置&b3=应用管理`)
 						}}>返回页面配置</a>
 					</div>
 				</div>
