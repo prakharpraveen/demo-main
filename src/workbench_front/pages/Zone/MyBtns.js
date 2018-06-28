@@ -102,7 +102,7 @@ class MyBtns extends Component {
 					if (data.success && data.data) {
 						this.props.setZoneData({});
 						// type =1 代表保存  type =2 表示下一步 
-						type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&b1=动态建模平台&b2=开发配置&b3=应用管理`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}`));
+						type === 1 ? (this.props.history.push(`/ar?n=应用注册&c=102202APP&b1=动态建模平台&b2=开发配置&b3=应用管理`)) : (this.props.history.push(`/ZoneSetting?templetid=${data.data.templetid}&pcode=${datas.pagecode}&pid=${datas.pageid}&appcode=${datas.appcode}`));
 					}
 				}
 			});

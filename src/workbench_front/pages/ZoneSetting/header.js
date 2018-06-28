@@ -62,7 +62,7 @@ class MyHeader extends Component {
 						this.props.history.push(`/templateSetting`);
 						return ;
 					}
-					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}`);
+					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`);
 				}else{
 					Notice({ status: 'error', msg: data });
 				}
@@ -79,7 +79,7 @@ class MyHeader extends Component {
 				<div className='button-list'>
 					<Button onClick={()=>{
 						let param = GetQuery(this.props.location.search);
-						this.props.history.push(`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}`)
+						this.props.history.push(`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`)
 						}}>上一步</Button>
 					<Button onClick={this.saveData}>保存</Button>
 					<Button onClick={this.showModal}>预览</Button>
