@@ -20,19 +20,22 @@ const Search = Input.Search;
 
 
 function Formula({ setName, setExplain, name }) {
-	return <ul className='Formula'>
-		{(()=>{
-			let propertyList = name && name.queryPropertyList; 
-			return propertyList && propertyList.map( (v,i)=>{
-				return <li
-					onDoubleClick={() => { setExplain(`${name.code}.${v.code}`) }}
-					onClick={() => { setName(`${name.code}.${v.code}`) }} 
-					key={i}>
-					{v.label}
-				</li>
-			})
-		})()}
-	</ul>
+	return (<div className='Formula'>
+		<ul>
+			{(() => {
+				let propertyList = name && name.queryPropertyList;
+				return propertyList && propertyList.map((v, i) => {
+					return <li
+						onDoubleClick={() => { setExplain(`${name.code}.${v.code}`) }}
+						onClick={() => { setName(`${name.code}.${v.code}`) }}
+						key={i}>
+						{v.label}
+					</li>
+				})
+			})()}
+		</ul>
+	</div>)
+	
 }
 class MyRightSider extends Component {
 	constructor(props) {

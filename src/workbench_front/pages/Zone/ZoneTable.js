@@ -370,7 +370,10 @@ class ZoneTable extends React.Component {
 					return (
 						this.state.dataSource.length ?
 							(
-								<Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+								<Popconfirm title="确认是否删除?"
+									okText='确定'
+									cancelText='取消'
+									onConfirm={() => this.onDelete(record.key)}>
 									<a href="javascript:;">删除</a>
 								</Popconfirm>
 							) : null
