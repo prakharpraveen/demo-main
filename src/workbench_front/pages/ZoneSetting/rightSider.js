@@ -18,6 +18,22 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer, FormulaEditor } = high;
 const Search = Input.Search;
 
+
+function Formula({ setName, setExplain, name }) {
+	return <ul className='Formula'>
+		{(()=>{
+			let propertyList = name && name.queryPropertyList; 
+			return propertyList && propertyList.map( (v,i)=>{
+				return <li
+					onDoubleClick={() => { setExplain(`${name.code}.${v.code}`) }}
+					onClick={() => { setName(`${name.code}.${v.code}`) }} 
+					key={i}>
+					{v.label}
+				</li>
+			})
+		})()}
+	</ul>
+}
 class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
@@ -203,14 +219,27 @@ class MyRightSider extends Component {
 		if (!!selectCard.metapath) return true; // 是元数据
 		return false; // 不是元数据 默认没选的情况是false
 	};
-	//
+	// 获取当前区域的类型 
 	getAreaType = (areaList, selectCard) => {
 		let result;
 		_.forEach(areaList, (val, index) => {
 			_.forEach(val.queryPropertyList, (v, i) => {
 				if (selectCard.areaid === v.areaid) {
 					result = val.areatype;
-					
+					return;
+				}
+			});
+		});
+		return result;
+	};
+	// 获取当前区域
+	getArea = (areaList, selectCard) => {
+		let result;
+		_.forEach(areaList, (val, index) => {
+			_.forEach(val.queryPropertyList, (v, i) => {
+				if (selectCard.areaid === v.areaid) {
+					result = val;
+					return ;
 				}
 			});
 		});
@@ -389,10 +418,11 @@ class MyRightSider extends Component {
 			<Search
 				size='small'
 				style={{ width: 176 }}
-				value={selectCard[key]}
+				value={selectCard[key]} 
 				onSearch={() => {
-					this.refs[key].setShow(true);
-					this.refs[key].handleTextAreaChange(selectCard[key]);
+					//this.refs[key].setShow(true);
+					this.setState({ [key]: true})	
+				//	this.refs[key].handleTextAreaChange(selectCard[key]);
 				}}
 			/>
 		);
@@ -579,15 +609,24 @@ class MyRightSider extends Component {
 						<li>
 							{this.getMyFormulaSearch('showformula')}
 							<FormulaEditor
-								ref='showformula'
-								treeParam={{
+								value={selectCard['showformula']}
+								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
 									classid: ''
+								}} */
+								noShowAttr={['元数据属性']}
+								show={this.state.showformula}
+								onHide = {()=>{
+									this.setState({ showformula: false })
 								}}
+								attrConfig={this.state.tab}
 								onOk={(val) => {
-									this.handleSelectChange(val, showformula);
-									this.refs.showformula.setShow(false);
+									this.handleSelectChange(val, 'showformula');
+									this.setState({ showformula: false })
+								}}
+								onCancel={()=>{
+									this.setState({ showformula:false})
 								}}
 							/>
 						</li>
@@ -595,15 +634,19 @@ class MyRightSider extends Component {
 						<li>
 							{this.getMyFormulaSearch('editformula')}
 							<FormulaEditor
-								ref='editformula'
-								treeParam={{
-									pk_billtype: 'CM02',
-									bizmodelStyle: 'fip',
-									classid: ''
+								value={selectCard['editformula']}
+								noShowAttr={['元数据属性']}
+								show={this.state.editformula}
+								onHide={() => {
+									this.setState({ editformula: false })
 								}}
+								attrConfig={this.state.tab}
 								onOk={(val) => {
-									this.handleSelectChange(val, editformula);
-									this.refs.editformula.setShow(false);
+									this.handleSelectChange(val, 'editformula');
+									this.setState({ editformula: false })
+								}}
+								onCancel={() => {
+									this.setState({ editformula: false })
 								}}
 							/>
 						</li>
@@ -612,15 +655,25 @@ class MyRightSider extends Component {
 						<li>
 							{this.getMyFormulaSearch('validateformula')}
 							<FormulaEditor
-								ref='validateformula'
-								treeParam={{
+								value={selectCard['validateformula']}
+								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
 									classid: ''
+								}} */
+								noShowAttr={['元数据属性']}
+								show={this.state.validateformula}
+								onHide={() => {
+									this.setState({ validateformula: false })
 								}}
+								attrConfig={this.state.tab}
 								onOk={(val) => {
-									this.handleSelectChange(val, validateformula);
-									this.refs.validateformula.setShow(false);
+									debugger;
+									this.handleSelectChange(val, 'validateformula');
+									this.setState({ validateformula: false })
+								}}
+								onCancel={() => {
+									this.setState({ validateformula: false })
 								}}
 							/>
 						</li>
@@ -634,11 +687,47 @@ class MyRightSider extends Component {
 				</TabPane>
 			</Tabs>
 		);
+	};	
+
+	// 获取主表 
+	getMainArea = (areaList, headcode) => {
+		if (!headcode) return ; 
+		let result;
+		_.forEach(areaList, (val, index) => {
+			if (val.code === headcode) {
+				result = val;
+				return;
+			}
+		});
+		return result;
 	};
+
+	componentWillReceiveProps(nextProps){
+		this.handleFormula(nextProps)
+	}
+	// 公式编辑器 
+	handleFormula = (props) =>{
+		const { selectCard, areaList } = props;
+		if (_.isEmpty(selectCard) || _.isEmpty(areaList)) return ;
+		let headcode = areaList[0] && areaList[0].headcode;
+		let area = this.getArea(areaList, selectCard);
+		let mainArea = this.getMainArea(areaList, headcode);
+		let tab;
+		//  headcode 存在 时候最多有两个 table或者自己主表单时为一个 
+		//  headcode 不存在 只有一个 tab  
+		if (!headcode || (headcode && headcode === area.code) ){
+			tab = [{ tab: area.name, TabPaneContent: Formula, params: { name: area} }]
+		}
+
+		else if (headcode && headcode !== area.code) {
+			tab = [{ tab: area.name, TabPaneContent: Formula, params: { name: area } }, { tab: mainArea.name, TabPaneContent: Formula, params: { name: mainArea } }]
+		}
+		this.setState({tab});
+	}
 	render() {
 		const { selectCard, areaList } = this.props;
 		// 1 判断是否是元数据 2 判断所属的类型是否是查询区  默认是 不是元数据 不是查询区
-
+		// 处理公式编辑器
 		let result_div;
 		if (_.isEmpty(selectCard)) {
 			result_div = <div />;
@@ -660,6 +749,7 @@ class MyRightSider extends Component {
 				result_div = this.getDom3(areaType, isMetaData);
 			}
 		}
+		
 
 		return (
 			<div className='template-setting-right-sider template-setting-sider'>
