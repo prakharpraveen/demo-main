@@ -146,7 +146,7 @@ class App extends Component {
       let code, name;
       if(appOption.appcode){
         appOption.code = appOption.appcode;
-        appOption.pk_appregister = appOption.cardid;
+        appOption.pk_appregister = appOption.appid;
       }
       window.peData.nodeName = appOption.name;
       window.peData.nodeCode = appOption.code;
