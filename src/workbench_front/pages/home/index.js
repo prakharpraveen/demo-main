@@ -105,11 +105,12 @@ class Home extends Component {
    * @param {Object} appOption // 小部件类型
    */
 	createApp = (appOption) => {
-		const { gridx, gridy, width, height } = appOption;
+		const { gridx, gridy, width, height, haspower } = appOption;
 		const { margin, rowHeight, calWidth } = this.state.layout;
 		const { x, y } = calGridItemPosition(gridx, gridy, margin, rowHeight, calWidth);
 		const { wPx, hPx } = calWHtoPx(width, height, margin, rowHeight, calWidth);
 		const { image_src, name, mountid, target_path, cardid } = appOption;
+		const opacity = haspower === false ? 0.6 : 1;
 		return (
 			<div
 				className='grid-item'
@@ -117,6 +118,7 @@ class Home extends Component {
 				style={{
 					width: wPx,
 					height: hPx,
+					opacity: opacity,
 					transform: `translate(${x}px, ${y}px)`
 				}}
 				onClick={() => {
