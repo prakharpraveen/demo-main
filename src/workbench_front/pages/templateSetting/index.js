@@ -12,7 +12,7 @@ import Notice from 'Components/Notice';
 import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from "./showPreview";
-import AssignComponennt from "./assignComponennt";
+import AssignComponent from "./assignComponent";
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -527,23 +527,23 @@ class TemplateSetting extends Component {
 				data
 			}) => {
 				if (data.success) {
-					debugger
 					if(templateType==="bill"){
 						this.setState({
 							treeTemBillDataArray: data.data
-						}, this.restoreTreeTemData(templateType))
+						},() =>{this.restoreTreeTemData(templateType)})
 					}else if(templateType==="query"){
 						this.setState({
 							treeTemQueryDataArray: data.data
-						}, this.restoreTreeTemData(templateType))
+						}, () =>{this.restoreTreeTemData(templateType)})
 					}
 				}
 			}
 		});
 	}
+	//单据模板树的onSelect事件
 	onTemSelect = (key, e)=>{
 		let { activeKey } = this.state;
-		let templateType='';
+		let templateType = '';
 		if(activeKey==='1'){
 			templateType="bill"
 		}else if(activeKey==='2'){
@@ -555,7 +555,7 @@ class TemplateSetting extends Component {
 			this.setState({
 				selectedKeys:key,
 				templatePks: key[0]
-			},this.lookTemplateNameVal(templateType));
+			},()=>{this.lookTemplateNameVal(templateType)});
 		}else{
 			this.setState({
 				selectedKeys:key,
@@ -566,7 +566,7 @@ class TemplateSetting extends Component {
 	//在模板数据中查找当前PK值的中文名称
 	lookTemplateNameVal = (templateType)=>{
 		let { templateNameVal, treeTemBillDataArray, treeTemQueryDataArray, templatePks, parentIdcon }=this.state;
-		let treeTemDataArray;
+		let treeTemDataArray=[];
 		if(templateType==="bill"){
 			treeTemDataArray=treeTemBillDataArray;
 		}else if(templateType==="query"){
@@ -777,7 +777,7 @@ class TemplateSetting extends Component {
 							</div>
         				</Modal>
 						{alloVisible&&(
-							<AssignComponennt
+							<AssignComponent
 							templatePks = {templatePks}
 							alloVisible = {alloVisible}
 							setAssignModalVisible = {this.setAssignModalVisible}

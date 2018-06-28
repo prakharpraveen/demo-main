@@ -34,7 +34,7 @@ const initAbiTreeData = {
 	name: '职责',
 	children: []
 };
-class AssignComponennt extends Component {
+class AssignComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -495,4 +495,4 @@ class AssignComponennt extends Component {
 		);
 	}
 }
-export default AssignComponennt
+export default AssignComponent

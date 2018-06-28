@@ -167,6 +167,7 @@ class Layout extends Component {
 			return (
 				<span field='global-search' fieldname='全局搜索' className='margin-right-10'>
 					<i
+          title='应用搜索'
 						field='search'
 						fieldname='查询'
 						className='iconfont icon-sousuo'
@@ -242,7 +243,7 @@ class Layout extends Component {
 									this.props.history.push(`/all?n=全部应用`);
 								}}
 							>
-								<i field='application' fieldname='全部应用' className='iconfont icon-quanbuyingyong' />
+								<i title='全部应用' field='application' fieldname='全部应用' className='iconfont icon-quanbuyingyong' />
 							</span>
 							<span className='margin-right-10'>
 								<i field='message' fieldname='消息' className='iconfont icon-xiaoxi' />
