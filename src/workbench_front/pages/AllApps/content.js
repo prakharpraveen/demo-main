@@ -24,14 +24,20 @@ class MyContent extends Component {
 								{c.children.map((child, i) => {
 									return (
 										<div className='item-app' key={i}>
-											<a href="javascript:void(0);" onClick={()=>{
-                                                window.openNew({
-                                                    code: child.code,
-                                                    pk_appregister: child.value,
-                                                    name: child.label
-                                                });
-                                            }} > {child.label}
-                                            </a>
+											<a
+												href='javascript:void(0);'
+												onClick={() => {
+													window.openNew({
+														appcode: child.appcode,
+														menuitemcode: child.code,
+														name: child.label,
+														pk_appregister: child.appid
+													});
+												}}
+											>
+												{' '}
+												{child.label}
+											</a>
 										</div>
 									);
 								})}

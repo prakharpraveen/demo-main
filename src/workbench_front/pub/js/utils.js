@@ -29,10 +29,23 @@ export const CreateQuery = object => {
       arg += `&${key}=${element}`;
     }
   }
-  arg = arg.split("");
-  arg.splice(0, 1, "#");
-  arg = arg.join("");
-  return arg;
+  let defParam = arg;
+  let hashParam = arg.split("");
+  hashParam.splice(0, 1, "#");
+  hashParam = hashParam.join("");
+  let searchParam = arg.split("");
+  searchParam.splice(0, 1, "#");
+  searchParam = hashParam.join("");
+  /**
+   * defParam &开头的参数
+   * hashParam #开头的参数
+   * searchParam ？开头的参数
+   */
+  return {
+    defParam,
+    hashParam,
+    searchParam
+  };
 };
 /**
  * 数字补位

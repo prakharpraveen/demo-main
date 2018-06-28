@@ -28,3 +28,5 @@ export const PAGEACTIVEKEY = 'PAGEACTIVEKEY';
 export const MENUTREEDATA = 'MENUTREEDATA';
 // 应用复制表单数据
 export const COPYNODEDATA = 'COPYNODEDATA';
+// 页面复制表单数据
+export const PAGECOPYDATA = 'PAGECOPYDATA';

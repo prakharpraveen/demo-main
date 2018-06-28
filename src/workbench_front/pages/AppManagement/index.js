@@ -15,7 +15,8 @@ import {
   setSelectedKeys,
   setOptype,
   setCopyNodeData,
-  setMenuTreeData
+  setMenuTreeData,
+  setPageCopyData
 } from "Store/AppManagement/action";
 import Ajax from "Pub/js/ajax";
 import SearchTree from "./SearchTree";
@@ -32,6 +33,7 @@ import {
 } from "Components/PageLayout";
 import ButtonCreate from "Components/ButtonCreate";
 import AppCopy from "./AppCopy/index";
+import PageCopy from "./PageCopy/index";
 import Notice from "Components/Notice";
 import "./index.less";
 const confirm = Modal.confirm;
@@ -44,7 +46,9 @@ class AppManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      // '' 为空白 '0' 应用复制 '1' 页面复制
+      modalType: "0"
     };
     this.historyOptype;
     this.historyNodeData;
@@ -58,10 +62,21 @@ class AppManagement extends Component {
       case "copy":
         this.setState(
           {
-            visible: true
+            visible: true,
+            modalType: "0"
           },
           this.reqMenuTreeData
         );
+        break;
+      case "pageCopy":
+        this.setState(
+          {
+            visible: true,
+            modalType: "1"
+          },
+          this.pageCopy
+        );
+        this.pageCopy();
         break;
       case "active":
         this.appActive();
@@ -89,6 +104,19 @@ class AppManagement extends Component {
         }
       }
     });
+  };
+  // 页面复制
+  pageCopy = () => {
+    let { code, name } = this.props.nodeInfo;
+    let { parent_id, parentcode } = dataRestore(this.props.nodeData);
+    let pageCopyData = {
+      appId: parent_id,
+      appCode: parentcode,
+      oldPageCode: code,
+      newPageCode: "",
+      newPageName: ""
+    };
+    this.props.setPageCopyData(dataTransfer(pageCopyData));
   };
   // 应用复制
   appCopy = () => {
@@ -268,35 +296,37 @@ class AppManagement extends Component {
   /**
    * 应用复制确认事件
    */
-  handleOk = e => {
-    let copyNodeData = this.props.copyNodeData;
-    if (dataCheck(copyNodeData)) {
-      return;
-    }
-    copyNodeData = dataRestore(copyNodeData);
-    for (const key in copyNodeData) {
-      if (copyNodeData.hasOwnProperty(key)) {
-        if(copyNodeData[key].length === 0){
-          return;
+  handleOk = modalType => {
+    if (modalType === "0") {
+      let copyNodeData = this.props.copyNodeData;
+      if (dataCheck(copyNodeData)) {
+        return;
+      }
+      copyNodeData = dataRestore(copyNodeData);
+      for (const key in copyNodeData) {
+        if (copyNodeData.hasOwnProperty(key)) {
+          if (copyNodeData[key].length === 0) {
+            return;
+          }
         }
       }
+      Ajax({
+        url: `/nccloud/platform/appregister/copyapp.do`,
+        data: copyNodeData,
+        info: {
+          name: "应用管理",
+          action: "应用复制"
+        },
+        success: ({ data: { data } }) => {
+          this.setState({
+            visible: false
+          });
+          Notice({ status: "success" });
+        }
+      });
     }
-    Ajax({
-      url: `/nccloud/platform/appregister/copyapp.do`,
-      data: copyNodeData,
-      info: {
-        name: "应用管理",
-        action: "应用复制"
-      },
-      success: ({ data: { data } }) => {
-        this.setState({
-          visible: false
-        });
-        Notice({ status: "success" });
-      }
-    });
   };
-  handleCancel = e => {
+  handleCancel = modalType => {
     this.setState({
       visible: false
     });
@@ -323,8 +353,12 @@ class AppManagement extends Component {
   }
   render() {
     let optype = this.props.optype;
+    let modalType = this.state.modalType;
     let isenable = this.props.nodeData.isenable
       ? dataRestore(this.props.nodeData).isenable
+      : false;
+    let iscopypage = this.props.nodeData.iscopypage
+      ? dataRestore(this.props.nodeData).iscopypage
       : false;
     let btnList = [
       {
@@ -332,6 +366,12 @@ class AppManagement extends Component {
         name: "应用复制",
         type: "primary",
         isshow: optype === "4"
+      },
+      {
+        code: "pageCopy",
+        name: "页面复制",
+        type: "primary",
+        isshow: optype === "5" && iscopypage
       },
       {
         code: "active",
@@ -360,17 +400,21 @@ class AppManagement extends Component {
         <PageLayoutRight>
           {this.switchFrom()}
           <Modal
-            title="应用复制"
+            title={modalType === "0" ? "应用复制" : "页面复制"}
             mask={false}
             okText={"确认"}
             cancelText={"取消"}
             width={800}
             wrapClassName="vertical-center-modal"
             visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
+            onOk={() => {
+              this.handleOk(modalType);
+            }}
+            onCancel={() => {
+              this.handleCancel(modalType);
+            }}
           >
-            <AppCopy />
+            {modalType === "0" ? <AppCopy /> : <PageCopy />}
           </Modal>
         </PageLayoutRight>
       </PageLayout>
@@ -397,7 +441,8 @@ AppManagement.propTypes = {
   selectedKeys: PropTypes.array.isRequired,
   setCopyNodeData: PropTypes.func.isRequired,
   setMenuTreeData: PropTypes.func.isRequired,
-  copyNodeData: PropTypes.object.isRequired
+  copyNodeData: PropTypes.object.isRequired,
+  setPageCopyData: PropTypes.func.isRequired
 };
 export default connect(
   state => ({
@@ -423,6 +468,7 @@ export default connect(
     setSelectedKeys,
     setOptype,
     setCopyNodeData,
-    setMenuTreeData
+    setMenuTreeData,
+    setPageCopyData
   }
 )(AppManagement);

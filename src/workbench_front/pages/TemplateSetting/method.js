@@ -9,27 +9,28 @@ export function generateData(data) {
 	let treeObj = {};
 	data.map((item, index) => {
 		let {
-			parentcode,
-			moduleid,
-			systypename,
-			systypecode
+			pid,
+			code,
+			name,
+			appCode,
+			pk
 		} = item;
 		if(item.children){
 			delete item.children;
 		}
-		if (moduleid.length > 4) {
-			item.text = `${systypecode} ${systypename}`;
-		} else {
-			item.text = `${moduleid} ${systypename}`;
-		}
+		item.text = `${code} ${name}`;
 		item.title = item.text;
-		item.key = systypecode;
+		if(appCode){
+			item.key = `${code}+${appCode}`;
+		}else{
+			item.key = `${code}+`;
+		}
 		// 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
-		if (parentcode) {
-			if (!treeObj[parentcode]) {
-				treeObj[parentcode] = [];
+		if (pid) {
+			if (!treeObj[pid]) {
+				treeObj[pid] = [];
 			}
-			treeObj[parentcode].push(item);
+			treeObj[pid].push(item);
 		} else {
 			// 根据是否为叶子节点 来添加是否有 children 属性
 			item.children = [];

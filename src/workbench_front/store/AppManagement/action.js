@@ -104,3 +104,10 @@ export const setCopyNodeData = (data) => {
 		data
 	};
 };
+// 页面复制表单数据设置
+export const setPageCopyData = (data) => {
+	return {
+		type: AppManagement.PAGECOPYDATA,
+		data
+	};
+};

@@ -82,7 +82,7 @@ class MySider extends Component {
 				? { search_content: this.state.searchValue }
 				: { search_content: this.state.searchValue, pk_responsibility: relateidObj.data };
 		Ajax({
-			url: `/nccloud/platform/appregister/searchapp.do`,
+			url: `/nccloud/platform/appregister/searchmenuitem.do`,
 			info: {
 				name: '工作桌面配置',
 				action: '模糊搜索应用和部件'
