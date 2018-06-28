@@ -133,20 +133,6 @@ class MyContent extends Component {
 
 		this.props.updateGroupList(groups);
 	};
-	//添加第一个组
-	addFirstGroupItem = () => {
-		let { groups } = this.props;
-		groups = _.cloneDeep(groups);
-		let insertIndex;
-		const tmpItem = {
-			pk_app_group: 'newGroupItem' + new Date().getTime(),
-			groupname: `分组`,
-			type: 'group',
-			apps: []
-		};
-		groups.push(tmpItem);
-		this.props.updateGroupList(groups);
-	};
 	//初始化组
 	initGroupItem(groups) {
 		let itemDoms = [];
@@ -221,6 +207,21 @@ class MyContent extends Component {
 			return g.pk_app_group === groupID;
 		});
 		this.props.updateGroupList(groups);
+	};
+	//添加第一个组
+	addFirstGroupItem = () => {
+		let { groups } = this.props;
+		groups = _.cloneDeep(groups);
+		let insertIndex;
+		const tmpItem = {
+			pk_app_group: 'newGroupItem' + new Date().getTime(),
+			groupname: `分组`,
+			type: 'group',
+			apps: []
+		};
+		groups.push(tmpItem);
+		this.props.updateGroupList(groups);
+		this.props.updateCurrEditID(tmpItem.pk_app_group);
 	};
 	//添加组
 	addGroupItem = (groupIndex) => {
