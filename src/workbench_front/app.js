@@ -53,7 +53,7 @@ class App extends Component {
       data: {
         appcode: code
       },
-      success: ({
+      success: ({ 
         data: {
           data: { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 }
         }
@@ -143,9 +143,13 @@ class App extends Component {
      * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2
      */
     window.openNew = (appOption, type, query) => {
-      let { code, name } = appOption;
-      window.peData.nodeName = name;
-      window.peData.nodeCode = code;
+      let code, name;
+      if(appOption.appcode){
+        appOption.code = appOption.appcode;
+        appOption.pk_appregister = appOption.cardid;
+      }
+      window.peData.nodeName = appOption.name;
+      window.peData.nodeCode = appOption.code;
       proxyAction(this.openNewApp, this, "打开应用")(appOption, type, query);
     };
     /**

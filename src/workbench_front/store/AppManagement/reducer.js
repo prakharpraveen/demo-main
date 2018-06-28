@@ -16,6 +16,8 @@ let defaultState = {
   },
   // 应用复制表单数据
   copyNodeData: {},
+  // 页面复制表单数据
+  pageCopyData: {},
   // 应用参数数据
   appParamVOs: [],
   // 页面按钮数据
@@ -139,6 +141,13 @@ export const AppManagementData = (state = defaultState, action = {}) => {
         ...state,
         ...{
           copyNodeData: action.data
+        }
+      };
+    case AppManagement.PAGECOPYDATA:
+      return {
+        ...state,
+        ...{
+          pageCopyData: action.data
         }
       };
     default:
