@@ -22,7 +22,7 @@ class MyContent extends Component {
 						<p className="first-text">应用页面配置完成</p>
 						<a onClick={()=>{
 							let param = GetQuery(this.props.location.search);
-							this.props.history.push(`/Zone?pcode=${param.pcode}&pid=${param.pid}`)
+							this.props.history.push(`/Zone?pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`)
 						}}>继续新增模板</a>
 						<a onClick={()=>{
 							let param = GetQuery(this.props.location.search);
