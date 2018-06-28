@@ -17,29 +17,106 @@ import "Pub/css/public.less";
 import "./theme/theme.less";
 moment.locale("zh-cn");
 window.proxyAction = $NCPE.proxyAction;
-
+/**
+ * 应用打开
+ * @param {String} code - 应用编码
+ * @param {Object} win -  新页面 window
+ * @param {String} query - 需要传递的参数
+ * @param {Object} appInfo - 应用信息
+ */
+const openApp = (win, code, type, query, appInfo) => {
+  /**
+   * 应用信息
+   * pageurl 页面url 地址
+   * field 领域
+   * module 模块
+   * menuclass 菜单分类
+   * menu 菜单
+   */
+  let { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 } = appInfo;
+  if (
+    b4 === "应用注册" ||
+    b4 === "菜单注册" ||
+    b4 === "个性化注册" ||
+    b4 === "模板设置" ||
+    b4 === "应用管理" ||
+    b4 === "页面模板设置-业务单元" ||
+    b4 === "页面模板设置-集团"
+  ) {
+    type = "own";
+  }
+  b4 = encodeURIComponent(encodeURIComponent(b4));
+  b3 = encodeURIComponent(encodeURIComponent(b3));
+  b2 = encodeURIComponent(encodeURIComponent(b2));
+  b1 = encodeURIComponent(encodeURIComponent(b1));
+  code = encodeURIComponent(encodeURIComponent(code));
+  // 面包屑信息及应用编码
+  let breadcrumbInfo = `&c=${code}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
+  // 将参数对象转换成url参数字符串
+  if (query) {
+    /**
+     * defParam 首字符为 &
+     * searchParam 首字符为 ？
+     */
+    let { defParam, searchParam } = CreateQuery(query);
+    if (type !== "own") {
+      // 当前 URI中 包含 ？ 或者 # 和 = 时原始url+默认参数
+      if (
+        pageurl.indexOf("?") != -1 ||
+        (pageurl.indexOf("#") != -1 && pageurl.indexOf("=") != -1)
+      ) {
+        pageurl = pageurl + defParam;
+      }
+      // 当前 URI 中不包含 ？ 或者 包含 # 但不含等号 或者不包含 #
+      if (
+        (pageurl.indexOf("?") === -1 && pageurl.indexOf("=") === -1) ||
+        (pageurl.indexOf("#") !== -1 && pageurl.indexOf("=") === -1) ||
+        (pageurl.indexOf("#") === -1 && pageurl.indexOf("=") === -1)
+      ) {
+        pageurl = pageurl + searchParam;
+      }
+      pageurl = encodeURIComponent(encodeURIComponent(pageurl));
+    } else {
+      // workbench 单页路由传参需要单独处理
+      pageurl = pageurl + searchParam;
+    }
+  } else {
+    if (type !== "own") {
+      pageurl = encodeURIComponent(encodeURIComponent(pageurl + "?"));
+    } else {
+      pageurl = pageurl + "?";
+    }
+  }
+  if (win) {
+    if (type !== "own") {
+      // 浏览器新页签打开业务组应用
+      win.location = `#/ifr?ifr=${pageurl}${breadcrumbInfo}`;
+      win.focus();
+    } else {
+      // 浏览器新页签打开workbench自有应用
+      win.location = `#/${pageurl}${breadcrumbInfo}`;
+      win.focus();
+    }
+  } else {
+    if (type !== "own") {
+      // 浏览器当前页打开
+      window.location.hash = `#/ifr?ifr=${pageurl}${breadcrumbInfo}`;
+    } else {
+      window.location.hash = `#/${pageurl}${breadcrumbInfo}`;
+    }
+  }
+};
 class App extends Component {
   constructor(props) {
     super(props);
   }
   /**
    * 打开应用
-   * @param {Object} appOption - 应用基本描述
+   * @param {String} code - 应用编码
    * @param {String} type - 打开类型 current - 当前页面打开
    * @param {String} query - 需要传递的参数
    */
-  openNewApp = (appOption, type, query) => {
-    // pk_appregister 应该从返回的数据中取 这部分需要删除
-    let { code, name, pk_appregister } = appOption;
-    if (
-      name === "应用注册" ||
-      name === "菜单注册" ||
-      name === "个性化注册" ||
-      name === "模板设置" ||
-      name === "应用管理"
-    ) {
-      type = "own";
-    }
+  openNewApp = (code, type, query) => {
     let win;
     if (type !== "current") {
       win = window.open("", "_blank");
@@ -47,79 +124,20 @@ class App extends Component {
     Ajax({
       url: `/nccloud/platform/appregister/openapp.do`,
       info: {
-        name: name,
-        action: "打开"
+        name: "工作桌面",
+        action: "权限校验"
       },
       data: {
         appcode: code
       },
-      success: ({ 
-        data: {
-          data: { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 }
-        }
-      }) => {
-        if (pageurl) {
-          // 面包屑信息
-          let breadcrumbInfo = `&b1=${encodeURIComponent(
-            b1
-          )}&b2=${encodeURIComponent(b2)}&b3=${encodeURIComponent(b3)}`;
-          if (query) {
-            // 将参数对象转换成url参数字符串
-            query = CreateQuery(query);
-            switch (type) {
-              case "current":
-                // 浏览器当前页打开
-                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                  pageurl
-                )}${query}&ar=${pk_appregister}&n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
-                break;
-              case "own":
-                // 浏览器当前页打开
-                win.location = `#/${pageurl}?n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${query}${breadcrumbInfo}`;
-                win.focus();
-                break;
-              default:
-                // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-                win.location = `#/ifr?ifr=${encodeURIComponent(
-                  pageurl + query
-                )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
-                win.focus();
-                break;
-            }
-          } else {
-            switch (type) {
-              case "current":
-                // 浏览器当前页打开
-                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                  pageurl
-                )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
-                break;
-              case "own":
-                // 浏览器当前页打开
-                win.location = `#/${pageurl}?n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
-                win.focus();
-                break;
-              default:
-                // 浏览器新页签打开  n 为 nodeName c 为 nodeCode
-                win.location = `#/ifr?ifr=${encodeURIComponent(
-                  pageurl
-                )}&ar=${pk_appregister}&n=${encodeURIComponent(
-                  b4
-                )}&c=${encodeURIComponent(code)}${breadcrumbInfo}`;
-                win.focus();
-                break;
-            }
-          }
+      success: ({ data: { data } }) => {
+        if (data && data.pageurl) {
+          // 应用菜单名
+          window.peData.nodeName = data.menu;
+          // 应用编码
+          window.peData.nodeCode = code;
+          // 打开应用
+          proxyAction(openApp, this, "打开应用")(win, code, type, query, data);
         } else {
           win.close();
           Notice({
@@ -132,6 +150,9 @@ class App extends Component {
     });
   };
   componentWillMount() {
+    /**
+     * 为spr统计提供基本信息
+     */
     window.peData = {
       userID: "xxx",
       projectCode: "nccloud"
@@ -142,15 +163,15 @@ class App extends Component {
      * @param　{String} type // current - 浏览器新页签打开 不传参数在当前页打开
      * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2
      */
-    window.openNew = (appOption, type, query) => {
-      let code, name;
-      if(appOption.appcode){
-        appOption.code = appOption.appcode;
-        appOption.pk_appregister = appOption.appid;
+    window.openNew = (code, type, query) => {
+      if (typeof code === "object") {
+        if (code.appcode) {
+          code = code.appcode;
+        } else {
+          code = code.code;
+        }
       }
-      window.peData.nodeName = appOption.name;
-      window.peData.nodeCode = appOption.code;
-      proxyAction(this.openNewApp, this, "打开应用")(appOption, type, query);
+      this.openNewApp(code, type, query);
     };
     /**
      * 当前页打开新页面 不做应用校验
@@ -159,10 +180,18 @@ class App extends Component {
      */
     window.openNewPage = (url, object) => {
       if (object) {
-        let arg = CreateQuery(object);
-        window.location.hash = `#/ifr?ifr=${encodeURIComponent(url + arg)}`;
+        /**
+         * defParam 首字符为 &
+         * searchParam 首字符为 ？
+         */
+        let { defParam, searchParam } = CreateQuery(query);
+        window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+          encodeURIComponent(url + searchParam)
+        )}`;
       } else {
-        window.location.hash = `#/ifr?ifr=${encodeURIComponent(url)}`;
+        window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+          encodeURIComponent(url)
+        )}`;
       }
     };
   }

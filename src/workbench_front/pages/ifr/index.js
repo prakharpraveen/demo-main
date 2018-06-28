@@ -14,32 +14,32 @@ class Ifr extends Component {
   componentWillMount() {
     // 为新页签打开的页面设置全局的peData对象
     //  n 为 nodeName c 为 nodeCode
-    if (this.props.location) {
-      let { n, c } = GetQuery(this.props.location.search);
-      if (n && c) {
-        window.peData.nodeName = decodeURIComponent(n);
-        window.peData.nodeCode = decodeURIComponent(c);
-      }
-    }
+    // if (this.props.location) {
+    //   let { n, c } = GetQuery(this.props.location.search);
+    //   if (n && c) {
+    //     window.peData.nodeName = decodeURIComponent(n);
+    //     window.peData.nodeCode = decodeURIComponent(c);
+    //   }
+    // }
   }
 
   render() {
     // let { ifrID, ifrName } = this.props.ifrData;
-    let { ifr, ar, c } = GetQuery(this.props.location.search);
-    let queryUrl;
-    ifr = decodeURIComponent(ifr);
-    if (ifr.indexOf("#") === -1 || ifr.indexOf("=") === -1) {
-      queryUrl = `${ifr}?ar=${ar}&c=${c}`;
-    } else {
-      queryUrl = `${ifr}&ar=${ar}&c=${c}`;
-    }
+    let { ifr } = GetQuery(this.props.location.search);
+    // let queryUrl;
+    ifr = decodeURIComponent(decodeURIComponent(ifr));
+    // if (ifr.indexOf("#") === -1 || ifr.indexOf("=") === -1) {
+    //   queryUrl = `${ifr}?ar=${ar}&c=${c}`;
+    // } else {
+    //   queryUrl = `${ifr}&ar=${ar}&c=${c}`;
+    // }
     return (
       <div className="nc-workbench-iframe">
         <iframe
           field="main-iframe"
           fieldname="主框架"
           id="mainiframe"
-          src={queryUrl}
+          src={ifr}
           frameBorder="0"
           scrolling="yes"
         />
