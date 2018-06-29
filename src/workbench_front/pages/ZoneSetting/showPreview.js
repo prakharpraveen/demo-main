@@ -65,7 +65,7 @@ class PreviewModal extends Component {
 						<div className='descrip'>
 							<span> ▼ </span>{`表格区${i+1}_${val.name}`}
 						</div>
-						{createEditTable(val.id)}
+						{createEditTable(val.id,{})}
 
 					</div>
 				)

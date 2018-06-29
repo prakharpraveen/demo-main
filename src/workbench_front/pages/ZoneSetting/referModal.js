@@ -33,7 +33,11 @@ class ReferModal extends Component {
 			},
 			success: ({ data }) => {
 				if (data.success && data.data) {
-					this.setState({ option: data.data, optionKey: data.data[0].pk_refinfo })
+					this.setState({ option: data.data},()=>{
+						if(!this.state.optionKey){
+							this.setState({ optionKey: data.data[0].pk_refinfo })
+						}
+					})
 				} else {
 					Notice({ status: 'error', msg: data.data.true });
 				}
@@ -65,7 +69,7 @@ class ReferModal extends Component {
 			initVal = optionKey + `,dp=N`;
 		} 
 		this.setState({ initVal});
-		this.props.handleSelectChange(initVal, 'dataval');
+		
 		
 		// 设置元数据关联属性
 		_.forEach(option,(v,i)=>{
@@ -74,9 +78,6 @@ class ReferModal extends Component {
 				return ;
 			}
 		})
-
-		//设置参照refname 
-		this.props.handleSelectChange(refname, 'refname');
 
 		Ajax({
 			url: `/nccloud/platform/templet/getMetaByRefName.do`,
@@ -92,7 +93,12 @@ class ReferModal extends Component {
 				if (res) {
 					let { data, success } = res.data;
 					if (success && data ) {
+						// 设置元数据属性 
 						this.props.handleSelectChange(data, 'metadataproperty');
+						//设置参照refname 
+						this.props.handleSelectChange(refname, 'refname'); 
+						// 设置参照名称
+						this.props.handleSelectChange(initVal, 'dataval');
 					}
 				}
 			}
