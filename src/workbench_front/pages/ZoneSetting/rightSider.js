@@ -298,9 +298,9 @@ class MyRightSider extends Component {
 						<li>组件类型</li>
 						<li>{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}</li>
 						<li>显示类型</li>
-						<li>{this.getMySelect(utilService.showAndReturnType, 'showtype')}</li>
+						<li>{this.getMySelect(utilService.showType, 'showtype')}</li>
 						<li>返回类型</li>
-						<li>{this.getMySelect(utilService.showAndReturnType, 'returntype')}</li>
+						<li>{this.getMySelect(utilService.returnType, 'returntype')}</li>
 						<li>自定义1</li>
 						<li>{this.getMyInput('自定义1', 'define1')}</li>
 						<li>自定义2</li>
@@ -360,9 +360,9 @@ class MyRightSider extends Component {
 						<li>使用系统函数</li>
 						<li>{this.getMyCheckbox('usefunc')}</li>
 						<li>显示类型</li>
-						<li>{this.getMySelect(utilService.showAndReturnType, 'showtype')}</li>
+						<li>{this.getMySelect(utilService.showType, 'showtype')}</li>
 						<li>返回类型</li>
-						<li>{this.getMySelect(utilService.showAndReturnType, 'returntype')}</li>
+						<li>{this.getMySelect(utilService.returnType, 'returntype')}</li>
 					</ul>
 				</TabPane>
 				<TabPane tab='高级属性' key='2'>

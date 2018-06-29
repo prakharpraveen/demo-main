@@ -58,7 +58,7 @@ class TreeModal extends Component {
 					isbeyondorg: false,
 					usefunc: datatype === '34' ? true : false,
 					showtype: '1',
-					returntype: '1',
+					returntype: 'refpk',
 					define1: '',
 					define2: '',
 					define3: '',

@@ -457,6 +457,7 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
+        debugger
         let { activeKey } = this.state;
         let templateType = '';
         if (activeKey === '1') {
@@ -470,7 +471,7 @@ class TemplateSetting extends Component {
             this.setState(
                 {
                     selectedKeys: key,
-                    templatePks: key[0]
+                    templatePks: e.selectedNodes[0].props.refData.pk
                 },
                 () => {
                     this.lookTemplateNameVal(templateType);
@@ -525,6 +526,7 @@ class TemplateSetting extends Component {
     };
     //树点击事件的汇总
     onSelect = (typeSelect, key, e) => {
+        debugger
         switch (typeSelect) {
             case 'systemOnselect':
                 this.onSelectQuery(key, e);

@@ -541,7 +541,7 @@ class TemplateSetting extends Component {
             this.setState(
                 {
                     selectedKeys: key,
-                    templatePks: key[0]
+                    templatePks: e.selectedNodes[0].props.refData.pk
                 },
                 () => {
                     this.lookTemplateNameVal(templateType);
