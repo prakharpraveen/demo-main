@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button, Layout } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setZoneState } from 'Store/AppRegister/action';
 import Ajax from 'Pub/js/ajax';
 import Notice from 'Components/Notice';
 const { Header } = Layout;
@@ -41,6 +40,5 @@ export default connect(
 		getFromData: state.AppRegisterData.getFromData,
 	}),
 	{
-		setZoneState
 	}
 )(MyHead);
