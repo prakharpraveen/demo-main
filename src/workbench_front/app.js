@@ -39,7 +39,8 @@ const openApp = (win, code, type, query, appInfo) => {
     code === "102202MENU" ||
     code === "1022PREGI" ||
     code === "10180TM" ||
-    code === "10181TM"
+    code === "10181TM" ||
+    code === "101818AM"
   ) {
     type = "own";
   }
