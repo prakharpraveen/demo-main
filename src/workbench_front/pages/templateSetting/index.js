@@ -634,12 +634,12 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={pk} title={title} refData={item}>
+                        <TreeNode key={code} title={title} refData={item}>
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={pk} title={title} refData={item} />;
+                return <TreeNode key={code} title={title} refData={item} />;
             });
         };
         return (
@@ -741,7 +741,7 @@ class TemplateSetting extends Component {
                         activeKey={activeKey}
                     >
                         <TabPane tab='页面模板' key='1'>
-                            {/* {treeTemBillData.length >0 &&this.treeResAndUser(treeTemBillData,'templateOnselect','hideSearch')} */}
+                            {treeTemBillData.length >0 &&this.treeResAndUser(treeTemBillData,'templateOnselect','hideSearch')}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
