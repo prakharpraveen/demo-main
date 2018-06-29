@@ -198,52 +198,6 @@ class TemplateSetting extends Component {
             templateNameVal: ''
         });
     };
-    //设置默认模板 菜单栏
-    menuFun = () => {
-        let { templateNameVal } = this.state;
-        const len = templateNameVal.length;
-        let isButton = false;
-        if (templateNameVal.slice(len - 3, len - 1) === '默认') {
-            isButton = true;
-        }
-        return (
-            <Menu onClick={this.settingClick.bind(this)}>
-                <Menu.Item key='设置默认'>
-                    <button disabled={isButton}>设置默认</button>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item key='取消默认'>
-                    <button disabled={!isButton}>取消默认</button>
-                </Menu.Item>
-            </Menu>
-        );
-    };
-    //设置默认模板方法
-    settingClick = (key) => {
-        let { templateNameVal, templatePks, pageCode, appCode } = this.state;
-        let infoDataSet = {
-            templateId: templatePks,
-            pageCode: pageCode,
-            appCode: appCode
-        };
-        const btnName = key.key;
-        if (!templatePks) {
-            Notice({ status: 'warning', msg: '请选择模板数据' });
-            return;
-        }
-        switch (btnName) {
-            case '设置默认':
-                let urlSetting = '/nccloud/platform/template/setDefaultTemplate.do';
-                this.setDefaultFun(urlSetting, infoDataSet, '设置成功');
-                break;
-            case '取消默认':
-                let urlCancel = '/nccloud/platform/template/cancelDefaultTemplate.do';
-                this.setDefaultFun(urlCancel, infoDataSet, '取消成功');
-                break;
-            default:
-                break;
-        }
-    };
     //按钮事件的触发
     handleClick = (btnName) => {
         let { templateNameVal, templatePks, pageCode } = this.state;
@@ -312,36 +266,6 @@ class TemplateSetting extends Component {
             default:
                 break;
         }
-    };
-    /**
-	 * 设置默认模板的ajax请求
-	 * @param url 请求路径
-	 * @param infoData 请求参数
-	 * @param textInfo 请求成功后的提示信息
-	 */
-    setDefaultFun = (url, infoData, textInfo) => {
-        let { pageCode, activeKey } = this.state;
-        if (activeKey === '1') {
-            infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
-            infoData.templateType = 'query';
-        } else if (activeKey === '3') {
-            infoData.templateType = 'print';
-        }
-        Ajax({
-            url: url,
-            data: infoData,
-            info: {
-                name: '模板设置',
-                action: '参数查询'
-            },
-            success: ({ data }) => {
-                if (data.success) {
-                    Notice({ status: 'success', msg: textInfo });
-                    this.reqTreeTemData();
-                }
-            }
-        });
     };
     componentDidMount = () => {
         this.reqTreeData();
@@ -673,7 +597,7 @@ class TemplateSetting extends Component {
     };
     //分配摸态框显示方法
     setAssignModalVisible = (visibel) => {
-        this.setState({ alloVisible: visibel });
+        this.setState({ alloVisible: visibel });0
     };
     //参照的回调函数
     handdleRefChange = (value, type) => {
@@ -729,13 +653,6 @@ class TemplateSetting extends Component {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
                                 })}
-                            {treeTemBillData.length > 0 && (
-                                <Dropdown overlay={this.menuFun()} trigger={[ 'click' ]}>
-                                    <Button key='' className='margin-left-10' type='primary'>
-                                        设置默认模板
-                                    </Button>
-                                </Dropdown>
-                            )}
                         </div>
                     </PageLayoutHeader>
                 }
