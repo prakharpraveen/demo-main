@@ -6,7 +6,7 @@ import * as utilService from './utilService';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
 import BatchSearchTable from './batchSearchTable';
 import BatchNoSearchTable from './batchNoSearchTable';
-
+// sunlei 
 class BatchSettingModal extends Component {
 	constructor(props) {
 		super(props);

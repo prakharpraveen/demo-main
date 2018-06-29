@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { InputNumber , Icon, Modal, Button } from 'antd';
 import Notice from 'Components/Notice';
-
+// sunlei 
 class InterModal extends Component {
 	constructor(props) {
 		super(props);

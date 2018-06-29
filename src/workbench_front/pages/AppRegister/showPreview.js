@@ -5,6 +5,7 @@ import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
 
+
 class PreviewModal extends Component {
 	constructor(props) {
 		super(props);
@@ -110,10 +111,10 @@ class PreviewModal extends Component {
 			<Modal
 				title='预览区'
 				mask={false}
-				wrapClassName='myModal'
 				visible={this.props.batchSettingModalVisibel}
 				onOk={this.onOkDialog}
 				onCancel={this.showModalHidden}
+				width='100%'
 				footer={[
 					<Button
 						key='submit'

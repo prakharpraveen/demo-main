@@ -8,8 +8,8 @@ import _ from 'lodash';
 import Notice from 'Components/Notice';
 import * as utilService from './utilService';
 const FormItem = Form.Item;
-const Option = Select.Option;
-
+const Option = Select.Option
+// sunlei 
 /**
  * 按钮类型选择
  * @param {String} value 

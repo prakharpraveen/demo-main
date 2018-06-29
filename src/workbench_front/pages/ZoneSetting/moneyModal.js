@@ -8,7 +8,7 @@ import Notice from 'Components/Notice';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
 import BatchSearchTable from './batchSearchTable';
 import BatchNoSearchTable from './batchNoSearchTable';
-
+// sunlei 
 export default  class MoneyModal extends Component {
 	constructor(props) {
 		super(props);

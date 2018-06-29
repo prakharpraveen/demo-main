@@ -15,6 +15,7 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer } = high;
 const Option = Select.Option;
 
+// sunlei 
 /**
  * 按钮类型选择
  * @param {String} value 
