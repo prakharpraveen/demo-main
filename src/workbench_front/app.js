@@ -35,13 +35,11 @@ const openApp = (win, code, type, query, appInfo) => {
    */
   let { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 } = appInfo;
   if (
-    b4 === "应用注册" ||
-    b4 === "菜单注册" ||
-    b4 === "个性化注册" ||
-    b4 === "模板设置" ||
-    b4 === "应用管理" ||
-    b4 === "页面模板设置-业务单元" ||
-    b4 === "页面模板设置-集团"
+    code === "102202APP" ||
+    code === "102202MENU" ||
+    code === "1022PREGI" ||
+    code === "10180TM" ||
+    code === "10181TM"
   ) {
     type = "own";
   }
