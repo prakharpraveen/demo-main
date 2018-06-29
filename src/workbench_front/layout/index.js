@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Select, AutoComplete, Icon } from "antd";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { GetQuery } from "Pub/js/utils";
 import { withRouter } from "react-router-dom";
 import { changeDrawer } from "Store/appStore/action";
@@ -25,7 +26,11 @@ class Layout extends Component {
       nodeName: "首页",
       isShowSearch: false,
       sprType: true,
-      dataSource: []
+      dataSource: [],
+      // 所属集团
+      currentData: [],
+      selectedKey: "",
+      newDate: moment()
     };
   }
   /**
@@ -33,7 +38,39 @@ class Layout extends Component {
    * @param {String} value 选中组织的value值
    */
   handleChange = value => {
-    console.log(value);
+    Ajax({
+      url: ``,
+      data: {},
+      info: {
+        name: "工作桌面",
+        action: "集团切换"
+      },
+      success: ({ data: { data } }) => {
+        if (data.msg) {
+          this.setState({ selectedKey: value });
+        }
+      }
+    });
+  };
+  /**
+   * 业务日期切换
+   */
+  handleDateChange = newDate => {
+    Ajax({
+      url: `/nccloud/platform/appregister/setbizdate.do`,
+      info: {
+        name: "业务日期",
+        action: "更改业务日期"
+      },
+      data: {
+        bizDateTime: `${newDate.valueOf()}`
+      },
+      success: ({ data: { data } }) => {
+        if (data) {
+          this.setState({ newDate });
+        }
+      }
+    });
   };
   /**
    * 更新标题名称
@@ -138,7 +175,9 @@ class Layout extends Component {
       }, 100);
     }
   };
-
+  /**
+   * 创建搜索全部应用
+   */
   getSearchDom = () => {
     const { isShowSearch } = this.state;
     if (isShowSearch) {
@@ -193,15 +232,39 @@ class Layout extends Component {
       this.setState({ sprType });
     });
   };
+  /**
+   * 所属集团查询
+   */
+  reqInfoData = () => {
+    Ajax({
+      url: `/nccloud/platform/appregister/querypersonsettings.do`,
+      info: {
+        name: "工作桌面",
+        action: "业务日期|集团|个人头像"
+      },
+      success: ({ data: { data } }) => {
+        if (data.length > 0) {
+          let { pk_group,bizDateTime } = data.find(item => item.is_selected);
+          let newDate = moment(bizDateTime - 0 * 1000);
+          this.setState({
+            newDate,
+            currentData: data,
+            selectedKey: pk_group
+          });
+        }
+      }
+    });
+  };
   componentDidMount() {
     this.handleUpdateTitleName();
+    this.reqInfoData();
     window.addEventListener("hashchange", this.handleUpdateTitleName);
   }
   componentWillUnmount() {
     window.removeEventListener("hashchange", this.handleUpdateTitleName);
   }
   render() {
-    let { nodeName, sprType } = this.state;
+    let { nodeName, sprType, newDate, currentData, selectedKey } = this.state;
     let { isOpen } = this.props;
     return (
       <div className="nc-workbench-layout">
@@ -231,12 +294,17 @@ class Layout extends Component {
               <div field="group-switch" fieldname="集团切换">
                 <Select
                   dropdownClassName="field_group-switch"
-                  defaultValue="yonyou"
+                  value={selectedKey}
                   style={{ width: 234 }}
                   onChange={this.handleChange}
                 >
-                  <Option value="yonyou">用友网络科技股份有限公司</Option>
-                  <Option value="yyjr">用友（yonyou）</Option>
+                  {currentData.map((item, index) => {
+                    return (
+                      <Option key={item.pk_group} value={item.pk_group}>
+                        {item.name}
+                      </Option>
+                    );
+                  })}
                 </Select>
               </div>
             </div>
@@ -298,7 +366,7 @@ class Layout extends Component {
             ) : (
               <Breadcrumb />
             )}
-            <BusinessDate />
+            <BusinessDate onChange={this.handleDateChange} date={newDate} />
           </div>
         </div>
         <div className="nc-workbench-container">{this.props.children}</div>

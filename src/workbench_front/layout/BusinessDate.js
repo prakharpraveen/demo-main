@@ -1,51 +1,16 @@
 import React, { Component } from "react";
 import { DatePicker } from "antd";
-import Ajax from "Pub/js/ajax";
 import locale from "antd/lib/date-picker/locale/zh_CN";
-import moment from "moment";
 class BusinessDate extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      newDate: moment()
-    };
   }
-  onChange = (newDate, dataString) => {
-    console.log(newDate.valueOf(), dataString);
-    Ajax({
-      url: `/nccloud/platform/appregister/setbizdate.do`,
-      info: {
-        name: "业务日期",
-        action: "更改业务日期"
-      },
-      data: {
-        bizDateTime: `${newDate.valueOf()}`
-      },
-      success: ({ data: { data } }) => {
-        if (data) {
-          this.setState({ newDate });
-        }
-      }
-    });
+  /**
+   * 业务日期切换
+   */
+  onChange = (newDate) => {
+    this.props.onChange(newDate);
   };
-
-  componentDidMount() {
-    // 业务日期查询
-    Ajax({
-      url: `/nccloud/platform/appregister/querybizdate.do`,
-      info: {
-        name: "工作平台",
-        action: "业务日期查询"
-      },
-      success: ({ data: { data } }) => {
-        if (data) {
-          let newDate = moment(data - 0 * 1000);
-          this.setState({ newDate });
-        }
-      }
-    });
-  }
-
   render() {
     return (
       <div
@@ -57,7 +22,7 @@ class BusinessDate extends Component {
         <DatePicker
           dropdownClassName={"field_business-date"}
           locale={locale}
-          value={this.state.newDate}
+          value={this.props.date}
           onChange={this.onChange}
           allowClear={false}
         />
