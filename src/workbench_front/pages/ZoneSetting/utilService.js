@@ -68,7 +68,8 @@ export const componentWidthObj = [
 	{ name: '6', value: '6' },
 	{ name: '12', value: '12' }
 ];
-export const showAndReturnType = [ { name: '名称', value: '1' }, { name: '编码', value: '2' } ];
+export const showType = [ { name: '名称', value: '1' }, { name: '编码', value: '2' } ];
+export const returnType = [  { name: '主键', value: 'refpk' }, { name: '名称', value: 'refname' }, { name: '编码', value: 'refcode' } ];
 export const colorObj = [
 	{ name: '默认', value: '#6E6E77' },
 	{ name: '黑色', value: '#000000' },

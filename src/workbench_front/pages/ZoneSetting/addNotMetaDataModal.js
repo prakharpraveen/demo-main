@@ -46,7 +46,7 @@ class AddNotMetaDataModal extends Component {
 				isbeyondorg: false,
 				usefunc: false,
 				showtype: '1',
-				returntype: '1',
+				returntype: 'refpk',
 				define1: '',
 				define2: '',
 				define3: '',
