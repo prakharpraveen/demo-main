@@ -613,11 +613,14 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('showformula')}
 							<FormulaEditor
 								value={selectCard['showformula']}
+								noControlBtns={[ 'validate']}
+								isValidateOnOK={false}
 								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
 									classid: ''
 								}} */
+
 								noShowAttr={['元数据属性']}
 								show={this.state.showformula}
 								onHide = {()=>{
@@ -659,6 +662,8 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('validateformula')}
 							<FormulaEditor
 								value={selectCard['validateformula']}
+								noControlBtns={['validate']}
+								isValidateOnOK={false}
 								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
