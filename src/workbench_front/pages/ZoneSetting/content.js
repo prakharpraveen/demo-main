@@ -145,7 +145,7 @@ class MyContent extends Component {
                 return false;
             }
         })
-		areaList[targetAreaIndex].queryPropertyList = _.uniqBy(areaList[targetAreaIndex].queryPropertyList.concat(addCardList),'metapath');
+		areaList[targetAreaIndex].queryPropertyList = _.uniqBy(areaList[targetAreaIndex].queryPropertyList.concat(addCardList),'code');
 
 		_.forEach(areaList[targetAreaIndex].queryPropertyList,(q,i)=>{
 			q.position = i+1;

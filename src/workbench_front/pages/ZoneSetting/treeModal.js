@@ -21,7 +21,7 @@ class TreeModal extends Component {
 		this.setModalVisible(false);
 	};
 	setModalVisible = (modalVisible) => {
-		this.setState({ selectedKeys: [], checkedKeys: [],selectedNodes:[] });
+		this.setState({ selectedKeys: [], checkedKeys: [], selectedNodes: [] });
 		this.props.setModalVisible(modalVisible);
 	};
 	//移动到的弹出框中，点击确认
@@ -31,9 +31,9 @@ class TreeModal extends Component {
 		const { targetAreaID } = this.props;
 		let cardList = [];
 		_.forEach(selectedNodes, (s, i) => {
-			const { myUniqID, datatype, refname, refcode, pid,refpk,isLeaf } = s.props.dataRef;
-			let cardObj = {}
-			if(this.props.targetAreaType === '0'){
+			const { myUniqID, datatype, refname, refcode, pid, refpk, isLeaf } = s.props.dataRef;
+			let cardObj = {};
+			if (this.props.targetAreaType === '0') {
 				//查询区
 				cardObj = {
 					pk_query_property: `newMetaData_${myUniqID}`,
@@ -42,29 +42,29 @@ class TreeModal extends Component {
 					code: myUniqID,
 					label: refname,
 					metapath: myUniqID,
-					opersign:utilService.getOpersignByDatatype(datatype),
-					opersignname:utilService.getOpersignNameByDatatype(datatype),
-					defaultvalue:'',
-					isfixedcondition:false,
-					required:false,
-					visible:true,
-					isquerycondition:true,
-					refname: datatype==='204'?refname:'-99',
-					containlower:isLeaf?false:true,
-					ischeck:false,
-					isbeyondorg:false,
-					usefunc:datatype==='34'?true:false,
-					showtype:'1',
-					returntype:'1',
-					define1:"",
-					define2:"",
-					define3:"",
-					define4:"",
-					define5:"",
-					itemtype:'input'
-					
-				}
-			}else{//非查询区
+					opersign: utilService.getOpersignByDatatype(datatype),
+					opersignname: utilService.getOpersignNameByDatatype(datatype),
+					defaultvalue: '',
+					isfixedcondition: false,
+					required: false,
+					visible: true,
+					isquerycondition: true,
+					refname: datatype === '204' ? refname : '-99',
+					containlower: isLeaf ? false : true,
+					ischeck: false,
+					isbeyondorg: false,
+					usefunc: datatype === '34' ? true : false,
+					showtype: '1',
+					returntype: '1',
+					define1: '',
+					define2: '',
+					define3: '',
+					define4: '',
+					define5: '',
+					itemtype: 'input'
+				};
+			} else {
+				//非查询区
 				cardObj = {
 					pk_query_property: `newMetaData_${myUniqID}`,
 					areaid: targetAreaID,
@@ -74,28 +74,30 @@ class TreeModal extends Component {
 					metapath: myUniqID,
 					color: '#6E6E77',
 					width: '6',
-					isrevise:false,
-					istotal:false,
-					required:false,
-					disabled:false,
-					visible:true,
-					maxlength:'20',
-					textrows:'1',
-					leftspace:'0',
-					rightspace:'0',
-					defaultvar:'',
-					define1:"",
-					define2:"",
-					define3:"",
-					itemtype:'input'
-				}
+					isrevise: false,
+					istotal: false,
+					required: false,
+					disabled: false,
+					visible: true,
+					maxlength: '20',
+					textrows: '1',
+					leftspace: '0',
+					rightspace: '0',
+					defaultvar: '',
+					define1: '',
+					define2: '',
+					define3: '',
+					itemtype: 'input'
+				};
 			}
-			if(this.props.targetAreaType === '2'){
+			if (this.props.targetAreaType === '2') {
 				cardObj.width = '';
 			}
-			if(cardObj.datatype === '204'){
-				cardObj.metaid = refpk
+			if (cardObj.datatype === '204') {
+				cardObj.metaid = refpk;
 			}
+			cardObj.itemtype = utilService.getItemtypeByDatatype(cardObj.datatype);
+
 			cardList.push(cardObj);
 		});
 		this.props.addCard(cardList);
@@ -176,7 +178,7 @@ class TreeModal extends Component {
 							data.rows.map((r, index) => {
 								metaTree.push({
 									...r,
-									title:`${r.refcode} ${r.refname}` ,
+									title: `${r.refcode} ${r.refname}`,
 									key: `${treeNode.props.myUniqID}.${r.refcode}`,
 									myUniqID: `${treeNode.props.myUniqID}.${r.refcode}`,
 									isLeaf: r.isleaf
@@ -223,48 +225,49 @@ class TreeModal extends Component {
 			</div>
 		);
 	};
-	selectAllTreeNode = (e)=>{
+	selectAllTreeNode = (e) => {
 		const isChecked = e.target.checked;
-		const {metaTree} = this.props;
-		let {selectedKeys} = this.state;
-		selectedKeys = _.cloneDeep(selectedKeys)
-		if(isChecked){
-			_.forEach(metaTree,(m,i)=>{
-				if(selectedKeys.indexOf(m.myUniqID)===-1){
+		const { metaTree } = this.props;
+		let { selectedKeys } = this.state;
+		selectedKeys = _.cloneDeep(selectedKeys);
+		if (isChecked) {
+			_.forEach(metaTree, (m, i) => {
+				if (selectedKeys.indexOf(m.myUniqID) === -1) {
 					selectedKeys.push(m.myUniqID);
 					this.state.selectedNodes.push({
-						props:{
-							dataRef:{
+						props: {
+							dataRef: {
 								...m
 							}
 						}
 					});
 				}
-			})
-		}else{
-			_.forEach(metaTree,(m,i)=>{
-				_.remove(selectedKeys, (n)=> {
+			});
+		} else {
+			_.forEach(metaTree, (m, i) => {
+				_.remove(selectedKeys, (n) => {
 					return n === m.myUniqID;
-				  });
-			})
-			_.forEach(metaTree,(m,i)=>{
-				_.remove(this.state.selectedNodes, (n)=> {
+				});
+			});
+			_.forEach(metaTree, (m, i) => {
+				_.remove(this.state.selectedNodes, (n) => {
 					return n.props.dataRef.myUniqID === m.myUniqID;
-				  });
-			})
+				});
+			});
 		}
-		console.log(selectedKeys,metaTree,this.state.selectedNodes);
-		this.setState({selectedKeys});
-
-	}
-	getModalTitleDom =()=>{
+		console.log(selectedKeys, metaTree, this.state.selectedNodes);
+		this.setState({ selectedKeys });
+	};
+	getModalTitleDom = () => {
 		return (
 			<div>
 				<span>添加元数据</span>
-				<Checkbox style={{marginLeft:'25px'}} onChange={this.selectAllTreeNode}>全选根节点</Checkbox>
-			</div>	
-		)
-	}
+				<Checkbox style={{ marginLeft: '25px' }} onChange={this.selectAllTreeNode}>
+					全选根节点
+				</Checkbox>
+			</div>
+		);
+	};
 	render() {
 		return (
 			<Modal

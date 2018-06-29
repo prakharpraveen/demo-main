@@ -196,7 +196,12 @@ class RelateMetaModal extends Component {
 		}
 		return (
 			<Modal
-				title='元数据编辑关联项'
+				title={
+					<div>
+						元数据编辑关联项
+						<span style={{ fontSize: '13px', marginLeft: '10px' }}>请在点击选择左侧树，然后点击选择右侧列表</span>
+					</div>
+				}
 				mask={false}
 				wrapClassName='realate-meta-modal'
 				visible={this.props.modalVisibel}

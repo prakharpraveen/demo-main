@@ -273,8 +273,23 @@
 	.ant-modal-body {
 		display: flex;
 		align-items: center;
+		.code-div{
+			margin-top: 10px;
+		}
 		input {
 			width: 300px;
+		}
+		input.has-error:focus{
+			border-color: red;
+			box-shadow:none;
+		}
+		input.has-error{
+			border-color: red;
+			box-shadow:none;
+		}
+		.form-explain{
+			color: red;
+			margin-left: 5px;
 		}
 	}
 }
