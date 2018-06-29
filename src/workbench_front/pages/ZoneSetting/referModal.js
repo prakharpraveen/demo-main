@@ -73,6 +73,10 @@ class ReferModal extends Component {
 				return ;
 			}
 		})
+
+		//设置参照refname 
+		this.props.handleSelectChange(refname, 'refname');
+
 		Ajax({
 			url: `/nccloud/platform/templet/getMetaByRefName.do`,
 			info: {

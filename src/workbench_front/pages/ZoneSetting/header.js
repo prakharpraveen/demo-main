@@ -81,9 +81,16 @@ class MyHeader extends Component {
 						title='确定返回上一个页面吗？'
 						onConfirm={() => {
 							let param = GetQuery(this.props.location.search);
-							this.props.history.push(
-								`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`
-							);
+							if (param.status){
+								// 实施态 
+								this.props.history.push(`/templateSetting`);
+							}else{
+								// 开发态
+								this.props.history.push(
+									`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`
+								);
+							}
+						
 						}}
 						placement='top'
 						okText='确定'
