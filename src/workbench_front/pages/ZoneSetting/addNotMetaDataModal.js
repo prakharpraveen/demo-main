@@ -36,6 +36,7 @@ class AddNotMetaDataModal extends Component {
 				defaultvalue: '',
 				isfixedcondition: false,
 				required: false,
+				disabled: false,
 				visible: true,
 				isquerycondition: false,
 				datatype: '1',

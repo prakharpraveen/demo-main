@@ -25,8 +25,8 @@ class MyContent extends Component {
 			modalVisible: false,
 			metaTree: [],
 			targetAreaID: '',
-			targetAreaType:''
-		
+			targetAreaType:'',
+			canSelectTreeNodeList:[]
 		};
 	}
 
@@ -118,7 +118,13 @@ class MyContent extends Component {
 								isLeaf:r.isleaf
 							});
 						});
-						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID,targetAreaType:areatype});
+						let canSelectTreeNodeList = [];
+						_.forEach(metaTree,(m)=>{
+							if(m.datatype==='205'){
+								canSelectTreeNodeList.push(m);
+							}
+						})
+						this.setState({ metaTree: metaTree, targetAreaID: targetAreaID,targetAreaType:areatype, canSelectTreeNodeList: canSelectTreeNodeList});
 						this.setModalVisible(true);
 					}else{
 						if (success && data && data.rows && !data.rows.length){
@@ -215,6 +221,7 @@ class MyContent extends Component {
 
 				<TreeModal
                     metaTree={this.state.metaTree}
+                    canSelectTreeNodeList={this.state.canSelectTreeNodeList}
 					modalVisible={this.state.modalVisible}
 					targetAreaID = {this.state.targetAreaID}
 					targetAreaType = {this.state.targetAreaType}

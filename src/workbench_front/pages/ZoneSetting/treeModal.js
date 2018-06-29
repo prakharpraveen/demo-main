@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Tree, Modal, Button, Checkbox } from 'antd';
+import { Input, Icon, Tree, Modal, Button, Checkbox, Select } from 'antd';
 import * as utilService from './utilService';
 const TreeNode = Tree.TreeNode;
+const Option = Select.Option;
 
 class TreeModal extends Component {
 	constructor(props) {
@@ -13,7 +14,8 @@ class TreeModal extends Component {
 			checkedKeys: [],
 			selectedKeys: [],
 			selectedNodes: [],
-			searchValue: ''
+			searchValue: '',
+			needToBeAllSelectNodeList: []
 		};
 	}
 	showModalHidden = () => {
@@ -21,7 +23,7 @@ class TreeModal extends Component {
 		this.setModalVisible(false);
 	};
 	setModalVisible = (modalVisible) => {
-		this.setState({ selectedKeys: [], checkedKeys: [], selectedNodes: [] });
+		this.setState({ selectedKeys: [], checkedKeys: [], selectedNodes: [], needToBeAllSelectNodeList: [] });
 		this.props.setModalVisible(modalVisible);
 	};
 	//移动到的弹出框中，点击确认
@@ -47,6 +49,7 @@ class TreeModal extends Component {
 					defaultvalue: '',
 					isfixedcondition: false,
 					required: false,
+					disabled: false,
 					visible: true,
 					isquerycondition: true,
 					refname: datatype === '204' ? refname : '-99',
@@ -225,14 +228,12 @@ class TreeModal extends Component {
 			</div>
 		);
 	};
-	selectAllTreeNode = (e) => {
-		const isChecked = e.target.checked;
-		const { metaTree } = this.props;
+	selectAllTreeNode = (isChecked,metaTreeNodeList) => {
 		let { selectedKeys } = this.state;
 		selectedKeys = _.cloneDeep(selectedKeys);
 		if (isChecked) {
-			_.forEach(metaTree, (m, i) => {
-				if (selectedKeys.indexOf(m.myUniqID) === -1) {
+			_.forEach(metaTreeNodeList, (m, i) => {
+				if (selectedKeys.indexOf(m.myUniqID) === -1 && m.datatype!=='205') {
 					selectedKeys.push(m.myUniqID);
 					this.state.selectedNodes.push({
 						props: {
@@ -244,27 +245,76 @@ class TreeModal extends Component {
 				}
 			});
 		} else {
-			_.forEach(metaTree, (m, i) => {
+			_.forEach(metaTreeNodeList, (m, i) => {
 				_.remove(selectedKeys, (n) => {
 					return n === m.myUniqID;
 				});
 			});
-			_.forEach(metaTree, (m, i) => {
+			_.forEach(metaTreeNodeList, (m, i) => {
 				_.remove(this.state.selectedNodes, (n) => {
 					return n.props.dataRef.myUniqID === m.myUniqID;
 				});
 			});
 		}
-		console.log(selectedKeys, metaTree, this.state.selectedNodes);
+		console.log(selectedKeys);
 		this.setState({ selectedKeys });
+	};
+	handleChangeSelectTreeNode = (value) => {
+		const { metaTree,canSelectTreeNodeList } = this.props;
+		_.forEach(canSelectTreeNodeList,(m)=>{
+			if(value.indexOf(`${m.refcode} ${m.refname}`)===-1){
+				if(m.children!==null){
+					setTimeout(() => {
+						this.selectAllTreeNode(false,m.children);
+					}, 0);
+					
+				}
+				
+			}else{
+				if(m.children!==null){
+					setTimeout(() => {
+						this.selectAllTreeNode(true,m.children);
+					}, 0);
+				
+				}
+			}
+		})
+		
+		this.setState({ needToBeAllSelectNodeList: value });
 	};
 	getModalTitleDom = () => {
 		return (
 			<div>
 				<span>添加元数据</span>
-				<Checkbox style={{ marginLeft: '25px' }} onChange={this.selectAllTreeNode}>
+				<Checkbox style={{ marginLeft: '25px' }} onChange={(e)=>{this.selectAllTreeNode(e.target.checked,this.props.metaTree)}}>
 					全选根节点
 				</Checkbox>
+				{(() => {
+					if (this.props.canSelectTreeNodeList.length > 0) {
+						return (
+							<Select
+							maxTagCount={1}
+								size='small'
+								style={{ width: '50%' }}
+								mode='multiple'
+								placeholder='请先展开对应树节点，再选择'
+								onChange={this.handleChangeSelectTreeNode}
+								value={this.state.needToBeAllSelectNodeList}
+							>
+								{this.props.canSelectTreeNodeList.map((node, index) => {
+									return (
+										<Option
+											key={`${node.refcode} ${node.refname}`}
+											disabled={node.children ? false : true}
+										>
+											{node.refcode} {node.refname}
+										</Option>
+									);
+								})}
+							</Select>
+						);
+					}
+				})()}
 			</div>
 		);
 	};
