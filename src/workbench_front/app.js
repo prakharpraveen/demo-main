@@ -20,12 +20,13 @@ window.proxyAction = $NCPE.proxyAction;
 /**
  * 应用打开
  * @param {String} appcode - 应用编码
+ * @param {String} appid - 应用主键
  * @param {String} pagecode - 应用编码
  * @param {Object} win -  新页面 window
  * @param {String} query - 需要传递的参数
  * @param {Object} appInfo - 应用信息
  */
-const openApp = (win, appcode, pagecode, type, query, appInfo) => {
+const openApp = (win, appcode, appid, pagecode, type, query, appInfo) => {
   /**
    * 应用信息
    * pageurl 页面url 地址
@@ -51,8 +52,9 @@ const openApp = (win, appcode, pagecode, type, query, appInfo) => {
   b1 = encodeURIComponent(encodeURIComponent(b1));
   appcode = encodeURIComponent(encodeURIComponent(appcode));
   pagecode = encodeURIComponent(encodeURIComponent(pagecode));
+  appid = encodeURIComponent(encodeURIComponent(appid));
   // 面包屑信息及应用编码
-  let breadcrumbInfo = `&c=${appcode}&p=${pagecode}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
+  let breadcrumbInfo = `&c=${appcode}&p=${pagecode}&ar=${appid}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
   // 将参数对象转换成url参数字符串
   if (query) {
     /**
@@ -122,7 +124,7 @@ class App extends Component {
     if (type !== "current") {
       win = window.open("", "_blank");
     }
-    let { appcode, menuitemcode } = appOption;
+    let { appcode, appid, menuitemcode } = appOption;
     Ajax({
       url: `/nccloud/platform/appregister/openapp.do`,
       info: {
@@ -135,11 +137,12 @@ class App extends Component {
       },
       success: ({ data: { data } }) => {
         if (data) {
-          if (!data.is_haspowe) {
+          if (!data.is_haspower) {
             Notice({
               status: "error",
               msg: data.hint_message
             });
+            win.close();
             return;
           }
           if (data.pageurl && data.pageurl.length > 0) {
@@ -151,6 +154,7 @@ class App extends Component {
             proxyAction(openApp, this, "打开应用")(
               win,
               appcode,
+              appid,
               data.pagecode,
               type,
               query,
@@ -229,6 +233,8 @@ class App extends Component {
                 status: "error",
                 msg: data.data.hint_message
               });
+              win.close();
+              return;
             }
           }
         });
