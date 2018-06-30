@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import _ from "lodash";
-import {Button, Table, Switch, Icon, Popconfirm} from "antd";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -21,7 +20,6 @@ import {
 import ButtonCreate from "Components/ButtonCreate";
 import Notice from "Components/Notice";
 import "./index.less";
-import {WSAESTALE} from "constants";
 class MenuItem extends Component {
     constructor(props) {
         super(props);

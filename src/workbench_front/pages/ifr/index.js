@@ -24,15 +24,9 @@ class Ifr extends Component {
   }
 
   render() {
-    // let { ifrID, ifrName } = this.props.ifrData;
     let { ifr } = GetQuery(this.props.location.search);
     // let queryUrl;
     ifr = decodeURIComponent(decodeURIComponent(ifr));
-    // if (ifr.indexOf("#") === -1 || ifr.indexOf("=") === -1) {
-    //   queryUrl = `${ifr}?ar=${ar}&c=${c}`;
-    // } else {
-    //   queryUrl = `${ifr}&ar=${ar}&c=${c}`;
-    // }
     return (
       <div className="nc-workbench-iframe">
         <iframe

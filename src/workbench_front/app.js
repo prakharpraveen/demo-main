@@ -19,12 +19,13 @@ moment.locale("zh-cn");
 window.proxyAction = $NCPE.proxyAction;
 /**
  * 应用打开
- * @param {String} code - 应用编码
+ * @param {String} appcode - 应用编码
+ * @param {String} pagecode - 应用编码
  * @param {Object} win -  新页面 window
  * @param {String} query - 需要传递的参数
  * @param {Object} appInfo - 应用信息
  */
-const openApp = (win, code, type, query, appInfo) => {
+const openApp = (win, appcode, pagecode, type, query, appInfo) => {
   /**
    * 应用信息
    * pageurl 页面url 地址
@@ -35,12 +36,12 @@ const openApp = (win, code, type, query, appInfo) => {
    */
   let { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 } = appInfo;
   if (
-    code === "102202APP" ||
-    code === "102202MENU" ||
-    code === "1022PREGI" ||
-    code === "10180TM" ||
-    code === "10181TM" ||
-    code === "101818AM"
+    appcode === "102202APP" ||
+    appcode === "102202MENU" ||
+    appcode === "1022PREGI" ||
+    appcode === "10180TM" ||
+    appcode === "10181TM" ||
+    appcode === "101818AM"
   ) {
     type = "own";
   }
@@ -48,9 +49,10 @@ const openApp = (win, code, type, query, appInfo) => {
   b3 = encodeURIComponent(encodeURIComponent(b3));
   b2 = encodeURIComponent(encodeURIComponent(b2));
   b1 = encodeURIComponent(encodeURIComponent(b1));
-  code = encodeURIComponent(encodeURIComponent(code));
+  appcode = encodeURIComponent(encodeURIComponent(appcode));
+  pagecode = encodeURIComponent(encodeURIComponent(pagecode));
   // 面包屑信息及应用编码
-  let breadcrumbInfo = `&c=${code}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
+  let breadcrumbInfo = `&c=${appcode}&p=${pagecode}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
   // 将参数对象转换成url参数字符串
   if (query) {
     /**
@@ -111,15 +113,16 @@ class App extends Component {
   }
   /**
    * 打开应用
-   * @param {String} code - 应用编码
+   * @param {Object} appOption - 应用对象
    * @param {String} type - 打开类型 current - 当前页面打开
    * @param {String} query - 需要传递的参数
    */
-  openNewApp = (code, type, query) => {
+  openNewApp = (appOption, type, query) => {
     let win;
     if (type !== "current") {
       win = window.open("", "_blank");
     }
+    let { appcode, menuitemcode } = appOption;
     Ajax({
       url: `/nccloud/platform/appregister/openapp.do`,
       info: {
@@ -127,23 +130,40 @@ class App extends Component {
         action: "权限校验"
       },
       data: {
-        appcode: code
+        appcode,
+        menucode: menuitemcode
       },
       success: ({ data: { data } }) => {
-        if (data && data.pageurl) {
-          // 应用菜单名
-          window.peData.nodeName = data.menu;
-          // 应用编码
-          window.peData.nodeCode = code;
-          // 打开应用
-          proxyAction(openApp, this, "打开应用")(win, code, type, query, data);
-        } else {
-          win.close();
-          Notice({
-            status: "error",
-            msg: "请确认当前应用是否设置默认页面！"
-          });
-          return;
+        if (data) {
+          if (!data.is_haspowe) {
+            Notice({
+              status: "error",
+              msg: data.hint_message
+            });
+            return;
+          }
+          if (data.pageurl && data.pageurl.length > 0) {
+            // 应用菜单名
+            window.peData.nodeName = data.menu;
+            // 应用编码
+            window.peData.nodeCode = appcode;
+            // 打开应用
+            proxyAction(openApp, this, "打开应用")(
+              win,
+              appcode,
+              data.pagecode,
+              type,
+              query,
+              data
+            );
+          } else {
+            win.close();
+            Notice({
+              status: "error",
+              msg: "请确认当前应用是否设置默认页面！"
+            });
+            return;
+          }
         }
       }
     });
@@ -162,16 +182,66 @@ class App extends Component {
      * @param　{String} type // current - 浏览器新页签打开 不传参数在当前页打开
      * @param {String} query - 需要传递的参数 需要字符串拼接 如 &a=1&b=2
      */
-    window.openNew = (code, type, query) => {
-      if (typeof code === "object") {
-        if (code.appcode) {
-          code = code.appcode;
-        } else {
-          code = code.code;
-        }
+    window.openNew = (appOption, type, query) => {
+      if (typeof appOption === "object") {
+        this.openNewApp(appOption, type, query);
       }
-      this.openNewApp(code, type, query);
     };
+    /**
+     * 跳转检查
+     * 调用此方法去修改URL地址时需要encodeURIComponent两次
+     * 获取URL参数时需要decodeURIComponent两次
+     * @param {String|undefined|null} appcode - 应用编码 值为""/undefined/null 则不会校验权限  需要工作台容器
+     * @param {Function} callback - 检查之后的回调
+     * @param {String} tab - 新页签
+     */
+    window.openCheck = (appcode, callback, type) => {
+      let win = window;
+      // 新页签跳转
+      if (type === "tab") {
+        win = window.open("", "_blank");
+      }
+      // 需要校验权限
+      if (appcode && appcode.length) {
+        Ajax({
+          url: `/nccloud/platform/appregister/openapp.do`,
+          info: {
+            name: "工作桌面",
+            action: "权限校验"
+          },
+          data: {
+            appcode
+          },
+          success: ({ data }) => {
+            if (data.data && data.data.is_haspower) {
+              // 应用菜单名
+              window.peData.nodeName = data.data.menu;
+              // 应用编码
+              window.peData.nodeCode = appcode;
+              /**
+               * 校验回调
+               * @param {Object} win - 窗口对象
+               * @param {Object} data - 检验之后的参数
+               */
+              proxyAction(callback, this, "打开应用")(win, data);
+            } else {
+              Notice({
+                status: "error",
+                msg: data.data.hint_message
+              });
+            }
+          }
+        });
+      } else {
+        // 不需要校验跳转权限且需要工作台容器
+        /**
+         * 校验回调
+         * @param {Object} win - 窗口对象
+         */
+        callback(win);
+      }
+    };
+    /////////////////////////////////////////////////////////////
     /**
      * 当前页打开新页面 不做应用校验
      * @param {String} url  目标页面 url 地址
@@ -193,6 +263,7 @@ class App extends Component {
         )}`;
       }
     };
+    ////////////////////////////////////////////////////////////////
   }
   componentDidMount() {
     // 模拟数据，应该在此处进行数据请求，返回用户初始信息

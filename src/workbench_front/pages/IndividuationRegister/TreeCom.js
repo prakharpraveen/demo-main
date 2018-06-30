@@ -85,7 +85,7 @@ class TreeCom extends Component {
             }
         ];
         return (
-            <div>
+            <div className='individuation-tree-search'>
                 <Tree
                     showLine
                     onExpand={this.onExpand}

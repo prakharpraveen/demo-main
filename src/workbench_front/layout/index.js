@@ -126,12 +126,7 @@ class Layout extends Component {
         targetApp = d;
       }
     });
-    window.openNew({
-      appcode: targetApp.appcode,
-      menuitemcode: targetApp.code,
-      name: targetApp.label,
-      pk_appregister: targetApp.appid
-    });
+    window.openNew(targetApp);
   };
   /**
    * 搜索全部应用 查询操作
