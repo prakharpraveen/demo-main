@@ -33,7 +33,7 @@ class TreeModal extends Component {
 		const { targetAreaID } = this.props;
 		let cardList = [];
 		_.forEach(selectedNodes, (s, i) => {
-			const { myUniqID, datatype, refname, refcode, pid, refpk, isLeaf } = s.props.dataRef;
+			const { myUniqID, datatype, refname, refcode, pid, refpk, isLeaf, modelname } = s.props.dataRef;
 			let cardObj = {};
 			if (this.props.targetAreaType === '0') {
 				//查询区
@@ -52,7 +52,7 @@ class TreeModal extends Component {
 					disabled: false,
 					visible: true,
 					isquerycondition: true,
-					refname: datatype === '204' ? refname : '-99',
+					refname: datatype === '204' ? modelname : '-99',
 					containlower: isLeaf ? false : true,
 					ischeck: false,
 					isbeyondorg: false,
@@ -228,12 +228,12 @@ class TreeModal extends Component {
 			</div>
 		);
 	};
-	selectAllTreeNode = (isChecked,metaTreeNodeList) => {
+	selectAllTreeNode = (isChecked, metaTreeNodeList) => {
 		let { selectedKeys } = this.state;
 		selectedKeys = _.cloneDeep(selectedKeys);
 		if (isChecked) {
 			_.forEach(metaTreeNodeList, (m, i) => {
-				if (selectedKeys.indexOf(m.myUniqID) === -1 && m.datatype!=='205') {
+				if (selectedKeys.indexOf(m.myUniqID) === -1 && m.datatype !== '205') {
 					selectedKeys.push(m.myUniqID);
 					this.state.selectedNodes.push({
 						props: {
@@ -260,40 +260,42 @@ class TreeModal extends Component {
 		this.setState({ selectedKeys });
 	};
 	handleChangeSelectTreeNode = (value) => {
-		const { metaTree,canSelectTreeNodeList } = this.props;
-		_.forEach(canSelectTreeNodeList,(m)=>{
-			if(value.indexOf(`${m.refcode} ${m.refname}`)===-1){
-				if(m.children!==null){
+		const { metaTree, canSelectTreeNodeList } = this.props;
+		_.forEach(canSelectTreeNodeList, (m) => {
+			if (value.indexOf(`${m.refcode} ${m.refname}`) === -1) {
+				if (m.children !== null) {
 					setTimeout(() => {
-						this.selectAllTreeNode(false,m.children);
+						this.selectAllTreeNode(false, m.children);
 					}, 0);
-					
 				}
-				
-			}else{
-				if(m.children!==null){
+			} else {
+				if (m.children !== null) {
 					setTimeout(() => {
-						this.selectAllTreeNode(true,m.children);
+						this.selectAllTreeNode(true, m.children);
 					}, 0);
-				
 				}
 			}
-		})
-		
+		});
+
 		this.setState({ needToBeAllSelectNodeList: value });
 	};
 	getModalTitleDom = () => {
 		return (
 			<div>
 				<span>添加元数据</span>
-				<Checkbox style={{ marginLeft: '25px' }} onChange={(e)=>{this.selectAllTreeNode(e.target.checked,this.props.metaTree)}}>
+				<Checkbox
+					style={{ marginLeft: '25px' }}
+					onChange={(e) => {
+						this.selectAllTreeNode(e.target.checked, this.props.metaTree);
+					}}
+				>
 					全选根节点
 				</Checkbox>
 				{(() => {
 					if (this.props.canSelectTreeNodeList.length > 0) {
 						return (
 							<Select
-							maxTagCount={1}
+								maxTagCount={1}
 								size='small'
 								style={{ width: '50%' }}
 								mode='multiple'
