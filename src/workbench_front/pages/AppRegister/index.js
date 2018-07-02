@@ -31,6 +31,7 @@ import {
 import ButtonCreate from "Components/ButtonCreate";
 import Notice from "Components/Notice";
 import "./index.less";
+Modal.mask = false;
 const confirm = Modal.confirm;
 /**
  * 工作桌面 首页 页面
@@ -163,7 +164,7 @@ class AppRegister extends Component {
       apptype: "1",
       fun_property: "0",
       resid: "",
-      image_src: "",
+      image_src: ""
     };
     this.props.setAppParamData([]);
     this.props.setNodeData(dataTransfer(appData));
@@ -345,12 +346,20 @@ class AppRegister extends Component {
    */
   del = () => {
     let _this = this;
+    if (!this.props.nodeInfo.isleaf) {
+      Notice({
+        status: "warning",
+        msg: "请先删除当前节点下的内容！"
+      });
+      return;
+    }
     confirm({
       title: "是否要删除?",
       content: "",
       okText: "确认",
       okType: "danger",
       cancelText: "取消",
+      mask: false,
       onOk() {
         let optype = _this.props.optype;
         let { id } = _this.props.nodeInfo;
@@ -416,7 +425,7 @@ class AppRegister extends Component {
       // 对应树结构中的第一层
       case "1":
         return <ModuleFormCard />;
-        对应树结构中的第二层;
+      // 对应树结构中的第二层;
       case "2":
         return <ModuleFormCard />;
       // 对应树结构的第三层
@@ -479,6 +488,7 @@ class AppRegister extends Component {
       code: "",
       name: "",
       parentId: "",
+      isleaf: false
     };
     if (obj) {
       switch (obj.flag) {
@@ -530,7 +540,8 @@ class AppRegister extends Component {
         id: obj.moduleid,
         code: obj.systypecode,
         name: obj.name,
-        parentId: obj.parentcode
+        parentId: obj.parentcode,
+        isleaf: obj.isleaf
       };
     }
     this.props.setIsNew(false);

@@ -12,6 +12,7 @@ import Breadcrumb from "Components/Breadcrumb";
 import TabsLink from "Components/TabsLink";
 import BusinessDate from "./BusinessDate";
 import { sprLog } from "./spr";
+import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
 import Ajax from "Pub/js/ajax";
 const Option = Select.Option;
@@ -239,7 +240,7 @@ class Layout extends Component {
       },
       success: ({ data: { data } }) => {
         if (data.length > 0) {
-          let { pk_group,bizDateTime } = data.find(item => item.is_selected);
+          let { pk_group, bizDateTime } = data.find(item => item.is_selected);
           let newDate = moment(bizDateTime - 0 * 1000);
           this.setState({
             newDate,
@@ -279,12 +280,7 @@ class Layout extends Component {
                   this.props.changeDrawer(!isOpen);
                 }}
               >
-                <img
-                  field="logo"
-                  fieldname="标识"
-                  src="http://www.qqzhi.com/uploadpic/2014-09-23/000247589.jpg"
-                  alt="logo"
-                />
+                <img field="logo" fieldname="标识" src={UserLogo} alt="logo" />
               </div>
               <div field="group-switch" fieldname="集团切换">
                 <Select
