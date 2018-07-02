@@ -264,7 +264,8 @@ class TemplateSetting extends Component {
                 if (!templatePks) {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
-                }
+				}
+				let _this=this;
                 confirm({
                     title: '确认删除这个模板信息吗?',
                     onOk() {
@@ -278,7 +279,7 @@ class TemplateSetting extends Component {
                             success: ({ data }) => {
                                 if (data.success) {
 									Notice({ status: 'success', msg: '删除成功' });
-                                    this.reqTreeTemData();
+                                    _this.reqTreeTemData();
                                 }
                             }
                         });
@@ -450,7 +451,7 @@ class TemplateSetting extends Component {
     };
     handleExpanded = dataList => {
         const expandedKeys = dataList.map((item, index) => {
-            return item.menuitemcode;
+            return item.pk;
         });
         expandedKeys.push('00');
         this.setState({
@@ -463,7 +464,7 @@ class TemplateSetting extends Component {
             url: `/nccloud/platform/appregister/searchappmenuitem.do`,
             data: {
                 search_content: value,
-                containAppPage: true
+                containAppPage: "true"
             },
             info: {
                 name: "菜单项",
@@ -620,11 +621,11 @@ class TemplateSetting extends Component {
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
-                let { code, name, pk } = item;
-                let text = `${code} ${name}`;
-                if (code === '00') {
+				let { code, name, pk } = item;
+				if (code === '00') {
                     text = `${name}`;
                 }
+                let text = `${code} ${name}`;
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
                 const afterStr = text.substr(index + searchValue.length);
@@ -701,7 +702,7 @@ class TemplateSetting extends Component {
                 pk: '',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
-        ];
+		];
         return (
             <PageLayout
                 className='nc-workbench-templateSetting'

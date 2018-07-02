@@ -229,6 +229,7 @@ class TemplateSetting extends Component {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
                 }
+                let _this=this;
                 confirm({
                     title: '是否要删除?',
                     content: '',
@@ -244,10 +245,10 @@ class TemplateSetting extends Component {
                                 name: '模板设置',
                                 action: '删除'
                             },
-                            success: (data) => {
+                            success: ({data}) => {
                                 if (data.success) {
                                     Notice({ status: 'success', msg: '删除成功' });
-                                    this.reqTreeTemData();
+                                    _this.reqTreeTemData();
                                 }
                             }
                         });
@@ -523,7 +524,7 @@ class TemplateSetting extends Component {
     };
     handleExpanded = dataList => {
         const expandedKeys = dataList.map((item, index) => {
-            return item.menuitemcode;
+            return item.pk;
         });
         expandedKeys.push('00');
         this.setState({

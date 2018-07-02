@@ -68,7 +68,7 @@ export function generateRoData(data) {
     data.map((item, index) => {
         let { code, id, name } = item;
         item.key = id;
-        item.text = name + code;
+        item.text = `${code} ${name}`;
         item.title = item.text;
         treeArray.push(item);
     });

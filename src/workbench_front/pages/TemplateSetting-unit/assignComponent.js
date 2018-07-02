@@ -312,6 +312,30 @@ class AssignComponent extends Component {
     onExpand = (expandedKeys)=>{
 		this.setState({expandedKeys,autoExpandParent:true});
     }
+    //树的查询方法
+    onSearch = (e) => {
+        const value = e.target.value;
+        let { treeRoData } = this.state;
+        let keyArray = [];
+        const expandedKeys = treeRoData
+            .map((item) => {
+                if (item.children) {
+                    item.children.map((ele) => {
+                        if (ele.title.indexOf(value) > -1) {
+                            keyArray.push(ele.key);
+                        }
+					});
+					return keyArray;
+                }
+                return null;
+            })
+            .filter((item, i, self) => item && self.indexOf(item) === i);
+        this.setState({
+            expandedKeys,
+            searchValue: value,
+            autoExpandParent: true
+        });
+    };
     //树组件
     treeResAndUser = (data, typeSelect, hideSearch) => {
         console.log(data);
@@ -347,7 +371,7 @@ class AssignComponent extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
+                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onSearch} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
