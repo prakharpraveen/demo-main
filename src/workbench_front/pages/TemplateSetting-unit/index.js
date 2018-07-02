@@ -22,6 +22,10 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Btns = [
     {
+        name: '新增',
+        type: 'primary'
+    },
+    {
         name: '修改',
         type: 'primary'
     },
@@ -86,6 +90,9 @@ class TemplateSetting extends Component {
         let { name } = item;
         let isShow = false;
         switch (name) {
+            case '新增':
+                isShow = true;
+                break;
             case '修改':
                 if (activeKey === '3') {
                     isShow = false;
@@ -214,6 +221,9 @@ class TemplateSetting extends Component {
                     return;
                 }
                 this.props.history.push(`/ZoneSetting?templetid=${templatePks}&status=${'billTemplate'}`);
+                break;
+            case '新增':
+                this.props.history.push(`/ZoneSetting?status=${'templateSetting'}`);
                 break;
             case '删除':
                 if (!templatePks) {

@@ -435,7 +435,7 @@ class TemplateSetting extends Component {
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
-            autoExpandParent: false
+            autoExpandParent: true
         });
     };
     //tree的查询方法

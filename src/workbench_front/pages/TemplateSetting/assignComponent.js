@@ -309,11 +309,14 @@ class AssignComponent extends Component {
                 break;
         }
     };
-    treeResAndUser = (data, typeSelect, hideSearch) => {
+	onExpand = (expandedKeys)=>{
+		this.setState({expandedKeys,autoExpandParent:true});
+	}
+	treeResAndUser = (data, typeSelect, hideSearch) => {
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
-                let { text, key, children } = item;
+                let { text, key, pk } = item;
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
                 const afterStr = text.substr(index + searchValue.length);
@@ -329,15 +332,14 @@ class AssignComponent extends Component {
                             <span> {text} </span>
                         </div>
                     );
-                if (children) {
+                if (item.children) {
                     return (
-                        <TreeNode key={key} title={text}>
-                            {' '}
-                            {loop(children)}{' '}
+                        <TreeNode key={key} title={text} refData={item}>
+                            {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={key} title={text} />;
+                return <TreeNode key={key} title={text} refData={item} />;
             });
         };
         return (
