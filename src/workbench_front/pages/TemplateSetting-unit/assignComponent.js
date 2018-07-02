@@ -309,6 +309,10 @@ class AssignComponent extends Component {
                 break;
         }
     };
+    onExpand = (expandedKeys)=>{
+		this.setState({expandedKeys,autoExpandParent:true});
+    }
+    //树组件
     treeResAndUser = (data, typeSelect, hideSearch) => {
         console.log(data);
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;

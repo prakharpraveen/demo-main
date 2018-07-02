@@ -45,6 +45,7 @@ export function generateTemData(data) {
         }
         item.key = templateId;
         item.text = code + ' ' + name;
+        item.pk = templateId;
         // 以当前节点的 parentcode 为 key，所有含有此 parentcode 节点的元素构成数组 为 值
         if (parentId === 'root') {
             // 根据是否为叶子节点 来添加是否有 children 属性

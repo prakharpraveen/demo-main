@@ -231,11 +231,11 @@ class TemplateSetting extends Component {
                     return;
                 }
                 confirm({
-                    title: "是否要删除?",
-                    content: "",
-                    okText: "确认",
-                    okType: "danger",
-                    cancelText: "取消",
+                    title: '是否要删除?',
+                    content: '',
+                    okText: '确认',
+                    okType: 'danger',
+                    cancelText: '取消',
                     title: '确认删除这个模板信息吗?',
                     onOk() {
                         Ajax({
@@ -246,7 +246,6 @@ class TemplateSetting extends Component {
                                 action: '删除'
                             },
                             success: (data) => {
-                                debugger
                                 if (data.success) {
                                     Notice({ status: 'success', msg: '删除成功' });
                                     this.reqTreeTemData();
@@ -312,6 +311,7 @@ class TemplateSetting extends Component {
             treeInfo = generateTemData(treeTemQueryDataArray);
         }
         let { treeArray, treeObj } = treeInfo;
+        debugger
         treeArray.map((item, index) => {
             for (const key in treeObj) {
                 if (treeObj.hasOwnProperty(key)) {
@@ -396,7 +396,7 @@ class TemplateSetting extends Component {
             this.setState(
                 {
                     selectedKeys: key,
-                    pageCode: key[0],
+                    pageCode: e.selectedNodes[0].props.refData.code,
                     appCode: e.selectedNodes[0].props.refData.appCode
                 },
                 this.reqTreeTemData
@@ -465,7 +465,6 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        debugger
         let { activeKey } = this.state;
         let templateType = '';
         if (activeKey === '1') {
@@ -476,42 +475,20 @@ class TemplateSetting extends Component {
             templateType = 'print';
         }
         if (key.length > 0) {
-            this.setState(
-                {
-                    selectedKeys: key,
-                    templatePks: e.selectedNodes[0].props.refData.pk
-                },
-                () => {
-                    this.lookTemplateNameVal(templateType);
-                }
-            );
+            this.setState({
+                selectedKeys: key,
+                templatePks: e.selectedNodes[0].props.refData.templateId,
+                parentIdcon: e.selectedNodes[0].props.refData.parentId,
+                templateNameVal: e.selectedNodes[0].props.refData.name
+            });
         } else {
             this.setState({
                 selectedKeys: key,
-                templatePks: ''
+                templatePks: '',
+                templateNameVal: '',
+                parentIdcon: ''
             });
         }
-    };
-    //在模板数据中查找当前PK值的中文名称
-    lookTemplateNameVal = (templateType) => {
-        let { templateNameVal, treeTemBillDataArray, treeTemQueryDataArray, templatePks, parentIdcon } = this.state;
-        let treeTemDataArray = [];
-        if (templateType === 'bill') {
-            treeTemDataArray = treeTemBillDataArray;
-        } else if (templateType === 'query') {
-            treeTemDataArray = treeTemQueryDataArray;
-        } else if (templateType === 'print') {
-        }
-        for (let i = 0; i < treeTemDataArray.length; i++) {
-            if (treeTemDataArray[i].templateId === templatePks) {
-                parentIdcon = treeTemDataArray[i].parentId;
-                templateNameVal = treeTemDataArray[i].name;
-            }
-        }
-        this.setState({
-            templateNameVal,
-            parentIdcon
-        });
     };
     /**
 	 * tree 数据请求
@@ -534,7 +511,6 @@ class TemplateSetting extends Component {
     };
     //树点击事件的汇总
     onSelect = (typeSelect, key, e) => {
-        debugger
         switch (typeSelect) {
             case 'systemOnselect':
                 this.onSelectQuery(key, e);
@@ -573,12 +549,12 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={code} title={title} refData={item}>
+                        <TreeNode key={pk} title={title} refData={item}>
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={code} title={title} refData={item} />;
+                return <TreeNode key={pk} title={title} refData={item} />;
             });
         };
         return (
@@ -607,7 +583,8 @@ class TemplateSetting extends Component {
     };
     //分配摸态框显示方法
     setAssignModalVisible = (visibel) => {
-        this.setState({ alloVisible: visibel });0
+        this.setState({ alloVisible: visibel });
+        0;
     };
     //参照的回调函数
     handdleRefChange = (value, type) => {
@@ -691,7 +668,8 @@ class TemplateSetting extends Component {
                         activeKey={activeKey}
                     >
                         <TabPane tab='页面模板' key='1'>
-                            {treeTemBillData.length >0 &&this.treeResAndUser(treeTemBillData,'templateOnselect','hideSearch')}
+                            {treeTemBillData.length > 0 &&
+                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch')}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&

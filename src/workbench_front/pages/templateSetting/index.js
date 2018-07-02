@@ -174,6 +174,7 @@ class TemplateSetting extends Component {
             },
             success: ({ data }) => {
                 if (data.success) {
+					Notice({ status: 'success', msg: '复制成功' });
                     this.reqTreeTemData();
                     this.setState({
                         visible: false,
@@ -276,6 +277,7 @@ class TemplateSetting extends Component {
                             },
                             success: ({ data }) => {
                                 if (data.success) {
+									Notice({ status: 'success', msg: '删除成功' });
                                     this.reqTreeTemData();
                                 }
                             }
@@ -440,11 +442,47 @@ class TemplateSetting extends Component {
     };
     //tree的查询方法
     onChange = (e) => {
-        const value = e.target.value;
+		const value = e.target.value;
+		
+        this.setState({searchValue: value}, () => {
+            this.handleSearch(value, this.handleExpanded);
+        });
+    };
+    handleExpanded = dataList => {
+        const expandedKeys = dataList.map((item, index) => {
+            return item.menuitemcode;
+        });
+        expandedKeys.push('00');
         this.setState({
             expandedKeys,
-            searchValue: value,
             autoExpandParent: true
+        });
+    };
+	handleSearch = (value, callback) => {
+        Ajax({
+            url: `/nccloud/platform/appregister/searchappmenuitem.do`,
+            data: {
+                search_content: value,
+                containAppPage: this.state.id
+            },
+            info: {
+                name: "菜单项",
+                action: "查询应用树"
+            },
+            success: res => {
+                let {success, data} = res.data;
+                if (success && data) {
+					debugger
+                    this.setState(
+                        {
+                            treeData: data
+                        },
+                        () => {
+                            callback(data);
+                        }
+                    );
+                }
+            }
         });
     };
     //加载右侧模板数据
