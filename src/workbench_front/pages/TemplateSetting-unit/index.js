@@ -19,7 +19,6 @@ const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const TabPane = Tabs.TabPane;
 const { Header, Footer, Sider, Content } = Layout;
-
 const Btns = [
     {
         name: '新增',
@@ -311,12 +310,35 @@ class TemplateSetting extends Component {
             treeInfo = generateTemData(treeTemQueryDataArray);
         }
         let { treeArray, treeObj } = treeInfo;
-        debugger
         treeArray.map((item, index) => {
+            const groupObj = {
+                key: 'qazwsxedc1',
+                text: '集团',
+                name: '集团',
+                title: '集团',
+                pk: 'qazwsxedc1',
+                code:'qazwsxedc1',
+                children: []
+            };
+            const orgIdObj = {
+                key: 'qazwsxedc2',
+                text: '组织',
+                title: '组织',
+                name: '组织',
+                code:'qazwsxedc2',
+                pk: 'qazwsxedc2',
+                children: []
+            };
+            item.children.push(groupObj);
+            item.children.push(orgIdObj);
             for (const key in treeObj) {
                 if (treeObj.hasOwnProperty(key)) {
                     if (item.templateId === treeObj[key][0].parentId) {
-                        item.children.push(treeObj[key][0]);
+                        if (treeObj[key][0].type === 'group') {
+                            item.children[0].children.push(treeObj[key][0]);
+                        } else {
+                            item.children[0].children.push(treeObj[key][0]);
+                        }
                     }
                 }
             }
@@ -343,37 +365,6 @@ class TemplateSetting extends Component {
                 treeTemQueryData
             });
         }
-    };
-    //将平铺树数组转换为树状数组
-    restoreTreeData = () => {
-        let { treeData, treeDataArray } = this.state;
-        let treeInfo = generateData(treeDataArray);
-        let { treeArray, treeObj } = treeInfo;
-        for (const key in treeObj) {
-            if (treeObj.hasOwnProperty(key)) {
-                const element = treeObj[key];
-                if (element.length > 0) {
-                    treeObj[key] = element.map((item, index) => {
-                        if (treeObj[item.code]) {
-                            item.children = treeObj[item.code];
-                        }
-                        return item;
-                    });
-                }
-            }
-        }
-        treeArray = treeArray.map((item, index) => {
-            if (treeObj[item.code]) {
-                item.children = treeObj[item.code];
-            }
-            return item;
-        });
-        // 处理树数据
-        treeData[0].children = treeInfo.treeArray;
-        treeData = generateTreeData(treeData);
-        this.setState({
-            treeData
-        });
     };
     onExpand = (expandedKeys) => {
         this.setState({
@@ -521,6 +512,50 @@ class TemplateSetting extends Component {
             default:
                 break;
         }
+    };
+    //tree的查询方法
+    onChange = (e) => {
+		const value = e.target.value;
+		
+        this.setState({searchValue: value}, () => {
+            this.handleSearch(value, this.handleExpanded);
+        });
+    };
+    handleExpanded = dataList => {
+        const expandedKeys = dataList.map((item, index) => {
+            return item.menuitemcode;
+        });
+        expandedKeys.push('00');
+        this.setState({
+            expandedKeys,
+            autoExpandParent: true
+        });
+    };
+	handleSearch = (value, callback) => {
+        Ajax({
+            url: `/nccloud/platform/appregister/searchappmenuitem.do`,
+            data: {
+                search_content: value,
+                containAppPage: true
+            },
+            info: {
+                name: "菜单项",
+                action: "查询应用树"
+            },
+            success: res => {
+                let {success, data} = res.data;
+                if (success && data) {
+                    this.setState(
+                        {
+                            treeDataArray: data
+                        },
+                        () => {
+                            callback(data);
+                        }
+                    );
+                }
+            }
+        });
     };
     //树组件的封装
     treeResAndUser = (data, typeSelect, hideSearch) => {
