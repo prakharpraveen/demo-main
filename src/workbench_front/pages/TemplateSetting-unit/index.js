@@ -513,6 +513,50 @@ class TemplateSetting extends Component {
                 break;
         }
     };
+    //tree的查询方法
+    onChange = (e) => {
+		const value = e.target.value;
+		
+        this.setState({searchValue: value}, () => {
+            this.handleSearch(value, this.handleExpanded);
+        });
+    };
+    handleExpanded = dataList => {
+        const expandedKeys = dataList.map((item, index) => {
+            return item.menuitemcode;
+        });
+        expandedKeys.push('00');
+        this.setState({
+            expandedKeys,
+            autoExpandParent: true
+        });
+    };
+	handleSearch = (value, callback) => {
+        Ajax({
+            url: `/nccloud/platform/appregister/searchappmenuitem.do`,
+            data: {
+                search_content: value,
+                containAppPage: true
+            },
+            info: {
+                name: "菜单项",
+                action: "查询应用树"
+            },
+            success: res => {
+                let {success, data} = res.data;
+                if (success && data) {
+                    this.setState(
+                        {
+                            treeDataArray: data
+                        },
+                        () => {
+                            callback(data);
+                        }
+                    );
+                }
+            }
+        });
+    };
     //树组件的封装
     treeResAndUser = (data, typeSelect, hideSearch) => {
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;

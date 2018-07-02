@@ -463,7 +463,7 @@ class TemplateSetting extends Component {
             url: `/nccloud/platform/appregister/searchappmenuitem.do`,
             data: {
                 search_content: value,
-                containAppPage: this.state.id
+                containAppPage: true
             },
             info: {
                 name: "菜单项",
@@ -472,10 +472,9 @@ class TemplateSetting extends Component {
             success: res => {
                 let {success, data} = res.data;
                 if (success && data) {
-					debugger
                     this.setState(
                         {
-                            treeData: data
+                            treeDataArray: data
                         },
                         () => {
                             callback(data);
