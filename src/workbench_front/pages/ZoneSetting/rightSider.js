@@ -513,6 +513,7 @@ class MyRightSider extends Component {
 											<ReferModal
 												handleSelectChange={this.handleSelectChange}
 												initVal={selectCard.dataval}
+												iscode={selectCard.iscode}
 												modalVisibel={this.state.ReferModalVisibel}
 												setModalVisibel={this.setModalVisibel}
 											/>

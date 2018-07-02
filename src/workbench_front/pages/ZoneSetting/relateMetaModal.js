@@ -13,7 +13,6 @@ class RelateMetaModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			initVal: this.props.initVal,
 			metaTree: [],
 			selectTreeNodes: []
 		};

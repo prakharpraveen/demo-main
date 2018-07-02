@@ -32,6 +32,7 @@ class TreeModal extends Component {
 		const { selectedNodes } = this.state;
 		const { targetAreaID } = this.props;
 		let cardList = [];
+
 		_.forEach(selectedNodes, (s, i) => {
 			const { myUniqID, datatype, refname, refcode, pid, refpk, isLeaf, modelname } = s.props.dataRef;
 			let cardObj = {};
@@ -98,13 +99,54 @@ class TreeModal extends Component {
 			}
 			if (cardObj.datatype === '204') {
 				cardObj.metaid = refpk;
+				cardObj.iscode = false;
 			}
 			cardObj.itemtype = utilService.getItemtypeByDatatype(cardObj.datatype);
 
 			cardList.push(cardObj);
 		});
-		this.props.addCard(cardList);
-		this.setModalVisible(modalVisible);
+		//非查询区的参照类型需要添加默认dataval
+		if (this.props.targetAreaType !== '0') {
+			let ajaxData = [];
+			_.forEach(cardList, (c) => {
+				if (c.metaid) {
+					ajaxData.push(c.metaid);
+				}
+			});
+			if (ajaxData.length > 0) {
+				Ajax({
+					url: `/nccloud/platform/templet/getRefDefaultSel.do`,
+					info: {
+						name: '单据模板设置',
+						action: '查询参照默认下拉选项'
+					},
+					data: ajaxData,
+					success: (res) => {
+						if (res) {
+							let { data, success } = res.data;
+							if (success && data && data.length > 0) {
+								_.forEach(data, (d) => {
+									_.forEach(cardList, (c) => {
+										if (d[c.metaid]) {
+											c.dataval = d[c.metaid];
+											c.refname = d[c.metaid];
+										}
+									});
+								});
+							}
+							this.props.addCard(cardList);
+							this.setModalVisible(modalVisible);
+						}
+					}
+				});
+			} else {
+				this.props.addCard(cardList);
+				this.setModalVisible(modalVisible);
+			}
+		} else {
+			this.props.addCard(cardList);
+			this.setModalVisible(modalVisible);
+		}
 	};
 	//关于搜索框的方法;
 	onInputSearch = () => {
