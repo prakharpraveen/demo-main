@@ -22,10 +22,6 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Btns = [
     {
-        name: '新增',
-        type: 'primary'
-    },
-    {
         name: '修改',
         type: 'primary'
     },
@@ -90,9 +86,6 @@ class TemplateSetting extends Component {
         let { name } = item;
         let isShow = false;
         switch (name) {
-            case '新增':
-                isShow = true;
-                break;
             case '修改':
                 if (activeKey === '3') {
                     isShow = false;
@@ -182,6 +175,7 @@ class TemplateSetting extends Component {
             },
             success: ({ data }) => {
                 if (data.success) {
+                    Notice({ status: 'success', msg: '复制成功' });
                     this.reqTreeTemData();
                     this.setState({
                         visible: false,
@@ -221,15 +215,17 @@ class TemplateSetting extends Component {
                 }
                 this.props.history.push(`/ZoneSetting?templetid=${templatePks}&status=${'billTemplate'}`);
                 break;
-            case '新增':
-                this.props.history.push(`/ZoneSetting?status=${'templateSetting'}`);
-                break;
             case '删除':
                 if (!templatePks) {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
                 }
                 confirm({
+                    title: "是否要删除?",
+                    content: "",
+                    okText: "确认",
+                    okType: "danger",
+                    cancelText: "取消",
                     title: '确认删除这个模板信息吗?',
                     onOk() {
                         Ajax({
@@ -239,8 +235,10 @@ class TemplateSetting extends Component {
                                 name: '模板设置',
                                 action: '删除'
                             },
-                            success: ({ data }) => {
+                            success: (data) => {
+                                debugger
                                 if (data.success) {
+                                    Notice({ status: 'success', msg: '删除成功' });
                                     this.reqTreeTemData();
                                 }
                             }

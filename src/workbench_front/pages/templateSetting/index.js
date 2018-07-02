@@ -22,10 +22,6 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Btns = [
     {
-        name: '新增',
-        type: 'primary'
-    },
-    {
         name: '修改',
         type: 'primary'
     },
@@ -90,9 +86,6 @@ class TemplateSetting extends Component {
         let { name } = item;
         let isShow = false;
         switch (name) {
-            case '新增':
-                isShow = true;
-                break;
             case '修改':
                 if (activeKey === '3') {
                     isShow = false;
@@ -265,9 +258,6 @@ class TemplateSetting extends Component {
                     return;
                 }
                 this.props.history.push(`/ZoneSetting?templetid=${templatePks}&status=${'billTemplate'}`);
-                break;
-            case '新增':
-                this.props.history.push(`/ZoneSetting?status=${'templateSetting'}`);
                 break;
             case '删除':
                 if (!templatePks) {
@@ -460,11 +450,14 @@ class TemplateSetting extends Component {
     //加载右侧模板数据
     onSelectQuery = (key, e) => {
         if (key.length > 0) {
-            this.setState({
-                selectedKeys: key,
-                pageCode: key[0],
-                appCode: e.selectedNodes[0].props.refData.appCode
-            },this.reqTreeTemData);
+            this.setState(
+                {
+                    selectedKeys: key,
+                    pageCode: e.selectedNodes[0].props.refData.code,
+                    appCode: e.selectedNodes[0].props.refData.appCode
+                },
+                this.reqTreeTemData
+            );
         } else {
             this.setState({
                 selectedKeys: key,
@@ -528,7 +521,7 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        let { activeKey } = this.state;
+        let { activeKey, templateNameVal, parentIdcon } = this.state;
         let templateType = '';
         if (activeKey === '1') {
             templateType = 'bill';
@@ -538,42 +531,20 @@ class TemplateSetting extends Component {
             templateType = 'print';
         }
         if (key.length > 0) {
-            this.setState(
-                {
-                    selectedKeys: key,
-                    templatePks: e.selectedNodes[0].props.refData.pk
-                },
-                () => {
-                    this.lookTemplateNameVal(templateType);
-                }
-            );
+            this.setState({
+                selectedKeys: key,
+                templatePks: key[0],
+                parentIdcon: e.selectedNodes[0].props.refData.parentId,
+                templateNameVal: e.selectedNodes[0].props.refData.name
+            });
         } else {
             this.setState({
                 selectedKeys: key,
-                templatePks: ''
+                templatePks: '',
+                parentIdcon: '',
+                templateNameVal: ''
             });
         }
-    };
-    //在模板数据中查找当前PK值的中文名称
-    lookTemplateNameVal = (templateType) => {
-        let { templateNameVal, treeTemBillDataArray, treeTemQueryDataArray, templatePks, parentIdcon } = this.state;
-        let treeTemDataArray = [];
-        if (templateType === 'bill') {
-            treeTemDataArray = treeTemBillDataArray;
-        } else if (templateType === 'query') {
-            treeTemDataArray = treeTemQueryDataArray;
-        } else if (templateType === 'print') {
-        }
-        for (let i = 0; i < treeTemDataArray.length; i++) {
-            if (treeTemDataArray[i].templateId === templatePks) {
-                parentIdcon = treeTemDataArray[i].parentId;
-                templateNameVal = treeTemDataArray[i].name;
-            }
-        }
-        this.setState({
-            templateNameVal,
-            parentIdcon
-        });
     };
     /**
 	 * tree 数据请求
@@ -634,12 +605,12 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={code} title={title} refData={item}>
+                        <TreeNode key={pk} title={title} refData={item}>
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={code} title={title} refData={item} />;
+                return <TreeNode key={pk} title={title} refData={item} />;
             });
         };
         return (
@@ -741,11 +712,12 @@ class TemplateSetting extends Component {
                         activeKey={activeKey}
                     >
                         <TabPane tab='页面模板' key='1'>
-                            {treeTemBillData.length >0 &&this.treeResAndUser(treeTemBillData,'templateOnselect','hideSearch')}
+                            {treeTemBillData.length > 0 &&
+                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch', 'templateId')}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
-                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch', 'templateId')}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
                             <div>

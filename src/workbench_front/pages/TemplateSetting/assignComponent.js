@@ -310,7 +310,6 @@ class AssignComponent extends Component {
         }
     };
     treeResAndUser = (data, typeSelect, hideSearch) => {
-        console.log(data);
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
