@@ -26,7 +26,8 @@ class IndividuationRegister extends Component {
       fields: {},
       isNew: false,
       isedit: false,
-      parentKey: ""
+      parentKey: "",
+      selectedKeys: ["00"]
     };
     this.newFormData = {
       code: "",
@@ -80,23 +81,18 @@ class IndividuationRegister extends Component {
       data: {
         pk_individualreg
       },
-      success: res => {
-        let { success, data } = res.data;
-        if ((success, data)) {
-          let treeData = [...this.state.treeData];
+      success: ({ data: { data } }) => {
+        if (data) {
+          let { treeData } = this.state;
+          treeData = [...this.state.treeData];
           _.remove(
             treeData,
             item => item.pk_individualreg === pk_individualreg
           );
-          this.setState({ treeData, parentKey: "" });
+          this.setState({ treeData, parentKey: "", selectedKeys: ["00"] });
           Notice({
             status: "success",
             msg: data.true
-          });
-        } else {
-          Notice({
-            status: "error",
-            msg: data.false
           });
         }
       }
@@ -127,9 +123,8 @@ class IndividuationRegister extends Component {
         action: "保存"
       },
       data: data,
-      success: res => {
-        let { success, data } = res.data;
-        if (success && data) {
+      success: ({ data: { data } }) => {
+        if (data) {
           let treeData = [...this.state.treeData];
           if (isNew) {
             treeData = _.concat(treeData, data);
@@ -144,6 +139,8 @@ class IndividuationRegister extends Component {
           this.setState({
             isNew: false,
             isedit: false,
+            selectedKeys: [fields.code],
+            parentKey: fields.code,
             treeData,
             fields: dataTransfer(fields)
           });
@@ -151,31 +148,30 @@ class IndividuationRegister extends Component {
             status: "success",
             msg: data.true ? data.true : "保存成功！"
           });
-        } else {
-          Notice({
-            status: "error",
-            msg: data.false
-          });
         }
       }
     });
   };
   handleSelect = selectedKey => {
+    let { treeData, selectedKeys } = this.state;
     if (selectedKey === "00" || selectedKey === undefined) {
+      selectedKeys = ["00"];
       this.setState({
         isedit: false,
+        selectedKeys,
         parentKey: selectedKey ? selectedKey : "",
         fields: dataTransfer(this.newFormData)
       });
       return;
     }
-    let treeData = this.state.treeData;
+    selectedKeys = [selectedKey];
     let treeItem = treeData.find(item => item.code === selectedKey);
     treeItem = dataTransfer(treeItem);
     this.historyData = { ...treeItem };
     this.setState({
       isedit: false,
       isNew: false,
+      selectedKeys,
       parentKey: selectedKey,
       fields: { ...treeItem }
     });
@@ -206,7 +202,7 @@ class IndividuationRegister extends Component {
   }
 
   render() {
-    let { treeData, fields, isedit, isNew } = this.state;
+    let { treeData, fields, isedit, isNew, selectedKeys } = this.state;
     let menuFormData = [
       {
         code: "code",
@@ -307,7 +303,11 @@ class IndividuationRegister extends Component {
         }
       >
         <PageLayoutLeft>
-          <TreeCom onSelect={this.handleSelect} dataSource={treeData} />
+          <TreeCom
+            selectedKeys={selectedKeys}
+            onSelect={this.handleSelect}
+            dataSource={treeData}
+          />
         </PageLayoutLeft>
         <PageLayoutRight>
           <div className="nc-workbench-individuation-form">
