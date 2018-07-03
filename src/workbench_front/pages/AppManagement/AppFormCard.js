@@ -290,6 +290,14 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
+                label: "是否复制页面",
+                type: "checkbox",
+                code: "iscopypage",
+                isRequired: false,
+                isedit: isEdit,
+                lg: 8
+            },
+            {
                 label: apptype === "1"?"默认页面":"小部件路径",
                 type: apptype === "1"?"select":"string",
                 code: "target_path",

@@ -8,9 +8,7 @@ import "./index.less";
 class PageCopy extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
   /**
    * 表单任一字段值改变操作
@@ -22,24 +20,6 @@ class PageCopy extends Component {
       ...changedFields
     });
   };
-  componentDidMount() {
-    Ajax({
-        url:``,
-        info:{
-            name:"",
-            action:""
-        },
-        data:{
-
-        },
-        success:({data:{data}})=>{
-            if(data){
-
-            }
-        }
-    });
-  }
-  
   render() {
     let pageCopyFormData = [
       {
@@ -56,6 +36,7 @@ class PageCopy extends Component {
         code: "newPageCode",
         isRequired: true,
         isedit: true,
+        options: this.props.newPageOtions,
         lg: 12
       },
       {
@@ -85,9 +66,6 @@ class PageCopy extends Component {
     ];
     return (
       <div className="copyapp-content">
-        <div className="copyapp-menutree">
-          <MenuTree />
-        </div>
         <div className="copyapp-form">
           <FormCreate
             formData={pageCopyFormData}

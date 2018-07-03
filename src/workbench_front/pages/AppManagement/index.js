@@ -36,7 +36,6 @@ import AppCopy from "./AppCopy/index";
 import PageCopy from "./PageCopy/index";
 import Notice from "Components/Notice";
 import "./index.less";
-const confirm = Modal.confirm;
 /**
  * 工作桌面 首页 页面
  * 各个此贴应用及工作台中的小部件 通过 js 片段进行加载渲染
@@ -69,14 +68,34 @@ class AppManagement extends Component {
         );
         break;
       case "pageCopy":
-        this.setState(
-          {
-            visible: true,
-            modalType: "1"
+        let { parentcode } = dataRestore(this.props.nodeData);
+        Ajax({
+          url: `/nccloud/platform/appregister/querytranstypelist.do`,
+          info: {
+            name: "应用管理",
+            action: "页面编码"
           },
-          this.pageCopy
-        );
-        this.pageCopy();
+          data: {
+            appCode: parentcode
+          },
+          success: ({ data: { data } }) => {
+            if (data) {
+              data = data.map(item => {
+                item.value = item.pk_billtypecode;
+                item.text = item.billtypename;
+                return item;
+              });
+              this.setState(
+                {
+                  visible: true,
+                  modalType: "1",
+                  newPageOtions: data
+                },
+                this.pageCopy
+              );
+            }
+          }
+        });
         break;
       case "active":
         this.appActive();
@@ -217,7 +236,8 @@ class AppManagement extends Component {
       id: "",
       code: "",
       name: "",
-      parentId: ""
+      parentId: "",
+      iscopypage: false
     };
     if (obj) {
       switch (obj.flag) {
@@ -233,6 +253,7 @@ class AppManagement extends Component {
         // 对应树的3、4层
         case "1":
           let appCallBack = data => {
+            this.props.setNodeInfo(nodeInfo);
             this.props.setNodeData(dataTransfer(data.appRegisterVO));
             this.props.setAppParamData(data.appParamVOs);
           };
@@ -250,6 +271,8 @@ class AppManagement extends Component {
         // 对应树的最后一层
         case "2":
           let pageCallBack = data => {
+            nodeInfo = { ...this.props.nodeInfo, iscopypage: data.iscopypage };
+            this.props.setNodeInfo(nodeInfo);
             this.props.setNodeData(dataTransfer(data.apppageVO));
             this.props.setPageButtonData(data.appButtonVOs);
             this.props.setPageTemplateData(data.pageTemplets);
@@ -269,7 +292,8 @@ class AppManagement extends Component {
         id: obj.moduleid,
         code: obj.systypecode,
         name: obj.name,
-        parentId: obj.parentcode
+        parentId: obj.parentcode,
+        iscopypage: false
       };
     }
     this.props.setIsNew(false);
@@ -324,6 +348,32 @@ class AppManagement extends Component {
           Notice({ status: "success" });
         }
       });
+    } else {
+      let pageCopyData = this.props.pageCopyData;
+      if (dataCheck(pageCopyData)) {
+        return;
+      }
+      pageCopyData = dataRestore(pageCopyData);
+      for (const key in pageCopyData) {
+        if (pageCopyData.hasOwnProperty(key)) {
+          if (pageCopyData[key].length === 0) {
+            return;
+          }
+        }
+      }
+      Ajax({
+        url: `/nccloud/platform/appregister/copyapppage.do`,
+        info: {
+          name: "应用管理",
+          action: "页面复制"
+        },
+        data: pageCopyData,
+        success: ({ data: { data } }) => {
+          if (data) {
+            Notice({ status: "success", msg: data.msg });
+          }
+        }
+      });
     }
   };
   handleCancel = modalType => {
@@ -357,8 +407,8 @@ class AppManagement extends Component {
     let isenable = this.props.nodeData.isenable
       ? dataRestore(this.props.nodeData).isenable
       : false;
-    let iscopypage = this.props.nodeData.iscopypage
-      ? dataRestore(this.props.nodeData).iscopypage
+    let iscopypage = this.props.nodeInfo.iscopypage
+      ? this.props.nodeInfo.iscopypage
       : false;
     let btnList = [
       {
@@ -414,7 +464,11 @@ class AppManagement extends Component {
               this.handleCancel(modalType);
             }}
           >
-            {modalType === "0" ? <AppCopy /> : <PageCopy />}
+            {modalType === "0" ? (
+              <AppCopy />
+            ) : (
+              <PageCopy newPageOtions={this.state.newPageOtions} />
+            )}
           </Modal>
         </PageLayoutRight>
       </PageLayout>
@@ -442,7 +496,8 @@ AppManagement.propTypes = {
   setCopyNodeData: PropTypes.func.isRequired,
   setMenuTreeData: PropTypes.func.isRequired,
   copyNodeData: PropTypes.object.isRequired,
-  setPageCopyData: PropTypes.func.isRequired
+  setPageCopyData: PropTypes.func.isRequired,
+  pageCopyData: PropTypes.object.isRequired
 };
 export default connect(
   state => ({
@@ -453,7 +508,8 @@ export default connect(
     isEdit: state.AppManagementData.isEdit,
     selectedKeys: state.AppManagementData.selectedKeys,
     optype: state.AppManagementData.optype,
-    copyNodeData: state.AppManagementData.copyNodeData
+    copyNodeData: state.AppManagementData.copyNodeData,
+    pageCopyData: state.AppManagementData.pageCopyData
   }),
   {
     setTreeData,

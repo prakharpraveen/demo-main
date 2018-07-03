@@ -157,6 +157,7 @@ class AppRegister extends Component {
       isenable: true,
       iscauserusable: false,
       uselicense_load: true,
+      iscopypage: false,
       pk_group: "",
       width: "1",
       height: "1",
@@ -541,7 +542,7 @@ class AppRegister extends Component {
         code: obj.systypecode,
         name: obj.name,
         parentId: obj.parentcode,
-        isleaf: obj.isleaf
+        isleaf: (obj.children && obj.children.length === 0) || obj.isleaf
       };
     }
     this.props.setIsNew(false);
