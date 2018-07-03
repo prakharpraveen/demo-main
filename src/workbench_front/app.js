@@ -137,14 +137,14 @@ class App extends Component {
       },
       success: ({ data: { data } }) => {
         if (data) {
-          if (!data.is_haspower) {
-            Notice({
-              status: "error",
-              msg: data.hint_message
-            });
-            win.close();
-            return;
-          }
+          // if (!data.is_haspower) {
+          //   Notice({
+          //     status: "error",
+          //     msg: data.hint_message
+          //   });
+          //   win.close();
+          //   return;
+          // }
           if (data.pageurl && data.pageurl.length > 0) {
             // 应用菜单名
             window.peData.nodeName = data.menu;
@@ -248,6 +248,7 @@ class App extends Component {
       }
     };
     /////////////////////////////////////////////////////////////
+    // 已经弃用
     /**
      * 当前页打开新页面 不做应用校验
      * @param {String} url  目标页面 url 地址
