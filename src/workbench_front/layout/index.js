@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Select, AutoComplete, Icon } from "antd";
+import { Select, AutoComplete, Icon, Popover } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { GetQuery } from "Pub/js/utils";
 import { withRouter } from "react-router-dom";
 import { changeDrawer } from "Store/appStore/action";
+import AllApps from "Pages/AllApps/index";
 import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
@@ -31,7 +32,8 @@ class Layout extends Component {
       // 所属集团
       currentData: [],
       selectedKey: "",
-      newDate: moment()
+      newDate: moment(),
+      allAppsVisible:false
     };
   }
   /**
@@ -259,6 +261,9 @@ class Layout extends Component {
   componentWillUnmount() {
     window.removeEventListener("hashchange", this.handleUpdateTitleName);
   }
+  getAllApps = ()=>{
+    return <AllApps />
+  }
   render() {
     let { nodeName, sprType, newDate, currentData, selectedKey } = this.state;
     let { isOpen } = this.props;
@@ -324,20 +329,25 @@ class Layout extends Component {
                   />
                 )}
               </span>
+              
               {this.getSearchDom()}
+
               <span
                 className="margin-right-10"
-                onClick={() => {
-                  this.props.history.push(`/all?n=全部应用`);
-                }}
               >
-                <i
-                  title="全部应用"
-                  field="application"
-                  fieldname="全部应用"
-                  className="iconfont icon-quanbuyingyong"
-                />
+                <Popover overlayClassName="all-apps-popover"
+                  content={this.getAllApps()} placement="bottomRight" arrowPointAtCenter={true} onVisibleChange={(isVisible) => {
+                    this.setState({allAppsVisible:isVisible})
+                  }} trigger="click">
+                  <i
+                    title="全部应用"
+                    field="application"
+                    fieldname="全部应用"
+                    className={this.state.allAppsVisible?"iconfont icon-shituliebiaoqiehuan":"iconfont icon-quanbuyingyong"}
+                  />
+                </Popover>
               </span>
+              
               <span className="margin-right-10">
                 <i
                   field="message"

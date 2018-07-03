@@ -93,7 +93,7 @@ class AllApps extends Component {
   render() {
     const siderGroup = this.siderGroup();
     return (
-      <div className="my-layout">
+      <div className="all-apps-layout">
         <div className="sider">{siderGroup}</div>
         <MyContent contentData={this.state.contentData} />
       </div>
