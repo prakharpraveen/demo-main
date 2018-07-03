@@ -76,14 +76,14 @@ class AppManagement extends Component {
             action: "页面编码"
           },
           data: {
-            // appCode: parentcode
-            appCode: "1011DETAILUSER"
+            appCode: parentcode
+            // appCode: "1011DETAILUSER"
           },
           success: ({ data: { data } }) => {
             if (data) {
               data = data.map(item => {
-                item.value = item.pk_billtypecode;
-                item.text = `${item.value}/${item.billtypename}`;
+                item.value = item.code;
+                item.text = `${item.code}/${item.name}`;
                 return item;
               });
               this.setState(
