@@ -11,7 +11,7 @@ import BusinessUnitTreeRef from 'Components/Refers/BusinessUnitTreeRef';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
-import { generateData, generateTemData, generateTreeData, generateRoData, lookAppCodeFunFor } from './method';
+import { generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
 const confirm = Modal.confirm;
@@ -404,37 +404,6 @@ class TemplateSetting extends Component {
             });
         }
     };
-    //将平铺树数组转换为树状数组
-    restoreTreeData = () => {
-        let { treeData, treeDataArray } = this.state;
-        let treeInfo = generateData(treeDataArray);
-        let { treeArray, treeObj } = treeInfo;
-        for (const key in treeObj) {
-            if (treeObj.hasOwnProperty(key)) {
-                const element = treeObj[key];
-                if (element.length > 0) {
-                    treeObj[key] = element.map((item, index) => {
-                        if (treeObj[item.code]) {
-                            item.children = treeObj[item.code];
-                        }
-                        return item;
-                    });
-                }
-            }
-        }
-        treeArray = treeArray.map((item, index) => {
-            if (treeObj[item.code]) {
-                item.children = treeObj[item.code];
-            }
-            return item;
-        });
-        // 处理树数据
-        treeData[0].children = treeInfo.treeArray;
-        treeData = generateTreeData(treeData);
-        this.setState({
-            treeData
-        });
-    };
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
@@ -444,7 +413,6 @@ class TemplateSetting extends Component {
     //tree的查询方法
     onChange = (e) => {
 		const value = e.target.value;
-		
         this.setState({searchValue: value}, () => {
             this.handleSearch(value, this.handleExpanded);
         });
@@ -751,11 +719,11 @@ class TemplateSetting extends Component {
                     >
                         <TabPane tab='页面模板' key='1'>
                             {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch', 'templateId')}
+                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch')}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
-                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch', 'templateId')}
+                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch', )}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
                             <div>

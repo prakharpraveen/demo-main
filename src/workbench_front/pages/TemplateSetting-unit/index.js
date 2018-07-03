@@ -11,7 +11,7 @@ import BusinessUnitTreeRef from 'Components/Refers/BusinessUnitTreeRef';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
-import { generateData, generateTemData, generateTreeData, generateRoData, lookAppCodeFunFor } from './method';
+import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
 const confirm = Modal.confirm;
