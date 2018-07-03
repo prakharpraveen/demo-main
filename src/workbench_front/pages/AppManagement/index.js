@@ -76,8 +76,8 @@ class AppManagement extends Component {
             action: "页面编码"
           },
           data: {
-            appCode: parentcode
-            // appCode: "1011DETAILUSER"
+            // appCode: parentcode
+            appCode: "1011DETAILUSER"
           },
           success: ({ data: { data } }) => {
             if (data) {
@@ -127,12 +127,8 @@ class AppManagement extends Component {
   };
   // 页面复制
   pageCopy = () => {
-    let { code, name } = this.props.nodeInfo;
-    let { parent_id, parentcode, id } = dataRestore(this.props.nodeData);
+    let { id } = this.props.nodeInfo;
     let pageCopyData = {
-      appId: parent_id,
-      appCode: parentcode,
-      oldPageCode: code,
       pageId: id,
       newPageCode: "",
       newPageName: ""
@@ -141,7 +137,7 @@ class AppManagement extends Component {
   };
   // 应用复制
   appCopy = () => {
-    let { code, name } = this.props.nodeInfo;
+    let { code } = this.props.nodeInfo;
     let copyNodeData = {
       oldAppCode: code,
       newMenuItemCode: "",
@@ -348,7 +344,7 @@ class AppManagement extends Component {
             visible: false
           });
           this.reqTreeData();
-          Notice({ status: "success" });
+          Notice({ status: "success", msg: data.msg });
         }
       });
     } else {

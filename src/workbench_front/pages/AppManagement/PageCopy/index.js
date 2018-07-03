@@ -39,33 +39,9 @@ class PageCopy extends Component {
         lg: 12
       },
       {
-        label: "页面编码",
-        type: "string",
-        code: "oldPageCode",
-        isRequired: false,
-        isedit: false,
-        lg: 12
-      },
-      {
         label: "页面主键",
         type: "string",
         code: "pageId",
-        isRequired: false,
-        isedit: false,
-        lg: 12
-      },
-      {
-        label: "应用编码",
-        type: "string",
-        code: "appCode",
-        isRequired: false,
-        isedit: false,
-        lg: 12
-      },
-      {
-        label: "应用主键",
-        type: "string",
-        code: "appId",
         isRequired: false,
         isedit: false,
         lg: 12
