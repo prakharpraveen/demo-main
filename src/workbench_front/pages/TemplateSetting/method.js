@@ -90,36 +90,3 @@ export function generateTreeData(data) {
         return item;
     });
 }
-// 将平铺树数组转换为树状数组
-export function restoreTreeData() {
-    let { treeData, treeDataArray } = this.state;
-    let treeInfo = generateData(treeDataArray);
-    let { treeArray, treeObj } = treeInfo;
-    for (const key in treeObj) {
-        if (treeObj.hasOwnProperty(key)) {
-            const element = treeObj[key];
-            if (element.length > 0) {
-                treeObj[key] = element.map((item, index) => {
-                    if (treeObj[item.moduleid]) {
-                        item.children = treeObj[item.moduleid];
-                    } else if (treeObj[item.systypecode]) {
-                        item.children = treeObj[item.systypecode];
-                    }
-                    return item;
-                });
-            }
-        }
-    }
-    treeArray = treeArray.map((item, index) => {
-        if (treeObj[item.moduleid]) {
-            item.children = treeObj[item.moduleid];
-        }
-        return item;
-    });
-    // 处理树数据
-    treeData[0].children = treeInfo.treeArray;
-    treeData = generateTreeData(treeData);
-    this.setState({
-        treeData
-    });
-}
