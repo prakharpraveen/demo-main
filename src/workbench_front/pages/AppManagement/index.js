@@ -76,13 +76,14 @@ class AppManagement extends Component {
             action: "页面编码"
           },
           data: {
-            appCode: parentcode
+            // appCode: parentcode
+            appCode: "1011DETAILUSER"
           },
           success: ({ data: { data } }) => {
             if (data) {
               data = data.map(item => {
                 item.value = item.pk_billtypecode;
-                item.text = item.billtypename;
+                item.text = `${item.value}/${item.billtypename}`;
                 return item;
               });
               this.setState(
@@ -127,11 +128,12 @@ class AppManagement extends Component {
   // 页面复制
   pageCopy = () => {
     let { code, name } = this.props.nodeInfo;
-    let { parent_id, parentcode } = dataRestore(this.props.nodeData);
+    let { parent_id, parentcode, id } = dataRestore(this.props.nodeData);
     let pageCopyData = {
       appId: parent_id,
       appCode: parentcode,
       oldPageCode: code,
+      pageId: id,
       newPageCode: "",
       newPageName: ""
     };
@@ -345,6 +347,7 @@ class AppManagement extends Component {
           this.setState({
             visible: false
           });
+          this.reqTreeData();
           Notice({ status: "success" });
         }
       });
@@ -370,6 +373,10 @@ class AppManagement extends Component {
         data: pageCopyData,
         success: ({ data: { data } }) => {
           if (data) {
+            this.setState({
+              visible: false
+            });
+            this.reqTreeData();
             Notice({ status: "success", msg: data.msg });
           }
         }

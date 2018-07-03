@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { setPageCopyData } from "Store/AppManagement/action";
-import { FormCreate, dataRestore } from "Components/FormCreate";
-import Ajax from "Pub/js/ajax";
+import { FormCreate } from "Components/FormCreate";
 import "./index.less";
 class PageCopy extends Component {
   constructor(props) {
@@ -15,7 +14,7 @@ class PageCopy extends Component {
    * @param {String|Object} changedFields 改变的字段及值
    */
   handleFormChange = changedFields => {
-    this.props.setCopyNodeData({
+    this.props.setPageCopyData({
       ...this.props.pageCopyData,
       ...changedFields
     });
@@ -43,6 +42,14 @@ class PageCopy extends Component {
         label: "页面编码",
         type: "string",
         code: "oldPageCode",
+        isRequired: false,
+        isedit: false,
+        lg: 12
+      },
+      {
+        label: "页面主键",
+        type: "string",
+        code: "pageId",
         isRequired: false,
         isedit: false,
         lg: 12
