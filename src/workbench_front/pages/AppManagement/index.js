@@ -76,8 +76,8 @@ class AppManagement extends Component {
             action: "页面编码"
           },
           data: {
-            // appCode: parentcode
-            appCode: "1011DETAILUSER"
+            appCode: parentcode
+            // appCode: "1011DETAILUSER"
           },
           success: ({ data: { data } }) => {
             if (data) {
