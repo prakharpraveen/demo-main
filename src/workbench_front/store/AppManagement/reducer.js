@@ -1,6 +1,6 @@
 import * as AppManagement from "./action-type";
-import renameActionType from 'Store/renameActionType';
-renameActionType(AppManagement,'AppManagement');
+import renameActionType from "Store/renameActionType";
+renameActionType(AppManagement, "AppManagement");
 let defaultState = {
   // 树数据
   treeData: [],
@@ -13,7 +13,8 @@ let defaultState = {
     id: "",
     code: "",
     name: "",
-    parentId: ""
+    parentId: "",
+    iscopypage: false
   },
   // 应用复制表单数据
   copyNodeData: {},
