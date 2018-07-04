@@ -91,6 +91,9 @@ class AssignComponent extends Component {
             infoData.templateType = 'query';
         } else if (activeKey === '3') {
             infoData.templateType = 'print';
+            if (infoData.pageCode) {
+                delete infoData.pageCode;
+            }
         }
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -416,6 +419,9 @@ class AssignComponent extends Component {
             infoData.templateType = 'query';
         } else if (activeKey === '3') {
             infoData.templateType = 'print';
+            if (infoData.pageCode) {
+                delete infoData.pageCode;
+            }
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
