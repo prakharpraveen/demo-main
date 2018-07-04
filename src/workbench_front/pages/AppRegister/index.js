@@ -497,14 +497,16 @@ class AppRegister extends Component {
         // 对应树的第一层
         case "0":
           optype = "1";
-          id =  obj.moduleid;
+          id = obj.moduleid;
           this.props.setNodeData(dataTransfer(obj));
           break;
+        // 对应树的第二层
         case "1":
           optype = "2";
-          id =  obj.moduleid;
+          id = obj.moduleid;
           this.props.setNodeData(dataTransfer(obj));
           break;
+        // 对应树的第三层
         case "2":
           let appClassCallBack = data => {
             this.props.setNodeData(dataTransfer(data.appRegisterVO));
@@ -516,10 +518,11 @@ class AppRegister extends Component {
             { pk_appregister: obj.moduleid },
             appClassCallBack
           );
-          id =  obj.moduleid;
+          id = obj.moduleid;
           optype = "3";
           this.props.setNodeData(dataTransfer(obj));
           break;
+        // 对应树的第四层
         case "3":
           let appCallBack = data => {
             this.props.setNodeData(dataTransfer(data.appRegisterVO));
@@ -531,10 +534,11 @@ class AppRegister extends Component {
             { pk_appregister: obj.def1 },
             appCallBack
           );
-          id =  obj.def1;
+          id = obj.def1;
           optype = "4";
           this.props.setNodeData(dataTransfer(obj));
           break;
+        // 对应树的第五层
         case "4":
           let pageCallBack = data => {
             this.props.setNodeData(dataTransfer(data.apppageVO));
@@ -547,7 +551,7 @@ class AppRegister extends Component {
             { pk_apppage: obj.moduleid },
             pageCallBack
           );
-          id =  obj.moduleid;
+          id = obj.moduleid;
           optype = "5";
           this.props.setNodeData(dataTransfer(obj));
           break;
