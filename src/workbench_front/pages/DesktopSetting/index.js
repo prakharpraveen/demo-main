@@ -35,7 +35,7 @@ class Test extends Component {
 	componentDidMount() {
 		this.props.clearData();
 		Ajax({
-			url: `/nccloud/platform/appregister/queryapp.do`,
+			url: `/nccloud/platform/appregister/queryworkbench.do`,
 			info: {
 				name:'工作桌面配置',
 				action:'工作桌面查询'

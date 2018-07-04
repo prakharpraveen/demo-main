@@ -258,7 +258,7 @@ class Home extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.handleHomeLoad);
     Ajax({
-      url: `/nccloud/platform/appregister/queryapp.do`,
+      url: `/nccloud/platform/appregister/queryworkbench.do`,
       info: {
         name: "首页",
         action: "首页加载"
