@@ -38,3 +38,9 @@ export const setZoneDataFun = (getFromData) => {
 		getFromData
 	};
 };
+// 清空数据
+export const clearData = () => {
+	return {
+		type: ZoneRegister.CLEARDATA
+	};
+};

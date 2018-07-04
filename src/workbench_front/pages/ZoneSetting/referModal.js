@@ -22,15 +22,14 @@ class ReferModal extends Component {
 			return;
 		} else {
 			let dataval = this.props.dataval;
-			if (_.isEmpty(dataval)) {
-				return;
+			if (!_.isEmpty(dataval)) {
+				let pk_refinfo = dataval.split(',')[0];
+				this.setState({
+					pk_refinfo: pk_refinfo,
+					refname: nextProps.refname,
+					iscode: nextProps.iscode
+				});
 			}
-			let pk_refinfo = dataval.split(',')[0];
-			this.setState({
-				pk_refinfo: pk_refinfo,
-				refname: nextProps.refname,
-				iscode: nextProps.iscode
-			});
 			let url, data;
 			url = '/nccloud/platform/templet/queryrefinfo.do';
 			data = {
@@ -175,4 +174,4 @@ export default connect(
 		selectCard: state.zoneSettingData.selectCard
 	}),
 	{}
-)(ReferModal);
+)(ReferModal)

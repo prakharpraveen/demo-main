@@ -45,6 +45,11 @@ export const zoneRegisterData = (state = defaultState, action = {}) => {
 					zoneFormData: action.getFromData
 				}
 			};
+		case ZoneRegister.CLEARDATA:
+			return {
+				...state,
+				...defaultState
+			};
 		default:
 			return state;
 	}

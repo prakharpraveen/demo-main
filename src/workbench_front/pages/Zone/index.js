@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Layout } from 'antd';
+import { Layout } from 'antd';
 import { connect } from 'react-redux';
-import propTypes from 'prop-types';
-import { setZoneData, setZoneTempletid, setNewList } from 'Store/Zone/action';
+import {
+	setZoneData,
+	setZoneTempletid,
+	setNewList,
+	clearData
+} from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
 import ModuleFromCard from './ModuleFromCard';
 import { PageLayout } from 'Components/PageLayout';
@@ -13,7 +16,7 @@ import MyBtns from './MyBtns';
 import Myhead from './Myhead';
 import { GetQuery } from 'Pub/js/utils';
 import './index.less';
-const { Header, Footer, Sider, Content } = Layout;
+const { Content } = Layout;
 
 /**
  * 区域配置页面 
@@ -77,5 +80,6 @@ class ZoneRegister extends Component {
 export default connect((state) => ({}), {
 	setZoneData,
 	setZoneTempletid,
-	setNewList
+	setNewList,
+	clearData
 })(ZoneRegister);
