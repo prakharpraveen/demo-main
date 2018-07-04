@@ -48,6 +48,7 @@ class AssignComponent extends Component {
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
+            nodeKey: this.props.nodeKey,
             treeRoData: [],
             treeResData: [],
             org_df_biz: {
@@ -91,6 +92,9 @@ class AssignComponent extends Component {
             infoData.templateType = 'query';
         } else if (activeKey === '3') {
             infoData.templateType = 'print';
+            if(infoData.pageCode){
+                delete infoData.pageCode
+            }
         }
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -323,8 +327,8 @@ class AssignComponent extends Component {
                         if (ele.title.indexOf(value) > -1) {
                             keyArray.push(ele.key);
                         }
-					});
-					return keyArray;
+                    });
+                    return keyArray;
                 }
                 return null;
             })
@@ -412,6 +416,9 @@ class AssignComponent extends Component {
             infoData.templateType = 'query';
         } else if (activeKey === '3') {
             infoData.templateType = 'print';
+            if (infoData.pageCode) {
+                delete infoData.pageCode;
+            }
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
