@@ -484,6 +484,7 @@ class AppRegister extends Component {
    */
   handleTreeNodeSelect = obj => {
     let optype = "";
+    let id;
     let nodeInfo = {
       id: "",
       code: "",
@@ -493,34 +494,48 @@ class AppRegister extends Component {
     };
     if (obj) {
       switch (obj.flag) {
-        // 对应树的前两层
+        // 对应树的第一层
         case "0":
-          if (obj.moduleid.length === 2) {
-            optype = "1";
-          } else {
-            optype = "2";
-          }
+          optype = "1";
+          id =  obj.moduleid;
           this.props.setNodeData(dataTransfer(obj));
           break;
-        // 对应树的3、4层
         case "1":
+          optype = "2";
+          id =  obj.moduleid;
+          this.props.setNodeData(dataTransfer(obj));
+          break;
+        case "2":
+          let appClassCallBack = data => {
+            this.props.setNodeData(dataTransfer(data.appRegisterVO));
+            this.props.setAppParamData(data.appParamVOs);
+          };
+          this.reqTreeNodeData(
+            { name: "应用注册", action: "应用查询" },
+            `/nccloud/platform/appregister/queryapp.do`,
+            { pk_appregister: obj.moduleid },
+            appClassCallBack
+          );
+          id =  obj.moduleid;
+          optype = "3";
+          this.props.setNodeData(dataTransfer(obj));
+          break;
+        case "3":
           let appCallBack = data => {
             this.props.setNodeData(dataTransfer(data.appRegisterVO));
             this.props.setAppParamData(data.appParamVOs);
           };
-          optype = "3";
-          if (obj.parentcode.length > 4) {
-            optype = "4";
-          }
           this.reqTreeNodeData(
             { name: "应用注册", action: "应用查询" },
-            `/nccloud/platform/appregister/query.do`,
-            { pk_appregister: obj.moduleid },
+            `/nccloud/platform/appregister/queryapp.do`,
+            { pk_appregister: obj.def1 },
             appCallBack
           );
+          id =  obj.def1;
+          optype = "4";
+          this.props.setNodeData(dataTransfer(obj));
           break;
-        // 对应树的最后一层
-        case "2":
+        case "4":
           let pageCallBack = data => {
             this.props.setNodeData(dataTransfer(data.apppageVO));
             this.props.setPageButtonData(data.appButtonVOs);
@@ -532,13 +547,15 @@ class AppRegister extends Component {
             { pk_apppage: obj.moduleid },
             pageCallBack
           );
+          id =  obj.moduleid;
           optype = "5";
+          this.props.setNodeData(dataTransfer(obj));
           break;
         default:
           break;
       }
       nodeInfo = {
-        id: obj.moduleid,
+        id,
         code: obj.systypecode,
         name: obj.name,
         parentId: obj.parentcode,
