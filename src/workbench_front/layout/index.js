@@ -81,7 +81,7 @@ class Layout extends Component {
   handleUpdateTitleName = () => {
     let { n } = GetQuery(this.props.location.search);
     if (n && n !== "null") {
-      let nodeName = decodeURIComponent(decodeURIComponent(n));
+      let nodeName = n;
       this.setState(
         {
           nodeName

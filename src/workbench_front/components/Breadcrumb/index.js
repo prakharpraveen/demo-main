@@ -13,10 +13,6 @@ class Breadcrumb extends Component {
 
     render() {
         let {b1, b2, b3, n} = GetQuery(this.props.location.search);
-        b1 = decodeURIComponent(decodeURIComponent(b1));
-        b2 = decodeURIComponent(decodeURIComponent(b2));
-        b3 = decodeURIComponent(decodeURIComponent(b3));
-        n = decodeURIComponent(decodeURIComponent(n));
         return (
             <div className="workbench-breadcrumb">
                 <i

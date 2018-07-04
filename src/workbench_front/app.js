@@ -11,104 +11,14 @@ import Routes from "./routes";
 import Notice from "Components/Notice";
 import moment from "moment";
 import { CreateQuery } from "Pub/js/utils.js";
+import { openApp } from "Pub/js/superJump";
 import "moment/locale/zh-cn";
 import "Assets/iconfont/iconfont.js";
 import "Pub/css/public.less";
 import "./theme/theme.less";
 moment.locale("zh-cn");
 window.proxyAction = $NCPE.proxyAction;
-/**
- * 应用打开
- * @param {String} appcode - 应用编码
- * @param {String} appid - 应用主键
- * @param {String} pagecode - 应用编码
- * @param {Object} win -  新页面 window
- * @param {String} query - 需要传递的参数
- * @param {Object} appInfo - 应用信息
- */
-const openApp = (win, appcode, appid, pagecode, type, query, appInfo) => {
-  /**
-   * 应用信息
-   * pageurl 页面url 地址
-   * field 领域
-   * module 模块
-   * menuclass 菜单分类
-   * menu 菜单
-   */
-  let { pageurl, menu: b4, menuclass: b3, module: b2, field: b1 } = appInfo;
-  if (
-    appcode === "102202APP" ||
-    appcode === "102202MENU" ||
-    appcode === "1022PREGI" ||
-    appcode === "10180TM" ||
-    appcode === "10181TM" ||
-    appcode === "101818AM"
-  ) {
-    type = "own";
-  }
-  b4 = encodeURIComponent(encodeURIComponent(b4));
-  b3 = encodeURIComponent(encodeURIComponent(b3));
-  b2 = encodeURIComponent(encodeURIComponent(b2));
-  b1 = encodeURIComponent(encodeURIComponent(b1));
-  appcode = encodeURIComponent(encodeURIComponent(appcode));
-  pagecode = encodeURIComponent(encodeURIComponent(pagecode));
-  appid = encodeURIComponent(encodeURIComponent(appid));
-  // 面包屑信息及应用编码
-  let breadcrumbInfo = `&c=${appcode}&p=${pagecode}&ar=${appid}&n=${b4}&b1=${b1}&b2=${b2}&b3=${b3}`;
-  // 将参数对象转换成url参数字符串
-  if (query) {
-    /**
-     * defParam 首字符为 &
-     * searchParam 首字符为 ？
-     */
-    let { defParam, searchParam } = CreateQuery(query);
-    if (type !== "own") {
-      // 当前 URI中 包含 ？ 或者 # 和 = 时原始url+默认参数
-      if (
-        pageurl.indexOf("?") != -1 ||
-        (pageurl.indexOf("#") != -1 && pageurl.indexOf("=") != -1)
-      ) {
-        pageurl = pageurl + defParam;
-      }
-      // 当前 URI 中不包含 ？ 或者 包含 # 但不含等号 或者不包含 #
-      if (
-        (pageurl.indexOf("?") === -1 && pageurl.indexOf("=") === -1) ||
-        (pageurl.indexOf("#") !== -1 && pageurl.indexOf("=") === -1) ||
-        (pageurl.indexOf("#") === -1 && pageurl.indexOf("=") === -1)
-      ) {
-        pageurl = pageurl + searchParam;
-      }
-      pageurl = encodeURIComponent(encodeURIComponent(pageurl));
-    } else {
-      // workbench 单页路由传参需要单独处理
-      pageurl = pageurl + searchParam;
-    }
-  } else {
-    if (type !== "own") {
-      pageurl = encodeURIComponent(encodeURIComponent(pageurl + "?"));
-    } else {
-      pageurl = pageurl + "?";
-    }
-  }
-  if (win) {
-    if (type !== "own") {
-      // 浏览器新页签打开业务组应用
-      win.location = `#/ifr?ifr=${pageurl}${breadcrumbInfo}`;
-      win.focus();
-    } else {
-      // 浏览器新页签打开workbench自有应用
-      win.location = `#/${pageurl}${breadcrumbInfo}`;
-      win.focus();
-    }
-  } else {
-    if (type !== "own") {
-      // 浏览器当前页打开
-      window.location.hash = `#/ifr?ifr=${pageurl}${breadcrumbInfo}`;
-    } else {
-      window.location.hash = `#/${pageurl}${breadcrumbInfo}`;
-    }
-  }
-};
+
 class App extends Component {
   constructor(props) {
     super(props);

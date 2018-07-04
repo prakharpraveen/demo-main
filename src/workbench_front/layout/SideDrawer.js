@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Drawer from "react-motion-drawer";
 import { changeDrawer } from "Store/appStore/action";
 import UserLogo from "Assets/images/userLogo.jpg";
+import { openPage } from "Pub/js/superJump";
 import { sprLog } from "./spr";
 class SideDrawer extends Component {
   constructor(props) {
@@ -19,11 +20,12 @@ class SideDrawer extends Component {
   /**
    * 侧边栏当前页跳转页面
    * 采用单页路由方式
-   * @param {String} target 跳转目标页面路由
+   * @param {Object} param 跳转目标页需要传递的参数
+   * @param {String} uri 跳转目标页面路由
    */
-  handeleSkipPage = target => {
+  handeleSkipPage = (uri, param) => {
     let { isOpen } = this.props;
-    this.props.history.push(target);
+    openPage(uri, false, param);
     this.props.changeDrawer(!isOpen);
   };
   /**
@@ -80,7 +82,7 @@ class SideDrawer extends Component {
             <div className="setting-content">
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/ds?n=个人配置");
+                  this.handeleSkipPage("/ds", { b4: "个人配置" });
                 }}
                 className="setting-btn"
               >
@@ -91,7 +93,7 @@ class SideDrawer extends Component {
               </div>
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/ui?n=账户设置");
+                  this.handeleSkipPage("/ui", { b4: "账户设置" });
                 }}
                 className="setting-btn"
               >
@@ -102,7 +104,7 @@ class SideDrawer extends Component {
               </div>
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/c?n=个性化设置");
+                  this.handeleSkipPage("/c", { b4: "个性化设置" });
                 }}
                 className="setting-btn"
               >

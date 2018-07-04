@@ -5,14 +5,17 @@
 export const GetQuery = query => {
   let theRequest = {};
   if (query.indexOf("?") != -1) {
-    let str = query.substr(1);
+    let str = query.split("?")[1];
     if (str.indexOf("&") != -1) {
+      if(str[0] == '&'){
+        str = str.substr(1);
+      }
       let strs = str.split("&");
       for (let i = 0; i < strs.length; i++) {
-        theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
+        theRequest[strs[i].split("=")[0]] = decodeURIComponent(decodeURIComponent(strs[i].split("=")[1]));
       }
     } else {
-      theRequest[str.split("=")[0]] = str.split("=")[1];
+      theRequest[str.split("=")[0]] = decodeURIComponent(decodeURIComponent(str.split("=")[1]));
     }
   }
   return theRequest;
@@ -34,8 +37,8 @@ export const CreateQuery = object => {
   hashParam.splice(0, 1, "#");
   hashParam = hashParam.join("");
   let searchParam = arg.split("");
-  searchParam.splice(0, 1, "#");
-  searchParam = hashParam.join("");
+  searchParam.splice(0, 1, "?");
+  searchParam = searchParam.join("");
   /**
    * defParam &开头的参数
    * hashParam #开头的参数

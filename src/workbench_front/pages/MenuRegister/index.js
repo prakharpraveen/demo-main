@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { updateMenuItemData } from "Store/MenuRegister/action";
 import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
+import { openPage } from "Pub/js/superJump";
 import { PageLayout } from "Components/PageLayout";
 import Notice from "Components/Notice";
 import "./index.less";
@@ -247,10 +248,15 @@ class MenuRegister extends Component {
     switch (key) {
       case "menuitem":
         this.props.updateMenuItemData(record);
-        this.props.history.push(
-          `/mi?id=${record.pk_menu}&mn=${record.menuname}&mt=${
-            record.isdefault && !this.state.isDevelopMode ? 1 : 0
-          }&n=菜单注册&c=102202MENU&b1=动态建模平台&b2=开发配置&b3=应用管理`
+        openPage(
+          "/mi",
+          false,
+          { b4: "菜单注册" },
+          {
+            id: record.pk_menu,
+            mn: record.menuname,
+            mt: record.isdefault && !this.state.isDevelopMode ? 1 : 0
+          }
         );
         break;
       case "del":

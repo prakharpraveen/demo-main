@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Tabs, Button, Table, Input, Popconfirm, Select, Modal } from "antd";
-import { DragDropContext, DragSource, DropTarget } from "react-dnd";
+import { DragSource, DropTarget } from "react-dnd";
 import withDragDropContext from "Pub/js/withDragDropContext";
 import update from "immutability-helper";
 import _ from "lodash";
@@ -12,11 +12,12 @@ import {
   setPageTemplateData,
   setPageActiveKey
 } from "Store/AppRegister/action";
-import { dataTransfer, dataRestore } from "Components/FormCreate";
+import { dataTransfer } from "Components/FormCreate";
 import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import PreviewModal from "./showPreview";
+import { openPage } from "Pub/js/superJump";
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const EditableSelectCell = ({ editable, value, onChange }) => (
@@ -369,7 +370,12 @@ class PageTable extends Component {
     this.setState({ batchSettingModalVisibel: visibel });
   };
   jumpPage = record => {
-    this.props.history.push(`/Zone?t=${record.pk_page_templet}&n=设置页面模板`);
+    openPage(
+      `/Zone`,
+      false,
+      { b4: "页面模板设置" },
+      { t: record.pk_page_templet }
+    );
   };
   /**
    * 设置默认模板
@@ -683,8 +689,11 @@ class PageTable extends Component {
       this.setNewData(newData);
       this.setState({ iserror: false });
     } else if (activeKey === "2") {
-      this.props.history.push(
-        `/Zone?&pid=${id}&pcode=${code}&appcode=${parentcode}&n=设置页面模板`
+      openPage(
+        `/Zone`,
+        false,
+        { b4: "页面模板设置" },
+        { id: id, pcode: code, appcode: parentcode }
       );
     }
   }

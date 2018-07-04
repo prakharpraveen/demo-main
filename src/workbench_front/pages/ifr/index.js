@@ -25,7 +25,6 @@ class Ifr extends Component {
 
   render() {
     let { ifr } = GetQuery(this.props.location.search);
-    ifr = decodeURIComponent(decodeURIComponent(ifr));
     return (
       <div className="nc-workbench-iframe">
         <iframe
