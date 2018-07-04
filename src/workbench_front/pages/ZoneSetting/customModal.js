@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button,Table } from 'antd';
+import { Modal, Button } from 'antd';
 import DefdocListGridRef from "Components/Refers/DefdocListGridRef";
 
 class CustomModal extends Component {

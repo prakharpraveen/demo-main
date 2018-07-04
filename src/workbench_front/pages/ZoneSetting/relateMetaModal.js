@@ -3,9 +3,6 @@ import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
 import { Icon, Tree, Modal, Button } from 'antd';
-import * as utilService from './utilService';
-import BatchSearchTable from './batchSearchTable';
-import BatchNoSearchTable from './batchNoSearchTable';
 import { PageLayout, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
 const TreeNode = Tree.TreeNode;
 

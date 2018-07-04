@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 import CardListDragPreview from './cardListDragPreview';
-let resizeWaiter = false;
 
 @DragLayer((monitor) => ({
 	item: monitor.getItem(),

@@ -1,34 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Table, Input, Icon, Button, InputNumber, Select, Form, Switch } from 'antd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import update from 'immutability-helper';
+import { Table, Input, InputNumber, Select, Switch } from 'antd';
 import _ from 'lodash'; 
-import Notice from 'Components/Notice';
 import * as utilService from './utilService';
-const FormItem = Form.Item;
 const Option = Select.Option;
 
-/**
- * 按钮类型选择
- * @param {String} value 
- */
-const switchType = (value) => {
-	switch (value) {
-		case '1':
-			return '非查询区'
-		case '0':
-			return '查询区'
-		default:
-			return typeof(value ==='object')? (value.metaname): value;	
-	/* 	default:
-			break; */
-	}
-}
 
 // 下拉组件 
-class SelectCell extends React.Component {
+class SelectCell extends Component {
 	state = {
 		value: this.props.value,
 	}

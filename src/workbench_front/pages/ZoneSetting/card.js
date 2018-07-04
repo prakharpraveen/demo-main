@@ -1,11 +1,6 @@
 import { DragSource, DropTarget } from 'react-dnd';
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import * as utilService from './utilService';
 /**
  * 工作桌面 配置模板区域
  */

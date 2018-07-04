@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { Icon, Input, Checkbox, Popconfirm, Tooltip } from 'antd';
 import { updateCurrEditID } from 'Store/test/action';
-import { findDomNode } from 'react-dom';
 const defaultNormalPopTitle = '请输入分组名称，回车确定';
 const defaultErrorPoptitle = "分组名不能为空"
 

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { connect } from 'react-redux';
-import { InputNumber , Icon, Modal, Button } from 'antd';
+import { InputNumber , Modal, Button } from 'antd';
 import Notice from 'Components/Notice';
 
 class InterModal extends Component {
 	constructor(props) {
 		super(props);
-		let {areaList, areaIndex}  = this.props;
 		this.state = {
 			initVal: this.props.initVal,
 			small: '',

@@ -1,5 +1,4 @@
 import { getFirstCollison } from './collision';
-import { layoutHorizontalRowLength } from './utilService';
 /** 
  * 布局的item排序，按照gridx由小到大，gridy由小到大
  * @param {Array} layout 布局的数组

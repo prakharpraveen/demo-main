@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { DragSource, DropTarget } from 'react-dnd';
+import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { findDOMNode } from 'react-dom';
 import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
 import { updateGroupList } from 'Store/test/action';

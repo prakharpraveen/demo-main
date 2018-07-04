@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { updateSelectCard, updateAreaList, clearData } from 'Store/ZoneSetting/action';
 import Ajax from 'Pub/js/ajax';
 import './index.less';

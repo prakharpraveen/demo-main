@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
-// drag && drop
-// import HTML5Backend from 'react-dnd-html5-backend';
-// import { DragDropContext } from 'react-dnd';
 import withDragDropContext from 'Pub/js/withDragDropContext';
 //自定义组件
 import MySider from './sider';

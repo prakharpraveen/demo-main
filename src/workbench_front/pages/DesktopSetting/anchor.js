@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
 import './index.less';
 import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';

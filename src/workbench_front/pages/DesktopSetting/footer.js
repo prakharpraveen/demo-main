@@ -3,10 +3,9 @@ import _ from 'lodash';
 import { Button, Modal, Radio, Popconfirm } from 'antd';
 import Ajax from 'Pub/js/ajax';
 //自定义组件
-import { layoutCheck } from './collision';
-import { compactLayout, compactLayoutHorizontal } from './compact.js';
+import { compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
-import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
+import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import Notice from 'Components/Notice';
 import { withRouter } from 'react-router-dom';

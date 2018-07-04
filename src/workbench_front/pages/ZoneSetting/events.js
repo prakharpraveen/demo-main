@@ -1,5 +1,3 @@
-
-import Ajax from 'Pub/js/ajax';
 export default function (props) {
     // 处理 页面数据 
     let pageResult = [...props.areaList];

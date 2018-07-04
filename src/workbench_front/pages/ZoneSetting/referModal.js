@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button, Select, Checkbox } from 'antd';
-import * as utilService from './utilService';
-import { updateAreaList } from 'Store/ZoneSetting/action';
+import { Modal, Button, Select, Checkbox } from 'antd';
 const Option = Select.Option;
 // sunlei
 class ReferModal extends Component {

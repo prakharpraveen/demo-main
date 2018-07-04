@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Button, Modal, Radio } from 'antd';
-import Ajax from 'Pub/js/ajax';
 //自定义组件
-import { layoutCheck } from './collision';
-import { compactLayout } from './compact.js';
 import { compactLayoutHorizontal } from './compact.js';
 import { connect } from 'react-redux';
-import { updateGroupList, updateSelectCardInGroupObj } from 'Store/test/action';
+import { updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 const RadioGroup = Radio.Group;
 

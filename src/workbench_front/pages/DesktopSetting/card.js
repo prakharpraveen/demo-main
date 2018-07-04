@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
 import { Icon, Checkbox } from 'antd';
 import { connect } from 'react-redux';
-import { compactLayout, compactLayoutHorizontal } from './compact.js';
+import { compactLayoutHorizontal } from './compact.js';
 import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
@@ -76,10 +74,6 @@ class Item extends Component {
 	render() {
 		const {
 			connectDragSource,
-			groupID,
-			groupIndex,
-			id,
-			index,
 			name,
 			gridx,
 			gridy,
@@ -130,8 +124,6 @@ class Item extends Component {
 		return connectDragSource(cardDom);
 	}
 }
-
-const dragDropItem = Item;
 
 export default connect(
 	(state) => ({

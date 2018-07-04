@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button,Icon } from 'antd';
+import {Icon } from 'antd';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import MyCard from './card';
 import BatchSettingModal from './batchSettingModal';
 import AddNotMetaDataModal from './addNotMetaDataModal';

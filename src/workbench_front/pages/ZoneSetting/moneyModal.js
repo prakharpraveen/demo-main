@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
-import { connect } from 'react-redux';
-import { InputNumber, Icon, Modal, Button } from 'antd';
-import * as utilService from './utilService';
+import { InputNumber, Modal, Button } from 'antd';
 import Notice from 'Components/Notice';
-import {  updateAreaList } from 'Store/ZoneSetting/action';
-import BatchSearchTable from './batchSearchTable';
-import BatchNoSearchTable from './batchNoSearchTable';
 // sunlei 
 export default  class MoneyModal extends Component {
 	constructor(props) {

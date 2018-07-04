@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button, Tooltip } from 'antd';
-import * as utilService from './utilService';
+import { Input, Modal, Button} from 'antd';
 import { updateAreaList } from 'Store/ZoneSetting/action';
 
 class AddNotMetaDataModal extends Component {

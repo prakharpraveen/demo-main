@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button } from 'antd';
-import * as utilService from './utilService';
+import {  Modal, Button } from 'antd';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
 import BatchSearchTable from './batchSearchTable';
 import BatchNoSearchTable from './batchNoSearchTable';
