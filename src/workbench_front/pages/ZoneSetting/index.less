@@ -8,7 +8,7 @@
 			background-color: rgba(204, 204, 204, 1);
 		}
 	}
-	.display_none{
+	.display_none {
 		display: none;
 	}
 	.template-setting-header {
@@ -85,21 +85,24 @@
 						width: 20%;
 						border-radius: 4px;
 						display: inline-block;
-						line-height: 32px;
-						.required-card::after{
+						.required-card::after {
 							content: '*';
-							color:red;
+							color: red;
 						}
 						.select-card {
 							background-color: rgba(0, 153, 255, 0.349019607843137);
 						}
 						div {
 							text-align: center;
-							border: 1px solid #fff;
 							transition: all .2s ease-out;
 							color: #474d54;
 							cursor: move;
 							background-color: rgba(9, 44, 66, .08);
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							line-height: 32px;
+							width: 100%;
 							.delete-card {
 								position: absolute;
 								right: 0;
@@ -223,7 +226,7 @@
 		}
 	}
 }
-.Formula{
+.Formula {
 	overflow: auto !important;
 }
 .template-setting-left-sider {
@@ -273,21 +276,21 @@
 	.ant-modal-body {
 		display: flex;
 		align-items: center;
-		.code-div{
+		.code-div {
 			margin-top: 10px;
 		}
 		input {
 			width: 300px;
 		}
-		input.has-error:focus{
+		input.has-error:focus {
 			border-color: red;
-			box-shadow:none;
+			box-shadow: none;
 		}
-		input.has-error{
+		input.has-error {
 			border-color: red;
-			box-shadow:none;
+			box-shadow: none;
 		}
-		.form-explain{
+		.form-explain {
 			color: red;
 			margin-left: 5px;
 		}
@@ -330,8 +333,8 @@
 .zonesetting-interModal {
 	.ant-modal-body {
 		display: flex;
-		.inter-label{
-			margin:0 10px 0 30px;
+		.inter-label {
+			margin: 0 10px 0 30px;
 		}
 		.ant-input {
 			margin-left: 10px;
@@ -350,7 +353,7 @@
 	.mdcontent {
 		display: flex;
 		div {
-			.money-label{
+			.money-label {
 				margin: 0 10px 0 20px;
 			}
 			//width: 50%;

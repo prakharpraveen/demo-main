@@ -11,17 +11,28 @@ class ReferModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			initVal: this.props.initVal,
-			isCheck: this.props.iscode,
+			pk_refinfo: '',
+			refname: this.props.refname,
+			iscode: this.props.iscode,
 			option: []
 		};
+		this.onOkDialog = this.onOkDialog.bind(this)
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.modalVisibel !== true) {
 			return;
 		} else {
-			this.setState({ initVal: nextProps.initVal, isCheck: nextProps.iscode });
+			let dataval = this.props.dataval;
+			if (_.isEmpty(dataval)) {
+				return;
+			}
+			let pk_refinfo = dataval.split(',')[0];
+			this.setState({
+				pk_refinfo: pk_refinfo,
+				refname: nextProps.refname,
+				iscode: nextProps.iscode
+			});
 			let url, data;
 			url = '/nccloud/platform/templet/queryrefinfo.do';
 			data = {
@@ -48,8 +59,16 @@ class ReferModal extends Component {
 	showModalHidden = () => {
 		this.props.setModalVisibel('refer', false);
 	};
-	onOkDialog = () => {
-		let { initVal, isCheck } = this.state;
+	async  onOkDialog(){
+		let { refname, iscode, pk_refinfo } = this.state;
+		const mycode = iscode ? 'Y' : 'N';
+
+		//设置参照refname
+		await this.props.handleSelectChange(refname, 'refname');
+		// 设置参照名称
+		await this.props.handleSelectChange(`${pk_refinfo},code=${mycode}`, 'dataval');
+		// 设置iscode
+		await this.props.handleSelectChange(iscode, 'iscode');
 		Ajax({
 			url: `/nccloud/platform/templet/getMetaByRefName.do`,
 			info: {
@@ -57,8 +76,8 @@ class ReferModal extends Component {
 				action: '获取元数据数据'
 			},
 			data: {
-				iscode: isCheck ? 'N' : 'Y',
-				refname: initVal
+				iscode: mycode,
+				refname: refname
 			},
 			success: (res) => {
 				if (res) {
@@ -66,29 +85,23 @@ class ReferModal extends Component {
 					if (success && data) {
 						// 设置元数据属性
 						this.props.handleSelectChange(data, 'metadataproperty');
-						//设置参照refname
-						this.props.handleSelectChange(initVal, 'refname');
-						// 设置参照名称
-						this.props.handleSelectChange(initVal, 'dataval');
-						// 设置iscode
-						this.props.handleSelectChange(isCheck, 'iscode');
 					}
 				}
 			}
 		});
 		this.showModalHidden();
 	};
-	handleSelectChange = (val) => {
-		this.setState({ initVal: val });
+	handleSelectChange = (pk_refinfo, name) => {
+		this.setState({ pk_refinfo: pk_refinfo, refname: name });
 	};
 	saveValue = (e, type) => {
 		let val;
 		val = e.target.checked;
-		this.setState({ isCheck: val });
+		this.setState({ iscode: val });
 	};
 	render() {
-		let { isCheck, option, initVal } = this.state;
-		console.log(initVal, isCheck, this.props.selectCard);
+		let { iscode, option, refname, pk_refinfo } = this.state;
+		// console.log(refname, iscode, this.props.selectCard);
 		return (
 			<div className='myZoneModal'>
 				<Modal
@@ -123,15 +136,15 @@ class ReferModal extends Component {
 									optionFilterProp='children'
 									filterOption={(input, option) =>
 										option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-									value={initVal}
-									onChange={(value) => {
-										this.handleSelectChange(value);
+									value={pk_refinfo}
+									onChange={(value, optionObj) => {
+										this.handleSelectChange(value, optionObj.props.children);
 									}}
 									style={{ width: 200 }}
 								>
 									{option.map((c, index) => {
 										return (
-											<Option key={index} value={c.name}>
+											<Option key={index} value={c.pk_refinfo}>
 												{c.name}
 											</Option>
 										);
@@ -144,9 +157,9 @@ class ReferModal extends Component {
 						<div className='descrip_label'>关联设置 </div>
 						<div className='mdcontent'>
 							<div>
-								<span className='refer_label'>焦点离开后参照显示名称:</span>
+								<span className='refer_label'>焦点离开后参照显示编码:</span>
 								<Checkbox
-									checked={isCheck}
+									checked={iscode}
 									onChange={(e) => {
 										this.saveValue(e);
 									}}

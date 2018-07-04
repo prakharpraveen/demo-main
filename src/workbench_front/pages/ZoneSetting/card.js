@@ -22,7 +22,7 @@ const cardSource = {
 		// you can implement something like this to keep its
 		// appearance dragged:
 		return monitor.getItem().id === props.id;
-	  },
+	}
 };
 
 const cardTarget = {
@@ -90,33 +90,46 @@ class MyCard extends Component {
 		this.props.deleteCard(this.props.index);
 	};
 
-	selectThisCard=()=>{
+	selectThisCard = () => {
 		this.props.selectThisCard(this.props.index);
-	}
+	};
 
-	getCardClassName=()=>{
-		const {selectCard,required,id,areaid} = this.props;
-		let result = "";
-		if(required){
-			result = " required-card"
+	getCardClassName = () => {
+		const { selectCard, required, id, areaid } = this.props;
+		let result = '';
+		if (required) {
+			result = ' required-card';
 		}
-		if(selectCard.pk_query_property=== id && selectCard.areaid === areaid){
-			result = `select-card${result}`
-		}else{
-			result = `normal-card${result}`
+		if (selectCard.pk_query_property === id && selectCard.areaid === areaid) {
+			result = `select-card${result}`;
+		} else {
+			result = `normal-card${result}`;
 		}
 		return result;
-	}
-	
+	};
+
 	render() {
-		const { index, name, id, key, selectCard, areaid, visible, color, isDragging, connectDragSource, connectDropTarget } = this.props;
-		const opacity = isDragging ? 0 : (visible ? 1 : 0.5);
+		const {
+			index,
+			name,
+			id,
+			key,
+			selectCard,
+			areaid,
+			visible,
+			color,
+			isDragging,
+			connectDragSource,
+			connectDropTarget
+		} = this.props;
+		const opacity = isDragging ? 0 : visible ? 1 : 0.5;
 		const myClassName = this.getCardClassName();
+		const myShowName = _.isEmpty(name) ? String.fromCharCode(160) : name;
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' style={{ opacity: opacity }} onClick={this.selectThisCard}>
-					<div style={{color:color}} className={myClassName}>
-						{name}
+					<div style={{ color: color }} className={myClassName} title={myShowName}>
+						{myShowName}
 						<span className='delete-card' onClick={this.deleteCard}>
 							x
 						</span>
@@ -126,6 +139,9 @@ class MyCard extends Component {
 		);
 	}
 }
-export default connect((state) => ({
-	selectCard: state.zoneSettingData.selectCard
-}), {})(MyCard);
+export default connect(
+	(state) => ({
+		selectCard: state.zoneSettingData.selectCard
+	}),
+	{}
+)(MyCard);

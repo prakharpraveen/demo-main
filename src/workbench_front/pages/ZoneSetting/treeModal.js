@@ -52,6 +52,7 @@ class TreeModal extends Component {
 					required: false,
 					disabled: false,
 					visible: true,
+					ismultiselectedenabled:false,
 					isquerycondition: true,
 					refname: datatype === '204' ? modelname : '-99',
 					containlower: isLeaf ? false : true,
@@ -100,6 +101,7 @@ class TreeModal extends Component {
 			if (cardObj.datatype === '204') {
 				cardObj.metaid = refpk;
 				cardObj.iscode = false;
+				cardObj.modelname = modelname;
 			}
 			cardObj.itemtype = utilService.getItemtypeByDatatype(cardObj.datatype);
 
@@ -109,8 +111,8 @@ class TreeModal extends Component {
 		if (this.props.targetAreaType !== '0') {
 			let ajaxData = [];
 			_.forEach(cardList, (c) => {
-				if (c.metaid) {
-					ajaxData.push(c.metaid);
+				if (c.modelname) {
+					ajaxData.push(c.modelname);
 				}
 			});
 			if (ajaxData.length > 0) {
@@ -124,12 +126,12 @@ class TreeModal extends Component {
 					success: (res) => {
 						if (res) {
 							let { data, success } = res.data;
-							if (success && data && data.length > 0) {
+							if (success && data) {
 								_.forEach(data, (d) => {
 									_.forEach(cardList, (c) => {
-										if (d[c.metaid]) {
-											c.dataval = d[c.metaid];
-											c.refname = d[c.metaid];
+										if (d.name === c.modelname) {
+											c.dataval = `${d.pk_refinfo},code=N`;
+											c.refname = d.name;
 										}
 									});
 								});
@@ -171,7 +173,7 @@ class TreeModal extends Component {
 	//关于树的方法
 	//选中
 	onCheck = (checkedKeys, info) => {
-		console.log('onCheck', checkedKeys, info);
+		// console.log('onCheck', checkedKeys, info);
 		_.forEach(info.checkedNodes, (v, i) => {
 			_.forEach(v.props.children, (c, index) => {
 				if (checkedKeys.checked.indexOf(c.key) === -1) {
@@ -182,7 +184,7 @@ class TreeModal extends Component {
 		this.setState({ checkedKeys: checkedKeys });
 	};
 	onSelect = (selectedKeys, info) => {
-		console.log('onSelect', selectedKeys, info);
+		// console.log('onSelect', selectedKeys, info);
 
 		this.setState({ selectedKeys, selectedNodes: info.selectedNodes });
 	};
@@ -298,7 +300,7 @@ class TreeModal extends Component {
 				});
 			});
 		}
-		console.log(selectedKeys);
+		// console.log(selectedKeys);
 		this.setState({ selectedKeys });
 	};
 	handleChangeSelectTreeNode = (value) => {

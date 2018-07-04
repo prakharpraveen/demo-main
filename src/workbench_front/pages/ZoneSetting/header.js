@@ -27,7 +27,9 @@ class MyHeader extends Component {
 		const { areaList } = this.props;
 		let formPropertyList = [];
 		let queryPropertyList = [];
+		let areaidList = [];
 		_.forEach(areaList, (a, index) => {
+			areaidList.push(a.pk_area);
 			if (a.areatype === '0') {
 				queryPropertyList = queryPropertyList.concat(a.queryPropertyList);
 			} else {
@@ -36,16 +38,13 @@ class MyHeader extends Component {
 		});
 
 		const saveData = {};
-		if (formPropertyList.length !== 0) {
-			saveData.formPropertyList = formPropertyList;
-		}
-		if (queryPropertyList.length !== 0) {
-			saveData.queryPropertyList = queryPropertyList;
-		}
+		saveData.areaidList = areaidList;
+		saveData.formPropertyList = formPropertyList;
+		saveData.queryPropertyList = queryPropertyList;
 
-		if (queryPropertyList.length === 0 && formPropertyList.length === 0) {
-			return;
-		}
+		// if (queryPropertyList.length === 0 && formPropertyList.length === 0) {
+		// 	return;
+		// }
 		Ajax({
 			url: `/nccloud/platform/templet/setareaproperty.do`,
 			info: {
@@ -62,8 +61,11 @@ class MyHeader extends Component {
 						this.props.history.push(`/templateSetting`);
 						return;
 					}
-					this.props.history.push(`/ZoneSettingComplete?templetid=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`);
-				}else{
+					this.props.history.push(
+						`/ZoneSettingComplete?templetid=${this.props
+							.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`
+					);
+				} else {
 					Notice({ status: 'error', msg: data });
 				}
 			}
@@ -81,16 +83,16 @@ class MyHeader extends Component {
 						title='确定返回上一个页面吗？'
 						onConfirm={() => {
 							let param = GetQuery(this.props.location.search);
-							if (param.status){
-								// 实施态 
+							if (param.status) {
+								// 实施态
 								this.props.history.push(`/templateSetting`);
-							}else{
+							} else {
 								// 开发态
 								this.props.history.push(
-									`/Zone?t=${this.props.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`
+									`/Zone?t=${this.props
+										.templetid}&pcode=${param.pcode}&pid=${param.pid}&appcode=${param.appcode}`
 								);
 							}
-						
 						}}
 						placement='top'
 						okText='确定'
@@ -105,7 +107,7 @@ class MyHeader extends Component {
 						title='确定取消配置？'
 						onConfirm={() => {
 							let param = GetQuery(this.props.location.search);
-							this.props.history.push(`/ar?n=应用注册&c=102202APP&b1=动态建模平台&b2=开发配置&b3=应用管理`)
+							this.props.history.push(`/ar?n=应用注册&c=102202APP&b1=动态建模平台&b2=开发配置&b3=应用管理`);
 						}}
 						placement='top'
 						okText='确定'

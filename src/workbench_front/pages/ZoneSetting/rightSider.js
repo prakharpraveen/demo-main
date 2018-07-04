@@ -18,24 +18,34 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer, FormulaEditor } = high;
 const Search = Input.Search;
 
-
 function Formula({ setName, setExplain, name }) {
-	return (<div className='Formula'>
-		<ul>
-			{(() => {
-				let propertyList = name && name.queryPropertyList;
-				return propertyList && propertyList.map((v, i) => {
-					return <li
-						onDoubleClick={() => { setExplain(`${name.code}.${v.code}`) }}
-						onClick={() => { setName(`${name.code}.${v.code}`) }}
-						key={i}>
-						{v.label}
-					</li>
-				})
-			})()}
-		</ul>
-	</div>)
-	
+	return (
+		<div className='Formula'>
+			<ul>
+				{(() => {
+					let propertyList = name && name.queryPropertyList;
+					return (
+						propertyList &&
+						propertyList.map((v, i) => {
+							return (
+								<li
+									onDoubleClick={() => {
+										setExplain(`${name.code}.${v.code}`);
+									}}
+									onClick={() => {
+										setName(`${name.code}.${v.code}`);
+									}}
+									key={i}
+								>
+									{v.label}
+								</li>
+							);
+						})
+					);
+				})()}
+			</ul>
+		</div>
+	);
 }
 class MyRightSider extends Component {
 	constructor(props) {
@@ -101,9 +111,7 @@ class MyRightSider extends Component {
 		}
 		selectCard = { ...selectCard };
 		selectCard[property] = value;
-		this.asyncUpdateSelectCard(selectCard).then(() => {
-			this.updateCardInArea(property);
-		});
+		this.asyncUpdataCardAndAreaList(selectCard, property);
 	};
 	onPressEnter = (value, property) => {
 		this[`${property}input`].blur();
@@ -158,7 +166,7 @@ class MyRightSider extends Component {
 			/>
 		);
 	};
-	//下拉选择的事件处理
+	//原用做下拉选择的事件处理,现用来先更新selectCard后更新areaList
 	handleSelectChange = (value, property) => {
 		let { selectCard } = this.props;
 		if (_.isEmpty(selectCard)) {
@@ -167,13 +175,16 @@ class MyRightSider extends Component {
 		selectCard = { ...selectCard };
 		selectCard[property] = value;
 
-		if(property === 'datatype'){
+		if (property === 'datatype') {
 			selectCard.itemtype = utilService.getItemtypeByDatatype(selectCard.datatype);
 		}
-		this.asyncUpdateSelectCard(selectCard).then(() => {
-			this.updateCardInArea(property);
-		});
+		this.asyncUpdataCardAndAreaList(selectCard, property);
 	};
+	//异步更新selectCard后更新areaList
+	async asyncUpdataCardAndAreaList(selectCard, property) {
+		await this.props.updateSelectCard(selectCard);
+		await this.updateCardInArea(property);
+	}
 	//获取下拉选择Dom
 	getMySelect = (mySelectObj, property) => {
 		return (
@@ -192,19 +203,18 @@ class MyRightSider extends Component {
 			>
 				{(() => {
 					if (property === 'color') {
-					return	mySelectObj.map((c, index) => {
+						return mySelectObj.map((c, index) => {
 							return (
-								<Option key={index} value={c.value}  >
-									<span className="template-setting-color-select">
+								<Option key={index} value={c.value}>
+									<span className='template-setting-color-select'>
 										<span>{c.name}</span>
-										<span className="color-select-color" style={{ backgroundColor: c.value }}>
-										</span>
+										<span className='color-select-color' style={{ backgroundColor: c.value }} />
 									</span>
 								</Option>
 							);
 						});
 					} else {
-						return	mySelectObj.map((c, index) => {
+						return mySelectObj.map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
@@ -216,17 +226,12 @@ class MyRightSider extends Component {
 			</Select>
 		);
 	};
-	async asyncUpdateSelectCard(selectCard) {
-		let user = await this.props.updateSelectCard(selectCard);
-		return user;
-	}
-
 	//
 	getMetaType = (selectCard) => {
 		if (!!selectCard.metapath) return true; // 是元数据
 		return false; // 不是元数据 默认没选的情况是false
 	};
-	// 获取当前区域的类型 
+	// 获取当前区域的类型
 	getAreaType = (areaList, selectCard) => {
 		let result;
 		_.forEach(areaList, (val, index) => {
@@ -246,7 +251,7 @@ class MyRightSider extends Component {
 			_.forEach(val.queryPropertyList, (v, i) => {
 				if (selectCard.areaid === v.areaid) {
 					result = val;
-					return ;
+					return;
 				}
 			});
 		});
@@ -279,6 +284,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
+						<li>多选</li>
+						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
 						<li>固定条件</li>
 						<li>{this.getMyCheckbox('isfixedcondition')}</li>
 						<li>必输条件</li>
@@ -296,7 +303,9 @@ class MyRightSider extends Component {
 						<li>使用系统函数</li>
 						<li>{this.getMyCheckbox('usefunc')}</li>
 						<li>组件类型</li>
-						<li>{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}</li>
+						<li>
+							{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}
+						</li>
 						<li>显示类型</li>
 						<li>{this.getMySelect(utilService.showType, 'showtype')}</li>
 						<li>返回类型</li>
@@ -343,6 +352,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
+						<li>多选</li>
+						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
 						<li>固定条件</li>
 						<li>{this.getMyCheckbox('isfixedcondition')}</li>
 						<li>必输条件</li>
@@ -372,7 +383,9 @@ class MyRightSider extends Component {
 						<li>类型设置</li>
 						<li>{this.getMyInput('类型设置', 'dataval')}</li>
 						<li>组件类型</li>
-						<li>{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}</li>
+						<li>
+							{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}
+						</li>
 						<li>自定义1</li>
 						<li>{this.getMyInput('自定义1', 'define1')}</li>
 						<li>自定义2</li>
@@ -417,6 +430,7 @@ class MyRightSider extends Component {
 				size='small'
 				style={{ width: 176 }}
 				value={selectCard[key]}
+				onChange={() => {}}
 				onSearch={() => {
 					this.setState({ [whichModalVisibel]: true });
 				}}
@@ -429,16 +443,17 @@ class MyRightSider extends Component {
 			<Search
 				size='small'
 				style={{ width: 176 }}
-				value={selectCard[key]} 
+				value={selectCard[key]}
+				onChange={() => {}}
 				onSearch={() => {
 					//this.refs[key].setShow(true);
-					this.setState({ [key]: true})	
-				//	this.refs[key].handleTextAreaChange(selectCard[key]);
+					this.setState({ [key]: true });
+					//	this.refs[key].handleTextAreaChange(selectCard[key]);
 				}}
 			/>
 		);
 	};
-	//非查询区，元数据属性||非元数据 	
+	//非查询区，元数据属性||非元数据
 	getDom3 = (areaType, isMetaData) => {
 		const { selectCard } = this.props;
 		const isShowRelateMeta = selectCard.datatype === '204' ? 'block' : 'none';
@@ -505,37 +520,39 @@ class MyRightSider extends Component {
 						})()}
 						<li>类型设置</li>
 						{(() => {
-							if (isMetaData ) {
-								if(selectCard.datatype === '204'){
+							if (isMetaData) {
+								if (selectCard.datatype === '204') {
 									return (
 										<li>
-											{this.getMySearch('dataval', 'ReferModalVisibel')}
+											{this.getMySearch('refname', 'ReferModalVisibel')}
 											<ReferModal
 												handleSelectChange={this.handleSelectChange}
-												initVal={selectCard.dataval}
+												dataval={selectCard.dataval}
+												refname={selectCard.refname}
 												iscode={selectCard.iscode}
 												modalVisibel={this.state.ReferModalVisibel}
 												setModalVisibel={this.setModalVisibel}
 											/>
 										</li>
 									);
-								}else{
-									return <li/>
+								} else {
+									return <li />;
 								}
-								
 							} else {
 								switch (selectCard.datatype) {
 									case '204':
 										return (
 											<li>
-											{this.getMySearch('dataval', 'ReferModalVisibel')}
-											<ReferModal
-												handleSelectChange={this.handleSelectChange}
-												initVal={selectCard.dataval}
-												modalVisibel={this.state.ReferModalVisibel}
-												setModalVisibel={this.setModalVisibel}
-											/>
-										</li>
+												{this.getMySearch('refname', 'ReferModalVisibel')}
+												<ReferModal
+													handleSelectChange={this.handleSelectChange}
+													dataval={selectCard.dataval}
+													refname={selectCard.refname}
+													iscode={selectCard.iscode}
+													modalVisibel={this.state.ReferModalVisibel}
+													setModalVisibel={this.setModalVisibel}
+												/>
+											</li>
 										);
 									case '2':
 										return (
@@ -616,31 +633,33 @@ class MyRightSider extends Component {
 						})()}
 
 						<li>组件类型</li>
-						<li>{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}</li>
+						<li>
+							{this.getMySelect(utilService.getItemtypeObjByDatatype(selectCard.datatype), 'itemtype')}
+						</li>
 						<li>显示公式</li>
 						<li>
 							{this.getMyFormulaSearch('showformula')}
 							<FormulaEditor
 								value={selectCard['showformula']}
-								noControlBtns={["validate"]}
+								noControlBtns={[ 'validate' ]}
 								isValidateOnOK={false}
 								treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
 									classid: ''
-								}} 
-								noShowAttr={['元数据属性']}
+								}}
+								noShowAttr={[ '元数据属性' ]}
 								show={this.state.showformula}
-								onHide = {()=>{
-									this.setState({ showformula: false })
+								onHide={() => {
+									this.setState({ showformula: false });
 								}}
 								attrConfig={this.state.tab}
 								onOk={(val) => {
 									this.handleSelectChange(val, 'showformula');
-									this.setState({ showformula: false })
+									this.setState({ showformula: false });
 								}}
-								onCancel={()=>{
-									this.setState({ showformula:false})
+								onCancel={() => {
+									this.setState({ showformula: false });
 								}}
 							/>
 						</li>
@@ -649,19 +668,19 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('editformula')}
 							<FormulaEditor
 								value={selectCard['editformula']}
-								noShowAttr={['元数据属性']}
+								noShowAttr={[ '元数据属性' ]}
 								show={this.state.editformula}
 								onHide={() => {
-									this.setState({ editformula: false })
+									this.setState({ editformula: false });
 								}}
-								noControlBtns={['validate']}
+								noControlBtns={[ 'validate' ]}
 								attrConfig={this.state.tab}
 								onOk={(val) => {
 									this.handleSelectChange(val, 'editformula');
-									this.setState({ editformula: false })
+									this.setState({ editformula: false });
 								}}
 								onCancel={() => {
-									this.setState({ editformula: false })
+									this.setState({ editformula: false });
 								}}
 							/>
 						</li>
@@ -671,26 +690,26 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('validateformula')}
 							<FormulaEditor
 								value={selectCard['validateformula']}
-								noControlBtns={['validate']}
+								noControlBtns={[ 'validate' ]}
 								isValidateOnOK={false}
 								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
 									classid: ''
 								}} */
-								noShowAttr={['元数据属性']}
+								noShowAttr={[ '元数据属性' ]}
 								show={this.state.validateformula}
 								onHide={() => {
-									this.setState({ validateformula: false })
+									this.setState({ validateformula: false });
 								}}
 								attrConfig={this.state.tab}
 								onOk={(val) => {
 									debugger;
 									this.handleSelectChange(val, 'validateformula');
-									this.setState({ validateformula: false })
+									this.setState({ validateformula: false });
 								}}
 								onCancel={() => {
-									this.setState({ validateformula: false })
+									this.setState({ validateformula: false });
 								}}
 							/>
 						</li>
@@ -704,11 +723,11 @@ class MyRightSider extends Component {
 				</TabPane>
 			</Tabs>
 		);
-	};	
+	};
 
-	// 获取主表 
+	// 获取主表
 	getMainArea = (areaList, headcode) => {
-		if (!headcode) return ; 
+		if (!headcode) return;
 		let result;
 		_.forEach(areaList, (val, index) => {
 			if (val.code === headcode) {
@@ -719,28 +738,29 @@ class MyRightSider extends Component {
 		return result;
 	};
 
-	componentWillReceiveProps(nextProps){
-		this.handleFormula(nextProps)
+	componentWillReceiveProps(nextProps) {
+		this.handleFormula(nextProps);
 	}
-	// 公式编辑器 
-	handleFormula = (props) =>{
+	// 公式编辑器
+	handleFormula = (props) => {
 		const { selectCard, areaList } = props;
-		if (_.isEmpty(selectCard) || _.isEmpty(areaList)) return ;
+		if (_.isEmpty(selectCard) || _.isEmpty(areaList)) return;
 		let headcode = areaList[0] && areaList[0].headcode;
 		let area = this.getArea(areaList, selectCard);
 		let mainArea = this.getMainArea(areaList, headcode);
 		let tab;
-		//  headcode 存在 时候最多有两个 table或者自己主表单时为一个 
-		//  headcode 不存在 只有一个 tab  
-		if (!headcode || (headcode && headcode === area.code) ){
-			tab = [{ tab: area.name, TabPaneContent: Formula, params: { name: area} }]
+		//  headcode 存在 时候最多有两个 table或者自己主表单时为一个
+		//  headcode 不存在 只有一个 tab
+		if (!headcode || (headcode && headcode === area.code)) {
+			tab = [ { tab: area.name, TabPaneContent: Formula, params: { name: area } } ];
+		} else if (headcode && headcode !== area.code) {
+			tab = [
+				{ tab: area.name, TabPaneContent: Formula, params: { name: area } },
+				{ tab: mainArea.name, TabPaneContent: Formula, params: { name: mainArea } }
+			];
 		}
-
-		else if (headcode && headcode !== area.code) {
-			tab = [{ tab: area.name, TabPaneContent: Formula, params: { name: area } }, { tab: mainArea.name, TabPaneContent: Formula, params: { name: mainArea } }]
-		}
-		this.setState({tab});
-	}
+		this.setState({ tab });
+	};
 	render() {
 		const { selectCard, areaList } = this.props;
 		// 1 判断是否是元数据 2 判断所属的类型是否是查询区  默认是 不是元数据 不是查询区
@@ -766,7 +786,6 @@ class MyRightSider extends Component {
 				result_div = this.getDom3(areaType, isMetaData);
 			}
 		}
-		
 
 		return (
 			<div className='template-setting-right-sider template-setting-sider'>

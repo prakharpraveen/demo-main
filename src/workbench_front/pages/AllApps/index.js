@@ -42,7 +42,8 @@ class AllApps extends Component {
         action: "查询模块下应用"
       },
       data: {
-        own_module: moduleID
+		own_module: moduleID,
+		apptype: "1"
       },
       success: res => {
         const { data, success } = res.data;

@@ -38,6 +38,7 @@ class AddNotMetaDataModal extends Component {
 				required: false,
 				disabled: false,
 				visible: true,
+				ismultiselectedenabled:false,
 				isquerycondition: false,
 				datatype: '1',
 				refname: '-99',
