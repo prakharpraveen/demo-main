@@ -62,9 +62,11 @@ class TemplateSetting extends Component {
             autoExpandParent: true,
             treeTemBillData: [], //单据模板数据
             treeTemQueryData: [], //查询模板数据
+            treeTemPrintData:[],
             treePrintTemData: [],
             treeTemBillDataArray: [],
             treeTemQueryDataArray: [],
+            treeTemPrintDataArray: [],
             templatePks: '',
             visible: false,
             templateNameVal: '',
@@ -105,14 +107,10 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '删除':
-                if (activeKey === '3') {
+                if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    if (parentIdcon === 'root') {
-                        isShow = false;
-                    } else {
-                        isShow = true;
-                    }
+                    isShow = true;
                 }
                 break;
             case '复制':
@@ -130,10 +128,13 @@ class TemplateSetting extends Component {
                 break;
             case '浏览':
                 isShow = true;
+                if (activeKey === '3') {
+                    isShow = false;
+                }
                 break;
             case '刷新':
                 if (activeKey === '3') {
-                    isShow = true;
+                    isShow = false;
                 }
                 break;
             default:
@@ -166,15 +167,23 @@ class TemplateSetting extends Component {
             appCode: appCode,
             orgId: orgidObj.refpk
         };
+        let url;
         if (activeKey === '1') {
             infoData.templateType = 'bill';
+            url = `/nccloud/platform/template/copyTemplate.do`;
         } else if (activeKey === '2') {
             infoData.templateType = 'query';
+            url = `/nccloud/platform/template/copyTemplate.do`;
         } else if (activeKey === '3') {
-            infoData.templateType = 'print';
+            if (!templateTitleVal) {
+                Notice({ status: 'warning', msg: '请输入模板标题' });
+                return;
+            }
+            infoData.templateCode = templateTitleVal;
+            url = `/nccloud/platform/template/copyPrintTemplate.do`;
         }
         Ajax({
-            url: `/nccloud/platform/template/copyTemplate.do`,
+            url: url,
             data: infoData,
             info: {
                 name: '模板设置',
@@ -186,7 +195,8 @@ class TemplateSetting extends Component {
                     this.reqTreeTemData();
                     this.setState({
                         visible: false,
-                        templateNameVal: ''
+                        templateNameVal: '',
+                        templateTitleVal: ''
                     });
                 }
             }
@@ -196,12 +206,13 @@ class TemplateSetting extends Component {
     handleCancel = (e) => {
         this.setState({
             visible: false,
-            templateNameVal: ''
+            templateNameVal: '',
+            templateTitleVal: ''
         });
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, pageCode } = this.state;
+        let { templateNameVal, templatePks, pageCode, activeKey } = this.state;
         let infoData = {
             templateId: templatePks
         };
@@ -293,8 +304,10 @@ class TemplateSetting extends Component {
     restoreTreeTemData = (templateType) => {
         let {
             treeTemBillData,
+            treeTemPrintData,
             treeTemBillDataArray,
             treeTemQueryDataArray,
+            treeTemPrintDataArray,
             selectedKeys,
             parentIdcon,
             activeKey,
@@ -316,25 +329,28 @@ class TemplateSetting extends Component {
                 }
             });
             treeInfo = generateTemData(treeTemQueryDataArray);
+        }else if (templateType === 'print') {
+            treeTemPrintDataArray.map((item) => {
+                if (item.isDefault === 'y') {
+                    item.name = item.name + ' [默认]';
+                }
+            });
+            treeInfo = generateTemData(treeTemPrintDataArray);
         }
         let { treeArray, treeObj } = treeInfo;
         treeArray.map((item, index) => {
             const groupObj = {
-                key: 'qazwsxedc1',
-                text: '集团',
-                name: '集团',
-                title: '集团',
+                name: '集团模板',
+                title: '集团模板',
                 pk: 'qazwsxedc1',
-                code: 'qazwsxedc1',
+                code:'1001',
                 children: []
             };
             const orgIdObj = {
-                key: 'qazwsxedc2',
-                text: '组织',
-                title: '组织',
-                name: '组织',
-                code: 'qazwsxedc2',
+                title: '组织模板',
+                name: '组织模板',
                 pk: 'qazwsxedc2',
+                code:'1002',
                 children: []
             };
             item.children.push(groupObj);
@@ -371,6 +387,11 @@ class TemplateSetting extends Component {
             treeTemQueryData = treeData;
             this.setState({
                 treeTemQueryData
+            });
+        }else if (templateType === 'print') {
+            treeTemPrintData = treeData;
+            this.setState({
+                treeTemPrintData
             });
         }
     };
@@ -426,9 +447,6 @@ class TemplateSetting extends Component {
         if (infoData.pageCode) {
             delete infoData.pageCode;
         }
-        if (infoData.pageCode) {
-            delete infoData.pageCode;
-        }
         infoData.templateType = 'print';
         this.reqTreeTemAjax(infoData, 'print');
     };
@@ -456,6 +474,15 @@ class TemplateSetting extends Component {
                         this.setState(
                             {
                                 treeTemQueryDataArray: data.data
+                            },
+                            () => {
+                                this.restoreTreeTemData(templateType);
+                            }
+                        );
+                    }else if (templateType === 'print') {
+                        this.setState(
+                            {
+                                treeTemPrintDataArray: data.data
                             },
                             () => {
                                 this.restoreTreeTemData(templateType);
@@ -654,6 +681,7 @@ class TemplateSetting extends Component {
         const {
             treeData,
             treeTemBillData,
+            treeTemPrintData,
             treeTemQueryData,
             templateNameVal,
             visible,
@@ -665,6 +693,7 @@ class TemplateSetting extends Component {
             batchSettingModalVisibel,
             appCode,
             nodeKey,
+            templateTitleVal,
             treeDataArray
         } = this.state;
         const leftTreeData = [
@@ -688,7 +717,7 @@ class TemplateSetting extends Component {
                             }}
                         />
                         <div className='buttons-component'>
-                            {(treeTemBillData.length > 0 || treeTemQueryData.length > 0) &&
+                            {(treeTemBillData.length > 0 || treeTemQueryData.length > 0||treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
@@ -729,12 +758,8 @@ class TemplateSetting extends Component {
                                 this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch')}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
-                            <div>
-                                <p>1111111111</p>
-                                <p>2222222222</p>
-                                <p>3333333333</p>
-                                <p>44444444444</p>
-                            </div>
+                        {treeTemPrintData.length > 0 &&
+                                this.treeResAndUser(treeTemPrintData, 'templateOnselect', 'hideSearch')}
                         </TabPane>
                     </Tabs>
                 </PageLayoutRight>
@@ -756,6 +781,18 @@ class TemplateSetting extends Component {
                                 });
                             }}
                         />
+                        {activeKey === '3' && (
+                            <Input
+                                value={templateTitleVal}
+                                placeholder='请输入标题'
+                                onChange={(e) => {
+                                    const templateTitleVal = e.target.value;
+                                    this.setState({
+                                        templateTitleVal
+                                    });
+                                }}
+                            />
+                        )}
                     </div>
                 </Modal>
                 {alloVisible && (

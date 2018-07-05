@@ -48,6 +48,7 @@ class AssignComponent extends Component {
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
+            nodeKey: this.props.nodeKey,
             treeRoData: [],
             treeResData: [],
             org_df_biz: {
@@ -78,7 +79,7 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, activeKey, appCode } = this.state;
+        let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKey } = this.state;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
@@ -94,6 +95,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
+            infoData.nodeKey = nodeKey;
         }
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -312,9 +314,9 @@ class AssignComponent extends Component {
                 break;
         }
     };
-    onExpand = (expandedKeys)=>{
-		this.setState({expandedKeys,autoExpandParent:true});
-    }
+    onExpand = (expandedKeys) => {
+        this.setState({ expandedKeys, autoExpandParent: true });
+    };
     //树的查询方法
     onSearch = (e) => {
         const value = e.target.value;
@@ -327,8 +329,8 @@ class AssignComponent extends Component {
                         if (ele.title.indexOf(value) > -1) {
                             keyArray.push(ele.key);
                         }
-					});
-					return keyArray;
+                    });
+                    return keyArray;
                 }
                 return null;
             })
@@ -341,7 +343,6 @@ class AssignComponent extends Component {
     };
     //树组件
     treeResAndUser = (data, typeSelect, hideSearch) => {
-        console.log(data);
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
@@ -392,7 +393,7 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode } = this.state;
+        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKey } = this.state;
         if (!treeAllowedData) {
             Notice({ status: 'warning', msg: '请选中信息' });
             return;
@@ -422,6 +423,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
+            infoData.nodeKey = nodeKey;
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
