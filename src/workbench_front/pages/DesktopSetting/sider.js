@@ -173,6 +173,9 @@ class MySider extends Component {
 		this.setState({ showSearch: !showSearch }, () => {
 			if (this.state.showSearch) {
 				this.refs.searchInput.focus();
+				this.setState({ appGroupArr: [], isAllShow: true });
+			}else{
+				this.onCascaderChange(this.state.domainModuleSelect);
 			}
 		});
 	};
