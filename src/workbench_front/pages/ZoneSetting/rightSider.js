@@ -267,7 +267,9 @@ class MyRightSider extends Component {
 						<li>显示名称</li>
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>数据类型</li>
-						<li>{utilService.getDatatypeName(selectCard.datatype)}</li>
+						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
+						{/* 两处代码，放开限制，guozhiqi要求 */}
+						{/* <li>{utilService.getDatatypeName(selectCard.datatype)}</li> */}
 						<li>非元数据</li>
 						<li>
 							<Checkbox checked={selectCard.metapath === ''} disabled />
@@ -513,7 +515,9 @@ class MyRightSider extends Component {
 						<li>数据类型</li>
 						{(() => {
 							if (isMetaData) {
-								return <li>{utilService.getDatatypeName(selectCard.datatype)}</li>;
+								//* 两处代码，放开限制，guozhiqi要求 */
+								// return <li>{utilService.getDatatypeName(selectCard.datatype)}</li>;
+								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
 							} else {
 								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
 							}
