@@ -70,6 +70,7 @@ class TemplateSetting extends Component {
             templateTitleVal: '',
             pageCode: '',
             appCode: '',
+            nodeKey: '',
             alloVisible: false,
             org_df_biz: {
                 // 默认业务单元
