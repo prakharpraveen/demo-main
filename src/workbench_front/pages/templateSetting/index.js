@@ -52,7 +52,8 @@ class TemplateSetting extends Component {
         super(props);
         this.state = {
             siderHeight: '280',
-            expandedKeys: [ '0' ],
+            expandedKeys: [ '00' ],
+            selectedTemKeys: [],
             selectedKeys: [],
             treeDataArray: [],
             treeData: [],
@@ -379,7 +380,7 @@ class TemplateSetting extends Component {
             treeTemPrintData,
             treeTemPrintDataArray,
             treeTemQueryDataArray,
-            selectedKeys,
+            selectedTemKeys,
             parentIdcon,
             activeKey,
             treeTemQueryData
@@ -425,7 +426,7 @@ class TemplateSetting extends Component {
             let newinitKeyArray = [];
             newinitKeyArray.push(treeData[0].key);
             this.setState({
-                selectedKeys: newinitKeyArray,
+                selectedTemKeys: newinitKeyArray,
                 parentIdcon: treeData[0].parentId
             });
         }
@@ -595,14 +596,14 @@ class TemplateSetting extends Component {
         }
         if (key.length > 0) {
             this.setState({
-                selectedKeys: key,
+                selectedTemKeys: key,
                 templatePks: key[0],
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
                 templateNameVal: e.selectedNodes[0].props.refData.name
             });
         } else {
             this.setState({
-                selectedKeys: key,
+                selectedTemKeys: key,
                 templatePks: '',
                 parentIdcon: '',
                 templateNameVal: ''
@@ -642,8 +643,9 @@ class TemplateSetting extends Component {
         }
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch) => {
-        const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
+    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys) => {
+        console.log(hideSearch);
+        const { autoExpandParent, searchValue, expandedKeys } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
@@ -678,7 +680,13 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
+                {
+                    (hideSearch? (
+                        ''
+                    ) : (
+                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />
+                    ))
+                }
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -721,7 +729,9 @@ class TemplateSetting extends Component {
             batchSettingModalVisibel,
             appCode,
             nodeKey,
-            treeDataArray
+            treeDataArray,
+            selectedKeys,
+            selectedTemKeys
         } = this.state;
         const leftTreeData = [
             {
@@ -768,7 +778,7 @@ class TemplateSetting extends Component {
                         padding: '20px'
                     }}
                 >
-                    {this.treeResAndUser(leftTreeData, 'systemOnselect')}
+                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys)}
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <Tabs
@@ -781,15 +791,25 @@ class TemplateSetting extends Component {
                     >
                         <TabPane tab='页面模板' key='1'>
                             {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch', selectedTemKeys)}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
-                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(
+                                    treeTemQueryData,
+                                    'templateOnselect',
+                                    'hideSearch',
+                                    selectedTemKeys
+                                )}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
                             {treeTemPrintData.length > 0 &&
-                                this.treeResAndUser(treeTemPrintData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(
+                                    treeTemPrintData,
+                                    'templateOnselect',
+                                    'hideSearch',
+                                    selectedTemKeys
+                                )}
                         </TabPane>
                     </Tabs>
                 </PageLayoutRight>
