@@ -466,7 +466,8 @@ class AssignComponent extends Component {
             treeRoVisible,
             allowDataArray,
             treeAllowedData,
-            templatePks
+            templatePks,
+            nodeKey
         } = this.state;
         return (
             <Modal
@@ -480,7 +481,27 @@ class AssignComponent extends Component {
                     <p className='pageCode-show'>
                         <span>功能节点：</span>
                         <span>{pageCode ? pageCode : ''}</span>
+                        {nodeKey.length > 0 && (
+                            <Select
+                                showSearch
+                                style={{ width: 200 }}
+                                placeholder='节点标识符'
+                                optionFilterProp='children'
+                                onSelect={(e) => {
+                                    
+                                }}
+                                filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                            >
+                                {nodeKey.map((item, index) => {
+                                    return(
+                                        <Option value={item}>{item}</Option>
+                                    )
+                                })}
+                            </Select>
+                        )}
                     </p>
+
                     <div className='allocationPage-content'>
                         <div className='allocationPage-content-select'>
                             <Select

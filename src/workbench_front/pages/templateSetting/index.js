@@ -71,7 +71,7 @@ class TemplateSetting extends Component {
             templateTitleVal: '',
             pageCode: '',
             appCode: '',
-            nodeKey: '',
+            nodeKey: [],
             alloVisible: false,
             org_df_biz: {
                 // 默认业务单元
@@ -251,7 +251,7 @@ class TemplateSetting extends Component {
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, pageCode, activeKey } = this.state;
+        let { templateNameVal, templatePks, pageCode, activeKey, appCode } = this.state;
         let infoData = {
             templateId: templatePks
         };
@@ -270,7 +270,26 @@ class TemplateSetting extends Component {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
                 }
-                openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
+                if (activeKey === '3') {
+                    ajax({
+                        loading: true,
+                        url: '/nccloud/riart/template/edittemplate.do',
+                        data: { appcode: appCode, templateid: templatePks },
+                        success: function(res) {
+                            debugger;
+                            window.open(
+                                'uclient://start/' +
+                                    window.location.href.replace(window.location.pathname, '') +
+                                    res.data
+                            );
+                        },
+                        error: function(res) {
+                            alert('lm:' + res.message);
+                        }
+                    });
+                }else{
+                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
+                }
                 break;
             case '删除':
                 let url;
@@ -475,7 +494,7 @@ class TemplateSetting extends Component {
             url: `/nccloud/platform/appregister/searchappmenuitem.do`,
             data: {
                 search_content: value,
-                containAppPage: 'true'
+                containAppPage: true
             },
             info: {
                 name: '菜单项',
@@ -644,7 +663,6 @@ class TemplateSetting extends Component {
     };
     //树组件的封装
     treeResAndUser = (data, typeSelect, hideSearch, selectedKeys) => {
-        console.log(hideSearch);
         const { autoExpandParent, searchValue, expandedKeys } = this.state;
         const loop = (data) => {
             return data.map((item) => {
@@ -680,13 +698,7 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {
-                    (hideSearch? (
-                        ''
-                    ) : (
-                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />
-                    ))
-                }
+                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
