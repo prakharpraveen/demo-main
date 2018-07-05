@@ -420,7 +420,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            info.nodeKey = nodeKey;
+            infoData.nodeKey = nodeKey;
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
