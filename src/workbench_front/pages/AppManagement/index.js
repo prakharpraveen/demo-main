@@ -313,7 +313,7 @@ class AppManagement extends Component {
                 default:
                     break;
             }
-            if (moduleid !== "00") {
+            if (obj.moduleid !== "00") {
                 nodeInfo = {
                     id,
                     code: obj.systypecode,

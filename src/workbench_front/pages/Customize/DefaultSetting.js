@@ -140,7 +140,7 @@ class DefaultSetting extends Component {
                 <div className="defaultSetting">
                     <div className="default-title">默认设置</div>
                     <div className="dafault-form">
-                        <label>默认业务单元</label>
+                        <label className="dafault-label">默认业务单元</label>
                         <BusinessUnitTreeRef
                             value={org_df_biz}
                             placeholder={"默认业务单元"}
@@ -150,7 +150,7 @@ class DefaultSetting extends Component {
                         />
                     </div>
                     <div className="dafault-form">
-                        <label>默认财务核算账簿</label>
+                        <label className="dafault-label">默认财务核算账簿</label>
                         <AccountBookTreeRef
                             value={org_df_fa}
                             placeholder={"默认财务核算账簿"}
@@ -160,7 +160,7 @@ class DefaultSetting extends Component {
                         />
                     </div>
                     <div className="dafault-form">
-                        <label>默认信用控制域</label>
+                        <label className="dafault-label">默认信用控制域</label>
                         <CreditCtlRegionGridRef
                             value={org_df_credit}
                             placeholder={"默认信用控制域"}
@@ -170,7 +170,7 @@ class DefaultSetting extends Component {
                         />
                     </div>
                     <div className="dafault-form">
-                        <label>默认成本域</label>
+                        <label className="dafault-label">默认成本域</label>
                         <CostRegionDefaultGridRef
                             value={org_df_cost}
                             placeholder={"默认成本域"}
@@ -181,7 +181,7 @@ class DefaultSetting extends Component {
                     </div>
                     <div className="default-title">默认语言格式</div>
                     <div className="dafault-form">
-                        <label htmlFor="">默认数据格式</label>
+                        <label className="dafault-label">默认数据格式</label>
                         <DataFormatRef
                             value={dataFormat}
                             placeholder={"默认数据格式"}
@@ -191,7 +191,7 @@ class DefaultSetting extends Component {
                         />
                     </div>
                     <div className="dafault-form">
-                        <label htmlFor="">默认内容语种</label>
+                        <label className="dafault-label">默认内容语种</label>
                         <ContentLangRef
                             value={contentLang}
                             placeholder={"默认内容语种"}
