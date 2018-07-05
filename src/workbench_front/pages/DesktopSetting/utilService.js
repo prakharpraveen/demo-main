@@ -335,16 +335,25 @@ export const removeCheckedCardsInGroups = (groups) => {
  * @param {*} userID
  * @returns {Object}
  */
-export const getRelateidObj = (pk_responsibility, userID) => {
+export const getRelateidObj = (pk_responsibility, is_group) => {
 	let relateidObj;
+	//0职责 1用户 2集团
 	if (pk_responsibility) {
 		relateidObj = {
 			data: pk_responsibility,
+			code: '0',
 			type: 'responsibility'
 		};
-	} else {
+	}else if(is_group){
 		relateidObj = {
-			data: userID,
+			data: is_group,
+			code: '2',
+			type: 'is_group'
+		};
+	}else {
+		relateidObj = {
+			data: "",
+			code: '1',
 			type: 'userID'
 		};
 	}

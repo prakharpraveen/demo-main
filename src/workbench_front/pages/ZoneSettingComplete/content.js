@@ -30,7 +30,7 @@ class MyContent extends Component {
                     pcode: param.pcode,
                     pid: param.pid,
                     appcode: param.appcode
-                  }
+                  },['templetid']
                 );
               }}
             >
@@ -45,7 +45,7 @@ class MyContent extends Component {
                   b2: "开发配置",
                   b3: "应用管理",
                   n: "应用注册"
-                });
+                },['templetid','pcode','pid','appcode']);
               }}
             >
               返回页面配置

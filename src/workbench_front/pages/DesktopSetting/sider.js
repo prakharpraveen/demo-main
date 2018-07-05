@@ -23,12 +23,22 @@ class MySider extends Component {
 	}
 	componentDidMount() {
 		const relateidObj = this.props.relateidObj;
-		let ajaxObj = {
+
+		let ajaxData = {}
+		if (relateidObj.type === 'userID') {
+			ajaxData = {}
+		} else if (relateidObj.type === 'is_group') {
+			ajaxData = { is_group: relateidObj.data }
+		} else {
+			ajaxData = { pk_responsibility: relateidObj.data }
+		}
+		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {
 				name: '工作桌面配置',
 				action: '查询一二级领域模块'
 			},
+			data: ajaxData,
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;
@@ -45,11 +55,7 @@ class MySider extends Component {
 					}
 				}
 			}
-		};
-		if (relateidObj.type !== 'userID') {
-			ajaxObj.data = { pk_responsibility: relateidObj.data };
-		}
-		Ajax(ajaxObj);
+		});
 	}
 	updateAppGroupArr = (appGroupArr) => {
 		this.setState({ appGroupArr: appGroupArr });
@@ -71,10 +77,15 @@ class MySider extends Component {
 			return;
 		}
 		const relateidObj = this.props.relateidObj;
-		const ajaxData =
-			relateidObj.type === 'userID'
-				? { search_content: this.state.searchValue }
-				: { search_content: this.state.searchValue, pk_responsibility: relateidObj.data };
+		let ajaxData = {}
+		if (relateidObj.type === 'userID') {
+			ajaxData = { search_content: this.state.searchValue }
+		} else if (relateidObj.type === 'is_group') {
+			ajaxData = { search_content: this.state.searchValue, is_group: relateidObj.data }
+		} else {
+			ajaxData = { search_content: this.state.searchValue, pk_responsibility: relateidObj.data }
+		}
+
 		Ajax({
 			url: `/nccloud/platform/appregister/searchmenuitem.do`,
 			info: {
@@ -115,10 +126,16 @@ class MySider extends Component {
 		}
 		const relateidObj = this.props.relateidObj;
 		const ownModuleID = cascaderValueArr[1];
-		const ajaxData =
-			relateidObj.type === 'userID'
-				? { own_module: ownModuleID }
-				: { own_module: ownModuleID, pk_responsibility: relateidObj.data };
+
+		let ajaxData = {}
+		if (relateidObj.type === 'userID') {
+			ajaxData = { own_module: ownModuleID }
+		} else if (relateidObj.type === 'is_group') {
+			ajaxData = { own_module: ownModuleID, is_group: relateidObj.data }
+		} else {
+			ajaxData = { own_module: ownModuleID, pk_responsibility: relateidObj.data }
+		}
+
 		Ajax({
 			url: `/nccloud/platform/appregister/queryapplazy.do`,
 			info: {

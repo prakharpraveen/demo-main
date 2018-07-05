@@ -31,13 +31,13 @@ class ZoneRegister extends Component {
 	*/
 	componentDidMount() {
 		let param = GetQuery(this.props.location.search);
-		this.props.setZoneTempletid(param.t);
+		this.props.setZoneTempletid(param.templetid);
 		let url, data;
 		url = '/nccloud/platform/templet/queryallarea.do';
 		data = {
-			templetid: param && param.t
+			templetid: param && param.templetid
 		};
-		if (param.t){
+		if (param.templetid){
 			Ajax({
 				url: url,
 				data: data,

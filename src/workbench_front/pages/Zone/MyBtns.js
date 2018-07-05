@@ -141,10 +141,6 @@ class MyBtns extends Component {
   handleClick(name) {
     let { zoneDatas } = this.props;
     let param = GetQuery(this.props.location.search);
-    let datas = {
-      pagecode: zoneDatas.pagecode || param.pcode,
-      pageid: zoneDatas.pageid || param.pid
-    };
     let fromData = this.props.zoneFormData();
     let { newListData } = this.props;
     switch (name) {
@@ -167,7 +163,7 @@ class MyBtns extends Component {
           b3: "应用管理",
           n: "应用注册",
           c: "102202APP"
-        });
+        },['templetid']);
         break;
       case "返回":
         history.back();

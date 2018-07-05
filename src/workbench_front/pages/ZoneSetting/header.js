@@ -97,7 +97,7 @@ class MyHeader extends Component {
                   `/Zone`,
                   false,
                   {
-                    t: this.props.templetid,
+                    templetid: this.props.templetid,
                     pcode: param.pcode,
                     pid: param.pid,
                     appcode: param.appcode
@@ -123,7 +123,7 @@ class MyHeader extends Component {
                 b3: "应用管理",
                 n: "应用注册",
                 c: "102202APP"
-              });
+              },['templetid']);
             }}
             placement="top"
             okText="确定"

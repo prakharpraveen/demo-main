@@ -171,7 +171,7 @@ class MyFooter extends Component {
 		});
 		const saveData = {
 			relateid: this.props.relateidObj.data,
-			isuser: this.props.relateidObj.type === 'userID' ? '1' : '0', //1用户 0职责，
+			isuser: this.props.relateidObj.code, //1用户 0职责，
 			data: tmpData
 		};
 		Ajax({
@@ -226,6 +226,7 @@ class MyFooter extends Component {
 	render() {
 		const { groups } = this.props;
 		const groupNameRadioGroup = this.getGroupItemNameRadio(groups);
+		//用户工作桌面配置才显示‘恢复默认’按钮
 		const isShowToBeDefault = this.props.relateidObj.type === 'userID' ? 'block' : 'none';
 		return (
 			<div className='nc-workbench-home-footer'>

@@ -21,6 +21,7 @@ class AllApps extends Component {
         name: "所有应用",
         action: "查询一二级领域模块"
       },
+      data:{},
       success: res => {
         const { data, success } = res.data;
         if (success && data && data.length > 0) {

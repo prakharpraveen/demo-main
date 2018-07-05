@@ -13,12 +13,11 @@ import { updateGroupList,clearData } from 'Store/test/action';
 import Notice from 'Components/Notice';
 import CustomDragLayer from './customDragLayer';
 
-// @withDragDropContext(HTML5Backend)
 class Test extends Component {
 	constructor(props) {
 		super(props);
 		const urlRequestObj = GetQuery(this.props.location.search);
-		const relateidObj = utilService.getRelateidObj(urlRequestObj.pk_responsibility, "")
+		const relateidObj = utilService.getRelateidObj(urlRequestObj.pk_responsibility, urlRequestObj.is_group)
 		this.state = {
 			relateidObj:relateidObj
 		};
@@ -38,7 +37,7 @@ class Test extends Component {
 			},
 			data: {
 				relateid: this.state.relateidObj.data,
-				isuser: this.state.relateidObj.type === 'userID'?'1':'0' //1用户 0职责
+				isuser: this.state.relateidObj.code //0职责 1用户 2集团
 			},
 			success: (res) => {
 				if (res) {
