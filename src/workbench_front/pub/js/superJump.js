@@ -107,16 +107,11 @@ export const openApp = (
 /**
  * workbench 内部页面跳转 页面级别 不包含 workbench内部应用
  *@param {String} router 目标路由
- *@param {Object} query  需要传递的参数 面包屑参数 b1 > b2 > b3 > n
  *@param {Boolen} isNewTab 是否新页签打开 默认 false 当前页 true 新页签打开
+ *@param {Object} query  需要传递的参数 面包屑参数 b1 > b2 > b3 > n
  *@param {Array} delKeys 需要删除的参数key数组
  */
-export const openPage = (
-  router,
-  isNewTab = false,
-  query,
-  delKeys
-) => {
+export const openPage = (router, isNewTab = false, query, delKeys) => {
   // 获取原页面uri
   let urlHashObj = GetQuery(window.location.hash);
   let newUri;
