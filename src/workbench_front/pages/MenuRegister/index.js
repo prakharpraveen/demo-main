@@ -251,8 +251,8 @@ class MenuRegister extends Component {
         openPage(
           "/mi",
           false,
-          { b4: "菜单注册" },
           {
+            n:"菜单注册",
             id: record.pk_menu,
             mn: record.menuname,
             mt: record.isdefault && !this.state.isDevelopMode ? 1 : 0

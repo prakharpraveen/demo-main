@@ -268,7 +268,7 @@ class TemplateSetting extends Component {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
                 }
-                openPage(`ZoneSetting`, false, {}, { templetid: templatePks, status: 'billTemplate' });
+                openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
                 break;
             case '删除':
                 let url;

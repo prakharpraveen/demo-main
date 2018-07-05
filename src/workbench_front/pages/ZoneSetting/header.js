@@ -63,7 +63,6 @@ class MyHeader extends Component {
           openPage(
             `/ZoneSettingComplete`,
             false,
-            {},
             {
               templetid: this.props.templetid,
               pcode: param.pcode,
@@ -97,7 +96,6 @@ class MyHeader extends Component {
                 openPage(
                   `/Zone`,
                   false,
-                  {},
                   {
                     t: this.props.templetid,
                     pcode: param.pcode,
@@ -123,7 +121,7 @@ class MyHeader extends Component {
                 b1: "动态建模平台",
                 b2: "开发配置",
                 b3: "应用管理",
-                b4: "应用注册",
+                n: "应用注册",
                 c: "102202APP"
               });
             }}

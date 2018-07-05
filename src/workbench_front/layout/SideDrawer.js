@@ -82,7 +82,7 @@ class SideDrawer extends Component {
             <div className="setting-content">
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/ds", { b4: "个人配置" });
+                  this.handeleSkipPage("/ds", { n: "个人配置" });
                 }}
                 className="setting-btn"
               >
@@ -93,7 +93,7 @@ class SideDrawer extends Component {
               </div>
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/ui", { b4: "账户设置" });
+                  this.handeleSkipPage("/ui", { n: "账户设置" });
                 }}
                 className="setting-btn"
               >
@@ -104,7 +104,7 @@ class SideDrawer extends Component {
               </div>
               <div
                 onClick={() => {
-                  this.handeleSkipPage("/c", { b4: "个性化设置" });
+                  this.handeleSkipPage("/c", { n: "个性化设置" });
                 }}
                 className="setting-btn"
               >

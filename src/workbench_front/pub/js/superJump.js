@@ -107,26 +107,21 @@ export const openApp = (
 /**
  * workbench 内部页面跳转 页面级别 不包含 workbench内部应用
  *@param {String} router 目标路由
- *@param {Object} query  需要传递的参数
- *@param {Object} breadcrumbInfo 面包屑参数 b1 > b2 > b3 > b4
+ *@param {Object} query  需要传递的参数 面包屑参数 b1 > b2 > b3 > n
  *@param {Boolen} isNewTab 是否新页签打开 默认 false 当前页 true 新页签打开
+ *@param {Array} delKeys 需要删除的参数key数组
  */
-export const openPage = (router, isNewTab = false, breadcrumbInfo, query) => {
+export const openPage = (
+  router,
+  isNewTab = false,
+  query,
+  delKeys
+) => {
   // 获取原页面uri
   let urlHashObj = GetQuery(window.location.hash);
   let newUri;
-  // 面包屑第四层为必须填写
-  if (breadcrumbInfo && JSON.stringify(breadcrumbInfo) != "{}") {
-    breadcrumbInfo.n = breadcrumbInfo.b4;
-    delete breadcrumbInfo.b4;
-    newUri = { ...breadcrumbInfo };
-  }
   if (query && JSON.stringify(query) != "{}") {
-    if (newUri && JSON.stringify(newUri) != "{}") {
-      newUri = { ...newUri, ...query };
-    } else {
-      newUri = { ...query };
-    }
+    newUri = { ...query };
   }
   if (newUri && JSON.stringify(newUri) != "{}") {
     newUri = { ...urlHashObj, ...newUri };
@@ -135,7 +130,12 @@ export const openPage = (router, isNewTab = false, breadcrumbInfo, query) => {
   }
   for (const key in newUri) {
     if (newUri.hasOwnProperty(key)) {
-      newUri[key] = encodeURIComponent(encodeURIComponent(newUri[key]));
+      // 删除指定的字段
+      if (delKeys && delKeys.length > 0 && delKeys.indexOf(key) > -1) {
+        delete newUri[key];
+      } else {
+        newUri[key] = encodeURIComponent(encodeURIComponent(newUri[key]));
+      }
     }
   }
   let { searchParam } = CreateQuery(newUri);

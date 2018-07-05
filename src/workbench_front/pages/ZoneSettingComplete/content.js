@@ -26,7 +26,6 @@ class MyContent extends Component {
                 openPage(
                   `/Zone`,
                   false,
-                  {},
                   {
                     pcode: param.pcode,
                     pid: param.pid,
@@ -45,7 +44,7 @@ class MyContent extends Component {
                   b1: "动态建模平台",
                   b2: "开发配置",
                   b3: "应用管理",
-                  b4: "应用注册"
+                  n: "应用注册"
                 });
               }}
             >

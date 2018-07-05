@@ -118,13 +118,12 @@ class MyBtns extends Component {
                   b1: "动态建模平台",
                   b2: "开发配置",
                   b3: "应用管理",
-                  b4: "应用注册",
+                  n: "应用注册",
                   c: "102202APP"
                 })
               : openPage(
                   `/ZoneSetting`,
                   false,
-                  {},
                   {
                     templetid: data.data.templetid,
                     pcode: datas.pagecode,
@@ -166,7 +165,7 @@ class MyBtns extends Component {
           b1: "动态建模平台",
           b2: "开发配置",
           b3: "应用管理",
-          b4: "应用注册",
+          n: "应用注册",
           c: "102202APP"
         });
         break;

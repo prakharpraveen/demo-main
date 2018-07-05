@@ -370,12 +370,7 @@ class PageTable extends Component {
     this.setState({ batchSettingModalVisibel: visibel });
   };
   jumpPage = record => {
-    openPage(
-      `/Zone`,
-      false,
-      { b4: "页面模板设置" },
-      { t: record.pk_page_templet }
-    );
+    openPage(`/Zone`, false, { n: "页面模板设置", t: record.pk_page_templet });
   };
   /**
    * 设置默认模板
@@ -692,8 +687,7 @@ class PageTable extends Component {
       openPage(
         `/Zone`,
         false,
-        { b4: "页面模板设置" },
-        { id: id, pcode: code, appcode: parentcode }
+        { n:"页面模板设置",id: id, pcode: code, appcode: parentcode }
       );
     }
   }
