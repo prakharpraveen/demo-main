@@ -56,13 +56,14 @@ class TemplateSetting extends Component {
             siderHeight: '280',
             expandedKeys: [ '0' ],
             selectedKeys: [],
+            selectedTemKeys: [],
             treeDataArray: [],
             treeData: [],
             searchValue: '',
             autoExpandParent: true,
             treeTemBillData: [], //单据模板数据
             treeTemQueryData: [], //查询模板数据
-            treeTemPrintData:[],
+            treeTemPrintData: [],
             treePrintTemData: [],
             treeTemBillDataArray: [],
             treeTemQueryDataArray: [],
@@ -329,7 +330,7 @@ class TemplateSetting extends Component {
                 }
             });
             treeInfo = generateTemData(treeTemQueryDataArray);
-        }else if (templateType === 'print') {
+        } else if (templateType === 'print') {
             treeTemPrintDataArray.map((item) => {
                 if (item.isDefault === 'y') {
                     item.name = item.name + ' [默认]';
@@ -343,14 +344,14 @@ class TemplateSetting extends Component {
                 name: '集团模板',
                 title: '集团模板',
                 pk: 'qazwsxedc1',
-                code:'1001',
+                code: '1001',
                 children: []
             };
             const orgIdObj = {
                 title: '组织模板',
                 name: '组织模板',
                 pk: 'qazwsxedc2',
-                code:'1002',
+                code: '1002',
                 children: []
             };
             item.children.push(groupObj);
@@ -374,7 +375,7 @@ class TemplateSetting extends Component {
             let newinitKeyArray = [];
             newinitKeyArray.push(treeData[0].key);
             this.setState({
-                selectedKeys: newinitKeyArray,
+                selectedTemKeys: newinitKeyArray,
                 parentIdcon: treeData[0].parentId
             });
         }
@@ -388,7 +389,7 @@ class TemplateSetting extends Component {
             this.setState({
                 treeTemQueryData
             });
-        }else if (templateType === 'print') {
+        } else if (templateType === 'print') {
             treeTemPrintData = treeData;
             this.setState({
                 treeTemPrintData
@@ -479,7 +480,7 @@ class TemplateSetting extends Component {
                                 this.restoreTreeTemData(templateType);
                             }
                         );
-                    }else if (templateType === 'print') {
+                    } else if (templateType === 'print') {
                         this.setState(
                             {
                                 treeTemPrintDataArray: data.data
@@ -511,14 +512,14 @@ class TemplateSetting extends Component {
         }
         if (key.length > 0) {
             this.setState({
-                selectedKeys: key,
+                selectedTemKeys: key,
                 templatePks: e.selectedNodes[0].props.refData.templateId,
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
                 templateNameVal: e.selectedNodes[0].props.refData.name
             });
         } else {
             this.setState({
-                selectedKeys: key,
+                selectedTemKeys: key,
                 templatePks: '',
                 templateNameVal: '',
                 parentIdcon: ''
@@ -602,8 +603,8 @@ class TemplateSetting extends Component {
         });
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch) => {
-        const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
+    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys) => {
+        const { expandedKeys, autoExpandParent, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
@@ -638,7 +639,13 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
+                {
+                    (hideSearch ? (
+                        ''
+                    ) : (
+                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />
+                    ))
+                }
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -694,7 +701,9 @@ class TemplateSetting extends Component {
             appCode,
             nodeKey,
             templateTitleVal,
-            treeDataArray
+            treeDataArray,
+            selectedKeys,
+            selectedTemKeys
         } = this.state;
         const leftTreeData = [
             {
@@ -717,7 +726,9 @@ class TemplateSetting extends Component {
                             }}
                         />
                         <div className='buttons-component'>
-                            {(treeTemBillData.length > 0 || treeTemQueryData.length > 0||treeTemPrintData.length > 0) &&
+                            {(treeTemBillData.length > 0 ||
+                                treeTemQueryData.length > 0 ||
+                                treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
@@ -738,7 +749,7 @@ class TemplateSetting extends Component {
                         padding: '20px'
                     }}
                 >
-                    {this.treeResAndUser(leftTreeData, 'systemOnselect')}
+                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys)}
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <Tabs
@@ -751,15 +762,25 @@ class TemplateSetting extends Component {
                     >
                         <TabPane tab='页面模板' key='1'>
                             {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch', selectedTemKeys)}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
-                                this.treeResAndUser(treeTemQueryData, 'templateOnselect', 'hideSearch')}
+                                this.treeResAndUser(
+                                    treeTemQueryData,
+                                    'templateOnselect',
+                                    'hideSearch',
+                                    selectedTemKeys
+                                )}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
-                        {treeTemPrintData.length > 0 &&
-                                this.treeResAndUser(treeTemPrintData, 'templateOnselect', 'hideSearch')}
+                            {treeTemPrintData.length > 0 &&
+                                this.treeResAndUser(
+                                    treeTemPrintData,
+                                    'templateOnselect',
+                                    'hideSearch',
+                                    selectedTemKeys
+                                )}
                         </TabPane>
                     </Tabs>
                 </PageLayoutRight>
