@@ -136,73 +136,75 @@ class DefaultSetting extends Component {
             dataFormat
         } = this.state;
         return (
-            <ComLayout className="defaultSetting" title={this.props.title}>
-                <div className="default-title">默认设置</div>
-                <div className="dafault-form">
-                    <label>默认业务单元</label>
-                    <BusinessUnitTreeRef
-                        value={org_df_biz}
-                        placeholder={"默认业务单元"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "org_df_biz");
-                        }}
-                    />
-                </div>
-                <div className="dafault-form">
-                    <label>默认财务核算账簿</label>
-                    <AccountBookTreeRef
-                        value={org_df_fa}
-                        placeholder={"默认财务核算账簿"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "org_df_fa");
-                        }}
-                    />
-                </div>
-                <div className="dafault-form">
-                    <label>默认信用控制域</label>
-                    <CreditCtlRegionGridRef
-                        value={org_df_credit}
-                        placeholder={"默认信用控制域"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "org_df_biz");
-                        }}
-                    />
-                </div>
-                <div className="dafault-form">
-                    <label>默认成本域</label>
-                    <CostRegionDefaultGridRef
-                        value={org_df_cost}
-                        placeholder={"默认成本域"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "org_df_cost");
-                        }}
-                    />
-                </div>
-                <div className="default-title">默认语言格式</div>
-                <div className="dafault-form">
-                    <label htmlFor="">默认数据格式</label>
-                    <DataFormatRef
-                        value={dataFormat}
-                        placeholder={"默认数据格式"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "dataFormat");
-                        }}
-                    />
-                </div>
-                <div className="dafault-form">
-                    <label htmlFor="">默认内容语种</label>
-                    <ContentLangRef
-                        value={contentLang}
-                        placeholder={"默认内容语种"}
-                        onChange={value => {
-                            this.handdleRefChange(value, "contentLang");
-                        }}
-                    />
-                </div>
-                <div className="default-footer">
-                    <Button type="primary" onClick={this.getAllData}>
-                        应用
-                    </Button>
+            <ComLayout title={this.props.title}>
+                <div className="defaultSetting">
+                    <div className="default-title">默认设置</div>
+                    <div className="dafault-form">
+                        <label>默认业务单元</label>
+                        <BusinessUnitTreeRef
+                            value={org_df_biz}
+                            placeholder={"默认业务单元"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "org_df_biz");
+                            }}
+                        />
+                    </div>
+                    <div className="dafault-form">
+                        <label>默认财务核算账簿</label>
+                        <AccountBookTreeRef
+                            value={org_df_fa}
+                            placeholder={"默认财务核算账簿"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "org_df_fa");
+                            }}
+                        />
+                    </div>
+                    <div className="dafault-form">
+                        <label>默认信用控制域</label>
+                        <CreditCtlRegionGridRef
+                            value={org_df_credit}
+                            placeholder={"默认信用控制域"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "org_df_biz");
+                            }}
+                        />
+                    </div>
+                    <div className="dafault-form">
+                        <label>默认成本域</label>
+                        <CostRegionDefaultGridRef
+                            value={org_df_cost}
+                            placeholder={"默认成本域"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "org_df_cost");
+                            }}
+                        />
+                    </div>
+                    <div className="default-title">默认语言格式</div>
+                    <div className="dafault-form">
+                        <label htmlFor="">默认数据格式</label>
+                        <DataFormatRef
+                            value={dataFormat}
+                            placeholder={"默认数据格式"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "dataFormat");
+                            }}
+                        />
+                    </div>
+                    <div className="dafault-form">
+                        <label htmlFor="">默认内容语种</label>
+                        <ContentLangRef
+                            value={contentLang}
+                            placeholder={"默认内容语种"}
+                            onChange={value => {
+                                this.handdleRefChange(value, "contentLang");
+                            }}
+                        />
+                    </div>
+                    <div className="default-footer">
+                        <Button type="primary" onClick={this.getAllData}>
+                            应用
+                        </Button>
+                    </div>
                 </div>
             </ComLayout>
         );
