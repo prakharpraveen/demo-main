@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Button} from "antd";
+import React, { Component } from "react";
+import { Button } from "antd";
 import ComLayout from "./ComLayout";
 // 业务单元
 import BusinessUnitTreeRef from "Components/Refers/BusinessUnitTreeRef";
@@ -14,9 +14,9 @@ import ContentLangRef from "Components/Refers/ContentLangRef";
 // 默认数据格式参照
 import DataFormatRef from "Components/Refers/DataFormatRef";
 import Ajax from "Pub/js/ajax";
-import {high} from "nc-lightapp-front";
+import { high } from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
-const {Refer} = high;
+const { Refer } = high;
 class DefaultSetting extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +56,7 @@ class DefaultSetting extends Component {
                 refcode: "",
                 refname: "",
                 refpk: ""
-            },
+            }
         };
     }
     getAllData = () => {
@@ -78,32 +78,32 @@ class DefaultSetting extends Component {
                 value: ""
             }
         ];
-        individualPropertyVOs = individualPropertyVOs.map((item)=>{
-            item.value = this.state[item.propertyname]['refpk'];
+        individualPropertyVOs = individualPropertyVOs.map(item => {
+            item.value = this.state[item.propertyname]["refpk"];
             return item;
         });
         let reqData = {
             individualPropertyVOs,
-            dataFormat:this.state['dataFormat']['refpk'],
-            contentLang:this.state['contentLang']['refpk'],
-        }
+            dataFormat: this.state["dataFormat"]["refpk"],
+            contentLang: this.state["contentLang"]["refpk"]
+        };
         Ajax({
-            url:`/nccloud/platform/appregister/saveindividualpro.do`,
-            data:reqData,
-            info:{
-                name:'个性化-默认设置',
-                action:'保存'
+            url: `/nccloud/platform/appregister/saveindividualpro.do`,
+            data: reqData,
+            info: {
+                name: "个性化-默认设置",
+                action: "保存"
             },
-            success:(res)=>{
-                let {success,data} = res;
-                if(success&&data){
+            success: res => {
+                let { success, data } = res;
+                if (success && data) {
                     this.setState(data);
                 }
             }
         });
     };
     handdleRefChange = (value, type) => {
-        let {refname, refcode, refpk} = value;
+        let { refname, refcode, refpk } = value;
         let obj = {};
         obj[type] = {};
         obj[type]["refname"] = refname;
@@ -113,14 +113,14 @@ class DefaultSetting extends Component {
     };
     componentDidMount() {
         Ajax({
-            url:`/nccloud/platform/appregister/queryindividualpro.do`,
-            info:{
-                name:'个性化-默认设置',
-                action:'查询'
+            url: `/nccloud/platform/appregister/queryindividualpro.do`,
+            info: {
+                name: "个性化-默认设置",
+                action: "查询"
             },
-            success:(res)=>{
-                let {success,data} = res;
-                if(success&&data){
+            success: res => {
+                let { success, data } = res;
+                if (success && data) {
                     this.setState(data);
                 }
             }
@@ -179,7 +179,6 @@ class DefaultSetting extends Component {
                     />
                 </div>
                 <div className="default-title">默认语言格式</div>
-
                 <div className="dafault-form">
                     <label htmlFor="">默认数据格式</label>
                     <DataFormatRef
