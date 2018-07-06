@@ -1,30 +1,56 @@
-.nc-workbench-menuregister{
+.nc-workbench-menuregister {
     height: 100%;
     background: #ffffff;
-    .menuregister-list{
-        .menugister-list-title{
+    .menuregister-list {
+        height: 100%;
+        .menugister-list-title {
             height: 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
             font-size: 16px;
-            color: #474D54;
+            color: #474d54;
             font-weight: 600;
         }
-        .menugister-list-table{
-            .menugister-list-action{
+        .menugister-list-table {
+            height: calc(100% - 60px);
+            .menugister-list-action {
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
-                span{
+                span {
                     margin-right: 10px;
-                    cursor: pointer; 
+                    cursor: pointer;
                 }
             }
-            .ant-table-tbody>tr:hover>td{
-                .menugister-list-action{
-                    color:#007ACE;
+            .ant-table-tbody > tr:hover > td {
+                .menugister-list-action {
+                    color: #007ace;
+                }
+            }
+            .ant-table td {
+                white-space: nowrap;
+            }
+            .ant-table-wrapper {
+                height: 100%;
+                .ant-spin-nested-loading {
+                    height: 100%;
+                    .ant-spin-container {
+                        height: 100%;
+                        .ant-table {
+                            height: 100%;
+                            .ant-table-content {
+                                height: 100%;
+                                .ant-table-scroll {
+                                    height: 100%;
+                                    .ant-table-body {
+                                        max-height: calc(100% - 70px);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
