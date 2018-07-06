@@ -319,7 +319,17 @@ class MenuItem extends Component {
         }
         let treeData = this.state.treeData;
         let treeItem = treeData.find(item => item.menuitemcode === selectedKey);
+        // 防止选中应用的应用编码被修改 参照报错
+        if (!treeItem.appcodeRef) {
+            treeItem.appcodeRef = {
+                refcode: "",
+                refname: "",
+                refpk: ""
+            };
+        }
         treeItem = dataTransfer(treeItem);
+        console.log(treeItem);
+
         this.historyData = { ...treeItem };
         this.setState({
             isedit: false,

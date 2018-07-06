@@ -296,8 +296,7 @@ class Home extends Component {
                         });
                     });
                     this.setState(
-                        { groups: data[0].groups },
-                        this.createScript
+                        { groups: data[0].groups }
                     );
                     this.props.updateGroupList(data[0].groups);
                     this.handleHomeLoad();

@@ -127,7 +127,7 @@ class App extends Component {
             appcode
           },
           success: ({ data }) => {
-            if (data.data && data.data.is_haspower) {
+            // if (data.data && data.data.is_haspower) {
               // 应用菜单名
               window.peData.nodeName = data.data.menu;
               // 应用编码
@@ -138,14 +138,14 @@ class App extends Component {
                * @param {Object} data - 检验之后的参数
                */
               proxyAction(callback, this, "打开应用")(win, data);
-            } else {
-              Notice({
-                status: "error",
-                msg: data.data.hint_message
-              });
-              win.close();
-              return;
-            }
+            // } else {
+            //   Notice({
+            //     status: "error",
+            //     msg: data.data.hint_message
+            //   });
+            //   win.close();
+            //   return;
+            // }
           }
         });
       } else {
