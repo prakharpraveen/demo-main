@@ -115,9 +115,6 @@ class TemplateSetting extends Component {
                     isShow = true;
                 }
                 break;
-            case '设置默认模板':
-                isShow = true;
-                break;
             case '浏览':
                 if (activeKey === '3') {
                     isShow = false;
@@ -271,17 +268,12 @@ class TemplateSetting extends Component {
                     return;
                 }
                 if (activeKey === '3') {
-                    ajax({
+                    Ajax({
                         loading: true,
                         url: '/nccloud/riart/template/edittemplate.do',
                         data: { appcode: appCode, templateid: templatePks },
                         success: function(res) {
-                            debugger;
-                            window.open(
-                                'uclient://start/' +
-                                    window.location.href.replace(window.location.pathname, '') +
-                                    res.data
-                            );
+                            window.open("uclient://start/"+window.location.href.replace(window.location.pathname,"")+res.data.data);
                         },
                         error: function(res) {
                             alert('lm:' + res.message);
@@ -522,7 +514,8 @@ class TemplateSetting extends Component {
                 {
                     selectedKeys: key,
                     pageCode: e.selectedNodes[0].props.refData.code,
-                    appCode: e.selectedNodes[0].props.refData.appCode
+                    //appCode: e.selectedNodes[0].props.refData.appCode,
+                    appCode:"10100GRP"
                 },
                 this.reqTreeTemData
             );
@@ -743,7 +736,8 @@ class TemplateSetting extends Component {
             nodeKey,
             treeDataArray,
             selectedKeys,
-            selectedTemKeys
+            selectedTemKeys,
+            parentIdcon
         } = this.state;
         const leftTreeData = [
             {
@@ -767,7 +761,7 @@ class TemplateSetting extends Component {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
                                 })}
-                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) && (
+                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) && (parentIdcon!=='root')&&(
                                 <Dropdown overlay={this.menuFun()} trigger={[ 'click' ]}>
                                     <Button key='' className='margin-left-10' type='primary'>
                                         设置默认模板

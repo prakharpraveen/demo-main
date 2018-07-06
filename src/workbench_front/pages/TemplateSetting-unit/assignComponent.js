@@ -49,6 +49,7 @@ class AssignComponent extends Component {
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
             nodeKey: this.props.nodeKey,
+            nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
             org_df_biz: {
@@ -79,7 +80,7 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKey } = this.state;
+        let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
@@ -95,7 +96,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            infoData.nodeKey = nodeKey;
+            infoData.nodeKey = nodeKeyValue;
         }
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -393,7 +394,7 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKey } = this.state;
+        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
         if (!treeAllowedData) {
             Notice({ status: 'warning', msg: '请选中信息' });
             return;
@@ -423,7 +424,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            infoData.nodeKey = nodeKey;
+            infoData.nodeKey = nodeKeyValue;
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
@@ -469,7 +470,8 @@ class AssignComponent extends Component {
             treeRoVisible,
             allowDataArray,
             treeAllowedData,
-            templatePks
+            templatePks,
+            nodeKey
         } = this.state;
         return (
             <Modal
@@ -483,6 +485,25 @@ class AssignComponent extends Component {
                     <p className='pageCode-show'>
                         <span>功能节点：</span>
                         <span>{pageCode ? pageCode : ''}</span>
+                        {nodeKey.length > 0 && (
+                            <Select
+                                showSearch
+                                style={{ width: 200 }}
+                                placeholder='节点标识符'
+                                optionFilterProp='children'
+                                onSelect={(e) => {
+                                    this.setState({
+                                        nodeKeyValue: e
+                                    });
+                                }}
+                                filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                            >
+                                {nodeKey.map((item, index) => {
+                                    return <Option value={item}>{item}</Option>;
+                                })}
+                            </Select>
+                        )}
                     </p>
                     <div className='allocationPage-content'>
                         <div className='allocationPage-content-select'>
