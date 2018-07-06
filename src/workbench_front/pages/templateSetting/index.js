@@ -347,7 +347,7 @@ class TemplateSetting extends Component {
    * @param textInfo 请求成功后的提示信息
    */
     setDefaultFun = (url, infoData, textInfo) => {
-        let { pageCode, activeKey } = this.state;
+        let { pageCode, activeKey, parentIdcon } = this.state;
         if (activeKey === '1') {
             infoData.templateType = 'bill';
         } else if (activeKey === '2') {
@@ -359,7 +359,7 @@ class TemplateSetting extends Component {
                 }
                 url = `/nccloud/platform/template/cancelDefaultPrintTemplate.do`;
             } else if (textInfo === '设置默认') {
-                infoData.parentId = '';
+                infoData.parentId = parentIdcon;
                 url = `/nccloud/platform/template/setDefaultPrintTemplate.do`;
             }
             if (infoData.templateType) {
@@ -520,8 +520,7 @@ class TemplateSetting extends Component {
                 {
                     selectedKeys: key,
                     pageCode: e.selectedNodes[0].props.refData.code,
-                    //appCode: e.selectedNodes[0].props.refData.appCode,
-                    appCode: '10100GRP'
+                    appCode: e.selectedNodes[0].props.refData.appCode
                 },
                 this.reqTreeTemData
             );

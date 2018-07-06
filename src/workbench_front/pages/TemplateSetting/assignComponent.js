@@ -263,6 +263,10 @@ class AssignComponent extends Component {
                     item.key = item.id;
                 });
                 treeAllowedData = generateTreeData(allowDataArray);
+                this.setState({
+                    treeAllowedData,
+                    allowDataArray
+                });
                 break;
             case 'allowRoleCancel':
                 if (!allowedTreeKey) {
@@ -280,14 +284,14 @@ class AssignComponent extends Component {
                         treeAllowedData.remove(treeAllowedData[i]);
                     }
                 }
+                this.setState({
+                    treeAllowedData,
+                    allowDataArray
+                });
                 break;
             default:
                 break;
         }
-        this.setState({
-            treeAllowedData,
-            allowDataArray
-        });
     };
     //已分配树节点的选中方法
     onSelectedAllow = (key) => {
