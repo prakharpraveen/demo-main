@@ -545,6 +545,11 @@ class AppRegister extends Component {
                 // 对应树的第五层
                 case "4":
                     let pageCallBack = data => {
+                        let { parent_id } = data.apppageVO;
+                        this.props.setNodeInfo({
+                            ...this.props.nodeInfo,
+                            parentId: parent_id
+                        });
                         this.props.setNodeData(dataTransfer(data.apppageVO));
                         this.props.setPageButtonData(data.appButtonVOs);
                         this.props.setPageTemplateData(data.pageTemplets);

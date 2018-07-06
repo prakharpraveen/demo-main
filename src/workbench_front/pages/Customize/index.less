@@ -21,6 +21,9 @@
         }
     }
     .nc-workbench-ownpage-right {
+        .customize-page {
+            height: 100%;
+        }
         .customize-title {
             height: 60px;
             display: flex;
@@ -31,6 +34,9 @@
             font-size: 16px;
             font-weight: 500;
         }
+        .customize-content {
+            height: calc(100% - 60px);
+        }
     }
 }
 
@@ -39,8 +45,8 @@
     height: 100%;
     position: relative;
     display: flex;
-	flex-wrap: wrap;
-	padding-bottom: 120px;
+    flex-wrap: wrap;
+    flex-direction: column;
     .default-title {
         height: 60px;
         display: flex;
@@ -48,7 +54,6 @@
         justify-content: flex-start;
         align-items: center;
         padding: 0 30px;
-        flex: 0 0 100%;
         &::before {
             content: "";
             display: block;
@@ -61,13 +66,18 @@
             background: #e14c46;
         }
     }
-    .dafault-form {
+    .default-form-container{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 50px;
+    }
+    .default-form {
         padding: 20px 30px;
         flex: 0 0 50%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        .dafault-label {
+        .default-label {
             text-align: right;
             min-width: 120px;
             &::after {
