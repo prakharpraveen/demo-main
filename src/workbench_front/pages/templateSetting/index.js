@@ -273,13 +273,19 @@ class TemplateSetting extends Component {
                         url: '/nccloud/riart/template/edittemplate.do',
                         data: { appcode: appCode, templateid: templatePks },
                         success: function(res) {
-                            window.open("uclient://start/"+window.location.href.replace(window.location.pathname,"")+res.data.data);
+                            if (location.port) {
+                                window.open(
+                                    'uclient://start/' +'http://'+ location.hostname + ':' + location.port + res.data.data
+                                );
+                            } else {
+                                window.open('uclient://start/' +'http://'+ location.hostname + res.data.data);
+                            }
                         },
                         error: function(res) {
                             alert('lm:' + res.message);
                         }
                     });
-                }else{
+                } else {
                     openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
                 }
                 break;
@@ -515,7 +521,7 @@ class TemplateSetting extends Component {
                     selectedKeys: key,
                     pageCode: e.selectedNodes[0].props.refData.code,
                     //appCode: e.selectedNodes[0].props.refData.appCode,
-                    appCode:"10100GRP"
+                    appCode: '10100GRP'
                 },
                 this.reqTreeTemData
             );
@@ -761,7 +767,8 @@ class TemplateSetting extends Component {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
                                 })}
-                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) && (parentIdcon!=='root')&&(
+                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
+                            parentIdcon !== 'root' && (
                                 <Dropdown overlay={this.menuFun()} trigger={[ 'click' ]}>
                                     <Button key='' className='margin-left-10' type='primary'>
                                         设置默认模板

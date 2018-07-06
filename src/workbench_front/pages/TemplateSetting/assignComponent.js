@@ -49,7 +49,7 @@ class AssignComponent extends Component {
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
             nodeKey: this.props.nodeKey,
-            nodeKeyValue:'',
+            nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
             org_df_biz: {
@@ -479,10 +479,13 @@ class AssignComponent extends Component {
                 width={720}
             >
                 <div className='allocationPage'>
-                    <p className='pageCode-show'>
-                        <span>功能节点：</span>
-                        <span>{pageCode ? pageCode : ''}</span>
-                        {nodeKey.length > 0 && (
+                    <div className='pageCode-show'>
+                        <p className='pageCodeName'>
+                            <span>功能节点：</span>
+                            <span>{pageCode ? pageCode : ''}</span>
+                        </p>
+                        {nodeKey &&
+                        nodeKey.length > 0 && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}
@@ -490,20 +493,18 @@ class AssignComponent extends Component {
                                 optionFilterProp='children'
                                 onSelect={(e) => {
                                     this.setState({
-                                        nodeKeyValue:e
-                                    })
+                                        nodeKeyValue: e
+                                    });
                                 }}
                                 filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
                                 {nodeKey.map((item, index) => {
-                                    return(
-                                        <Option value={item}>{item}</Option>
-                                    )
+                                    return <Option value={item}>{item}</Option>;
                                 })}
                             </Select>
                         )}
-                    </p>
+                    </div>
                     <div className='allocationPage-content'>
                         <div className='allocationPage-content-select'>
                             <Select
