@@ -21,10 +21,6 @@ const TabPane = Tabs.TabPane;
 const { Header, Footer, Sider, Content } = Layout;
 const Btns = [
     {
-        name: '新增',
-        type: 'primary'
-    },
-    {
         name: '修改',
         type: 'primary'
     },
@@ -93,14 +89,11 @@ class TemplateSetting extends Component {
         let { name } = item;
         let isShow = false;
         switch (name) {
-            case '新增':
-                isShow = true;
-                break;
             case '修改':
                 if (activeKey === '3') {
                     isShow = false;
                 } else {
-                    if (parentIdcon === 'root') {
+                    if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
                         isShow = false;
                     } else {
                         isShow = true;
@@ -108,29 +101,31 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '删除':
-                if (parentIdcon === 'root') {
+                if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
                     isShow = true;
                 }
                 break;
             case '复制':
-                isShow = true;
+                if (parentIdcon === 'groupRoot') {
+                    isShow = false;
+                }else{
+                    isShow = true;
+                }
                 break;
             case '分配':
-                if (parentIdcon === 'root') {
+                if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
                     isShow = true;
                 }
                 break;
-            case '设置默认模板':
-                isShow = true;
-                break;
             case '浏览':
-                isShow = true;
-                if (activeKey === '3') {
+                if (activeKey === '3'||parentIdcon === 'groupRoot') {
                     isShow = false;
+                }else {
+                    isShow = true;
                 }
                 break;
             case '刷新':
@@ -343,15 +338,17 @@ class TemplateSetting extends Component {
             const groupObj = {
                 name: '集团模板',
                 title: '集团模板',
-                pk: 'qazwsxedc1',
+                pk: 'qazwsxedc1' + item.pk,
                 code: '1001',
+                parentId: 'groupRoot',
                 children: []
             };
             const orgIdObj = {
                 title: '组织模板',
                 name: '组织模板',
-                pk: 'qazwsxedc2',
+                pk: 'qazwsxedc2' + item.pk,
                 code: '1002',
+                parentId: 'groupRoot',
                 children: []
             };
             item.children.push(groupObj);
@@ -639,13 +636,7 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {
-                    (hideSearch ? (
-                        ''
-                    ) : (
-                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />
-                    ))
-                }
+                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
