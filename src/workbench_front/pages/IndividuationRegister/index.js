@@ -73,6 +73,7 @@ class IndividuationRegister extends Component {
         }
     };
     del = () => {
+        let _this = this;
         confirm({
             title: "是否要删除?",
             content: "",
@@ -81,7 +82,7 @@ class IndividuationRegister extends Component {
             cancelText: "取消",
             mask: false,
             onOk() {
-                let pk_individualreg = dataRestore(this.state.fields)
+                let pk_individualreg = dataRestore(_this.state.fields)
                     .pk_individualreg;
                 Ajax({
                     url: `/nccloud/platform/appregister/deleteindividualreg.do`,
@@ -94,14 +95,14 @@ class IndividuationRegister extends Component {
                     },
                     success: ({ data: { data } }) => {
                         if (data) {
-                            let { treeData } = this.state;
-                            treeData = [...this.state.treeData];
+                            let { treeData } = _this.state;
+                            treeData = [..._this.state.treeData];
                             _.remove(
                                 treeData,
                                 item =>
                                     item.pk_individualreg === pk_individualreg
                             );
-                            this.setState({
+                            _this.setState({
                                 treeData,
                                 parentKey: "",
                                 selectedKeys: ["00"]

@@ -222,6 +222,7 @@ class MenuItem extends Component {
         });
     };
     del = () => {
+        let _this = this;
         confirm({
             title: "是否要删除?",
             content: "",
@@ -230,7 +231,7 @@ class MenuItem extends Component {
             cancelText: "取消",
             mask: false,
             onOk() {
-                let fields = this.state.fields;
+                let fields = _this.state.fields;
                 fields = dataRestore(fields);
                 if (fields.children) {
                     Notice({
@@ -251,12 +252,12 @@ class MenuItem extends Component {
                     success: res => {
                         let { success, data } = res.data;
                         if (success && data) {
-                            let treeData = this.state.treeData;
+                            let treeData = _this.state.treeData;
                             _.remove(
                                 treeData,
                                 item => item.pk_menuitem === fields.pk_menuitem
                             );
-                            this.setState({
+                            _this.setState({
                                 isedit: false,
                                 isNew: false,
                                 treeData,

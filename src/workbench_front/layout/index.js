@@ -42,8 +42,10 @@ class Layout extends Component {
      */
     handleChange = value => {
         Ajax({
-            url: ``,
-            data: {},
+            url: `/nccloud/platform/appregister/switchgroup.do`,
+            data: {
+                pk_group: value
+            },
             info: {
                 name: "工作桌面",
                 action: "集团切换"
