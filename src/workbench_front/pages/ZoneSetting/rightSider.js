@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import BasicProperty from './basicProperty';
 import { Tabs, Input, Checkbox, InputNumber, Select } from 'antd';
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
@@ -71,10 +70,9 @@ class MyRightSider extends Component {
 		selectCard[propertyKey] = value;
 		this.props.updateSelectCard(selectCard);
 	};
-	updateCardInArea = (propertyKey) => {
+	updateCardInArea = () => {
 		let { areaList, selectCard } = this.props;
 		if (_.isEmpty(selectCard)) {
-			console.log('empty');
 			return;
 		}
 		let targetAreaIndex = 0;
@@ -89,7 +87,7 @@ class MyRightSider extends Component {
 				}
 			});
 		});
-		areaList[targetAreaIndex].queryPropertyList[targetCardIndex][propertyKey] = selectCard[propertyKey];
+		areaList[targetAreaIndex].queryPropertyList[targetCardIndex] = selectCard;
 		this.props.updateAreaList(areaList);
 	};
 
@@ -126,7 +124,7 @@ class MyRightSider extends Component {
 					this.changeValue(value, property);
 				}}
 				onBlur={(e) => {
-					this.updateCardInArea(property);
+					this.updateCardInArea();
 				}}
 				ref={(input) => (this[`${property}input`] = input)}
 				onPressEnter={(e) => {
@@ -146,7 +144,7 @@ class MyRightSider extends Component {
 					this.changeValue(e.target.value, property);
 				}}
 				onBlur={(e) => {
-					this.updateCardInArea(property);
+					this.updateCardInArea();
 				}}
 				ref={(input) => (this[`${property}input`] = input)}
 				onPressEnter={(e) => {
@@ -183,7 +181,7 @@ class MyRightSider extends Component {
 	//异步更新selectCard后更新areaList
 	async asyncUpdataCardAndAreaList(selectCard, property) {
 		await this.props.updateSelectCard(selectCard);
-		await this.updateCardInArea(property);
+		await this.updateCardInArea();
 	}
 	//获取下拉选择Dom
 	getMySelect = (mySelectObj, property) => {
@@ -544,7 +542,7 @@ class MyRightSider extends Component {
 								}
 							} else {
 								switch (selectCard.datatype) {
-									case '204':
+									case '204'://参照
 										return (
 											<li>
 												{this.getMySearch('refname', 'ReferModalVisibel')}
@@ -558,7 +556,7 @@ class MyRightSider extends Component {
 												/>
 											</li>
 										);
-									case '2':
+									case '2'://小数
 										return (
 											<li>
 												{this.getMySearch('dataval', 'moneyModalVisibel')}
@@ -571,7 +569,7 @@ class MyRightSider extends Component {
 												/>
 											</li>
 										);
-									case '4':
+									case '4'://整数
 										return (
 											<li>
 												{this.getMySearch('dataval', 'interModalVisibel')}
@@ -583,7 +581,7 @@ class MyRightSider extends Component {
 												/>
 											</li>
 										);
-									case '52':
+									case '52'://金额
 										return (
 											<li>
 												{this.getMySearch('dataval', 'moneyModalVisibel')}
@@ -596,7 +594,7 @@ class MyRightSider extends Component {
 												/>
 											</li>
 										);
-									case '57':
+									case '57'://自定义档案
 										return (
 											<li>
 												{this.getMySearch('dataval', 'CustomModalVisibel')}
@@ -607,6 +605,10 @@ class MyRightSider extends Component {
 													setModalVisibel={this.setModalVisibel}
 												/>
 											</li>
+										);
+									case '203'://下拉
+										return (
+											<li>{this.getMyInput('类型设置', 'dataval')}</li>
 										);
 									default:
 										return <li />;
