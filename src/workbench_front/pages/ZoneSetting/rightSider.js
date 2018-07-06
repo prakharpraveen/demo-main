@@ -280,7 +280,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('操作符名称', 'opersignname')}</li>
 						<li>默认取值</li>
 						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
-						<li>可修改</li>
+						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
@@ -348,7 +348,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('操作符名称', 'opersignname')}</li>
 						<li>默认取值</li>
 						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
-						<li>可修改</li>
+						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
@@ -494,7 +494,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>必输项</li>
 						<li>{this.getMyCheckbox('required')}</li>
-						<li>可修改</li>
+						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>多行文本显示行数</li>
 						<li>{this.getMyInput('多行文本显示行数', 'textrows')}</li>

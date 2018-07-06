@@ -1,7 +1,6 @@
-import { Row, Col, Form, Input, Select, Checkbox, Button } from 'antd';
+import { Col, Form, Input, Select } from 'antd';
 import React from 'react';
 const FormItem = Form.Item;
-const Option = Select.Option;
 /**
  * 创建表单
  * @param {*} propsData 

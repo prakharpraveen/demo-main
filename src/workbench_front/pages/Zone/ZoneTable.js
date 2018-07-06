@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Table, Input, Icon, Button, Popconfirm, Select } from "antd";
-import { DragDropContext, DragSource, DropTarget } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import update from "immutability-helper";
 import _ from "lodash";
 import { setNewList } from "Store/Zone/action";
 import Ajax from "Pub/js/ajax";
 import MdDefaultClassEntityRef from "Components/Refers/mdDefaultClassEntityRef";
-import Notice from "Components/Notice";
-import { high } from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
-const { Refer } = high;
 const Option = Select.Option;
 
 // sunlei
@@ -38,7 +31,7 @@ const switchType = value => {
 };
 
 // 可编辑表格一个单项
-class EditableCell extends React.Component {
+class EditableCell extends Component {
     state = {
         value: this.props.value,
         editable: false
@@ -91,7 +84,7 @@ class EditableCell extends React.Component {
 }
 
 // 可编辑表格下拉框
-class EditableSelect extends React.Component {
+class EditableSelect extends Component {
     state = {
         value: this.props.value,
         editable: false
@@ -152,7 +145,7 @@ class EditableSelect extends React.Component {
 }
 
 // 关联项与区域状态
-class RelateSelect extends React.Component {
+class RelateSelect extends Component {
     state = {
         value: this.props.value,
         editable: false,
@@ -261,7 +254,7 @@ class RelateSelect extends React.Component {
 }
 
 // 可编辑表格参照
-class EditableRefer extends React.Component {
+class EditableRefer extends Component {
     state = {
         value: this.props.value,
         editable: false,
@@ -333,7 +326,7 @@ class EditableRefer extends React.Component {
 }
 
 // 可编辑的表格
-class ZoneTable extends React.Component {
+class ZoneTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -389,7 +382,7 @@ class ZoneTable extends React.Component {
             {
                 title: "关联区域编码",
                 dataIndex: "relationcode",
-                width: "15%",
+                width: "10%",
                 render: (text, record) => {
                     return (
                         <RelateSelect
@@ -406,9 +399,22 @@ class ZoneTable extends React.Component {
                 }
             },
             {
+                title: "设置类",
+                dataIndex: "clazz",
+                width: "10%",
+                render: (text, record) => {
+                    return (
+                        <EditableCell
+                        value={text}
+                        onChange={this.onCellChange(record.key, "clazz")}
+                    />
+                    );
+                }
+            },
+            {
                 title: "区域状态",
                 dataIndex: "areastatus",
-                width: "15%",
+                width: "10%",
                 render: (text, record) => {
                     return (
                         <RelateSelect

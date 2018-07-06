@@ -37,6 +37,12 @@ class ModuleFromCard extends Component {
 					required: false
 				},
 				{
+					lable: '聚合类',
+					type: 'input',
+					code: 'clazz',
+					required: false
+				},
+				{
 					lable: '设置表头',
 					type: 'select',
 					code: 'headcode',
