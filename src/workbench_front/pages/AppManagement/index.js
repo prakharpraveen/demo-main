@@ -291,7 +291,8 @@ class AppManagement extends Component {
                 // 对应树的第五层
                 case "4":
                     let pageCallBack = data => {
-                        let { parent_id, iscopypage } = data.apppageVO;
+                        let iscopypage = data.iscopypage;
+                        let { parent_id } = data.apppageVO;
                         nodeInfo = {
                             ...this.props.nodeInfo,
                             parentId: parent_id,
