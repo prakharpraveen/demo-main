@@ -275,11 +275,12 @@ class AssignComponent extends Component {
                         this.splice(index, 1);
                     }
                 };
-                for (let i = 0; i < treeAllowedData.length; i++) {
-                    if (treeAllowedData[i].id === allowedTreeKey) {
-                        treeAllowedData.remove(treeAllowedData[i]);
+                for (let i = 0; i < allowDataArray.length; i++) {
+                    if (allowDataArray[i].id === allowedTreeKey) {
+                        allowDataArray.remove(allowDataArray[i]);
                     }
                 }
+                treeAllowedData = generateTreeData(allowDataArray);
                 break;
             default:
                 break;
