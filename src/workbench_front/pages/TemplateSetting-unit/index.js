@@ -399,15 +399,15 @@ class TemplateSetting extends Component {
             autoExpandParent: false
         });
     };
-    //tree的查询方法
-    onChange = (e) => {
-        const value = e.target.value;
-        this.setState({
-            expandedKeys,
-            searchValue: value,
-            autoExpandParent: true
-        });
-    };
+    // //tree的查询方法
+    // onChange = (e) => {
+    //     const value = e.target.value;
+    //     this.setState({
+    //         expandedKeys,
+    //         searchValue: value,
+    //         autoExpandParent: true
+    //     });
+    // };
     //加载右侧模板数据
     onSelectQuery = (key, e) => {
         if (key.length > 0) {
@@ -558,7 +558,6 @@ class TemplateSetting extends Component {
     //tree的查询方法
     onChange = (e) => {
         const value = e.target.value;
-
         this.setState({ searchValue: value }, () => {
             this.handleSearch(value, this.handleExpanded);
         });
