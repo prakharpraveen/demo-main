@@ -346,7 +346,7 @@ export const getRelateidObj = (pk_responsibility, is_group) => {
 		};
 	}else if(is_group){
 		relateidObj = {
-			data: is_group,
+			data: Boolean(is_group),
 			code: '2',
 			type: 'is_group'
 		};
