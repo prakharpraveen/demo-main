@@ -418,7 +418,7 @@ class ZoneTable extends Component {
 
     // 闭包 只对具体的单元格修改
     onCellChange = (key, dataIndex) => {
-        debugger
+        debugger;
         return (value) => {
             const dataSource = [ ...this.state.dataSource ];
             const target = dataSource.find((item) => item.key === key);
