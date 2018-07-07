@@ -46,6 +46,9 @@ const Ajax = ({
 				if(headers.contentpath){
 					window.location.href = headers.contentpath;
 				}
+				if(headers.environmentmodel){
+					window.environmentmodel = headers.environmentmodel;
+				}
 				let gData = JSON.parse(data);
 				return gData;
 			}]
@@ -78,6 +81,9 @@ const Ajax = ({
 			transformResponse: [function (data,headers) {
 				if(headers.contentpath){
 					window.location.href = headers.contentpath;
+				}
+				if(headers.environmentmodel){
+					window.environmentmodel = headers.environmentmodel;
 				}
 				// 对 data 进行任意转换处理
 				let gData;

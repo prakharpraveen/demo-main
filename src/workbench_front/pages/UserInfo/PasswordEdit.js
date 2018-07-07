@@ -6,8 +6,9 @@ class PasswordEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            validate: false,
-            confirmDirty: false
+            validate: true,
+            confirmDirty: false,
+            msg: ""
         };
     }
     handlePwCheck = e => {
@@ -26,8 +27,8 @@ class PasswordEdit extends Component {
                 oldPassword: value
             },
             success: ({ data: { data } }) => {
-                if (data.msg && data.msg.length > 0) {
-                    this.setState({ validate: true });
+                if (data) {
+                    this.setState({ validate: data.status, msg: data.msg });
                 }
             }
         });
@@ -41,7 +42,7 @@ class PasswordEdit extends Component {
             callback();
         }
         if (!this.state.validate) {
-            callback("密码不正确!");
+            callback(this.state.msg);
         }
         const form = this.props.formObj;
         if (value && this.state.confirmDirty) {

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form, Modal, Button } from "antd";
 import { PageLayout, PageLayoutHeader } from "Components/PageLayout";
+import Notice from "Components/Notice";
+import Ajax from "Pub/js/ajax";
 import InfoForm from "./InfoForm";
 import PasswordEdit from "./PasswordEdit";
 import PhoneEdit from "./PhoneEdit";
@@ -84,26 +86,49 @@ class UserInfo extends Component {
             modalTitle
         });
     };
-    handleOk = e => {
-        let allValue = this.props.form.getFieldsValue();
-        console.log(allValue);
-        this.setState({
-            visible: false
-        });
-    };
-    handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false
-        });
-    };
-    // 表单提交
-    handleSubmit = e => {
-        e.preventDefault();
+    handleOk = type => {
+        // 表单提交前进行校验
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log("Received values of form: ", values);
+                let allValue = this.props.form.getFieldsValue();
+                this.saveInfo(type, allValue);
             }
+        });
+    };
+    /**
+     * 用户信息保存
+     * @param {String} key "0" - 密码修改 "1" - 手机修改 "2" - 电子邮件修改
+     * @param {Object} data 需要保存的数据
+     */
+    saveInfo = (key, data) => {
+        switch (key) {
+            case "0":
+                let { pw, newpw } = data;
+                Ajax({
+                    url: `/nccloud/platform/appregister/resetuserpwd.do`,
+                    data: { oldPassword: pw, newPassword: newpw },
+                    info: {
+                        name: "账户设置",
+                        action: "密码设置"
+                    },
+                    success: ({ data: { data } }) => {
+                        Notice({ status: "success", msg: data.msg });
+                        this.handleCancel();
+                    }
+                });
+                break;
+            case "1":
+                return "手机修改";
+            case "2":
+                return "电子邮箱修改";
+            default:
+                break;
+        }
+    };
+    handleCancel = () => {
+        this.props.form.resetFields();
+        this.setState({
+            visible: false
         });
     };
     render() {
@@ -116,7 +141,10 @@ class UserInfo extends Component {
                         mask={false}
                         wrapClassName="vertical-center-modal"
                         visible={this.state.visible}
-                        onOk={this.handleOk}
+                        onOk={e => {
+                            e.preventDefault();
+                            this.handleOk(this.state.infoType);
+                        }}
                         onCancel={this.handleCancel}
                         okText={"确认"}
                         cancelText={"取消"}
