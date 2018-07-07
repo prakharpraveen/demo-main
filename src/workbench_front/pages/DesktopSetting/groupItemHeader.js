@@ -86,6 +86,9 @@ class GroupItemHeader extends Component {
 		if (this.state.popTitle !== nextState.popTitle) {
 			return true;
 		}
+		if (this.props.length !== nextProps.length) {
+			return true;
+		}
 		return false;
 	}
 
