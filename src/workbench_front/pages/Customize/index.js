@@ -16,8 +16,8 @@ const DefaultSetting = Loadable({
     loader: () => import("./DefaultSetting"),
     loading: Loading
 });
-const ApproveLanguage = Loadable({
-    loader: () => import("./ApproveLanguage"),
+const IfrContainer = Loadable({
+    loader: () => import("./IfrContainer"),
     loading: Loading
 });
 class Customize extends Component {
@@ -25,37 +25,7 @@ class Customize extends Component {
         super(props);
         this.state = {
             activeKey: "default",
-            listArray: [
-                {
-                    name: "默认设置",
-                    active: true,
-                    code: "default"
-                },
-                {
-                    name: "审批语设置",
-                    code: "approveLanguage"
-                },
-                {
-                    name: "常用数据",
-                    code: "3"
-                },
-                {
-                    name: "代理人设置",
-                    code: "4"
-                },
-                {
-                    name: "集团财务合并",
-                    code: "5"
-                },
-                {
-                    name: "单体财务报表",
-                    code: "6"
-                },
-                {
-                    name: "集团报表",
-                    code: "7"
-                }
-            ]
+            listArray: []
         };
     }
     /**
@@ -63,23 +33,17 @@ class Customize extends Component {
      * @param {String} key 菜单标识
      */
     hanleMenuListClick = key => {
+        console.log(key);
         let { listArray } = this.state;
         // 为选中list 项添加 活跃标识
         listArray = listArray.map((item, index) => {
             delete item.active;
-            if (item.code === key) {
+            if (item.url === key) {
                 item.active = true;
             }
             return item;
         });
         this.setState({ listArray, activeKey: key });
-        switch (key) {
-            case "value":
-                break;
-
-            default:
-                break;
-        }
     };
     /**
      *
@@ -88,10 +52,9 @@ class Customize extends Component {
         switch (key) {
             case "default":
                 return <DefaultSetting title={"默认设置"} />;
-            case "approveLanguage":
-                return <ApproveLanguage title={"审批语设置"} />;
             default:
-                break;
+                // let listItem = this.state.listArray.find((item)=>item.page_part_url === key);
+                return <IfrContainer ifr = {key} />;
         }
     };
     componentDidMount() {
@@ -103,7 +66,15 @@ class Customize extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    let listArray = data.map(item => {
+                    let listArray = data.map((item, index) => {
+                        if (index === 0) {
+                            return {
+                                active: true,
+                                name: item.name,
+                                code: item.code,
+                                url: item.page_part_url
+                            };
+                        }
                         return {
                             name: item.name,
                             code: item.code,
@@ -121,13 +92,19 @@ class Customize extends Component {
         return (
             <PageLayout>
                 <PageLayoutLeft>
-                    <MenuList
-                        onClick={this.hanleMenuListClick}
-                        listArray={listArray}
-                    />
+                    {listArray.length > 0 ? (
+                        <MenuList
+                            onClick={this.hanleMenuListClick}
+                            listArray={listArray}
+                        />
+                    ) : (
+                        ""
+                    )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
-                    {this.loadCom(this.state.activeKey)}
+                    {listArray.length > 0
+                        ? this.loadCom(this.state.activeKey)
+                        : ""}
                 </PageLayoutRight>
             </PageLayout>
         );

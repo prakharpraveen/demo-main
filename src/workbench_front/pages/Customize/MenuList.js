@@ -14,7 +14,7 @@ class MenuList extends Component{
         super(props);
     }
     createList = (listArray)=>listArray.map((item,index)=>{
-        return <MenuListItem className={`side-menu-li ${item.active?'side-menu-active':''}`} key={item.code} onClick={()=>{this.props.onClick(item.code)}}>{item.name}</MenuListItem>
+        return <MenuListItem className={`side-menu-li ${item.active?'side-menu-active':''}`} key={item.url} onClick={()=>{this.props.onClick(item.url)}}>{item.name}</MenuListItem>
     });
     render() {
         return (

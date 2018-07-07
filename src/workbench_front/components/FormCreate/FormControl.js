@@ -1,4 +1,3 @@
-import React, {Component} from "react";
 import {Form} from "antd";
 export const FormControl = Com => {
     return Form.create({

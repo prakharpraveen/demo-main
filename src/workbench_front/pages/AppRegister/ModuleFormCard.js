@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form } from 'antd';
-import {FormCreate} from "Components/FormCreate";
-import {setNodeData} from "Store/AppRegister/action";
+import { Form } from "antd";
+import { FormCreate } from "Components/FormCreate";
+import { setNodeData } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 class ModuleFromCard extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class ModuleFromCard extends Component {
                 name: "组织类型",
                 action: "查询"
             },
-            success: ({data}) => {
+            success: ({ data }) => {
                 if (data.success && data.data) {
                     let options = data.data.rows;
                     options = options.map((option, i) => {
@@ -32,30 +32,31 @@ class ModuleFromCard extends Component {
                             text: option.refname
                         };
                     });
-                    this.setState({orgtypecode: options});
+                    this.setState({ orgtypecode: options });
                 }
             }
         });
     };
-	/**
+    /**
      * 表单任一字段值改变操作
      * @param {String|Object} changedFields 改变的字段及值
      */
     handleFormChange = changedFields => {
-		this.props.setNodeData({...this.props.nodeData,...changedFields});
-	};
+        this.props.setNodeData({ ...this.props.nodeData, ...changedFields });
+    };
     componentDidMount() {
         this.getOrgTypeCodeOptionsData();
     }
     render() {
         let isEdit = this.props.isEdit;
+        let isNew = this.props.isNew;
         let moduleFormData = [
             {
                 label: "模块编码",
                 type: "string",
                 code: "systypecode",
-				isRequired: true,
-				isedit:isEdit,
+                isRequired: true,
+                isedit: isNew,
                 lg: 8
             },
             {
@@ -69,24 +70,24 @@ class ModuleFromCard extends Component {
                     } else {
                         callback();
                     }
-				},
-				isedit:isEdit,
+                },
+                isedit: isNew,
                 lg: 8
             },
             {
                 label: "模块名称",
                 type: "string",
                 code: "systypename",
-				isRequired: true,
-				isedit:isEdit,
+                isRequired: true,
+                isedit: isEdit,
                 lg: 8
             },
             {
                 label: "对应模块号",
                 type: "string",
                 code: "devmodule",
-				isRequired: false,
-				isedit:isEdit,
+                isRequired: false,
+                isedit: isEdit,
                 lg: 8
             },
             {
@@ -103,8 +104,8 @@ class ModuleFromCard extends Component {
                         value: "1",
                         text: "集团"
                     }
-				],
-				isedit:isEdit,
+                ],
+                isedit: isEdit,
                 lg: 8
             },
             {
@@ -112,35 +113,35 @@ class ModuleFromCard extends Component {
                 type: "select",
                 code: "orgtypecode",
                 isRequired: false,
-				options: this.state.orgtypecode,
-				isedit:isEdit,
+                options: this.state.orgtypecode,
+                isedit: isEdit,
                 lg: 8
             },
             {
                 label: "多语字段",
                 type: "string",
                 code: "resid",
-				isRequired: false,
-				isedit:isEdit,
+                isRequired: false,
+                isedit: isEdit,
                 lg: 8
             },
             {
                 label: "是否支持开关帐设置",
                 type: "checkbox",
                 code: "supportcloseaccbook",
-				isRequired: false,
-				isedit:isEdit,
+                isRequired: false,
+                isedit: isEdit,
                 lg: 8
             },
             {
                 label: "是否发送会计平台",
                 type: "checkbox",
                 code: "isaccount",
-				isRequired: false,
-				isedit:isEdit,
+                isRequired: false,
+                isedit: isEdit,
                 lg: 8
             }
-		];
+        ];
         return (
             <FormCreate
                 formData={moduleFormData}
@@ -153,13 +154,15 @@ class ModuleFromCard extends Component {
 ModuleFromCard = Form.create()(ModuleFromCard);
 ModuleFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
+    isNew: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
-	setNodeData:PropTypes.func.isRequired,
+    setNodeData: PropTypes.func.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppRegisterData.nodeData,
         isEdit: state.AppRegisterData.isEdit,
+        isNew: state.AppRegisterData.isNew
     }),
     {
         setNodeData

@@ -189,18 +189,19 @@ class MenuItem extends Component {
                 name: "菜单注册菜单项",
                 action: "保存"
             },
-            success: res => {
-                let { success, data } = res.data;
-                if (success && data) {
+            success: ({data:{data}}) => {
+                if (data) {
                     let treeData = [...this.state.treeData];
                     if (isNew) {
                         treeData = _.concat(treeData, data);
                     } else {
-                        let dataIndex = _.findIndex(
-                            treeData,
-                            item => item.pk_menuitem === fields.pk_menuitem
-                        );
-                        treeData[dataIndex] = fields;
+                        data.map((newItem)=>{
+                            let dataIndex = _.findIndex(
+                                treeData,
+                                item => item.pk_menuitem === newItem.pk_menuitem
+                            );
+                            treeData[dataIndex] = newItem;
+                        });
                     }
                     this.setState({
                         isedit: false,
@@ -210,12 +211,7 @@ class MenuItem extends Component {
                     });
                     Notice({
                         status: "success",
-                        msg: data.true
-                    });
-                } else {
-                    Notice({
-                        status: "error",
-                        msg: data.false
+                        msg: data.msg
                     });
                 }
             }
@@ -328,8 +324,6 @@ class MenuItem extends Component {
             };
         }
         treeItem = dataTransfer(treeItem);
-        console.log(treeItem);
-
         this.historyData = { ...treeItem };
         this.setState({
             isedit: false,
