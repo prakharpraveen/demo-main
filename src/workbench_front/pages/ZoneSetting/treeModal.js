@@ -45,6 +45,8 @@ class TreeModal extends Component {
 					code: myUniqID,
 					label: refname,
 					metapath: myUniqID,
+					isnotmeta: false,
+					isuse: true,
 					opersign: utilService.getOpersignByDatatype(datatype),
 					opersignname: utilService.getOpersignNameByDatatype(datatype),
 					defaultvalue: '',

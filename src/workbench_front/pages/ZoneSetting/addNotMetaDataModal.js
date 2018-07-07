@@ -29,6 +29,8 @@ class AddNotMetaDataModal extends Component {
 				label: this.state.notMetaDataName,
 				code: this.state.notMetaDataCode,
 				metapath: '',
+				isnotmeta: true,
+				isuse: true,
 				position: `${queryPropertyList.length + 1}`,
 				opersign: '=@>@>=@<@<=@like@',
 				opersignname: '等于@大于@大于等于@小于@小于等于@相似@',

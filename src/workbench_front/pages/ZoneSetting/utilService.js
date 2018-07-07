@@ -49,6 +49,7 @@ export const getItemtypeObjByDatatype = (datatype) => {
 export const opersignObj = [
 	{ name: '=@<>@', value: '203' },
 	{ name: 'between@=@>@>=@<@<=@', value: '34' },
+	{ name: '=@like@left like@right like@', value: '56' },
 	{ name: '=@like@left like@right like@', value: '58' },
 	{ name: 'between@=@>@>=@<@<=@', value: '4' },
 	{ name: '=@like@left like@right like@', value: '1' },
@@ -57,6 +58,7 @@ export const opersignObj = [
 export const opersignNameObj = [
 	{ name: '等于@不等于@', value: '203' },
 	{ name: '介于@等于@大于@大于等于@小于@小于等于@', value: '34' },
+	{ name: '等于@包含@左包含@右包含@', value: '56' },
 	{ name: '等于@包含@左包含@右包含@', value: '58' },
 	{ name: '介于@等于@大于@大于等于@小于@小于等于@', value: '4' },
 	{ name: '等于@包含@左包含@右包含@', value: '1' },
@@ -95,7 +97,7 @@ export const dataTypeObj = [
 	{ name: '大文本', value: '30' },
 	{ name: '时间戳', value: '34' },
 	{ name: '金额', value: '52' },
-	// { name: '自定义项', value: '56' },
+	{ name: '自定义项', value: '56' },
 	{ name: '自定义档案', value: '57' },
 	{ name: '多语文本', value: '58' },
 	{ name: '下拉', value: '203' },

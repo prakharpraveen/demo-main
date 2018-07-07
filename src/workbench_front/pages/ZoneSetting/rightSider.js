@@ -266,12 +266,12 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>数据类型</li>
 						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
-						{/* 两处代码，放开限制，guozhiqi要求 */}
+						{/* 两处代码，放开限制，guozhiqi要求,但是这样可以满足定义项的数据类型设置 */}
 						{/* <li>{utilService.getDatatypeName(selectCard.datatype)}</li> */}
-						<li>非元数据</li>
-						<li>
-							<Checkbox checked={selectCard.metapath === ''} disabled />
-						</li>
+						<li>非元数据条件</li>
+						<li>{this.getMyCheckbox('isnotmeta')}</li>
+						<li>使用</li>
+						<li>{this.getMyCheckbox('isuse')}</li>
 						<li>编码</li>
 						<li>{this.getMyInput('编码', 'code')}</li>
 						<li>操作符编码</li>
@@ -282,7 +282,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
-						<li>可见</li>
+						<li>默认显示</li>
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>多选</li>
 						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
@@ -334,10 +334,10 @@ class MyRightSider extends Component {
 					<ul className='basic-property'>
 						<li>显示名称</li>
 						<li>{this.getMyInput('显示名称', 'label')}</li>
-						<li>非元数据</li>
-						<li>
-							<Checkbox checked={selectCard.metapath === ''} disabled />
-						</li>
+						<li>非元数据条件</li>
+						<li>{this.getMyCheckbox('isnotmeta')}</li>
+						<li>使用</li>
+						<li>{this.getMyCheckbox('isuse')}</li>
 						<li>元数据属性</li>
 						<li>{this.getMyInput('元数据属性', 'metadataproperty')}</li>
 						<li>编码</li>
@@ -350,7 +350,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
-						<li>可见</li>
+						<li>默认显示</li>
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>多选</li>
 						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
