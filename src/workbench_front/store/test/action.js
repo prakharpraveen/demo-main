@@ -19,22 +19,14 @@ export const updateGroupList = (groups) => {
 		groups: groups
 	};
 };
-//更新GroupList数据
-export const updateSelectCardInGroupObj = (selectCardInGroupObj) => {
-	return {
-		type: actionType.UPDATESELECTCARDINGROUPOBJ,
-		selectCardInGroupObj: selectCardInGroupObj
-	};
-};
-//
-//更新GroupList数据
+//更新正在编辑的分组ID
 export const updateCurrEditID = (currEditID) => {
 	return {
 		type: actionType.UPDATECURREDITID,
 		currEditID: currEditID
 	};
 };
-//更新GroupList数据
+//更新Layout
 export const updateLayout = (layout) => {
 	return {
 		type: actionType.UPDATELAYOUT,

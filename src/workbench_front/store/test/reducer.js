@@ -9,10 +9,6 @@ import * as templateStore from './action-type';
 let defaultState = {
 	shadowCard: {},
 	groups: [],
-	selectCardInGroupObj: {},
-	moveModal: {
-		selectedValue: 1
-	},
 	currEditID: '',
 	layout: {
 		containerWidth: 1200,
@@ -45,8 +41,6 @@ export const templateDragData = (state = defaultState, action = {}) => {
 			return { ...state, ...{ shadowCard: action.shadowCard } };
 		case templateStore.UPDATEGROUPLIST:
 			return { ...state, ...{ groups: action.groups } };
-		case templateStore.UPDATESELECTCARDINGROUPOBJ:
-			return { ...state, ...{ selectCardInGroupObj: action.selectCardInGroupObj } };
 		case templateStore.UPDATECURREDITID:
 			return { ...state, ...{ currEditID: action.currEditID } };
 		case templateStore.UPDATELAYOUT:
