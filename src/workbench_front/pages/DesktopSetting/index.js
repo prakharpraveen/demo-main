@@ -21,14 +21,14 @@ class Test extends Component {
 		this.state = {
 			relateidObj:relateidObj
 		};
-	}
-
-	componentWillMount() {
 		
 	}
 
-	componentDidMount() {
+	componentWillUnmount() {
 		this.props.clearData();
+	}
+
+	componentDidMount() {
 		Ajax({
 			url: `/nccloud/platform/appregister/queryworkbench.do`,
 			info: {
