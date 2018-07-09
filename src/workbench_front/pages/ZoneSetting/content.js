@@ -26,9 +26,10 @@ class MyContent extends Component {
 			canSelectTreeNodeList:[]
 		};
 	}
-
-	componentDidMount() {
+	componentWillUnmount(){
 		this.props.clearData();
+	}
+	componentDidMount() {
 		Ajax({
 			url: `/nccloud/platform/templet/querytempletpro.do`,
 			info: {

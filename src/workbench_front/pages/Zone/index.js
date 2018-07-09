@@ -24,8 +24,11 @@ const { Content } = Layout;
 class ZoneRegister extends Component {
 	constructor(props) {
 		super(props);
+		
 	}
-
+	componentWillUnmount(){
+		this.props.clearData();
+	}
 	/** 
 	* 获取页面具体数据 
 	*/

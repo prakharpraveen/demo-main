@@ -710,7 +710,6 @@ class MyRightSider extends Component {
 								}}
 								attrConfig={this.state.tab}
 								onOk={(val) => {
-									debugger;
 									this.handleSelectChange(val, 'validateformula');
 									this.setState({ validateformula: false });
 								}}

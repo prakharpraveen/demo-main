@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Form, Select } from 'antd';
-import { setZoneData, setZoneDataFun } from 'Store/Zone/action';
-import Ajax from 'Pub/js/ajax';
+import { setZoneDataFun } from 'Store/Zone/action';
 import { createForm } from './CreatForm';
 const Option = Select.Option;
 
@@ -28,7 +27,6 @@ class ModuleFromCard extends Component {
 					lable: '多语字段',
 					type: 'input',
 					code: 'resid',
-					//required: true,
 				},
 				{
 					lable: '模板描述',
