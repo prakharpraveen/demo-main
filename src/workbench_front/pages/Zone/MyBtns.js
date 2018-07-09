@@ -111,13 +111,18 @@ class MyBtns extends Component {
                         this.props.setZoneData({});
                         // type =1 代表保存  type =2 表示下一步
                         type === 1
-                            ? openPage(`/ar`, false, {
-                                  b1: "动态建模平台",
-                                  b2: "开发配置",
-                                  b3: "应用管理",
-                                  n: "应用注册",
-                                  c: "102202APP"
-                              })
+                            ? openPage(
+                                  `/ar`,
+                                  false,
+                                  {
+                                      b1: "动态建模平台",
+                                      b2: "开发配置",
+                                      b3: "应用管理",
+                                      n: "应用注册",
+                                      c: "102202APP"
+                                  },
+                                  ["templetid", "appcode", "pcode", "pid"]
+                              )
                             : openPage(`/ZoneSetting`, false, {
                                   templetid: data.data.templetid,
                                   pcode: datas.pagecode,
@@ -160,7 +165,7 @@ class MyBtns extends Component {
                         n: "应用注册",
                         c: "102202APP"
                     },
-                    ["templetid"]
+                    ["templetid", "appcode", "pcode", "pid"]
                 );
                 break;
             case "返回":
