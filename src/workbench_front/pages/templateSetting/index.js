@@ -275,10 +275,15 @@ class TemplateSetting extends Component {
                         success: function(res) {
                             if (location.port) {
                                 window.open(
-                                    'uclient://start/' +'http://'+ location.hostname + ':' + location.port + res.data.data
+                                    'uclient://start/' +
+                                        'http://' +
+                                        location.hostname +
+                                        ':' +
+                                        location.port +
+                                        res.data.data
                                 );
                             } else {
-                                window.open('uclient://start/' +'http://'+ location.hostname + res.data.data);
+                                window.open('uclient://start/' + 'http://' + location.hostname + res.data.data);
                             }
                         },
                         error: function(res) {
@@ -444,7 +449,8 @@ class TemplateSetting extends Component {
             newinitKeyArray.push(treeData[0].key);
             this.setState({
                 selectedTemKeys: newinitKeyArray,
-                parentIdcon: treeData[0].parentId
+                parentIdcon: treeData[0].parentId,
+                templatePks: treeData[0].key[0]
             });
         }
         if (templateType === 'bill') {

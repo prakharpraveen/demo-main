@@ -93,7 +93,7 @@ class TemplateSetting extends Component {
                 if (activeKey === '3') {
                     isShow = false;
                 } else {
-                    if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
+                    if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                         isShow = false;
                     } else {
                         isShow = true;
@@ -101,7 +101,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '删除':
-                if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
                     isShow = true;
@@ -110,21 +110,21 @@ class TemplateSetting extends Component {
             case '复制':
                 if (parentIdcon === 'groupRoot') {
                     isShow = false;
-                }else{
+                } else {
                     isShow = true;
                 }
                 break;
             case '分配':
-                if (parentIdcon === 'root'||parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
                     isShow = true;
                 }
                 break;
             case '浏览':
-                if (activeKey === '3'||parentIdcon === 'groupRoot') {
+                if (activeKey === '3' || parentIdcon === 'groupRoot') {
                     isShow = false;
-                }else {
+                } else {
                     isShow = true;
                 }
                 break;
@@ -358,7 +358,7 @@ class TemplateSetting extends Component {
                     if (item.templateId === treeObj[key][0].parentId) {
                         if (treeObj[key][0].type === 'group') {
                             item.children[0].children.push(treeObj[key][0]);
-                        } else if(treeObj[key][0].type === 'org') {
+                        } else if (treeObj[key][0].type === 'org') {
                             item.children[1].children.push(treeObj[key][0]);
                         }
                     }
@@ -373,7 +373,8 @@ class TemplateSetting extends Component {
             newinitKeyArray.push(treeData[0].key);
             this.setState({
                 selectedTemKeys: newinitKeyArray,
-                parentIdcon: treeData[0].parentId
+                parentIdcon: treeData[0].parentId,
+                templatePks: treeData[0].key[0]
             });
         }
         if (templateType === 'bill') {
