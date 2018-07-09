@@ -419,7 +419,7 @@ class TemplateSetting extends Component {
         switch (typeSelect) {
             case 'systemOnselect':
                 this.setState({
-                    expandedKeys,
+                    expandedKeys: expandedKeys,
                     autoExpandParent: true
                 });
                 break;
