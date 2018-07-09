@@ -29,7 +29,7 @@ class SelectCell extends Component {
 						}}
 						
 					>
-						{utilService['colorObj'].map((c, index) => {
+						{utilService['colorObj']&&utilService['colorObj'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
@@ -54,7 +54,7 @@ class SelectCell extends Component {
 						}}
 					
 					>
-						{utilService['dataTypeObj'].map((c, index) => {
+						{utilService['dataTypeObj']&&utilService['dataTypeObj'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
@@ -99,7 +99,7 @@ class SelectCell extends Component {
 						}}
 
 					>
-						{utilService['itemtypeObj'].map((c, index) => {
+						{utilService['itemtypeObj']&&utilService['itemtypeObj'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}

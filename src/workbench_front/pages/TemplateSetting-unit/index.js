@@ -358,8 +358,8 @@ class TemplateSetting extends Component {
                     if (item.templateId === treeObj[key][0].parentId) {
                         if (treeObj[key][0].type === 'group') {
                             item.children[0].children.push(treeObj[key][0]);
-                        } else {
-                            item.children[0].children.push(treeObj[key][0]);
+                        } else if(treeObj[key][0].type === 'org') {
+                            item.children[1].children.push(treeObj[key][0]);
                         }
                     }
                 }
