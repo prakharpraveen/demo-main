@@ -78,7 +78,7 @@ class SelectCell extends Component {
 						}}
 						
 					>
-						{utilService['showAndReturnType'].map((c, index) => {
+						{utilService['showAndReturnType']&&utilService['showAndReturnType'].map((c, index) => {
 							return (
 								<Option key={index} value={c.value}>
 									{c.name}
