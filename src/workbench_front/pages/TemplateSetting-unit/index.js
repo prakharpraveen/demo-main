@@ -96,7 +96,11 @@ class TemplateSetting extends Component {
                     if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                         isShow = false;
                     } else {
-                        isShow = true;
+                        if(parentIdcon){
+                            isShow = true;
+                        }else{
+                            isShow = false;
+                        }
                     }
                 }
                 break;
@@ -104,28 +108,44 @@ class TemplateSetting extends Component {
                 if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '复制':
                 if (parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '分配':
                 if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '浏览':
                 if (activeKey === '3' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '刷新':
@@ -494,7 +514,6 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        console.log(e.selectedNodes[0].props.refData.parentId);
         let { activeKey } = this.state;
         let templateType = '';
         if (activeKey === '1') {

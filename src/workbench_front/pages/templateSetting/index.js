@@ -95,31 +95,51 @@ class TemplateSetting extends Component {
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '删除':
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '复制':
-                isShow = true;
+                if(parentIdcon){
+                    isShow = true;
+                }else{
+                    isShow = false;
+                }
                 break;
             case '分配':
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '浏览':
                 if (activeKey === '3') {
                     isShow = false;
                 } else {
-                    isShow = true;
+                    if(parentIdcon){
+                        isShow = true;
+                    }else{
+                        isShow = false;
+                    }
                 }
                 break;
             case '刷新':
@@ -275,15 +295,10 @@ class TemplateSetting extends Component {
                         success: function(res) {
                             if (location.port) {
                                 window.open(
-                                    'uclient://start/' +
-                                        'http://' +
-                                        location.hostname +
-                                        ':' +
-                                        location.port +
-                                        res.data.data
+                                    'uclient://start/' +'http://'+ location.hostname + ':' + location.port + res.data.data
                                 );
                             } else {
-                                window.open('uclient://start/' + 'http://' + location.hostname + res.data.data);
+                                window.open('uclient://start/' +'http://'+ location.hostname + res.data.data);
                             }
                         },
                         error: function(res) {
