@@ -53,6 +53,7 @@ class TemplateSetting extends Component {
         this.state = {
             siderHeight: '280',
             expandedKeys: [ '00' ],
+            expandedTemKeys: [],
             selectedTemKeys: [],
             selectedKeys: [],
             treeDataArray: [],
@@ -95,9 +96,9 @@ class TemplateSetting extends Component {
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    if(parentIdcon){
+                    if (parentIdcon) {
                         isShow = true;
-                    }else{
+                    } else {
                         isShow = false;
                     }
                 }
@@ -106,17 +107,17 @@ class TemplateSetting extends Component {
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    if(parentIdcon){
+                    if (parentIdcon) {
                         isShow = true;
-                    }else{
+                    } else {
                         isShow = false;
                     }
                 }
                 break;
             case '复制':
-                if(parentIdcon){
+                if (parentIdcon) {
                     isShow = true;
-                }else{
+                } else {
                     isShow = false;
                 }
                 break;
@@ -124,9 +125,9 @@ class TemplateSetting extends Component {
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
-                    if(parentIdcon){
+                    if (parentIdcon) {
                         isShow = true;
-                    }else{
+                    } else {
                         isShow = false;
                     }
                 }
@@ -135,9 +136,9 @@ class TemplateSetting extends Component {
                 if (activeKey === '3') {
                     isShow = false;
                 } else {
-                    if(parentIdcon){
+                    if (parentIdcon) {
                         isShow = true;
-                    }else{
+                    } else {
                         isShow = false;
                     }
                 }
@@ -295,10 +296,15 @@ class TemplateSetting extends Component {
                         success: function(res) {
                             if (location.port) {
                                 window.open(
-                                    'uclient://start/' +'http://'+ location.hostname + ':' + location.port + res.data.data
+                                    'uclient://start/' +
+                                        'http://' +
+                                        location.hostname +
+                                        ':' +
+                                        location.port +
+                                        res.data.data
                                 );
                             } else {
-                                window.open('uclient://start/' +'http://'+ location.hostname + res.data.data);
+                                window.open('uclient://start/' + 'http://' + location.hostname + res.data.data);
                             }
                         },
                         error: function(res) {
@@ -485,11 +491,23 @@ class TemplateSetting extends Component {
             });
         }
     };
-    onExpand = (expandedKeys) => {
-        this.setState({
-            expandedKeys,
-            autoExpandParent: true
-        });
+    onExpand = (typeSelect, expandedKeys) => {
+        switch (typeSelect) {
+            case 'systemOnselect':
+                this.setState({
+                    expandedKeys,
+                    autoExpandParent: true
+                });
+                break;
+            case 'templateOnselect':
+                this.setState({
+                    expandedTemKeys: expandedKeys,
+                    autoExpandParent: true
+                });
+                break;
+            default:
+                break;
+        }
     };
     //tree的查询方法
     onChange = (e) => {
@@ -681,8 +699,8 @@ class TemplateSetting extends Component {
         }
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys) => {
-        const { autoExpandParent, searchValue, expandedKeys } = this.state;
+    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys) => {
+        const { autoExpandParent, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
@@ -721,7 +739,9 @@ class TemplateSetting extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
-                        onExpand={this.onExpand}
+                        onExpand={(key, node) => {
+                            this.onExpand(typeSelect, key, node);
+                        }}
                         expandedKeys={expandedKeys}
                         onSelect={(key, node) => {
                             this.onSelect(typeSelect, key, node);
@@ -763,7 +783,9 @@ class TemplateSetting extends Component {
             treeDataArray,
             selectedKeys,
             selectedTemKeys,
-            parentIdcon
+            parentIdcon,
+            expandedKeys,
+            expandedTemKeys
         } = this.state;
         const leftTreeData = [
             {
@@ -811,7 +833,7 @@ class TemplateSetting extends Component {
                         padding: '20px'
                     }}
                 >
-                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys)}
+                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys, expandedKeys)}
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <Tabs
@@ -824,7 +846,13 @@ class TemplateSetting extends Component {
                     >
                         <TabPane tab='页面模板' key='1'>
                             {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(treeTemBillData, 'templateOnselect', 'hideSearch', selectedTemKeys)}
+                                this.treeResAndUser(
+                                    treeTemBillData,
+                                    'templateOnselect',
+                                    'hideSearch',
+                                    selectedTemKeys,
+                                    expandedTemKeys
+                                )}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
                             {treeTemQueryData.length > 0 &&
@@ -832,7 +860,8 @@ class TemplateSetting extends Component {
                                     treeTemQueryData,
                                     'templateOnselect',
                                     'hideSearch',
-                                    selectedTemKeys
+                                    selectedTemKeys,
+                                    expandedTemKeys
                                 )}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
@@ -841,7 +870,8 @@ class TemplateSetting extends Component {
                                     treeTemPrintData,
                                     'templateOnselect',
                                     'hideSearch',
-                                    selectedTemKeys
+                                    selectedTemKeys,
+                                    expandedTemKeys
                                 )}
                         </TabPane>
                     </Tabs>
