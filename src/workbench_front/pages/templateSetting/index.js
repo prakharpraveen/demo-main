@@ -465,26 +465,50 @@ class TemplateSetting extends Component {
         //处理树数据
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
-        if (treeData.length > 0) {
-            let newinitKeyArray = [];
-            newinitKeyArray.push(treeData[0].key);
-            this.setState({
-                selectedTemKeys: newinitKeyArray,
-                parentIdcon: treeData[0].parentId,
-                templatePks: treeData[0].key[0]
-            });
-        }
         if (templateType === 'bill') {
+            if (activeKey==='1') {
+                if(treeData.length>0){
+                    let newinitKeyArray = [];
+                    newinitKeyArray.push(treeData[0].key);
+                    this.setState({
+                        selectedTemKeys: newinitKeyArray,
+                        parentIdcon: treeData[0].parentId,
+                        templatePks: treeData[0].key[0]
+                    });
+                }
+            }
             treeTemBillData = treeData;
             this.setState({
                 treeTemBillData
             });
         } else if (templateType === 'query') {
+            if (activeKey==='2') {
+                if(treeData.length>0){
+                    let newinitKeyArray = [];
+                    newinitKeyArray.push(treeData[0].key);
+                    this.setState({
+                        selectedTemKeys: newinitKeyArray,
+                        parentIdcon: treeData[0].parentId,
+                        templatePks: treeData[0].key[0]
+                    });
+                }
+            }
             treeTemQueryData = treeData;
             this.setState({
                 treeTemQueryData
             });
         } else if (templateType === 'print') {
+            if (activeKey==='3') {
+                if(treeData.length>0){
+                    let newinitKeyArray = [];
+                    newinitKeyArray.push(treeData[0].key);
+                    this.setState({
+                        selectedTemKeys: newinitKeyArray,
+                        parentIdcon: treeData[0].parentId,
+                        templatePks: treeData[0].key[0]
+                    });
+                }
+            }
             treeTemPrintData = treeData;
             this.setState({
                 treeTemPrintData
