@@ -270,9 +270,6 @@ class Layout extends Component {
     componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleUpdateTitleName);
     }
-    getAllApps = () => {
-        return <AllApps />;
-    };
     render() {
         let {
             nodeName,
@@ -293,6 +290,7 @@ class Layout extends Component {
                             return;
                         }
                     }}
+                    ref='ncWorkbenchTopContainer'
                     style={{ zIndex: "1" }}
                 >
                     <nav
@@ -365,7 +363,8 @@ class Layout extends Component {
                             <span className="margin-right-10">
                                 <Popover
                                     overlayClassName="all-apps-popover"
-                                    content={this.getAllApps()}
+                                    getPopupContainer={()=>{return this.refs.ncWorkbenchTopContainer}}
+                                    content={<AllApps />}
                                     placement="bottomRight"
                                     arrowPointAtCenter={true}
                                     onVisibleChange={isVisible => {
