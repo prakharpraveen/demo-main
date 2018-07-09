@@ -70,30 +70,27 @@ class ModuleFromCard extends Component {
 
 	/**
 	 * @param {*} DOMDATA
-	 * 添加表头
+	 * 添加表头,最新的逻辑为如果出现Form表单区域，就出现设置表头字段
 	*/
 	getFormItem = (DOMDATA) => {
 		let { newListData } = this.props,
 			form = [], table = [];
 		newListData && newListData.map((v, i) => {
-			if (v.areatype === '1') {
+			if (v.areatype === '1') {//表单
 				form.push(v);
-			} else if (v.areatype === '2') {
+			} else if (v.areatype === '2') {//表格
 				table.push(v)
 			}
 		});
 
-		// 过滤掉表头列
-		if (!form.length || !table.length) {
-			DOMDATA = DOMDATA && DOMDATA.filter((v, i) => v.code !=='headcode');
-
-		}
-
-		else if (form.length && table.length) {
+		//过滤掉表头列,当页面不存在Form表单区域
+		if(form.length){
 			let item = DOMDATA.find(item => item.code === 'headcode');
 			if (item) {
 				item.options = creatOption();
 			}
+		}else{
+			DOMDATA = DOMDATA && DOMDATA.filter((v, i) => v.code !=='headcode');
 		}
 		function creatOption() {
 			let newArray = newListData && newListData.filter((v, i) => {
