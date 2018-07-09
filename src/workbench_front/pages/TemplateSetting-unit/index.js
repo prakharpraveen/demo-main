@@ -494,6 +494,7 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
+        console.log(e.selectedNodes[0].props.refData.parentId);
         let { activeKey } = this.state;
         let templateType = '';
         if (activeKey === '1') {
