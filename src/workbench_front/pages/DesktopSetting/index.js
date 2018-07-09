@@ -29,16 +29,19 @@ class Test extends Component {
 	}
 
 	componentDidMount() {
+		let ajaxData = {
+			isuser: this.state.relateidObj.code //0职责 1用户 2集团
+		};
+		if(this.state.relateidObj.code === '0'){
+			ajaxData.relateid = this.state.relateidObj.data;
+		}
 		Ajax({
 			url: `/nccloud/platform/appregister/queryworkbench.do`,
 			info: {
 				name:'工作桌面配置',
 				action:'工作桌面查询'
 			},
-			data: {
-				relateid: this.state.relateidObj.data,
-				isuser: this.state.relateidObj.code //0职责 1用户 2集团
-			},
+			data: ajaxData,
 			success: (res) => {
 				if (res) {
 					let { data, success } = res.data;

@@ -169,11 +169,14 @@ class MyFooter extends Component {
 			});
 			tmpData.push(tmp);
 		});
-		const saveData = {
-			relateid: this.props.relateidObj.data,
-			isuser: this.props.relateidObj.code, //1用户 0职责，
+		
+		let saveData = {
+			isuser: this.props.relateidObj.code, //0职责 1用户 2集团
 			data: tmpData
 		};
+		if(this.props.relateidObj.code === '0'){
+			saveData.relateid = this.props.relateidObj.data;
+		}
 		Ajax({
 			url: `/nccloud/platform/appregister/setapp.do`,
 			info: {
