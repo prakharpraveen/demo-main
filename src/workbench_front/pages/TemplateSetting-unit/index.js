@@ -399,8 +399,8 @@ class TemplateSetting extends Component {
             });
         }
         if (templateType === 'bill') {
-            if (activeKey==='1') {
-                if(treeData.length>0){
+            if (activeKey === '1') {
+                if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
                     this.setState({
@@ -415,8 +415,8 @@ class TemplateSetting extends Component {
                 treeTemBillData
             });
         } else if (templateType === 'query') {
-            if (activeKey==='2') {
-                if(treeData.length>0){
+            if (activeKey === '2') {
+                if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
                     this.setState({
@@ -431,8 +431,8 @@ class TemplateSetting extends Component {
                 treeTemQueryData
             });
         } else if (templateType === 'print') {
-            if (activeKey==='3') {
-                if(treeData.length>0){
+            if (activeKey === '3') {
+                if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
                     this.setState({
@@ -468,6 +468,11 @@ class TemplateSetting extends Component {
     };
     //加载右侧模板数据
     onSelectQuery = (key, e) => {
+        const { orgidObj } = this.state;
+        if(!orgidObj.refpk){
+            Notice({ status: 'warning', msg: '请选中业务单元' });
+            return;
+        }
         if (key.length > 0) {
             this.setState(
                 {
