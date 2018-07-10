@@ -768,7 +768,7 @@ class TemplateSetting extends Component {
         const leftTreeData = [
             {
                 code: '00',
-                name: '应用节点',
+                name: '菜单树',
                 pk: '',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
