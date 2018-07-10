@@ -544,9 +544,9 @@ class AssignComponent extends Component {
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
                                 {treeRoVisible ? (
-                                    this.treeResAndUser(treeRoData, 'resOnselect')
+                                    treeRoData.children.length > 0 && this.treeResAndUser(treeRoData, 'resOnselect')
                                 ) : (
-                                    this.treeResAndUser(treeResData, 'resOnselect')
+                                    treeRoData.children.length > 0 && this.treeResAndUser(treeResData, 'resOnselect')
                                 )}
                             </div>
                             <div className='allocation-button'>
