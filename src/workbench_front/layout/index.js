@@ -265,6 +265,9 @@ class Layout extends Component {
             }
         });
     };
+    /**
+     * 页签激活重新查询用户信息
+     */
     handleVisibilityChange = () => {
         if (document.visibilityState !== "hidden") {
             this.reqInfoData();
