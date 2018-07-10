@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { GetQuery } from "Pub/js/utils";
 import { withRouter } from "react-router-dom";
-import { changeDrawer } from "Store/appStore/action";
+import { changeDrawer, setAccountInfo } from "Store/appStore/action";
 import AllApps from "Pages/AllApps/index";
 import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
@@ -248,14 +248,20 @@ class Layout extends Component {
             url: `/nccloud/platform/appregister/querypersonsettings.do`,
             info: {
                 name: "工作桌面",
-                action: "业务日期|集团|个人头像"
+                action: "业务日期|集团|个人头像|用户名称"
             },
             success: ({ data: { data } }) => {
                 if (data.length > 0) {
-                    let { pk_group, bizDateTime } = data.find(
+                    let { pk_group, bizDateTime, userName, userId } = data.find(
                         item => item.is_selected
                     );
                     let newDate = moment(bizDateTime - 0 * 1000);
+                    this.props.setAccountInfo({
+                        newDate,
+                        selectedKey: pk_group,
+                        userName: userName ? userName : "用户名",
+                        userID: userId
+                    });
                     this.setState({
                         newDate,
                         currentData: data,
@@ -443,7 +449,8 @@ Layout.propTypes = {
     appData: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     changeDrawer: PropTypes.func.isRequired,
-    updateHomePage: PropTypes.func.isRequired
+    updateHomePage: PropTypes.func.isRequired,
+    setAccountInfo: PropTypes.func.isRequired
 };
 export default withRouter(
     connect(
@@ -452,6 +459,6 @@ export default withRouter(
             isOpen: state.appData.isOpen,
             updateHomePage: state.homeData.updateHomePage
         }),
-        { changeDrawer }
+        { changeDrawer, setAccountInfo }
     )(Layout)
 );

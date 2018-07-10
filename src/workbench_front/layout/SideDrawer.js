@@ -87,7 +87,7 @@ class SideDrawer extends Component {
                             <div className="drawer-logo">
                                 <img src={UserLogo} alt="logo" />
                             </div>
-                            <span className="name">用户名称</span>
+                            <span className="name">{this.props.userName}</span>
                         </div>
                     </div>
                     <div className="drawer-setting">
@@ -180,11 +180,13 @@ class SideDrawer extends Component {
 }
 SideDrawer.propTypes = {
     isOpen: PropTypes.bool.isRequired,
+    userName: PropTypes.string.isRequired,
     changeDrawer: PropTypes.func.isRequired
 };
 export default connect(
     state => ({
-        isOpen: state.appData.isOpen
+        isOpen: state.appData.isOpen,
+        userName: state.appData.userName
     }),
     {
         changeDrawer

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col } from "antd";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 class InfoForm extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,7 @@ class InfoForm extends Component {
     return (
       <div className="userinfo-container">
         <Row className="userinfo-item userinfo-name">
-          <span>用户名</span>
+          <span>{this.props.userName}</span>
         </Row>
         <Row className="userinfo-item">
           <Col className="userinfo-item-label" span={6}>
@@ -68,4 +70,12 @@ class InfoForm extends Component {
     );
   }
 }
-export default InfoForm;
+InfoForm.propTypes = {
+  userName: PropTypes.string.isRequired,
+};
+export default  connect(
+      state => ({
+        userName: state.appData.userName,
+      }),
+      {}
+  )(InfoForm);

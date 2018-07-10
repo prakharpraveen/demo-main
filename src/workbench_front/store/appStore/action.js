@@ -21,3 +21,10 @@ export const changeDrawer = (value) => {
 		value
 	};
 };
+// 账户信息
+export const setAccountInfo = (value) => {
+	return {
+		type: appStore.ACCOUNTINFO,
+		value
+	};
+};
