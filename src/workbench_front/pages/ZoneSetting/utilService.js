@@ -138,7 +138,7 @@ export const filterItemtypeObj = [
 	{ datatype: '57', itemtypeObj: [ { name: '参照', value: 'refer' } ] },
 	{ datatype: '56', itemtypeObj: [ { name: '文本输入框', value: 'input' } ] },
 	{ datatype: '4', itemtypeObj: itemtypeObj },
-	{ datatype: '1', itemtypeObj: [ { name: '文本输入框', value: 'input' } ] },
+	{ datatype: '1', itemtypeObj: [ { name: '文本输入框', value: 'input' }, { name: '静态文本', value: 'label' } ] },
 	{
 		datatype: '32',
 		itemtypeObj: [
