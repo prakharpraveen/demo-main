@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Drawer from "react-motion-drawer";
+import { Modal } from "antd";
 import { changeDrawer } from "Store/appStore/action";
 import UserLogo from "Assets/images/userLogo.jpg";
 import { openPage } from "Pub/js/superJump";
@@ -32,7 +33,18 @@ class SideDrawer extends Component {
      * 注销操作
      */
     handleExit = () => {
-        window.location.href = "/nccloud";
+        this.props.changeDrawer(false);
+
+        Modal.confirm({
+            title: "注销",
+            maskClosable:true,
+            content: "注销当前账号？",
+            okText: "确认",
+            cancelText: "取消",
+            onOk: () => {
+                window.location.href = "/nccloud";
+            }
+        });
     };
     /**
      * spr录制

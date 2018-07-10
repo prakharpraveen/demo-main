@@ -241,7 +241,7 @@ class Layout extends Component {
         });
     };
     /**
-     * 所属集团查询
+     * 用户信息查询
      */
     reqInfoData = () => {
         Ajax({
@@ -265,13 +265,26 @@ class Layout extends Component {
             }
         });
     };
+    handleVisibilityChange = () => {
+        if (document.visibilityState !== "hidden") {
+            this.reqInfoData();
+        }
+    };
     componentDidMount() {
         this.handleUpdateTitleName();
         this.reqInfoData();
         window.addEventListener("hashchange", this.handleUpdateTitleName);
+        window.addEventListener(
+            "visibilitychange",
+            this.handleVisibilityChange
+        );
     }
     componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleUpdateTitleName);
+        window.removeEventListener(
+            "visibilitychange",
+            this.handleVisibilityChange
+        );
     }
     render() {
         let {
