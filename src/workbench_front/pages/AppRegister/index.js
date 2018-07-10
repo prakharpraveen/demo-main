@@ -346,7 +346,6 @@ class AppRegister extends Component {
      * 删除
      */
     del = () => {
-        let _this = this;
         if (!this.props.nodeInfo.isleaf) {
             Notice({
                 status: "warning",
@@ -361,20 +360,20 @@ class AppRegister extends Component {
             okType: "danger",
             cancelText: "取消",
             mask: false,
-            onOk() {
-                let optype = _this.props.optype;
-                let { id } = _this.props.nodeInfo;
+            onOk: () => {
+                let optype = this.props.optype;
+                let { id } = this.props.nodeInfo;
                 let delFun = data => {
                     Notice({
                         status: "success",
                         msg: data.true
                     });
-                    _this.delTreeData(id);
-                    _this.props.setNodeData({});
-                    _this.props.setOptype(optype);
+                    this.delTreeData(id);
+                    this.props.setNodeData({});
+                    this.props.setOptype(optype);
                 };
                 if (optype === "1" || optype === "2") {
-                    _this.reqTreeNodeData(
+                    this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "模块删除"
@@ -387,7 +386,7 @@ class AppRegister extends Component {
                     );
                 }
                 if (optype === "3" || optype === "4") {
-                    _this.reqTreeNodeData(
+                    this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "应用删除"
@@ -400,7 +399,7 @@ class AppRegister extends Component {
                     );
                 }
                 if (optype === "5") {
-                    _this.reqTreeNodeData(
+                    this.reqTreeNodeData(
                         {
                             name: "应用注册",
                             action: "页面删除"

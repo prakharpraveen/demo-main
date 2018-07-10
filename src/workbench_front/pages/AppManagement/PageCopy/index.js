@@ -27,7 +27,7 @@ class PageCopy extends Component {
         code: "newPageName",
         isRequired: true,
         isedit: true,
-        lg: 12
+        lg: 24
       },
       {
         label: "新页面编码",
@@ -36,20 +36,12 @@ class PageCopy extends Component {
         isRequired: true,
         isedit: true,
         options: this.props.newPageOtions,
-        lg: 12
+        lg: 24
       },
-      {
-        label: "页面主键",
-        type: "string",
-        code: "pageId",
-        isRequired: false,
-        isedit: false,
-        lg: 12
-      }
     ];
     return (
-      <div className="copyapp-content">
-        <div className="copyapp-form">
+      <div className="copypage-content">
+        <div className="copypage-form">
           <FormCreate
             formData={pageCopyFormData}
             fields={this.props.pageCopyData}

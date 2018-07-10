@@ -494,7 +494,7 @@ class AppManagement extends Component {
                         mask={false}
                         okText={"确认"}
                         cancelText={"取消"}
-                        width={800}
+                        width={modalType === "0" ? 800 : 400}
                         wrapClassName="vertical-center-modal"
                         visible={this.state.visible}
                         onOk={() => {
