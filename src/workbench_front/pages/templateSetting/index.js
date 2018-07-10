@@ -84,7 +84,8 @@ class TemplateSetting extends Component {
             orgidObj: {},
             parentIdcon: '', //树节点的key
             activeKey: '1',
-            batchSettingModalVisibel: false //控制预览摸态框的显隐属性
+            batchSettingModalVisibel: false, //控制预览摸态框的显隐属性
+            isDefaultTem: ''
         };
     }
     // 按钮显隐性控制
@@ -223,10 +224,9 @@ class TemplateSetting extends Component {
     };
     //设置默认模板 菜单栏
     menuFun = () => {
-        let { templateNameVal } = this.state;
-        const len = templateNameVal.length;
+        let { isDefaultTem } = this.state;
         let isButton = false;
-        if (templateNameVal.slice(len - 3, len - 1) === '默认') {
+        if (isDefaultTem === 'y') {
             isButton = true;
         }
         return (
@@ -680,7 +680,8 @@ class TemplateSetting extends Component {
                 selectedTemKeys: key,
                 templatePks: key[0],
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
-                templateNameVal: e.selectedNodes[0].props.refData.name
+                templateNameVal: e.selectedNodes[0].props.refData.name,
+                isDefaultTem: e.selectedNodes[0].props.refData.isDefault
             });
         } else {
             this.setState({
@@ -837,6 +838,7 @@ class TemplateSetting extends Component {
                                     return this.creatBtn(item);
                                 })}
                             {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
+                            parentIdcon &&
                             parentIdcon !== 'root' && (
                                 <Dropdown overlay={this.menuFun()} trigger={[ 'click' ]}>
                                     <Button key='' className='margin-left-10' type='primary'>
@@ -860,7 +862,14 @@ class TemplateSetting extends Component {
                         padding: '20px'
                     }}
                 >
-                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys, expandedKeys, autoExpandParent)}
+                    {this.treeResAndUser(
+                        leftTreeData,
+                        'systemOnselect',
+                        null,
+                        selectedKeys,
+                        expandedKeys,
+                        autoExpandParent
+                    )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <Tabs
