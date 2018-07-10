@@ -13,3 +13,10 @@ export const updateGroupList = (groups) => {
 		groups: groups
 	};
 };
+// 更新首页
+export const setUpdateHomePageFun = (data) => {
+	return {
+		type: home.UPDATEHOMEPAGE,
+		updateHomePage:data
+	};
+};

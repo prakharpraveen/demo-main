@@ -6,7 +6,7 @@ import Ajax from "Pub/js/ajax";
 import Svg from "Components/Svg";
 import "./index.less";
 import _ from "lodash";
-import { updateGroupList } from "Store/home/action";
+import { updateGroupList, setUpdateHomePageFun } from "Store/home/action";
 import {
     compactLayout,
     compactLayoutHorizontal
@@ -263,11 +263,7 @@ class Home extends Component {
             }
         });
     };
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.handleHomeLoad);
-    }
-    componentDidMount() {
-        window.addEventListener("resize", this.handleHomeLoad);
+    updateHomePage = () => {
         Ajax({
             url: `/nccloud/platform/appregister/queryworkbench.do`,
             info: {
@@ -295,9 +291,7 @@ class Home extends Component {
                             a.width = Number(a.width);
                         });
                     });
-                    this.setState(
-                        { groups: data[0].groups }
-                    );
+                    this.setState({ groups: data[0].groups });
                     this.props.updateGroupList(data[0].groups);
                     this.handleHomeLoad();
                 } else {
@@ -312,6 +306,14 @@ class Home extends Component {
                 }
             }
         });
+    };
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.handleHomeLoad);
+    }
+    componentDidMount() {
+        window.addEventListener("resize", this.handleHomeLoad);
+        this.updateHomePage();
+        this.props.setUpdateHomePageFun(this.updateHomePage);
     }
     render() {
         let { groups, layout } = this.state;
@@ -346,10 +348,14 @@ class Home extends Component {
     }
 }
 
-Home.propTypes = { updateGroupList: PropTypes.func.isRequired };
+Home.propTypes = {
+    updateGroupList: PropTypes.func.isRequired,
+    setUpdateHomePageFun: PropTypes.func.isRequired
+};
 export default connect(
     state => ({}),
     {
-        updateGroupList
+        updateGroupList,
+        setUpdateHomePageFun
     }
 )(Home);

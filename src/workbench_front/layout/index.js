@@ -52,7 +52,10 @@ class Layout extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data.msg) {
-                    this.setState({ selectedKey: value });
+                    this.setState(
+                        { selectedKey: value },
+                        this.props.updateHomePage
+                    );
                 }
             }
         });
@@ -290,7 +293,7 @@ class Layout extends Component {
                             return;
                         }
                     }}
-                    ref='ncWorkbenchTopContainer'
+                    ref="ncWorkbenchTopContainer"
                     style={{ zIndex: "1" }}
                 >
                     <nav
@@ -357,13 +360,14 @@ class Layout extends Component {
                                     />
                                 )}
                             </span>
-
                             {this.getSearchDom()}
-
                             <span className="margin-right-10">
                                 <Popover
                                     overlayClassName="all-apps-popover"
-                                    getPopupContainer={()=>{return this.refs.ncWorkbenchTopContainer}}
+                                    getPopupContainer={() => {
+                                        return this.refs
+                                            .ncWorkbenchTopContainer;
+                                    }}
                                     content={<AllApps />}
                                     placement="bottomRight"
                                     arrowPointAtCenter={true}
@@ -386,7 +390,6 @@ class Layout extends Component {
                                     />
                                 </Popover>
                             </span>
-
                             <span className="margin-right-10">
                                 <i
                                     field="message"
@@ -423,13 +426,15 @@ class Layout extends Component {
 Layout.propTypes = {
     appData: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    changeDrawer: PropTypes.func.isRequired
+    changeDrawer: PropTypes.func.isRequired,
+    updateHomePage: PropTypes.func.isRequired
 };
 export default withRouter(
     connect(
         state => ({
             appData: state.appData,
-            isOpen: state.appData.isOpen
+            isOpen: state.appData.isOpen,
+            updateHomePage: state.homeData.updateHomePage
         }),
         { changeDrawer }
     )(Layout)
