@@ -453,13 +453,13 @@ class TemplateSetting extends Component {
             case 'systemOnselect':
                 this.setState({
                     expandedKeys: expandedKeys,
-                    autoExpandParent: true
+                    autoExpandParent: false
                 });
                 break;
             case 'templateOnselect':
                 this.setState({
                     expandedTemKeys: expandedKeys,
-                    autoExpandParent: true
+                    autoExpandParent: false
                 });
                 break;
             default:

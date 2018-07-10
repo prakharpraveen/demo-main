@@ -516,19 +516,17 @@ class TemplateSetting extends Component {
         }
     };
     onExpand = (typeSelect, expandedKeys) => {
-        console.log(expandedKeys);
-
         switch (typeSelect) {
             case 'systemOnselect':
                 this.setState({
                     expandedKeys: expandedKeys,
-                    autoExpandParent: true
+                    autoExpandParent: false
                 });
                 break;
             case 'templateOnselect':
                 this.setState({
                     expandedTemKeys: expandedKeys,
-                    autoExpandParent: true
+                    autoExpandParent: false
                 });
                 break;
             default:
