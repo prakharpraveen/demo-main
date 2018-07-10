@@ -3,6 +3,7 @@ import { Button, Table, Switch, Icon, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import _ from "lodash";
 import { updateMenuItemData } from "Store/MenuRegister/action";
 import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
@@ -15,7 +16,6 @@ class MenuRegister extends Component {
         super(props);
         this.state = {
             isedit: false,
-            iserror: false,
             listData: [],
             // 是否为开发态
             isDevelopMode: false
@@ -32,85 +32,60 @@ class MenuRegister extends Component {
                 dataIndex: "menucode",
                 key: "menucode",
                 width: "16%",
-                render: (text, record) => {
-                    if (this.state.isedit) {
-                        return (
-                            <EditableCell
-                                value={text}
-                                hasError={this.state.iserror}
-                                onChange={this.onCellChange(
-                                    record.pk_menu,
-                                    "menucode"
-                                )}
-                                onCheck={this.onCellCheck(
-                                    record.pk_menu,
-                                    "menucode"
-                                )}
-                            />
-                        );
-                    } else {
-                        return <div>{text}</div>;
-                    }
-                }
+                render: (text, record, index) => (
+                    <EditableCell
+                        type={"string"}
+                        value={text}
+                        editable={this.state.isedit}
+                        cellIndex={index}
+                        cellKey={"menucode"}
+                        cellRequired={true}
+                        cellChange={this.handleCellChange}
+                        cellCheck={this.handleCellCheck}
+                    />
+                )
             },
             {
                 title: "菜单名称",
                 dataIndex: "menuname",
                 key: "menuname",
                 width: "10%",
-                render: (text, record) => {
-                    if (this.state.isedit) {
-                        return (
-                            <EditableCell
-                                hasError={this.state.iserror}
-                                value={text}
-                                onChange={this.onCellChange(
-                                    record.pk_menu,
-                                    "menuname"
-                                )}
-                                onCheck={this.onCellCheck(
-                                    record.pk_menu,
-                                    "menuname"
-                                )}
-                            />
-                        );
-                    } else {
-                        return <div>{text}</div>;
-                    }
-                }
+                render: (text, record, index) => (
+                    <EditableCell
+                        type={"string"}
+                        value={text}
+                        editable={this.state.isedit}
+                        cellIndex={index}
+                        cellKey={"menuname"}
+                        cellRequired={true}
+                        cellChange={this.handleCellChange}
+                        cellCheck={this.handleCellCheck}
+                    />
+                )
             },
             {
                 title: "菜单描述",
                 dataIndex: "menudesc",
                 key: "menudesc",
                 width: "10%",
-                render: (text, record) => {
-                    if (this.state.isedit) {
-                        return (
-                            <EditableCell
-                                hasError={this.state.iserror}
-                                value={text}
-                                onChange={this.onCellChange(
-                                    record.pk_menu,
-                                    "menudesc"
-                                )}
-                                onCheck={this.onCellCheck(
-                                    record.pk_menu,
-                                    "menudesc"
-                                )}
-                            />
-                        );
-                    } else {
-                        return <div>{text}</div>;
-                    }
-                }
+                render: (text, record, index) => (
+                    <EditableCell
+                        type={"string"}
+                        value={text}
+                        editable={this.state.isedit}
+                        cellIndex={index}
+                        cellKey={"menudesc"}
+                        cellRequired={false}
+                        cellChange={this.handleCellChange}
+                    />
+                )
             },
             {
                 title: "是否启用",
                 dataIndex: "isenable",
                 key: "isenable",
                 width: "7%",
-                render: (text, record) => (
+                render: (text, record, index) => (
                     <Switch
                         disabled={this.state.isedit}
                         onChange={checked => {
@@ -153,7 +128,7 @@ class MenuRegister extends Component {
                 title: "创建时间",
                 dataIndex: "creationtime",
                 key: "creationtime",
-                width: "11%",
+                width: "11%"
             },
             {
                 title: "最后修改人",
@@ -172,7 +147,7 @@ class MenuRegister extends Component {
                 title: "最后修改时间",
                 dataIndex: "modifiedtime",
                 key: "modifiedtime",
-                width: "11%",
+                width: "11%"
             },
             {
                 title: "操作",
@@ -234,40 +209,45 @@ class MenuRegister extends Component {
         this.historyListData;
     }
     /**
-     * 单元格编辑事件
+     * 表格单元格编辑事件
      */
-    onCellChange = (key, dataIndex) => {
-        return value => {
-            const listData = [...this.state.listData];
-            const target = listData.find(item => item.pk_menu === key);
-            if (target) {
-                target[dataIndex] = value;
-                target.isModify = true;
-                this.setState({
-                    listData
-                });
-            }
-        };
+    handleCellChange = (key, index, value) => {
+        const listData = [...this.state.listData];
+        listData[index][key] = value;
+        listData[index]["isModify"] = true;
+        this.setState({
+            listData
+        });
     };
     /**
-     * 单元格编辑校验
+     * 表格单元格校验
      */
-    onCellCheck = (key, dataIndex) => {
-        return value => {
-            const listData = [...this.state.listData];
-            const target = listData.find(
-                item =>
-                    (item.pk_menu !== key && item[dataIndex] === value) ||
-                    value.length === 0
-            );
-            if (target) {
-                this.setState({ iserror: true });
-                return true;
-            } else {
-                this.setState({ iserror: false });
-                return false;
+    handleCellCheck = (key, index, value) => {
+        const listData = [...this.state.listData];
+        if (!value || value.length === 0) {
+            listData[index]["hasError"] = true;
+            this.setState({
+                listData
+            });
+            return false;
+        } else {
+            // 菜单编码不能重复
+            if (key === "menucode") {
+                let itemList = listData.filter(item => item[key] === value);
+                if (itemList.length > 1) {
+                    listData[index]["hasError"] = true;
+                    this.setState({
+                        listData
+                    });
+                    return false;
+                }
             }
-        };
+            listData[index]["hasError"] = false;
+            this.setState({
+                listData
+            });
+            return true;
+        }
     };
     /**
      * 列表行操作事件
@@ -384,10 +364,13 @@ class MenuRegister extends Component {
     handleBtnClick = key => {
         switch (key) {
             case "save":
-                if (this.state.iserror) {
+                let errorList = this.state.listData.filter(
+                    item => item.hasError
+                );
+                if (errorList.length > 0) {
                     Notice({
                         status: "warning",
-                        msg: "菜单编码不能重复！"
+                        msg: "请检查必输项！"
                     });
                     return;
                 }
@@ -429,14 +412,13 @@ class MenuRegister extends Component {
                 });
                 break;
             case "edit":
-                this.historyListData = [...this.state.listData];
+                this.historyListData = _.cloneDeep(this.state.listData);
                 this.setState({ isedit: true });
                 break;
             case "cancle":
                 this.setState({
                     listData: this.historyListData,
-                    isedit: false,
-                    iserror: false
+                    isedit: false
                 });
                 break;
             default:
