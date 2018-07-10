@@ -483,7 +483,7 @@ class AssignComponent extends Component {
                 width={720}
             >
                 <div className='allocationPage'>
-                <div className='pageCode-show'>
+                    <div className='pageCode-show'>
                         <p className='pageCodeName'>
                             <span>功能节点：</span>
                             <span>{pageCode ? pageCode : ''}</span>

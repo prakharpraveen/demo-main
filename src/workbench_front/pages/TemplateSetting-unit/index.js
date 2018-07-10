@@ -469,7 +469,7 @@ class TemplateSetting extends Component {
     //加载右侧模板数据
     onSelectQuery = (key, e) => {
         const { orgidObj } = this.state;
-        if(!orgidObj.refpk){
+        if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '请选中业务单元' });
             return;
         }
