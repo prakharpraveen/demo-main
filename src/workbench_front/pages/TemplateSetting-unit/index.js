@@ -58,6 +58,7 @@ class TemplateSetting extends Component {
             treeData: [],
             searchValue: '',
             autoExpandParent: true,
+            autoExpandTemParent: true,
             treeTemBillData: [], //单据模板数据
             treeTemQueryData: [], //查询模板数据
             treeTemPrintData: [],
@@ -459,7 +460,7 @@ class TemplateSetting extends Component {
             case 'templateOnselect':
                 this.setState({
                     expandedTemKeys: expandedKeys,
-                    autoExpandParent: false
+                    autoExpandTemParent: false
                 });
                 break;
             default:
@@ -662,8 +663,8 @@ class TemplateSetting extends Component {
         });
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys) => {
-        const { autoExpandParent, searchValue } = this.state;
+    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys, autoExpandParent) => {
+        const { searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
@@ -760,7 +761,9 @@ class TemplateSetting extends Component {
             selectedKeys,
             selectedTemKeys,
             expandedKeys,
-            expandedTemKeys
+            expandedTemKeys,
+            autoExpandParent,
+            autoExpandTemParent
         } = this.state;
         const leftTreeData = [
             {
@@ -806,7 +809,14 @@ class TemplateSetting extends Component {
                         padding: '20px'
                     }}
                 >
-                    {this.treeResAndUser(leftTreeData, 'systemOnselect', null, selectedKeys, expandedKeys)}
+                    {this.treeResAndUser(
+                        leftTreeData,
+                        'systemOnselect',
+                        null,
+                        selectedKeys,
+                        expandedKeys,
+                        autoExpandParent
+                    )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
                     <Tabs
@@ -824,7 +834,8 @@ class TemplateSetting extends Component {
                                     'templateOnselect',
                                     'hideSearch',
                                     selectedTemKeys,
-                                    expandedTemKeys
+                                    expandedTemKeys,
+                                    autoExpandTemParent
                                 )}
                         </TabPane>
                         <TabPane tab='查询模板' key='2'>
@@ -834,7 +845,8 @@ class TemplateSetting extends Component {
                                     'templateOnselect',
                                     'hideSearch',
                                     selectedTemKeys,
-                                    expandedTemKeys
+                                    expandedTemKeys,
+                                    autoExpandTemParent
                                 )}
                         </TabPane>
                         <TabPane tab='打印模板' key='3'>
@@ -844,7 +856,8 @@ class TemplateSetting extends Component {
                                     'templateOnselect',
                                     'hideSearch',
                                     selectedTemKeys,
-                                    expandedTemKeys
+                                    expandedTemKeys,
+                                    autoExpandTemParent
                                 )}
                         </TabPane>
                     </Tabs>
