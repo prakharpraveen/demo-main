@@ -103,6 +103,7 @@ class DefaultSetting extends Component {
         });
     };
     handdleRefChange = (value, type) => {
+        console.log(value,type);
         let { refname, refcode, refpk } = value;
         let obj = {};
         obj[type] = {};
@@ -118,10 +119,14 @@ class DefaultSetting extends Component {
                 name: "个性化-默认设置",
                 action: "查询"
             },
-            success: res => {
-                let { success, data } = res;
-                if (success && data) {
-                    this.setState(data);
+            success: ({ data: { data } }) => {
+                if (data) {
+                    for (const key in data) {
+                        if (!data[key]) {
+                            data[key] = {};
+                        }
+                    }
+                    this.setState({ ...data });
                 }
             }
         });
@@ -172,7 +177,7 @@ class DefaultSetting extends Component {
                                 value={org_df_credit}
                                 placeholder={"默认信用控制域"}
                                 onChange={value => {
-                                    this.handdleRefChange(value, "org_df_biz");
+                                    this.handdleRefChange(value, "org_df_credit");
                                 }}
                             />
                         </div>
