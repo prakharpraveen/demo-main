@@ -85,7 +85,8 @@ class TemplateSetting extends Component {
             parentIdcon: '', //树节点的key
             activeKey: '1',
             batchSettingModalVisibel: false, //控制预览摸态框的显隐属性
-            isDefaultTem: ''
+            isDefaultTem: '',
+            def1: ''
         };
     }
     // 按钮显隐性控制
@@ -270,7 +271,7 @@ class TemplateSetting extends Component {
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, pageCode, activeKey, appCode } = this.state;
+        let { templatePks, pageCode, activeKey, appCode } = this.state;
         let infoData = {
             templateId: templatePks
         };
@@ -474,7 +475,8 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name
                     });
                 }
             }
@@ -490,7 +492,8 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name
                     });
                 }
             }
@@ -506,7 +509,9 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name,
+                        templateTitleVal: treeData[0].code
                     });
                 }
             }
@@ -584,7 +589,8 @@ class TemplateSetting extends Component {
                 {
                     selectedKeys: key,
                     pageCode: e.selectedNodes[0].props.refData.code,
-                    appCode: e.selectedNodes[0].props.refData.appCode
+                    appCode: e.selectedNodes[0].props.refData.appCode,
+                    def1: e.selectedNodes[0].props.refData.def1
                 },
                 this.reqTreeTemData
             );
@@ -681,14 +687,17 @@ class TemplateSetting extends Component {
                 templatePks: key[0],
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
                 templateNameVal: e.selectedNodes[0].props.refData.name,
-                isDefaultTem: e.selectedNodes[0].props.refData.isDefault
+                isDefaultTem: e.selectedNodes[0].props.refData.isDefault,
+                templateTitleVal: e.selectedNodes[0].props.refData.code
             });
         } else {
             this.setState({
                 selectedTemKeys: key,
                 templatePks: '',
                 parentIdcon: '',
-                templateNameVal: ''
+                templateNameVal: '',
+                isDefaultTem: '',
+                templateTitleVal: ''
             });
         }
     };
@@ -922,7 +931,7 @@ class TemplateSetting extends Component {
                         setModalVisibel={this.setModalVisibel}
                     />
                 )}
-                <Modal title='请录入正确的模板名称和标题' visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                <Modal title='请录入正确的模板名称和编码' visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
                     <div className='copyTemplate'>
                         <Input
                             value={templateNameVal}
@@ -934,7 +943,8 @@ class TemplateSetting extends Component {
                                 });
                             }}
                         />
-                        {activeKey === '3' && (
+                        {activeKey === '3' &&
+                        treeTemPrintData.length > 0 && (
                             <Input
                                 value={templateTitleVal}
                                 placeholder='请输入标题'

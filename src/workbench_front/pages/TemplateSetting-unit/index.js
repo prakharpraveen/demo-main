@@ -390,15 +390,6 @@ class TemplateSetting extends Component {
         //处理树数据
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
-        if (treeData.length > 0) {
-            let newinitKeyArray = [];
-            newinitKeyArray.push(treeData[0].key);
-            this.setState({
-                selectedTemKeys: newinitKeyArray,
-                parentIdcon: treeData[0].parentId,
-                templatePks: treeData[0].key[0]
-            });
-        }
         if (templateType === 'bill') {
             if (activeKey === '1') {
                 if (treeData.length > 0) {
@@ -407,7 +398,8 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name
                     });
                 }
             }
@@ -423,7 +415,8 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name
                     });
                 }
             }
@@ -439,7 +432,9 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0]
+                        templatePks: treeData[0].key[0],
+                        templateNameVal: treeData[0].name,
+                        templateTitleVal: treeData[0].code
                     });
                 }
             }
@@ -576,14 +571,16 @@ class TemplateSetting extends Component {
                 selectedTemKeys: key,
                 templatePks: e.selectedNodes[0].props.refData.templateId,
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
-                templateNameVal: e.selectedNodes[0].props.refData.name
+                templateNameVal: e.selectedNodes[0].props.refData.name,
+                templateTitleVal:e.selectedNodes[0].props.refData.code
             });
         } else {
             this.setState({
                 selectedTemKeys: key,
                 templatePks: '',
                 templateNameVal: '',
-                parentIdcon: ''
+                parentIdcon: '',
+                templateTitleVal:''
             });
         }
     };
@@ -880,7 +877,8 @@ class TemplateSetting extends Component {
                                 });
                             }}
                         />
-                        {activeKey === '3' && (
+                        {activeKey === '3' &&
+                        treeTemPrintData.length > 0 && (
                             <Input
                                 value={templateTitleVal}
                                 placeholder='请输入标题'
