@@ -25,13 +25,11 @@ class MenuRegister extends Component {
                 title: "序号",
                 dataIndex: "num",
                 key: "num",
-                width: "3%"
             },
             {
                 title: "菜单编码",
                 dataIndex: "menucode",
                 key: "menucode",
-                width: "16%",
                 render: (text, record, index) => (
                     <EditableCell
                         type={"string"}
@@ -49,7 +47,6 @@ class MenuRegister extends Component {
                 title: "菜单名称",
                 dataIndex: "menuname",
                 key: "menuname",
-                width: "10%",
                 render: (text, record, index) => (
                     <EditableCell
                         type={"string"}
@@ -67,7 +64,6 @@ class MenuRegister extends Component {
                 title: "菜单描述",
                 dataIndex: "menudesc",
                 key: "menudesc",
-                width: "10%",
                 render: (text, record, index) => (
                     <EditableCell
                         type={"string"}
@@ -84,7 +80,6 @@ class MenuRegister extends Component {
                 title: "是否启用",
                 dataIndex: "isenable",
                 key: "isenable",
-                width: "7%",
                 render: (text, record, index) => (
                     <Switch
                         disabled={this.state.isedit}
@@ -101,7 +96,6 @@ class MenuRegister extends Component {
                 title: "是否系统内置",
                 dataIndex: "isdefault",
                 key: "isdefault",
-                width: "8%",
                 render: (text, record) => (
                     <Switch
                         disabled
@@ -115,7 +109,6 @@ class MenuRegister extends Component {
                 title: "创建人",
                 dataIndex: "creatorRef",
                 key: "creatorRef",
-                width: "7%",
                 render: (text, record) => {
                     if (text && text.refname) {
                         return <span>{text.refname}</span>;
@@ -128,13 +121,11 @@ class MenuRegister extends Component {
                 title: "创建时间",
                 dataIndex: "creationtime",
                 key: "creationtime",
-                width: "11%"
             },
             {
                 title: "最后修改人",
                 dataIndex: "modifierRef",
                 key: "modifierRef",
-                width: "7%",
                 render: (text, record) => {
                     if (text && text.refname) {
                         return <span>{text.refname}</span>;
@@ -147,7 +138,6 @@ class MenuRegister extends Component {
                 title: "最后修改时间",
                 dataIndex: "modifiedtime",
                 key: "modifiedtime",
-                width: "11%"
             },
             {
                 title: "操作",
@@ -499,7 +489,6 @@ class MenuRegister extends Component {
                             size="middle"
                             rowKey={"pk_menu"}
                             columns={this.columns}
-                            scroll={{ y: true }}
                             dataSource={listData.map((item, index) => {
                                 item.num = index + 1;
                                 return item;

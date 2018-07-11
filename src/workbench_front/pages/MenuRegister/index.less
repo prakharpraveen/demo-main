@@ -15,6 +15,8 @@
         }
         .menugister-list-table {
             height: calc(100% - 60px);
+            overflow-x: hidden;
+            overflow-y: auto;
             .menugister-list-action {
                 display: flex;
                 justify-content: flex-start;
@@ -31,27 +33,6 @@
             }
             .ant-table td {
                 white-space: nowrap;
-            }
-            .ant-table-wrapper {
-                height: 100%;
-                .ant-spin-nested-loading {
-                    height: 100%;
-                    .ant-spin-container {
-                        height: 100%;
-                        .ant-table {
-                            height: 100%;
-                            .ant-table-content {
-                                height: 100%;
-                                .ant-table-scroll {
-                                    height: 100%;
-                                    .ant-table-body {
-                                        max-height: calc(100% - 70px);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
