@@ -78,12 +78,13 @@ class TemplateSetting extends Component {
             orgidObj: {},
             parentIdcon: '', //树节点的key
             activeKey: '1',
+            templateType: '',
             batchSettingModalVisibel: false //控制预览摸态框的显隐属性
         };
     }
     // 按钮显隐性控制
     setBtnsShow = (item) => {
-        let { parentIdcon, activeKey } = this.state;
+        let { parentIdcon, activeKey, templateType } = this.state;
         let { name } = item;
         let isShow = false;
         switch (name) {
@@ -99,7 +100,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '删除':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -107,6 +108,7 @@ class TemplateSetting extends Component {
                     } else {
                         isShow = false;
                     }
+                    
                 }
                 break;
             case '复制':
@@ -121,7 +123,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '分配':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot'|| templateType === 'group') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -581,7 +583,8 @@ class TemplateSetting extends Component {
                 templatePks: e.selectedNodes[0].props.refData.templateId,
                 parentIdcon: e.selectedNodes[0].props.refData.parentId,
                 templateNameVal: e.selectedNodes[0].props.refData.name,
-                templateTitleVal:e.selectedNodes[0].props.refData.code
+                templateTitleVal: e.selectedNodes[0].props.refData.code,
+                templateType: e.selectedNodes[0].props.refData.type
             });
         } else {
             this.setState({
@@ -589,7 +592,8 @@ class TemplateSetting extends Component {
                 templatePks: '',
                 templateNameVal: '',
                 parentIdcon: '',
-                templateTitleVal:''
+                templateTitleVal: '',
+                templateType: ''
             });
         }
     };
