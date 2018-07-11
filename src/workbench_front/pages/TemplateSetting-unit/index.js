@@ -39,10 +39,6 @@ const Btns = [
     {
         name: '浏览',
         type: 'primary'
-    },
-    {
-        name: '刷新',
-        type: 'primary'
     }
 ];
 class TemplateSetting extends Component {
@@ -92,17 +88,13 @@ class TemplateSetting extends Component {
         let isShow = false;
         switch (name) {
             case '修改':
-                if (activeKey === '3') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
-                    if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
-                        isShow = false;
+                    if (parentIdcon) {
+                        isShow = true;
                     } else {
-                        if (parentIdcon) {
-                            isShow = true;
-                        } else {
-                            isShow = false;
-                        }
+                        isShow = false;
                     }
                 }
                 break;
@@ -148,11 +140,6 @@ class TemplateSetting extends Component {
                     } else {
                         isShow = false;
                     }
-                }
-                break;
-            case '刷新':
-                if (activeKey === '3') {
-                    isShow = false;
                 }
                 break;
             default:
@@ -249,10 +236,32 @@ class TemplateSetting extends Component {
                     Notice({ status: 'warning', msg: '请选择模板数据' });
                     return;
                 }
-                this.props.history.push(`/ZoneSetting?templetid=${templatePks}&status=${'billTemplate'}`);
-                break;
-            case '新增':
-                this.props.history.push(`/ZoneSetting?status=${'templateSetting'}`);
+                if (activeKey === '3') {
+                    Ajax({
+                        loading: true,
+                        url: '/nccloud/riart/template/edittemplate.do',
+                        data: { appcode: appCode, templateid: templatePks },
+                        success: function(res) {
+                            if (location.port) {
+                                window.open(
+                                    'uclient://start/' +
+                                        'http://' +
+                                        location.hostname +
+                                        ':' +
+                                        location.port +
+                                        res.data.data
+                                );
+                            } else {
+                                window.open('uclient://start/' + 'http://' + location.hostname + res.data.data);
+                            }
+                        },
+                        error: function(res) {
+                            alert('lm:' + res.message);
+                        }
+                    });
+                } else {
+                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
+                }
                 break;
             case '删除':
                 let url;
@@ -760,7 +769,8 @@ class TemplateSetting extends Component {
             expandedKeys,
             expandedTemKeys,
             autoExpandParent,
-            autoExpandTemParent
+            autoExpandTemParent,
+            orgidObj
         } = this.state;
         const leftTreeData = [
             {
@@ -901,6 +911,7 @@ class TemplateSetting extends Component {
                         activeKey={activeKey}
                         appCode={appCode}
                         nodeKey={nodeKey}
+                        orgidObj={orgidObj}
                     />
                 )}
             </PageLayout>

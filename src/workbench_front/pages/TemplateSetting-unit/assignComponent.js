@@ -52,12 +52,6 @@ class AssignComponent extends Component {
             nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
-            org_df_biz: {
-                // 默认业务单元
-                refcode: '',
-                refname: '',
-                refpk: ''
-            },
             treeRoVisible: true,
             dataRoKey: '',
             dataRoObj: {},
@@ -67,7 +61,8 @@ class AssignComponent extends Component {
             allowedTreeKey: '',
             orgidObj: {},
             treeRoDataObj: {},
-            activeKey: this.props.activeKey
+            activeKey: this.props.activeKey,
+            orgidObj:this.props.orgidObj// 默认业务单元
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -447,7 +442,7 @@ class AssignComponent extends Component {
         this.props.setAssignModalVisible(false);
     };
     //业务单元参照回调方法
-    handdleRefChange = (value, type) => {
+    handdleRefChange = (value) => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
         orgidObj = {};
@@ -472,7 +467,8 @@ class AssignComponent extends Component {
             allowDataArray,
             treeAllowedData,
             templatePks,
-            nodeKey
+            nodeKey,
+            orgidObj
         } = this.state;
         return (
             <Modal
@@ -534,19 +530,17 @@ class AssignComponent extends Component {
                                 <Option value='按职责分配'>按职责分配</Option>
                             </Select>
                             <BusinessUnitTreeRef
-                                value={org_df_biz}
+                                value={orgidObj}
                                 placeholder={'默认业务单元'}
                                 onChange={(value) => {
-                                    this.handdleRefChange(value, 'org_df_biz');
+                                    this.handdleRefChange(value);
                                 }}
                             />
                         </div>
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
-                                {treeRoVisible ? (
-                                    treeRoData.children.length > 0 && this.treeResAndUser(treeRoData, 'resOnselect')
-                                ) : (
-                                    treeRoData.children.length > 0 && this.treeResAndUser(treeResData, 'resOnselect')
+                                {treeRoVisible ? ( this.treeResAndUser(treeRoData, 'resOnselect')
+                                ) : ( this.treeResAndUser(treeResData, 'resOnselect')
                                 )}
                             </div>
                             <div className='allocation-button'>

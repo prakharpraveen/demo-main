@@ -444,7 +444,7 @@ class AssignComponent extends Component {
         this.props.setAssignModalVisible(false);
     };
     //业务单元参照回调方法
-    handdleRefChange = (value, type) => {
+    handdleRefChange = (value) => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
         orgidObj = {};
@@ -534,16 +534,16 @@ class AssignComponent extends Component {
                                 value={org_df_biz}
                                 placeholder={'默认业务单元'}
                                 onChange={(value) => {
-                                    this.handdleRefChange(value, 'org_df_biz');
+                                    this.handdleRefChange(value);
                                 }}
                             />
                         </div>
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
                                 {treeRoVisible ? (
-                                    treeRoData.children.length > 0 && this.treeResAndUser(treeRoData, 'resOnselect')
+                                    this.treeResAndUser(treeRoData, 'resOnselect')
                                 ) : (
-                                    treeRoData.children.length > 0 && this.treeResAndUser(treeResData, 'resOnselect')
+                                    this.treeResAndUser(treeResData, 'resOnselect')
                                 )}
                             </div>
                             <div className='allocation-button'>
