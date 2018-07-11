@@ -68,8 +68,8 @@ class EditableCell extends Component {
                         />
                     </div>
                 ) : (
-                    <div className='editable-cell-text-wrapper'>
-                        <span>{value || ' '}</span>
+                    <div className='my-editable-cell-text-wrapper'>
+                        <span className='cell-show-value'>{value || ' '}</span>
 
                         <Icon type='edit' className='my-editable-cell-icon' onClick={this.edit} />
                     </div>
@@ -111,7 +111,7 @@ class EditableSelect extends Component {
                             showSearch
                             optionFilterProp='children'
                             value={value}
-                            style={{ width: 120 }}
+                            style={{ width:'80%' }}
                             onChange={(selected) => this.handleChange(selected)}
                             filterOption={(input, option) =>
                                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -122,7 +122,7 @@ class EditableSelect extends Component {
                         </Select>
                     </div>
                 ) : (
-                    <div className='editable-cell-text-wrapper'>
+                    <div className='my-editable-cell-text-wrapper'>
                         <span>{(value && switchType(value)) || ' '}</span>
 
                         <Icon type='edit' className='my-editable-cell-icon' onClick={this.edit} />
@@ -178,7 +178,7 @@ class RelateSelect extends Component {
                                         showSearch
                                         optionFilterProp='children'
                                         value={value}
-                                        style={{ width: 120 }}
+                                        style={{ width:'80%' }}
                                         onChange={(selected) => this.handleChange(selected)}
                                         filterOption={(input, option) =>
                                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -199,7 +199,7 @@ class RelateSelect extends Component {
                                         showSearch
                                         optionFilterProp='children'
                                         value={value}
-                                        style={{ width: 120 }}
+                                        style={{ width:'80%' }}
                                         onChange={(selected) => this.handleChange(selected)}
                                         filterOption={(input, option) =>
                                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -212,8 +212,8 @@ class RelateSelect extends Component {
                         })()}
                     </div>
                 ) : (
-                    <div className='editable-cell-text-wrapper'>
-                        <span>{(value && switchType(value)) || ' '}</span>
+                    <div className='my-editable-cell-text-wrapper'>
+                        <span  className='cell-show-value'>{(value && switchType(value)) || ' '}</span>
 
                         <Icon type='edit' className='my-editable-cell-icon' onClick={this.edit} />
                     </div>
@@ -280,7 +280,7 @@ class EditableRefer extends Component {
                         />
                     </div>
                 ) : (
-                    <div className='editable-cell-text-wrapper'>
+                    <div className='my-editable-cell-text-wrapper'>
                         <span>{(value && switchType(value)) || ' '}</span>
 
                         <Icon type='edit' className='my-editable-cell-icon' onClick={this.edit} />

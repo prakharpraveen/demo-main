@@ -74,13 +74,21 @@ body {
         }
     }
 
-    .editable-cell-input-wrapper,
-    .editable-cell-text-wrapper {
-        padding-right: 24px;
-    }
+    // .editable-cell-input-wrapper,
+    // .editable-cell-text-wrapper {
+    //     padding-right: 24px;
+    // }
 
-    .editable-cell-text-wrapper {
-        padding: 5px 24px 5px 5px;
+    .my-editable-cell-text-wrapper {
+        display: flex;
+        align-items: center;
+        .cell-show-value{
+            max-width: 78px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
     }
     .editable-cell-icon-check {
         line-height: 28px;
@@ -101,12 +109,12 @@ body {
         margin-top: 10px;
     }
     .required-tableCell {
-        .editable-cell-text-wrapper::before {
+        .my-editable-cell-text-wrapper::before {
             content: "*";
             color: red;
             margin-right: 5px;
         }
-        .editable-cell-text-wrapper span {
+        .my-editable-cell-text-wrapper span {
             width: 80%;
             display: inline-block;
         }
