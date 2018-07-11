@@ -8,6 +8,20 @@ import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import EditableCell from "Components/EditableCell";
 const TabPane = Tabs.TabPane;
+/**
+ * 表格表头必输项渲染
+ * @param {String} title
+ */
+const RenderTableTitle = title => (
+    <div>
+        <span style={{ color: "#e14c46" }}>*</span>
+        <span>{title}</span>
+    </div>
+);
+/**
+ * 应用页面 参数表格组件
+ * 
+ */
 class AppTable extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +32,7 @@ class AppTable extends Component {
                 width: "5%"
             },
             {
-                title: "参数名称",
+                title: RenderTableTitle("参数名称"),
                 dataIndex: "paramname",
                 width: "25%",
                 render: (text, record, index) => (
@@ -35,7 +49,7 @@ class AppTable extends Component {
                 )
             },
             {
-                title: "参数值",
+                title: RenderTableTitle("参数值"),
                 width: "55%",
                 dataIndex: "paramvalue",
                 render: (text, record, index) => (
