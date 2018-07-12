@@ -447,6 +447,7 @@ class MyRightSider extends Component {
 				onChange={() => {}}
 				onSearch={() => {
 					//this.refs[key].setShow(true);
+					this.handleFormula();
 					this.setState({ [key]: true });
 					//	this.refs[key].handleTextAreaChange(selectCard[key]);
 				}}
@@ -736,12 +737,12 @@ class MyRightSider extends Component {
 		return result;
 	};
 
-	componentWillReceiveProps(nextProps) {
-		this.handleFormula(nextProps);
-	}
+	// componentWillUpdate(nextProps,nextState) {
+	// 		this.handleFormula(nextProps);
+	// }
 	// 公式编辑器
-	handleFormula = (props) => {
-		const { selectCard, areaList } = props;
+	handleFormula = () => {
+		const { selectCard, areaList } = this.props;
 		if (_.isEmpty(selectCard) || _.isEmpty(areaList)) return;
 		let headcode = areaList[0] && areaList[0].headcode;
 		let area = this.getArea(areaList, selectCard);
