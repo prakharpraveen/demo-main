@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {Form} from "antd";
-import {setNodeData} from "Store/AppManagement/action";
-import {FormCreate, dataRestore} from "Components/FormCreate";
+import {FormContent, dataDefaults} from "Components/FormCreate";
 import AppTable from "./AppTable";
 import Ajax from "Pub/js/ajax";
 const IMGS = [
@@ -71,7 +69,6 @@ class AppFromCard extends Component {
         if (JSON.stringify(nodeData) === "{}") {
             return;
         }
-        nodeData = dataRestore(nodeData);
         if (code === "target_path") {
             url = `/nccloud/platform/appregister/querypagesel.do`;
             data = {pk_appregister: nodeData.pk_appregister};
@@ -108,13 +105,6 @@ class AppFromCard extends Component {
             }
         });
     };
-    /**
-     * 表单任一字段值改变操作
-     * @param {String|Object} changedFields 改变的字段及值
-     */
-    handleFormChange = changedFields => {
-        this.props.setNodeData({...this.props.nodeData, ...changedFields});
-    };
     componentWillReceiveProps(nextProps) {
         this.getOptionsData("orgtypecode", nextProps.nodeData);
         this.getOptionsData("target_path", nextProps.nodeData);
@@ -126,24 +116,39 @@ class AppFromCard extends Component {
 
     render() {
         let isEdit = this.props.isEdit;
-        let resNodeData = dataRestore(this.props.nodeData);
-        let apptype = "1";
+        let resNodeData = this.props.form.getFieldsValue();
+        let apptypeNum = "1";
         if(resNodeData){
-            apptype = resNodeData.apptype;
+            apptypeNum = resNodeData.apptype;
         }
+        let {
+            code,
+            name,
+            orgtypecode,
+            fun_property,
+            funtype,
+            apptype,
+            width,
+            height,
+            mdidRef,
+            isenable,
+            uselicense_load,
+            iscauserusable,
+            iscopypage,
+            target_path,
+            pk_group,
+            resid,
+            help_name,
+            app_desc,
+            image_src
+        } = this.props.nodeData;
         let appFormData = [
             {
                 label: "应用编码",
                 type: "string",
                 code: "code",
                 isRequired: true,
-                check: (rule, value, callback) => {
-                    if (value === this.props.parentData) {
-                        callback("不能与父节点编码重复");
-                    } else {
-                        callback();
-                    }
-                },
+                initialValue: code,
                 isedit: isEdit,
                 lg: 8
             },
@@ -153,6 +158,7 @@ class AppFromCard extends Component {
                 code: "name",
                 isRequired: true,
                 isedit: isEdit,
+                initialValue: name,
                 lg: 8
             },
             {
@@ -162,6 +168,7 @@ class AppFromCard extends Component {
                 isRequired: true,
                 options: this.state.orgtypecode,
                 isedit: isEdit,
+                initialValue: orgtypecode,
                 lg: 8
             },
             {
@@ -169,6 +176,7 @@ class AppFromCard extends Component {
                 type: "select",
                 code: "fun_property",
                 isRequired: true,
+                initialValue: fun_property,
                 options:  [
                     {
                         value: "0",
@@ -187,6 +195,7 @@ class AppFromCard extends Component {
                 type: "select",
                 code: "funtype",
                 isRequired: true,
+                initialValue: funtype,
                 options: [
                     {
                         value: "0",
@@ -213,6 +222,7 @@ class AppFromCard extends Component {
                 type: "select",
                 code: "apptype",
                 isRequired: true,
+                initialValue: apptype,
                 options: [
                     {
                         value: "1",
@@ -227,20 +237,12 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: "挂载ID",
-                type: "string",
-                code: "mountid",
-                isRequired: apptype === "2",
-                hidden: apptype === "1",
-                isedit: isEdit,
-                lg: 8
-            },
-            {
                 label: "应用宽",
                 type: "string",
                 code: "width",
                 isRequired: true,
                 isedit: isEdit,
+                initialValue: width,
                 lg: 8
             },
             {
@@ -249,6 +251,7 @@ class AppFromCard extends Component {
                 code: "height",
                 isRequired: true,
                 isedit: isEdit,
+                initialValue: height,
                 lg: 8
             },
             {
@@ -256,6 +259,7 @@ class AppFromCard extends Component {
                 type: "refer",
                 code: "mdidRef",
                 isRequired: false,
+                initialValue: mdidRef,
                 options: {
                     queryTreeUrl:'/nccloud/riart/ref/mdClassDefaultEntityRefTreeAction.do',
                     refType:"tree",
@@ -266,44 +270,49 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: "是否启用",
+                label: "启用",
                 type: "checkbox",
                 code: "isenable",
                 isRequired: false,
                 isedit: isEdit,
+                initialValue: isenable,
                 lg: 8
             },
             {
-                label: "是否加载占用",
+                label: "加载占用许可",
                 type: "checkbox",
                 code: "uselicense_load",
                 isRequired: false,
+                initialValue: uselicense_load,
                 isedit: isEdit,
                 lg: 8
             },
             {
-                label: "是否CA用户可用",
+                label: "CA用户可用",
                 type: "checkbox",
                 code: "iscauserusable",
                 isRequired: false,
                 isedit: isEdit,
+                initialValue: iscauserusable,
                 lg: 8
             },
             {
-                label: "是否复制页面",
+                label: "可复制页面",
                 type: "checkbox",
                 code: "iscopypage",
                 isRequired: false,
                 isedit: isEdit,
+                initialValue: iscopypage,
                 lg: 8
             },
             {
-                label: apptype === "1"?"默认页面":"小部件路径",
-                type: apptype === "1"?"select":"string",
+                label: apptypeNum === "1"?"默认页面":"小部件路径",
+                type: apptypeNum === "1"?"select":"string",
                 code: "target_path",
-                isRequired: apptype === "2",
+                isRequired: apptypeNum === "2",
                 options: this.state.target_path,
                 isedit: isEdit,
+                initialValue: target_path,
                 lg: 8
             },
             {
@@ -311,7 +320,8 @@ class AppFromCard extends Component {
                 type: "string",
                 code: "pk_group",
                 isRequired: false,
-                isedit: isEdit,
+                isedit: false,
+                initialValue: pk_group,
                 lg: 8
             },
             {
@@ -320,6 +330,7 @@ class AppFromCard extends Component {
                 code: "resid",
                 isRequired: false,
                 isedit: isEdit,
+                initialValue: resid,
                 lg: 8
             },
             {
@@ -328,6 +339,7 @@ class AppFromCard extends Component {
                 code: "help_name",
                 isRequired: false,
                 isedit: isEdit,
+                initialValue: help_name,
                 lg: 8
             },
             {
@@ -335,6 +347,7 @@ class AppFromCard extends Component {
                 type: "string",
                 code: "app_desc",
                 isRequired: false,
+                initialValue: app_desc,
                 md: 24,
                 lg: 16,
                 xl: 24,
@@ -344,9 +357,10 @@ class AppFromCard extends Component {
                 label: "图标路径",
                 type: "chooseImage",
                 code: "image_src",
-                isRequired: apptype === "1",
+                isRequired: apptypeNum === "1",
                 options: IMGS,
-                hidden: apptype === "2",
+                hidden: apptypeNum === "2",
+                initialValue: image_src,
                 md: 24,
                 lg: 24,
                 xl: 24,
@@ -355,10 +369,14 @@ class AppFromCard extends Component {
         ];
         return (
             <div>
-                <FormCreate
+                <FormContent
+                    form={this.props.form}
                     formData={appFormData}
-                    fields={this.props.nodeData}
-                    onChange={this.handleFormChange}
+                    datasources={dataDefaults(
+                        this.props.nodeData,
+                        appFormData,
+                        "code"
+                    )}
                 />
                 <div
                     style={{
@@ -373,16 +391,14 @@ class AppFromCard extends Component {
         );
     }
 }
-AppFromCard = Form.create()(AppFromCard);
 AppFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
-    setNodeData: PropTypes.func.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppManagementData.nodeData,
         isEdit: state.AppManagementData.isEdit,
     }),
-    {setNodeData}
+    {}
 )(AppFromCard);
