@@ -127,7 +127,7 @@ export const itemtypeObj = [
 	{ name: '开始日期时间', value: 'NCTZDatePickerStart' },
 	{ name: '结束日期时间', value: 'NCTZDatePickerEnd' },
 	{ name: '开关型复选框', value: 'checkbox_switch' },
-	{ name: '开关(编辑)', value: 'switch_browse' },
+	{ name: '停启用开关', value: 'switch_browse' },
 	{ name: '多语文本', value: 'residtxt' },
 	{ name: '密码框', value: 'password' }
 ];
@@ -145,6 +145,7 @@ export const filterItemtypeObj = [
 			{ name: '开关', value: 'switch' },
 			{ name: '复选', value: 'checkbox' },
 			{ name: '开关型复选框', value: 'checkbox_switch' },
+			{ name: '停启用开关', value: 'switch_browse' },
 			{ name: '单选', value: 'radio' }
 		]
 	},
