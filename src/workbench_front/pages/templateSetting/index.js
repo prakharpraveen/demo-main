@@ -313,7 +313,7 @@ class TemplateSetting extends Component {
                             alert('lm:' + res.message);
                         }
                     });
-                } else {
+                } else {//openPage(`TemplateSetting`, false, { pk: templateId });
                     openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
                 }
                 break;
@@ -467,6 +467,7 @@ class TemplateSetting extends Component {
         //处理树数据
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
+        console.log(treeData);
         if (templateType === 'bill') {
             if (activeKey === '1') {
                 if (treeData.length > 0) {
@@ -475,7 +476,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name
                     });
                 }
@@ -492,7 +493,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name
                     });
                 }
@@ -509,7 +510,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name,
                         templateTitleVal: treeData[0].code
                     });
