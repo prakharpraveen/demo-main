@@ -467,7 +467,6 @@ class TemplateSetting extends Component {
         //处理树数据
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
-        console.log(treeData);
         if (templateType === 'bill') {
             if (activeKey === '1') {
                 if (treeData.length > 0) {

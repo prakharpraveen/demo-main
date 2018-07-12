@@ -11,6 +11,7 @@ import BusinessUnitTreeRef from 'Components/Refers/BusinessUnitTreeRef';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
+import { openPage } from 'Pub/js/superJump';
 import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
@@ -89,7 +90,7 @@ class TemplateSetting extends Component {
         let isShow = false;
         switch (name) {
             case '修改':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -108,7 +109,6 @@ class TemplateSetting extends Component {
                     } else {
                         isShow = false;
                     }
-
                 }
                 break;
             case '复制':
@@ -123,7 +123,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '分配':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot'|| templateType === 'group') {
+                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
