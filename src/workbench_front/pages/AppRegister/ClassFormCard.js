@@ -1,35 +1,22 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {Form} from "antd";
-import {FormCreate} from "Components/FormCreate";
-import {setNodeData} from "Store/AppRegister/action";
+import { FormContent, dataDefaults } from "Components/FormCreate";
 class ClassFromCard extends Component {
     constructor(props, context) {
         super(props, context);
     }
-    /**
-     * 表单任一字段值改变操作
-     * @param {String|Object} changedFields 改变的字段及值
-     */
-    handleFormChange = changedFields => {
-        this.props.setNodeData({...this.props.nodeData, ...changedFields});
-    };
     render() {
         let isEdit = this.props.isEdit;
+        let { code, name, resid, app_desc, help_name } = this.props.nodeData;
         let classFormData = [
             {
                 label: "应用编码",
                 type: "string",
                 code: "code",
                 isRequired: true,
-                check: (rule, value, callback) => {
-                    if (value === this.props.parentData) {
-                        callback("不能与父节点编码重复");
-                    } else {
-                        callback();
-                    }
-                },
+                len: 6,
+                initialValue: code,
                 isedit: isEdit
             },
             {
@@ -37,6 +24,7 @@ class ClassFromCard extends Component {
                 type: "string",
                 code: "name",
                 isRequired: true,
+                initialValue: name,
                 isedit: isEdit
             },
             {
@@ -44,6 +32,7 @@ class ClassFromCard extends Component {
                 type: "string",
                 code: "resid",
                 isRequired: false,
+                initialValue: resid,
                 isedit: isEdit
             },
             {
@@ -51,34 +40,39 @@ class ClassFromCard extends Component {
                 type: "string",
                 code: "app_desc",
                 isRequired: false,
+                initialValue: app_desc,
                 isedit: isEdit
             },
             {
                 label: "帮助文件名",
                 type: "string",
                 code: "help_name",
+                initialValue: help_name,
                 isRequired: false,
                 isedit: isEdit
             }
         ];
         return (
-            <FormCreate
+            <FormContent
+                form={this.props.form}
                 formData={classFormData}
-                fields={this.props.nodeData}
-                onChange={this.handleFormChange}
+                datasources={dataDefaults(
+                    this.props.nodeData,
+                    classFormData,
+                    "code"
+                )}
             />
         );
     }
 }
-ClassFromCard = Form.create()(ClassFromCard);
 ClassFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
-    nodeData: PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppRegisterData.nodeData,
-        isEdit: state.AppRegisterData.isEdit,
+        isEdit: state.AppRegisterData.isEdit
     }),
-    {setNodeData}
+    {}
 )(ClassFromCard);

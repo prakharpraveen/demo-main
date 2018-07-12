@@ -1,12 +1,12 @@
-import {Form} from "antd";
-export const FormControl = Com => {
+import { Form } from "antd";
+export const FormControl = (Com) => {
+    let fieldsObj = {};
     return Form.create({
         onFieldsChange(props, changedFields) {
             props.onChange(changedFields);
         },
         mapPropsToFields(props) {
             let formData = [...props.formData];
-            let fieldsObj = {};
             formData.map((item, index) => {
                 fieldsObj[item.code] = {};
                 if (props.hasOwnProperty(item.code)) {
@@ -19,7 +19,7 @@ export const FormControl = Com => {
                     if (item.type === "refer") {
                         value = {};
                     }
-                    if (item.type === "boolen") {
+                    if (item.type === "checkbox") {
                         value = false;
                     }
                     fieldsObj[item.code] = Form.createFormField({
@@ -28,9 +28,6 @@ export const FormControl = Com => {
                 }
             });
             return fieldsObj;
-        },
-        onValuesChange(props, values) {
-            // props.onChange(values);
         }
     })(Com);
 };
