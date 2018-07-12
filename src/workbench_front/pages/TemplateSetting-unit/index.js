@@ -219,25 +219,25 @@ class TemplateSetting extends Component {
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, pageCode, activeKey } = this.state;
+        let { templateNameVal, templatePks, pageCode, activeKey, orgidObj } = this.state;
         let infoData = {
             templateId: templatePks
         };
+        if (!orgidObj.refpk) {
+            Notice({ status: 'warning', msg: '请选中业务单元' });
+            return;
+        }
+        if (!templatePks) {
+            Notice({ status: 'warning', msg: '请选择模板数据' });
+            return;
+        }
         switch (btnName) {
             case '复制':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
-                }
                 this.setState({
                     visible: true
                 });
                 break;
             case '修改':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
-                }
                 if (activeKey === '3') {
                     Ajax({
                         loading: true,
