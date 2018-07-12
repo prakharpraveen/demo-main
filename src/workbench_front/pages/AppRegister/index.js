@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal } from "antd";
+import { Modal, Form } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -64,10 +64,20 @@ class AppRegister extends Component {
                 this.addPage();
                 break;
             case "save":
-                this.save();
+                this.props.form.validateFields(
+                    // { first: true, force: true },
+                    (errors, values) => {
+                        if (!errors) {
+                            let aaa = this.props.form.getFieldsValue();
+                            console.log(aaa);
+                            this.save();
+                        }
+                    }
+                );
                 break;
             case "cancel":
                 this.props.setNodeData(this.historyNodeData);
+                this.props.form.resetFields();
                 this.props.setIsNew(false);
                 this.props.setIsEdit(false);
                 this.props.setOptype(this.historyOptype);
@@ -96,19 +106,19 @@ class AppRegister extends Component {
         } else if (optype === "1") {
             optype = "2";
         }
-        this.historyNodeData = this.props.nodeData;
         let moduleData = {
             systypecode: "",
             moduleid: "",
             systypename: "",
-            orgtypecode: undefined,
-            appscope: undefined,
+            orgtypecode: "",
+            appscope: "",
             isaccount: false,
             supportcloseaccbook: false,
             resid: "",
-            dr: 0
+            devmodule: ""
         };
-        this.props.setNodeData(dataTransfer(moduleData));
+        this.historyNodeData = this.props.nodeData;
+        this.props.setNodeData(moduleData);
         this.props.setIsNew(true);
         this.props.setIsEdit(true);
         this.props.setOptype(optype);
@@ -132,7 +142,7 @@ class AppRegister extends Component {
             resid: "",
             help_name: ""
         };
-        this.props.setNodeData(dataTransfer(classData));
+        this.props.setNodeData(classData);
         this.props.setIsNew(true);
         this.props.setIsEdit(true);
         this.props.setOptype(optype);
@@ -159,6 +169,7 @@ class AppRegister extends Component {
             uselicense_load: true,
             iscopypage: false,
             pk_group: "",
+            mdidRef:{refpk: "", refname: "", refcode: ""},
             width: "1",
             height: "1",
             target_path: "",
@@ -168,7 +179,7 @@ class AppRegister extends Component {
             image_src: ""
         };
         this.props.setAppParamData([]);
-        this.props.setNodeData(dataTransfer(appData));
+        this.props.setNodeData(appData);
         this.props.setIsNew(true);
         this.props.setIsEdit(true);
         this.props.setOptype(optype);
@@ -193,7 +204,7 @@ class AppRegister extends Component {
         };
         this.props.setPageButtonData([]);
         this.props.setPageTemplateData([]);
-        this.props.setNodeData(dataTransfer(pageData));
+        this.props.setNodeData(pageData);
         this.props.setIsNew(true);
         this.props.setIsEdit(true);
         this.props.setOptype(optype);
@@ -202,19 +213,17 @@ class AppRegister extends Component {
      * 保存
      */
     save = () => {
-        if (dataCheck(this.props.nodeData)) {
-            return;
+        let fromData = this.props.form.getFieldsValue();
+        if (this.props.nodeData.children) {
+            delete this.props.nodeData.children;
         }
-        let fromData = dataRestore(this.props.nodeData);
-        if (fromData.children) {
-            delete fromData.children;
-        }
+        fromData = {...this.props.nodeData,...fromData};
         let { id, code } = this.props.nodeInfo;
         let optype = this.props.optype;
         //  新增保存回调
         let newSaveFun = data => {
             this.reqTreeData();
-            this.props.setNodeData(dataTransfer(data));
+            this.props.setNodeData(data);
             this.props.setIsNew(false);
             this.props.setIsEdit(false);
             Notice({ status: "success" });
@@ -424,19 +433,19 @@ class AppRegister extends Component {
         switch (this.props.optype) {
             // 对应树结构中的第一层
             case "1":
-                return <ModuleFormCard />;
+                return <ModuleFormCard form={this.props.form} />;
             // 对应树结构中的第二层;
             case "2":
-                return <ModuleFormCard />;
+                return <ModuleFormCard form={this.props.form} />;
             // 对应树结构的第三层
             case "3":
-                return <ClassFormCard />;
+                return <ClassFormCard form={this.props.form} />;
             // 对应树结构的第四层
             case "4":
-                return <AppFormCard />;
+                return <AppFormCard form={this.props.form} />;
             // 对应树结构的第五层
             case "5":
-                return <PageFromCard />;
+                return <PageFromCard form={this.props.form} />;
             default:
                 return "";
         }
@@ -497,20 +506,19 @@ class AppRegister extends Component {
                 case "0":
                     optype = "1";
                     id = obj.moduleid;
-                    this.props.setNodeData(dataTransfer(obj));
+                    this.props.setNodeData(obj);
+
                     break;
                 // 对应树的第二层
                 case "1":
                     optype = "2";
                     id = obj.moduleid;
-                    this.props.setNodeData(dataTransfer(obj));
+                    this.props.setNodeData(obj);
                     break;
                 // 对应树的第三层
                 case "2":
                     let appClassCallBack = data => {
-                        this.props.setNodeData(
-                            dataTransfer(data.appRegisterVO)
-                        );
+                        this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     this.reqTreeNodeData(
@@ -521,14 +529,11 @@ class AppRegister extends Component {
                     );
                     id = obj.moduleid;
                     optype = "3";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 // 对应树的第四层
                 case "3":
                     let appCallBack = data => {
-                        this.props.setNodeData(
-                            dataTransfer(data.appRegisterVO)
-                        );
+                        this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     this.reqTreeNodeData(
@@ -539,7 +544,6 @@ class AppRegister extends Component {
                     );
                     id = obj.def1;
                     optype = "4";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 // 对应树的第五层
                 case "4":
@@ -549,7 +553,7 @@ class AppRegister extends Component {
                             ...this.props.nodeInfo,
                             parentId: parent_id
                         });
-                        this.props.setNodeData(dataTransfer(data.apppageVO));
+                        this.props.setNodeData(data.apppageVO);
                         this.props.setPageButtonData(data.appButtonVOs);
                         this.props.setPageTemplateData(data.pageTemplets);
                     };
@@ -561,7 +565,6 @@ class AppRegister extends Component {
                     );
                     id = obj.moduleid;
                     optype = "5";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 default:
                     break;
@@ -647,9 +650,7 @@ class AppRegister extends Component {
     render() {
         let optype = this.props.optype;
         let isEdit = this.props.isEdit;
-        let nodeData = this.props.nodeData.hasOwnProperty("ts")
-            ? dataRestore(this.props.nodeData)
-            : {};
+        let nodeData = this.props.nodeData;
         let btnList = [
             {
                 code: "addModule",
@@ -748,6 +749,7 @@ AppRegister.propTypes = {
     setOptype: PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired
 };
+AppRegister = Form.create()(AppRegister);
 export default connect(
     state => ({
         nodeData: state.AppRegisterData.nodeData,
