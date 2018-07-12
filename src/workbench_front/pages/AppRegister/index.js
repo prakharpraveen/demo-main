@@ -21,7 +21,6 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
-import { dataTransfer, dataRestore, dataCheck } from "Components/FormCreate";
 import {
     PageLayout,
     PageLayoutHeader,
