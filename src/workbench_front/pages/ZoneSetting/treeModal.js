@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import Ajax from "Pub/js/ajax";
 import { connect } from "react-redux";
-import { Input, Icon, Tree, Modal, Button, Checkbox, Select } from "antd";
+import { Tree, Modal, Button, Checkbox, Select } from "antd";
 import * as utilService from "./utilService";
 const TreeNode = Tree.TreeNode;
 const Option = Select.Option;
@@ -52,6 +52,8 @@ class TreeModal extends Component {
             let cardObj = {};
             if (this.props.targetAreaType === "0") {
                 //查询区
+                const opersign = utilService.getOpersignByDatatype(datatype);
+                const opersignname = utilService.getOpersignNameByDatatype(datatype);
                 cardObj = {
                     pk_query_property: `newMetaData_${myUniqID}`,
                     areaid: targetAreaID,
@@ -61,10 +63,8 @@ class TreeModal extends Component {
                     metapath: myUniqID,
                     isnotmeta: false,
                     isuse: true,
-                    opersign: utilService.getOpersignByDatatype(datatype),
-                    opersignname: utilService.getOpersignNameByDatatype(
-                        datatype
-                    ),
+                    opersign: opersign?opersign:'=',
+                    opersignname: opersignname?opersignname:'等于@',
                     defaultvalue: "",
                     isfixedcondition: false,
                     required: false,
@@ -97,16 +97,11 @@ class TreeModal extends Component {
                     label: refname,
                     metapath: myUniqID,
                     color: "#6E6E77",
-                    width: "6",
                     isrevise: false,
-                    istotal: false,
                     required: false,
                     disabled: false,
                     visible: true,
                     maxlength: "20",
-                    textrows: "1",
-                    leftspace: "0",
-                    rightspace: "0",
                     defaultvar: "",
                     define1: "",
                     define2: "",
@@ -115,8 +110,13 @@ class TreeModal extends Component {
                     myrefpk: refpk
                 };
             }
-            if (this.props.targetAreaType === "2") {
-                cardObj.width = "";
+            if (this.props.targetAreaType === '1') {//表单
+                cardObj.colnum = '1';
+                cardObj.isnextrow = false;
+            }
+            if (this.props.targetAreaType === '2') {//表格
+                cardObj.width = '';
+                cardObj.istotal = false;
             }
             if (cardObj.datatype === "204") {
                 cardObj.metaid = refpk;

@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import _ from "lodash";
 import { Icon } from "antd";
 import { withRouter } from "react-router-dom";
 import { GetQuery } from "Pub/js/utils";
@@ -38,7 +35,6 @@ class MyContent extends Component {
             </a>
             <a
               onClick={() => {
-                let param = GetQuery(this.props.location.search);
                 openPage(`/ar`, false, {
                   c: "102202APP",
                   b1: "动态建模平台",

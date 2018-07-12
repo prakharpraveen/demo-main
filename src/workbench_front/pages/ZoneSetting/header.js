@@ -23,12 +23,19 @@ class MyHeader extends Component {
         this.setState({ batchSettingModalVisibel: visibel });
     };
     saveData = () => {
-        const { areaList } = this.props;
+        const { areaList, templetid } = this.props;
         let formPropertyList = [];
         let queryPropertyList = [];
-        let areaidList = [];
+        //将pk_query_property置为空；
         _.forEach(areaList, (a, index) => {
-            areaidList.push(a.pk_area);
+            _.forEach(a.queryPropertyList,(q)=>{
+                if(q.pk_query_property.indexOf('new')!==-1){
+                    q.pk_query_property = '';
+                }
+            })
+        });
+
+        _.forEach(areaList, (a, index) => {
             if (a.areatype === "0") {
                 queryPropertyList = queryPropertyList.concat(
                     a.queryPropertyList
@@ -39,13 +46,10 @@ class MyHeader extends Component {
         });
 
         const saveData = {};
-        saveData.areaidList = areaidList;
+        saveData.templetid = templetid;
         saveData.formPropertyList = formPropertyList;
         saveData.queryPropertyList = queryPropertyList;
 
-        // if (queryPropertyList.length === 0 && formPropertyList.length === 0) {
-        // 	return;
-        // }
         Ajax({
             url: `/nccloud/platform/templet/setareaproperty.do`,
             info: {

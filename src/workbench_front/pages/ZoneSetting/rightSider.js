@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Tabs, Input, Checkbox, InputNumber, Select } from 'antd';
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
@@ -470,40 +468,33 @@ class MyRightSider extends Component {
 						<li>{this.getMyInput('编码', 'code')}</li>
 						{(() => {
 							if (!isMetaData) {
-								return <li>元数据属性</li>;
+								return [<li key='metadataproperty0'>元数据属性</li>, <li key='metadataproperty1'>{this.getMyInput('元数据属性', 'metadataproperty')}</li>];
 							}
 						})()}
 						{(() => {
-							if (!isMetaData) {
-								return <li>{this.getMyInput('元数据属性', 'metadataproperty')}</li>;
-							}
-						})()}
-						<li>组件长度</li>
-						{(() => {
-							if (areaType === '1') {
-								return <li>{this.getMySelect(utilService.componentWidthObj, 'width')}</li>;
-							} else {
-								return <li>{this.getMyInput('组件长度', 'width')}</li>;
+							if(areaType === '1'){//表单
+								return [<li key='colnum0'>占用列数</li>, <li key='colnum1'>{this.getMyInput('占用列数', 'colnum')}</li>];
+							}else{
+								return [<li key='width0'>组件长度</li>, <li key='width1'>{this.getMyInput('组件长度', 'width')}</li>];
 							}
 						})()}
 						<li>最大长度</li>
 						<li>{this.getMyInput('最大长度', 'maxlength')}</li>
 						<li>可修订</li>
 						<li>{this.getMyCheckbox('isrevise')}</li>
-						<li>合计</li>
-						<li>{this.getMyCheckbox('istotal')}</li>
+						{(() => {
+							if(areaType === '1'){//表单
+								return [<li key='nextrow0'>另起一行</li>, <li key='nextrow1'>{this.getMyCheckbox('nextrow')}</li>];
+							}else{
+								return [<li key='istotal0'>合计</li>, <li key='istotal1'>{this.getMyCheckbox('istotal')}</li>];
+							}
+						})()}
 						<li>可见</li>
 						<li>{this.getMyCheckbox('visible')}</li>
 						<li>必输项</li>
 						<li>{this.getMyCheckbox('required')}</li>
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
-						<li>多行文本显示行数</li>
-						<li>{this.getMyInput('多行文本显示行数', 'textrows')}</li>
-						<li>左空白</li>
-						<li>{this.getMyInput('左空白', 'leftspace')}</li>
-						<li>右空白</li>
-						<li>{this.getMyInput('右空白', 'rightspace')}</li>
 						<li>默认系统变量</li>
 						<li>{this.getMySelect(utilService.defaultvarObj, 'defaultvar')}</li>
 						<li>显示颜色</li>

@@ -92,9 +92,10 @@ export const colorObj = [
 export const dataTypeObj = [
 	{ name: '字符', value: '1' },
 	{ name: '小数', value: '2' },
-	{ name: '逻辑', value: '32' },
 	{ name: '整数', value: '4' },
 	{ name: '大文本', value: '30' },
+	{ name: '逻辑', value: '32' },
+	{ name: '日期', value: '33' },
 	{ name: '日期时间', value: '34' },
 	{ name: '金额', value: '52' },
 	{ name: '自定义项', value: '56' },
@@ -102,8 +103,7 @@ export const dataTypeObj = [
 	{ name: '多语文本', value: '58' },
 	{ name: '下拉', value: '203' },
 	{ name: '参照', value: '204' },
-	{ name: '密码框', value: '400' },
-	{ name: '日期', value: '33' }
+	{ name: '密码框', value: '400' }
 ];
 export const defaultvarObj = [
 	{ name: '', value: '' },

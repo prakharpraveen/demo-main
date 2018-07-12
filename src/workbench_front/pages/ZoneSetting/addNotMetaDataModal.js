@@ -67,25 +67,25 @@ class AddNotMetaDataModal extends Component {
 				position: `${queryPropertyList.length + 1}`,
 				metapath: '',
 				color: '#6E6E77',
-				width: '6',
 				isrevise: false,
-				istotal: false,
 				required: false,
 				disabled: false,
 				visible: true,
 				maxlength: '20',
-				textrows: '1',
-				leftspace: '0',
-				rightspace: '0',
 				defaultvar: '',
 				define1: '',
 				define2: '',
 				define3: '',
-				itemtype: 'input'
+				itemtype: 'input',
 			};
 		}
-		if (this.props.targetAreaType === '2') {
+		if (this.props.areatype === '1') {//表单
+			cardObj.colnum = '1';
+			cardObj.isnextrow = false;
+		}
+		if (this.props.areatype === '2') {//表格
 			cardObj.width = '';
+			cardObj.istotal = false;
 		}
 		areaList[areaIndex].queryPropertyList = queryPropertyList.concat(cardObj);
 		this.setState({

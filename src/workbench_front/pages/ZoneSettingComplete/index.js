@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Ajax from 'Pub/js/ajax';
-
 import MyHeader from './header';
 import MyContent from './content';
-
 import './index.less';
 import { Steps } from 'antd';
-
-
 import {GetQuery} from 'Pub/js/utils';
 
 const Step = Steps.Step;
