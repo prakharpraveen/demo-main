@@ -41,8 +41,8 @@ class MenuItem extends Component {
         this.newFormData = {
             menuitemcode: "",
             menuitemname: "",
-            menudes:"",
-            appcodeRef:{},
+            menudes: "",
+            appcodeRef: {},
             resid: ""
         };
         this.historyData;
@@ -53,15 +53,18 @@ class MenuItem extends Component {
                 this.add();
                 break;
             case "edit":
-                this.setState({ isedit: true });
+                let formData = this.props.form.getFieldsValue();
+                this.historyData = { ...this.state.fields, ...formData };
+                this.setState({
+                    isedit: true,
+                    formData,
+                    fields: this.historyData
+                });
                 break;
             case "save":
                 this.save();
                 break;
             case "cancle":
-                if (this.state.isNew) {
-                    this.historyData = this.newFormData;
-                }
                 this.props.form.resetFields();
                 this.setState({
                     isedit: false,
@@ -72,7 +75,7 @@ class MenuItem extends Component {
                         menuitemname: this.historyData.menuitemname,
                         appcodeRef: this.historyData.appcodeRef,
                         menudes: this.historyData.menudes,
-                        resid: this.historyDataappcodeRef
+                        resid: this.historyData.resid
                     }
                 });
                 break;
@@ -130,7 +133,7 @@ class MenuItem extends Component {
                     refpk: ""
                 }
             },
-            formData:{
+            formData: {
                 menuitemcode: "",
                 menuitemname: "",
                 menudes: "",
@@ -147,8 +150,8 @@ class MenuItem extends Component {
         let { fields, isNew, parentKey } = this.state;
         this.props.form.validateFields(errors => {
             if (!errors) {
-                let newFields = this.props.form.getFieldsValue();
-                newFields = { ...fields, ...newFields };
+                let newFieldsData = this.props.form.getFieldsValue();
+                let newFields = { ...fields, ...newFieldsData };
                 let {
                     appcodeRef,
                     pk_menuitem,
@@ -327,13 +330,7 @@ class MenuItem extends Component {
                 isNew: false,
                 parentKey: selectedKey ? selectedKey : "",
                 fields: this.newFormData,
-                formData: {
-                    menuitemcode: this.newFormData.menuitemcode,
-                    menuitemname: this.newFormData.menuitemname,
-                    appcodeRef: this.newFormData.appcodeRef,
-                    resid: this.newFormData.resid,
-                    menudes:this.newFormData.menudes
-                }
+                formData: { ...this.newFormData }
             });
             return;
         }
@@ -357,7 +354,7 @@ class MenuItem extends Component {
                 menuitemname: treeItem.menuitemname,
                 appcodeRef: treeItem.appcodeRef,
                 resid: treeItem.resid,
-                menudes:treeItem.menudes
+                menudes: treeItem.menudes
             }
         });
     };
