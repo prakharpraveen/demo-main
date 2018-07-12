@@ -456,7 +456,7 @@ class MyRightSider extends Component {
 	//非查询区，元数据属性||非元数据
 	getDom3 = (areaType, isMetaData) => {
 		const { selectCard } = this.props;
-		const isShowRelateMeta = selectCard.datatype === '204' ? 'block' : 'none';
+		const isShowRelateMeta = selectCard.datatype === '204' ? 'block' : 'none';//判断是否为参照
 		const areaCardList = this.getCardListInAreaBySelectCard();
 		return (
 			<Tabs defaultActiveKey='1'>
@@ -484,7 +484,7 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('isrevise')}</li>
 						{(() => {
 							if(areaType === '1'){//表单
-								return [<li key='nextrow0'>另起一行</li>, <li key='nextrow1'>{this.getMyCheckbox('nextrow')}</li>];
+								return [<li key='nextrow0'>另起一行</li>, <li key='nextrow1'>{this.getMyCheckbox('isnextrow')}</li>];
 							}else{
 								return [<li key='istotal0'>合计</li>, <li key='istotal1'>{this.getMyCheckbox('istotal')}</li>];
 							}
