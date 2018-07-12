@@ -108,7 +108,7 @@ class TemplateSetting extends Component {
                     } else {
                         isShow = false;
                     }
-                    
+
                 }
                 break;
             case '复制':
@@ -409,7 +409,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name
                     });
                 }
@@ -426,7 +426,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name
                     });
                 }
@@ -443,7 +443,7 @@ class TemplateSetting extends Component {
                     this.setState({
                         selectedTemKeys: newinitKeyArray,
                         parentIdcon: treeData[0].parentId,
-                        templatePks: treeData[0].key[0],
+                        templatePks: treeData[0].pk,
                         templateNameVal: treeData[0].name,
                         templateTitleVal: treeData[0].code
                     });
