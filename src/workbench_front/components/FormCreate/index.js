@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Form, Row, Col, Input, Select, Checkbox } from "antd";
-import { FormControl } from "./FormControl";
 import _ from "lodash";
 import { high } from "nc-lightapp-front";
 import ChooseImageForForm from "Components/ChooseImageForForm";
@@ -141,11 +140,11 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: "此字段为必输项！"
+                                    message: `${label}为必输项`
                                 },
                                 {
                                     type: "object",
-                                    message: "当前字段数据类型-object",
+                                    message: `${label}数据类型-object`,
                                     validator: null
                                 }
                             ]
@@ -165,12 +164,12 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     type: "string",
-                                    message: "当前字段数据类型-string",
+                                    message: `${label}数据类型-string`,
                                     validator: null
                                 },
                                 {
                                     required: isRequired,
-                                    message: "此字段为必输项！"
+                                    message: `${label}为必输项`
                                 }
                             ]
                         })(
@@ -201,7 +200,7 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: "请选择一张图片！"
+                                    message: "请选择图标"
                                 }
                             ]
                         })(

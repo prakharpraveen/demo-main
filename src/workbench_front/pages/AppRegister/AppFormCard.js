@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { setNodeData } from "Store/AppRegister/action";
 import { FormContent, dataDefaults } from "Components/FormCreate";
 import AppTable from "./AppTable";
 import Ajax from "Pub/js/ajax";
@@ -396,12 +395,11 @@ class AppFromCard extends Component {
 AppFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     nodeData: PropTypes.object.isRequired,
-    setNodeData: PropTypes.func.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppRegisterData.nodeData,
         isEdit: state.AppRegisterData.isEdit
     }),
-    { setNodeData }
+    {  }
 )(AppFromCard);
