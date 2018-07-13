@@ -102,9 +102,15 @@ class AppFromCard extends Component {
             }
         });
     };
-    componentWillReceiveProps(nextProps) {
-        this.getOptionsData("orgtypecode", nextProps.nodeData);
-        this.getOptionsData("target_path", nextProps.nodeData);
+    componentWillReceiveProps(nextProps, nextState) {
+        if (
+            nextProps.nodeData &&
+            this.props.nodeData.pk_appregister !==
+                nextProps.nodeData.pk_appregister
+        ) {
+            this.getOptionsData("orgtypecode", nextProps.nodeData);
+            this.getOptionsData("target_path", nextProps.nodeData);
+        }
     }
     componentDidMount() {
         this.getOptionsData("orgtypecode", this.props.nodeData);

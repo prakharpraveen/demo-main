@@ -307,7 +307,6 @@ class AppManagement extends Component {
                     );
                     id = obj.moduleid;
                     optype = "5";
-                    this.props.setNodeData(obj);
                     break;
                 default:
                     break;
