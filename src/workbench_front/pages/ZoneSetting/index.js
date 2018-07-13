@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import './index.less';
 import MyHeader from './header';
 import MyContent from './content';
 import MyRightSider from './rightSider';
 import { Steps } from 'antd';
-
 import {GetQuery} from 'Pub/js/utils';
 const Step = Steps.Step;
 /**

@@ -712,6 +712,8 @@ class MyRightSider extends Component {
 								}}
 							/>
 						</li>
+						<li>元数据访问路径</li>
+						<li title={selectCard.metapath} className='metapath'>{selectCard.metapath}</li>
 						<li>自定义1</li>
 						<li>{this.getMyInput('自定义1', 'define1')}</li>
 						<li>自定义2</li>

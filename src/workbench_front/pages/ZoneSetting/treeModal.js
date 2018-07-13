@@ -47,7 +47,9 @@ class TreeModal extends Component {
                 pid,
                 refpk,
                 isLeaf,
-                modelname
+                modelname,
+                length,
+                notSearchAreaCode
             } = s.props.dataRef;
             let cardObj = {};
             if (this.props.targetAreaType === "0") {
@@ -92,7 +94,7 @@ class TreeModal extends Component {
                 cardObj = {
                     pk_query_property: `newMetaData_${myUniqID}`,
                     areaid: targetAreaID,
-                    code: myUniqID,
+                    code: notSearchAreaCode?notSearchAreaCode:myUniqID,
                     datatype: datatype,
                     label: refname,
                     metapath: myUniqID,
@@ -101,7 +103,7 @@ class TreeModal extends Component {
                     required: false,
                     disabled: false,
                     visible: true,
-                    maxlength: "20",
+                    maxlength: length,
                     defaultvar: "",
                     define1: "",
                     define2: "",
@@ -126,7 +128,6 @@ class TreeModal extends Component {
             cardObj.itemtype = utilService.getItemtypeByDatatype(
                 cardObj.datatype
             );
-
             cardList.push(cardObj);
         });
         //查询区&非查询区下拉类型需要添加默认dataval
@@ -299,7 +300,7 @@ class TreeModal extends Component {
                         ) {
                             let metaTree = [];
                             data.rows.map((r, index) => {
-                                metaTree.push({
+                                let tmpMetaTree = {
                                     ...r,
                                     title: `${r.refcode} ${r.refname}`,
                                     key: `${treeNode.props.myUniqID}.${
@@ -309,7 +310,16 @@ class TreeModal extends Component {
                                         r.refcode
                                     }`,
                                     isLeaf: r.isleaf
-                                });
+                                }
+                                //非查询区域的子表里的code不是全路径
+                                if(this.props.targetAreaType !== '0' && treeNode.props.notSearchAreaCode){
+                                    tmpMetaTree.notSearchAreaCode = `${treeNode.props.notSearchAreaCode}.${r.refcode}`
+                                }
+                                //非查询区域的子表的code，若父级是205则直接为自身refcode
+                                if(this.props.targetAreaType !== '0' && treeNode.props.datatype === '205'){
+                                    tmpMetaTree.notSearchAreaCode = `${r.refcode}`
+                                }
+                                metaTree.push(tmpMetaTree);
                             });
                             treeNode.props.dataRef.children = [].concat(
                                 metaTree
@@ -488,6 +498,7 @@ class TreeModal extends Component {
                 ]}
             >
                 {this.getContentDom()}
+                
             </Modal>
         );
     }
