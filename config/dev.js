@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const BaseData = require('./base');
 let { configInfo, pubPath } = BaseData;
 const port = '3003';
@@ -98,6 +99,7 @@ module.exports = {
 			collections: true,
 			paths: true
 		}),
+		new BundleAnalyzerPlugin(),
 		new CopyWebpackPlugin([ { from: pubPath + '/src/workbench_front/assets', to: './assets' } ]),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
