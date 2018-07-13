@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {FormContent, dataDefaults} from "Components/FormCreate";
+import { FormContent, dataDefaults } from "Components/FormCreate";
 import AppTable from "./AppTable";
 import Ajax from "Pub/js/ajax";
 const IMGS = [
@@ -60,23 +60,20 @@ class AppFromCard extends Component {
      */
     getOptionsData = (code, nodeData) => {
         let url, data, info;
-        if (
-            this.state.target_path.length > 0 &&
-            this.state.orgtypecode.length > 0
-        ) {
-            return;
-        }
         if (JSON.stringify(nodeData) === "{}") {
             return;
         }
         if (code === "target_path") {
             url = `/nccloud/platform/appregister/querypagesel.do`;
-            data = {pk_appregister: nodeData.pk_appregister};
+            data = { pk_appregister: nodeData.pk_appregister };
             info = {
                 name: "默认页面",
                 action: "查询"
             };
         } else {
+            if (this.state.orgtypecode.length > 0) {
+                return;
+            }
             url = `/nccloud/platform/appregister/queryorgtype.do`;
             info = {
                 name: "组织类型",
@@ -87,10 +84,10 @@ class AppFromCard extends Component {
             url: url,
             data: data,
             info: info,
-            success: ({data: {success, data}}) => {
+            success: ({ data: { success, data } }) => {
                 if (success && data) {
                     if (code === "target_path") {
-                        this.setState({target_path: data});
+                        this.setState({ target_path: data });
                     } else {
                         let options = data.rows;
                         options = options.map((option, i) => {
@@ -99,13 +96,13 @@ class AppFromCard extends Component {
                                 text: option.refname
                             };
                         });
-                        this.setState({orgtypecode: options});
+                        this.setState({ orgtypecode: options });
                     }
                 }
             }
         });
     };
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(props, nextProps) {
         this.getOptionsData("orgtypecode", nextProps.nodeData);
         this.getOptionsData("target_path", nextProps.nodeData);
     }
@@ -118,7 +115,7 @@ class AppFromCard extends Component {
         let isEdit = this.props.isEdit;
         let resNodeData = this.props.form.getFieldsValue();
         let apptypeNum = "1";
-        if(resNodeData){
+        if (resNodeData) {
             apptypeNum = resNodeData.apptype;
         }
         let {
@@ -177,7 +174,7 @@ class AppFromCard extends Component {
                 code: "fun_property",
                 isRequired: true,
                 initialValue: fun_property,
-                options:  [
+                options: [
                     {
                         value: "0",
                         text: "可执行功能"
@@ -185,7 +182,7 @@ class AppFromCard extends Component {
                     {
                         value: "1",
                         text: "附属功能"
-                    },
+                    }
                 ],
                 isedit: isEdit,
                 lg: 8
@@ -261,10 +258,11 @@ class AppFromCard extends Component {
                 isRequired: false,
                 initialValue: mdidRef,
                 options: {
-                    queryTreeUrl:'/nccloud/riart/ref/mdClassDefaultEntityRefTreeAction.do',
-                    refType:"tree",
-                    isTreelazyLoad:false,
-                    placeholder: "关联元数据ID",
+                    queryTreeUrl:
+                        "/nccloud/riart/ref/mdClassDefaultEntityRefTreeAction.do",
+                    refType: "tree",
+                    isTreelazyLoad: false,
+                    placeholder: "关联元数据ID"
                 },
                 isedit: isEdit,
                 lg: 8
@@ -306,8 +304,8 @@ class AppFromCard extends Component {
                 lg: 8
             },
             {
-                label: apptypeNum === "1"?"默认页面":"小部件路径",
-                type: apptypeNum === "1"?"select":"string",
+                label: apptypeNum === "1" ? "默认页面" : "小部件路径",
+                type: apptypeNum === "1" ? "select" : "string",
                 code: "target_path",
                 isRequired: apptypeNum === "2",
                 options: this.state.target_path,
@@ -384,7 +382,8 @@ class AppFromCard extends Component {
                         background: "#ffffff",
                         padding: "10px",
                         borderRadius: "6px"
-                    }}>
+                    }}
+                >
                     <AppTable />
                 </div>
             </div>
@@ -393,12 +392,12 @@ class AppFromCard extends Component {
 }
 AppFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
-    nodeData: PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppManagementData.nodeData,
-        isEdit: state.AppManagementData.isEdit,
+        isEdit: state.AppManagementData.isEdit
     }),
     {}
 )(AppFromCard);

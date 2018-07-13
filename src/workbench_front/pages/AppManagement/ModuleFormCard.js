@@ -17,6 +17,9 @@ class ModuleFromCard extends Component {
      *
      */
     getOrgTypeCodeOptionsData = () => {
+        if (this.state.orgtypecode.length > 0) {
+            return;
+        }
         Ajax({
             url: `/nccloud/platform/appregister/queryorgtype.do`,
             info: {

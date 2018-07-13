@@ -60,12 +60,6 @@ class AppFromCard extends Component {
      */
     getOptionsData = (code, nodeData) => {
         let url, data, info;
-        if (
-            this.state.target_path.length > 0 &&
-            this.state.orgtypecode.length > 0
-        ) {
-            return;
-        }
         if (JSON.stringify(nodeData) === "{}") {
             return;
         }
@@ -77,6 +71,9 @@ class AppFromCard extends Component {
                 action: "查询"
             };
         } else {
+            if (this.state.orgtypecode.length > 0) {
+                return;
+            }
             url = `/nccloud/platform/appregister/queryorgtype.do`;
             info = {
                 name: "组织类型",
@@ -394,12 +391,12 @@ class AppFromCard extends Component {
 }
 AppFromCard.propTypes = {
     isEdit: PropTypes.bool.isRequired,
-    nodeData: PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired
 };
 export default connect(
     state => ({
         nodeData: state.AppRegisterData.nodeData,
         isEdit: state.AppRegisterData.isEdit
     }),
-    {  }
+    {}
 )(AppFromCard);
