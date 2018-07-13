@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal } from "antd";
+import { Modal, Form } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -24,7 +24,6 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
-import { dataTransfer, dataRestore, dataCheck } from "Components/FormCreate";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -68,7 +67,7 @@ class AppManagement extends Component {
                 );
                 break;
             case "pageCopy":
-                let { parentcode } = dataRestore(this.props.nodeData);
+                let { parentcode } = this.props.nodeData;
                 Ajax({
                     url: `/nccloud/platform/appregister/querytranstypelist.do`,
                     info: {
@@ -76,8 +75,8 @@ class AppManagement extends Component {
                         action: "页面编码"
                     },
                     data: {
-                        appCode: parentcode
-                        // appCode: "1011DETAILUSER"
+                        // appCode: parentcode
+                        appCode: "1011DETAILUSER"
                     },
                     success: ({ data: { data } }) => {
                         if (data) {
@@ -133,7 +132,7 @@ class AppManagement extends Component {
             newPageCode: "",
             newPageName: ""
         };
-        this.props.setPageCopyData(dataTransfer(pageCopyData));
+        this.props.setPageCopyData(pageCopyData);
     };
     // 应用复制
     appCopy = () => {
@@ -144,11 +143,11 @@ class AppManagement extends Component {
             newAppName: "",
             newMenuItemName: ""
         };
-        this.props.setCopyNodeData(dataTransfer(copyNodeData));
+        this.props.setCopyNodeData(copyNodeData);
     };
     // 应用停启用
     appActive = () => {
-        let nodeData = dataRestore(this.props.nodeData);
+        let nodeData = this.props.nodeData;
         nodeData.isenable = !nodeData.isenable;
         Ajax({
             url: `/nccloud/platform/appregister/editapp.do`,
@@ -159,7 +158,10 @@ class AppManagement extends Component {
             data: nodeData,
             success: ({ data: { data } }) => {
                 if (data.msg) {
-                    this.props.setNodeData(dataTransfer(nodeData));
+                    this.props.setNodeData(nodeData);
+                    this.props.form.setFieldsValue({
+                        isenable: nodeData.isenable
+                    });
                 }
             }
         });
@@ -171,19 +173,19 @@ class AppManagement extends Component {
         switch (this.props.optype) {
             // 对应树结构中的第一层
             case "1":
-                return <ModuleFormCard />;
-                对应树结构中的第二层;
+                return <ModuleFormCard form={this.props.form} />;
+            // 对应树结构中的第二层;
             case "2":
-                return <ModuleFormCard />;
+                return <ModuleFormCard form={this.props.form} />;
             // 对应树结构的第三层
             case "3":
-                return <ClassFormCard />;
+                return <ClassFormCard form={this.props.form} />;
             // 对应树结构的第四层
             case "4":
-                return <AppFormCard />;
+                return <AppFormCard form={this.props.form} />;
             // 对应树结构的第五层
             case "5":
-                return <PageFromCard />;
+                return <PageFromCard form={this.props.form} />;
             default:
                 return "";
         }
@@ -244,20 +246,18 @@ class AppManagement extends Component {
                 case "0":
                     optype = "1";
                     id = obj.moduleid;
-                    this.props.setNodeData(dataTransfer(obj));
+                    this.props.setNodeData(obj);
                     break;
                 // 对应树的第二层
                 case "1":
                     optype = "2";
                     id = obj.moduleid;
-                    this.props.setNodeData(dataTransfer(obj));
+                    this.props.setNodeData(obj);
                     break;
                 // 对应树的第三层
                 case "2":
                     let appClassCallBack = data => {
-                        this.props.setNodeData(
-                            dataTransfer(data.appRegisterVO)
-                        );
+                        this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     this.reqTreeNodeData(
@@ -268,14 +268,11 @@ class AppManagement extends Component {
                     );
                     id = obj.moduleid;
                     optype = "3";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 // 对应树的第四层
                 case "3":
                     let appCallBack = data => {
-                        this.props.setNodeData(
-                            dataTransfer(data.appRegisterVO)
-                        );
+                        this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
                     };
                     this.reqTreeNodeData(
@@ -286,7 +283,6 @@ class AppManagement extends Component {
                     );
                     id = obj.def1;
                     optype = "4";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 // 对应树的第五层
                 case "4":
@@ -299,7 +295,7 @@ class AppManagement extends Component {
                             iscopypage
                         };
                         this.props.setNodeInfo(nodeInfo);
-                        this.props.setNodeData(dataTransfer(data.apppageVO));
+                        this.props.setNodeData(data.apppageVO);
                         this.props.setPageButtonData(data.appButtonVOs);
                         this.props.setPageTemplateData(data.pageTemplets);
                     };
@@ -311,7 +307,6 @@ class AppManagement extends Component {
                     );
                     id = obj.moduleid;
                     optype = "5";
-                    this.props.setNodeData(dataTransfer(obj));
                     break;
                 default:
                     break;
@@ -351,67 +346,67 @@ class AppManagement extends Component {
      * 应用复制确认事件
      */
     handleOk = modalType => {
-        if (modalType === "0") {
-            let copyNodeData = this.props.copyNodeData;
-            if (dataCheck(copyNodeData)) {
-                return;
-            }
-            copyNodeData = dataRestore(copyNodeData);
-            for (const key in copyNodeData) {
-                if (copyNodeData.hasOwnProperty(key)) {
-                    if (copyNodeData[key].length === 0) {
-                        return;
-                    }
-                }
-            }
-            Ajax({
-                url: `/nccloud/platform/appregister/copyapp.do`,
-                data: copyNodeData,
-                info: {
-                    name: "应用管理",
-                    action: "应用复制"
-                },
-                success: ({ data: { data } }) => {
-                    this.setState({
-                        visible: false
+        this.props.form.validateFields(errors => {
+            if (!errors) {
+                let copyNodeData = this.props.form.getFieldsValue();
+                console.log(copyNodeData);
+                if (modalType === "0") {
+                    let {
+                        oldAppCode,
+                        newMenuItemCode,
+                        newAppName,
+                        newMenuItemName
+                    } = copyNodeData;
+                    Ajax({
+                        url: `/nccloud/platform/appregister/copyapp.do`,
+                        data: {
+                            oldAppCode,
+                            newMenuItemCode,
+                            newAppName,
+                            newMenuItemName
+                        },
+                        info: {
+                            name: "应用管理",
+                            action: "应用复制"
+                        },
+                        success: ({ data: { data } }) => {
+                            this.setState({
+                                visible: false
+                            });
+                            this.reqTreeData();
+                            Notice({ status: "success", msg: data.msg });
+                        }
                     });
-                    this.reqTreeData();
-                    Notice({ status: "success", msg: data.msg });
+                } else {
+                    let { newPageCode, newPageName } = copyNodeData;
+                    let pageCopyData = { newPageCode, newPageName };
+                    pageCopyData = {
+                        ...this.props.pageCopyData,
+                        ...pageCopyData
+                    };
+                    Ajax({
+                        url: `/nccloud/platform/appregister/copyapppage.do`,
+                        info: {
+                            name: "应用管理",
+                            action: "页面复制"
+                        },
+                        data: pageCopyData,
+                        success: ({ data: { data } }) => {
+                            if (data) {
+                                this.setState({
+                                    visible: false
+                                });
+                                this.reqTreeData();
+                                Notice({ status: "success", msg: data.msg });
+                            }
+                        }
+                    });
                 }
-            });
-        } else {
-            let pageCopyData = this.props.pageCopyData;
-            if (dataCheck(pageCopyData)) {
-                return;
             }
-            pageCopyData = dataRestore(pageCopyData);
-            for (const key in pageCopyData) {
-                if (pageCopyData.hasOwnProperty(key)) {
-                    if (pageCopyData[key].length === 0) {
-                        return;
-                    }
-                }
-            }
-            Ajax({
-                url: `/nccloud/platform/appregister/copyapppage.do`,
-                info: {
-                    name: "应用管理",
-                    action: "页面复制"
-                },
-                data: pageCopyData,
-                success: ({ data: { data } }) => {
-                    if (data) {
-                        this.setState({
-                            visible: false
-                        });
-                        this.reqTreeData();
-                        Notice({ status: "success", msg: data.msg });
-                    }
-                }
-            });
-        }
+        });
     };
     handleCancel = modalType => {
+        this.props.form.resetFields();
         this.setState({
             visible: false
         });
@@ -442,7 +437,7 @@ class AppManagement extends Component {
         let optype = this.props.optype;
         let modalType = this.state.modalType;
         let isenable = this.props.nodeData.isenable
-            ? dataRestore(this.props.nodeData).isenable
+            ? this.props.nodeData.isenable
             : false;
         let iscopypage = this.props.nodeInfo.iscopypage
             ? this.props.nodeInfo.iscopypage
@@ -505,9 +500,10 @@ class AppManagement extends Component {
                         }}
                     >
                         {modalType === "0" ? (
-                            <AppCopy />
+                            <AppCopy form={this.props.form} />
                         ) : (
                             <PageCopy
+                                form={this.props.form}
                                 newPageOtions={this.state.newPageOtions}
                             />
                         )}
@@ -541,6 +537,7 @@ AppManagement.propTypes = {
     setPageCopyData: PropTypes.func.isRequired,
     pageCopyData: PropTypes.object.isRequired
 };
+AppManagement = Form.create()(AppManagement);
 export default connect(
     state => ({
         nodeData: state.AppManagementData.nodeData,

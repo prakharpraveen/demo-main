@@ -13,6 +13,7 @@ import CostRegionDefaultGridRef from "Components/Refers/CostRegionDefaultGridRef
 import ContentLangRef from "Components/Refers/ContentLangRef";
 // 默认数据格式参照
 import DataFormatRef from "Components/Refers/DataFormatRef";
+import Notice from "Components/Notice";
 import Ajax from "Pub/js/ajax";
 import { high } from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
@@ -94,16 +95,18 @@ class DefaultSetting extends Component {
                 name: "个性化-默认设置",
                 action: "保存"
             },
-            success: res => {
-                let { success, data } = res;
-                if (success && data) {
+            success: ({ data: { data } }) => {
+                if (data) {
+                    Notice({
+                        status: "success"
+                    });
                     this.setState(data);
                 }
             }
         });
     };
     handdleRefChange = (value, type) => {
-        console.log(value,type);
+        console.log(value, type);
         let { refname, refcode, refpk } = value;
         let obj = {};
         obj[type] = {};
@@ -177,7 +180,10 @@ class DefaultSetting extends Component {
                                 value={org_df_credit}
                                 placeholder={"默认信用控制域"}
                                 onChange={value => {
-                                    this.handdleRefChange(value, "org_df_credit");
+                                    this.handdleRefChange(
+                                        value,
+                                        "org_df_credit"
+                                    );
                                 }}
                             />
                         </div>

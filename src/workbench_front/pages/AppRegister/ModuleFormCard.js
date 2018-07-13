@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { FormContent,dataDefaults } from "Components/FormCreate";
+import { FormContent, dataDefaults } from "Components/FormCreate";
 import { setNodeData } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 class ModuleFromCard extends Component {
@@ -16,6 +16,9 @@ class ModuleFromCard extends Component {
      *
      */
     getOrgTypeCodeOptionsData = () => {
+        if (this.state.orgtypecode.length > 0) {
+            return;
+        }
         Ajax({
             url: `/nccloud/platform/appregister/queryorgtype.do`,
             info: {
@@ -43,7 +46,17 @@ class ModuleFromCard extends Component {
         let isEdit = this.props.isEdit;
         let isNew = this.props.isNew;
         let optype = this.props.optype;
-        let {systypecode,moduleid,systypename,devmodule,appscope,orgtypecode,resid,supportcloseaccbook,isaccount} = this.props.nodeData;
+        let {
+            systypecode,
+            moduleid,
+            systypename,
+            devmodule,
+            appscope,
+            orgtypecode,
+            resid,
+            supportcloseaccbook,
+            isaccount
+        } = this.props.nodeData;
         let moduleFormData = [
             {
                 label: "模块编码",
@@ -51,7 +64,7 @@ class ModuleFromCard extends Component {
                 code: "systypecode",
                 isRequired: true,
                 isedit: isNew,
-                initialValue:systypecode,
+                initialValue: systypecode,
                 lg: 8
             },
             {
@@ -61,7 +74,7 @@ class ModuleFromCard extends Component {
                 isRequired: true,
                 len: optype === "1" ? 2 : 4,
                 isedit: isNew,
-                initialValue:moduleid,
+                initialValue: moduleid,
                 lg: 8
             },
             {
@@ -70,7 +83,7 @@ class ModuleFromCard extends Component {
                 code: "systypename",
                 isRequired: true,
                 isedit: isEdit,
-                initialValue:systypename,
+                initialValue: systypename,
                 lg: 8
             },
             {
@@ -79,7 +92,7 @@ class ModuleFromCard extends Component {
                 code: "devmodule",
                 isRequired: false,
                 isedit: isEdit,
-                initialValue:devmodule,
+                initialValue: devmodule,
                 lg: 8
             },
             {
@@ -87,7 +100,7 @@ class ModuleFromCard extends Component {
                 type: "select",
                 code: "appscope",
                 isRequired: false,
-                initialValue:appscope,
+                initialValue: appscope,
                 options: [
                     {
                         value: "0",
@@ -108,7 +121,7 @@ class ModuleFromCard extends Component {
                 isRequired: false,
                 options: this.state.orgtypecode,
                 isedit: isEdit,
-                initialValue:orgtypecode,
+                initialValue: orgtypecode,
                 lg: 8
             },
             {
@@ -117,7 +130,7 @@ class ModuleFromCard extends Component {
                 code: "resid",
                 isRequired: false,
                 isedit: isEdit,
-                initialValue:resid,
+                initialValue: resid,
                 lg: 8
             },
             {
@@ -126,7 +139,7 @@ class ModuleFromCard extends Component {
                 code: "supportcloseaccbook",
                 isRequired: false,
                 isedit: isEdit,
-                initialValue:supportcloseaccbook,
+                initialValue: supportcloseaccbook,
                 lg: 8
             },
             {
@@ -135,11 +148,21 @@ class ModuleFromCard extends Component {
                 code: "isaccount",
                 isRequired: false,
                 isedit: isEdit,
-                initialValue:isaccount,
+                initialValue: isaccount,
                 lg: 8
             }
         ];
-        return <FormContent datasources={dataDefaults(this.props.nodeData,moduleFormData,'code')}  form={this.props.form} formData={moduleFormData} />;
+        return (
+            <FormContent
+                datasources={dataDefaults(
+                    this.props.nodeData,
+                    moduleFormData,
+                    "code"
+                )}
+                form={this.props.form}
+                formData={moduleFormData}
+            />
+        );
     }
 }
 ModuleFromCard.propTypes = {

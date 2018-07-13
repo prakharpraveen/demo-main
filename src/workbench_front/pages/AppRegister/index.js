@@ -21,7 +21,6 @@ import ModuleFormCard from "./ModuleFormCard";
 import ClassFormCard from "./ClassFormCard";
 import AppFormCard from "./AppFormCard";
 import PageFromCard from "./PageFromCard";
-import { dataTransfer, dataRestore, dataCheck } from "Components/FormCreate";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -69,7 +68,6 @@ class AppRegister extends Component {
                     (errors, values) => {
                         if (!errors) {
                             let aaa = this.props.form.getFieldsValue();
-                            console.log(aaa);
                             this.save();
                         }
                     }
@@ -169,7 +167,7 @@ class AppRegister extends Component {
             uselicense_load: true,
             iscopypage: false,
             pk_group: "",
-            mdidRef:{refpk: "", refname: "", refcode: ""},
+            mdidRef: { refpk: "", refname: "", refcode: "" },
             width: "1",
             height: "1",
             target_path: "",
@@ -217,12 +215,59 @@ class AppRegister extends Component {
         if (this.props.nodeData.children) {
             delete this.props.nodeData.children;
         }
-        fromData = {...this.props.nodeData,...fromData};
+        fromData = { ...this.props.nodeData, ...fromData };
         let { id, code } = this.props.nodeInfo;
         let optype = this.props.optype;
         //  新增保存回调
         let newSaveFun = data => {
+            let selectedKeys = this.props.selectedKeys;
+            let id, code, name, parentId;
+            if (optype === "1" || optype === "2") {
+                if (data.parentcode) {
+                    selectedKeys.push(data.parentcode);
+                }
+                id = data.moduleid;
+                code = data.systypecode;
+                name = data.systypename;
+                parentId = data.parentcode;
+                this.props.setExpandedKeys(selectedKeys);
+                this.props.setSelectedKeys([data.moduleid]);
+            }
+            if (optype === "3") {
+                id = data.pk_appregister;
+                code = data.code;
+                name = data.name;
+                parentId = data.parent_id;
+                selectedKeys.push(data.parent_id);
+                this.props.setExpandedKeys(selectedKeys);
+                this.props.setSelectedKeys([data.pk_appregister]);
+            }
+            if (optype === "4") {
+                id = data.pk_appregister;
+                code = data.code;
+                name = data.name;
+                parentId = data.parent_id;
+                selectedKeys.push(data.parent_id);
+                this.props.setExpandedKeys(selectedKeys);
+                this.props.setSelectedKeys([data.code]);
+            }
+            if (optype === "5") {
+                id = data.pk_apppage;
+                code = data.pagecode;
+                name = data.pagename;
+                parentId = data.parent_id;
+                selectedKeys.push(data.parentcode);
+                this.props.setExpandedKeys(selectedKeys);
+                this.props.setSelectedKeys([data.pk_apppage]);
+            }
             this.reqTreeData();
+            this.props.setNodeInfo({
+                id,
+                code,
+                name,
+                parentId,
+                isleaf: true
+            });
             this.props.setNodeData(data);
             this.props.setIsNew(false);
             this.props.setIsEdit(false);
@@ -377,9 +422,10 @@ class AppRegister extends Component {
                         status: "success",
                         msg: data.true
                     });
-                    this.delTreeData(id);
+                    this.reqTreeData();
                     this.props.setNodeData({});
-                    this.props.setOptype(optype);
+                    this.props.setSelectedKeys(["00"]);
+                    this.props.setOptype("");
                 };
                 if (optype === "1" || optype === "2") {
                     this.reqTreeNodeData(
@@ -507,7 +553,6 @@ class AppRegister extends Component {
                     optype = "1";
                     id = obj.moduleid;
                     this.props.setNodeData(obj);
-
                     break;
                 // 对应树的第二层
                 case "1":
@@ -598,15 +643,6 @@ class AppRegister extends Component {
             }
             return item;
         });
-        this.props.setTreeData(treeDataArray);
-    };
-    /**
-     * 删除树数指定节点
-     *
-     */
-    delTreeData = id => {
-        let treeDataArray = this.props.treeData;
-        treeDataArray = treeDataArray.filter(item => item.moduleid !== id);
         this.props.setTreeData(treeDataArray);
     };
     /**

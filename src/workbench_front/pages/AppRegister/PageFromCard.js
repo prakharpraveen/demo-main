@@ -26,13 +26,6 @@ class PageFormCard extends Component {
                 code: "pagecode",
                 isRequired: true,
                 initialValue: pagecode,
-                check: (rule, value, callback) => {
-                    if (value === this.props.parentData) {
-                        callback("不能与父节点编码重复");
-                    } else {
-                        callback();
-                    }
-                },
                 isedit: isEdit,
                 lg: 12
             },

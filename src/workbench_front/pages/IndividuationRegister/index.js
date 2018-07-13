@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { Modal } from "antd";
+import { Modal, Form } from "antd";
 import {
     PageLayout,
     PageLayoutHeader,
@@ -9,12 +9,7 @@ import {
 } from "Components/PageLayout";
 import TreeCom from "./TreeCom";
 import ButtonCreate from "Components/ButtonCreate";
-import {
-    FormCreate,
-    dataTransfer,
-    dataRestore,
-    dataCheck
-} from "Components/FormCreate";
+import { FormContent, dataDefaults } from "Components/FormCreate";
 import Ajax from "Pub/js/ajax.js";
 import Notice from "Components/Notice";
 import "./index.less";
@@ -26,6 +21,7 @@ class IndividuationRegister extends Component {
         this.state = {
             treeData: [],
             fields: {},
+            formData: {},
             isNew: false,
             isedit: false,
             parentKey: "",
@@ -46,23 +42,35 @@ class IndividuationRegister extends Component {
                 this.setState({
                     isedit: true,
                     isNew: true,
-                    fields: { ...this.newFormData }
+                    fields: { ...this.newFormData },
+                    formData: { ...this.newFormData }
                 });
                 break;
             case "edit":
-                this.setState({ isedit: true });
+                let formData = this.props.form.getFieldsValue();
+                this.historyData = { ...this.state.fields, ...formData };
+                this.setState({
+                    isedit: true,
+                    formData,
+                    fields: this.historyData
+                });
                 break;
             case "save":
                 this.save();
                 break;
             case "cancle":
-                if (this.state.isNew) {
-                    this.historyData = dataTransfer(this.newFormData);
-                }
+                this.props.form.resetFields();
                 this.setState({
                     isedit: false,
                     isNew: false,
-                    fields: { ...this.historyData }
+                    fields: { ...this.historyData },
+                    formData: {
+                        code: this.historyData.code,
+                        name: this.historyData.name,
+                        resourceid: this.historyData.resourceid,
+                        resourcepath: this.historyData.resourcepath,
+                        page_part_url: this.historyData.page_part_url
+                    }
                 });
                 break;
             case "del":
@@ -73,7 +81,6 @@ class IndividuationRegister extends Component {
         }
     };
     del = () => {
-        let _this = this;
         confirm({
             title: "是否要删除?",
             content: "",
@@ -81,9 +88,8 @@ class IndividuationRegister extends Component {
             okType: "danger",
             cancelText: "取消",
             mask: false,
-            onOk() {
-                let pk_individualreg = dataRestore(_this.state.fields)
-                    .pk_individualreg;
+            onOk: () => {
+                let pk_individualreg = this.state.fields.pk_individualreg;
                 Ajax({
                     url: `/nccloud/platform/appregister/deleteindividualreg.do`,
                     info: {
@@ -95,8 +101,8 @@ class IndividuationRegister extends Component {
                     },
                     success: ({ data: { data } }) => {
                         if (data) {
-                            let { treeData } = _this.state;
-                            treeData = [..._this.state.treeData];
+                            let { treeData } = this.state;
+                            treeData = [...this.state.treeData];
                             _.remove(
                                 treeData,
                                 item =>
@@ -121,58 +127,57 @@ class IndividuationRegister extends Component {
         });
     };
     save = () => {
-        let { isNew, fields } = this.state;
-        if (dataCheck(fields)) {
-            Notice({
-                status: "warning",
-                msg: "请将必输项填写完整！"
-            });
-            return;
-        }
-        fields = dataRestore(fields);
-        let saveURL, data;
-        if (isNew) {
-            saveURL = `/nccloud/platform/appregister/insertindividualreg.do`;
-            data = fields;
-        } else {
-            saveURL = `/nccloud/platform/appregister/editindividualreg.do`;
-            data = fields;
-        }
-        Ajax({
-            url: saveURL,
-            info: {
-                name: "个性化注册",
-                action: "保存"
-            },
-            data: data,
-            success: ({ data: { data } }) => {
-                if (data) {
-                    let treeData = [...this.state.treeData];
-                    if (isNew) {
-                        treeData = _.concat(treeData, data);
-                        fields = data;
-                    } else {
-                        let dataIndex = _.findIndex(
-                            treeData,
-                            item =>
-                                item.pk_individualreg ===
-                                fields.pk_individualreg
-                        );
-                        treeData[dataIndex] = fields;
-                    }
-                    this.setState({
-                        isNew: false,
-                        isedit: false,
-                        selectedKeys: [fields.code],
-                        parentKey: fields.code,
-                        treeData,
-                        fields: dataTransfer(fields)
-                    });
-                    Notice({
-                        status: "success",
-                        msg: data.true ? data.true : "保存成功！"
-                    });
+        this.props.form.validateFields(errors => {
+            if (!errors) {
+                let { isNew, fields } = this.state;
+                let saveURL, data;
+                let newFieldsData = this.props.form.getFieldsValue();
+                let newFields = { ...fields, ...newFieldsData };
+                if (isNew) {
+                    saveURL = `/nccloud/platform/appregister/insertindividualreg.do`;
+                    data = newFields;
+                } else {
+                    saveURL = `/nccloud/platform/appregister/editindividualreg.do`;
+                    data = newFields;
                 }
+                Ajax({
+                    url: saveURL,
+                    info: {
+                        name: "个性化注册",
+                        action: "保存"
+                    },
+                    data: data,
+                    success: ({ data: { data } }) => {
+                        if (data) {
+                            let treeData = [...this.state.treeData];
+                            if (isNew) {
+                                treeData = _.concat(treeData, data);
+                                newFields = data;
+                            } else {
+                                let dataIndex = _.findIndex(
+                                    treeData,
+                                    item =>
+                                        item.pk_individualreg ===
+                                        fields.pk_individualreg
+                                );
+                                treeData[dataIndex] = newFields;
+                            }
+                            this.setState({
+                                isNew: false,
+                                isedit: false,
+                                selectedKeys: [fields.code],
+                                parentKey: fields.code,
+                                treeData,
+                                fields: newFields,
+                                formData: { ...newFieldsData }
+                            });
+                            Notice({
+                                status: "success",
+                                msg: data.true ? data.true : "保存成功！"
+                            });
+                        }
+                    }
+                });
             }
         });
     };
@@ -184,20 +189,27 @@ class IndividuationRegister extends Component {
                 isedit: false,
                 selectedKeys,
                 parentKey: selectedKey ? selectedKey : "",
-                fields: dataTransfer(this.newFormData)
+                fields: { ...this.newFormData },
+                formData: { ...this.newFormData }
             });
             return;
         }
         selectedKeys = [selectedKey];
         let treeItem = treeData.find(item => item.code === selectedKey);
-        treeItem = dataTransfer(treeItem);
         this.historyData = { ...treeItem };
         this.setState({
             isedit: false,
             isNew: false,
             selectedKeys,
             parentKey: selectedKey,
-            fields: { ...treeItem }
+            fields: { ...treeItem },
+            formData: {
+                code: treeItem.code,
+                name: treeItem.name,
+                resourceid: treeItem.resourceid,
+                resourcepath: treeItem.resourcepath,
+                page_part_url: treeItem.page_part_url
+            }
         });
     };
     /**
@@ -226,14 +238,23 @@ class IndividuationRegister extends Component {
     }
 
     render() {
-        let { treeData, fields, isedit, isNew, selectedKeys } = this.state;
-        let menuFormData = [
+        let {
+            treeData,
+            formData,
+            fields,
+            isedit,
+            isNew,
+            selectedKeys
+        } = this.state;
+        let { code, name, resourceid, resourcepath, page_part_url } = formData;
+        let individuationFormData = [
             {
                 code: "code",
                 type: "string",
                 label: "编码",
                 isRequired: true,
                 isedit: isedit,
+                initialValue: code,
                 xs: 24,
                 md: 12,
                 lg: 12
@@ -244,6 +265,7 @@ class IndividuationRegister extends Component {
                 label: "名称",
                 isRequired: true,
                 isedit: isedit,
+                initialValue: name,
                 xs: 24,
                 md: 12,
                 lg: 12
@@ -254,6 +276,7 @@ class IndividuationRegister extends Component {
                 label: "名称->资源ID",
                 isRequired: true,
                 isedit: isedit,
+                initialValue: resourceid,
                 xs: 24,
                 md: 12,
                 lg: 12
@@ -264,6 +287,7 @@ class IndividuationRegister extends Component {
                 label: "名称->资源路径",
                 isRequired: true,
                 isedit: isedit,
+                initialValue: resourcepath,
                 xs: 24,
                 md: 12,
                 lg: 12
@@ -273,6 +297,7 @@ class IndividuationRegister extends Component {
                 type: "string",
                 label: "页面片段URL",
                 isRequired: true,
+                initialValue: page_part_url,
                 isedit: isedit
             }
         ];
@@ -344,10 +369,14 @@ class IndividuationRegister extends Component {
                         !isNew ? (
                             ""
                         ) : (
-                            <FormCreate
-                                formData={menuFormData}
-                                fields={fields}
-                                onChange={this.handleFormChange}
+                            <FormContent
+                                datasources={dataDefaults(
+                                    this.state.formData,
+                                    individuationFormData,
+                                    "code"
+                                )}
+                                form={this.props.form}
+                                formData={individuationFormData}
                             />
                         )}
                     </div>
@@ -356,4 +385,5 @@ class IndividuationRegister extends Component {
         );
     }
 }
+IndividuationRegister = Form.create()(IndividuationRegister);
 export default IndividuationRegister;

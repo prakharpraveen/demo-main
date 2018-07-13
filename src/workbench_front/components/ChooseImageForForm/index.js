@@ -141,7 +141,7 @@ class ChooseImageForForm extends Component {
               value.length > 0
                 ? {
                     background: `url(${value}) no-repeat 0px 0px`,
-                    "background-size": "contain"
+                    "backgroundSize": "contain"
                   }
                 : null
             }
