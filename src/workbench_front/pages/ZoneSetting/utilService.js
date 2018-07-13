@@ -115,11 +115,11 @@ export const defaultvarObj = [
 export const itemtypeObj = [
 	{ name: '文本输入框', value: 'input' },
 	{ name: '复选', value: 'checkbox' },
-	{ name: '单选日期', value: 'NCTZDatePickClientTime' },
+	{ name: '单选日期', value: 'datepicker' },
 	{ name: '静态文本', value: 'label' },
 	{ name: '数值输入框', value: 'number' },
 	{ name: '单选', value: 'radio' },
-	{ name: '日期范围', value: 'NCTZDatePickClientRangeTime' },
+	{ name: '日期范围', value: 'rangepicker' },
 	{ name: '参照', value: 'refer' },
 	{ name: '下拉选择', value: 'select' },
 	{ name: '开关', value: 'switch' },
@@ -153,12 +153,12 @@ export const filterItemtypeObj = [
 	{ datatype: '58', itemtypeObj: [ { name: '多语文本', value: 'residtxt' } ] },
 	{ datatype: '30', itemtypeObj: [ { name: '多行文本', value: 'textarea' } ] },
 	{ datatype: '400', itemtypeObj: [ { name: '密码框', value: 'password' } ] },
-	{ datatype: '34', itemtypeObj: [ { name: '单选日期', value: 'NCTZDatePickClientTime' } ] },
+	{ datatype: '34', itemtypeObj: [ { name: '单选日期', value: 'datepicker' } ] },
 	{
 		datatype: '33',
 		itemtypeObj: [
-			{ name: '单选日期', value: 'NCTZDatePickClientTime' },
-			{ name: '日期范围', value: 'NCTZDatePickClientRangeTime' },
+			{ name: '单选日期', value: 'datepicker' },
+			{ name: '日期范围', value: 'rangepicker' },
 			{ name: '开始日期时间', value: 'NCTZDatePickerStart' },
 			{ name: '结束日期时间', value: 'NCTZDatePickerEnd' }
 		]
