@@ -62,7 +62,7 @@ class AssignComponent extends Component {
             orgidObj: {},
             treeRoDataObj: {},
             activeKey: this.props.activeKey,
-            orgidObj:this.props.orgidObj// 默认业务单元
+            orgidObj: this.props.orgidObj // 默认业务单元
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -404,13 +404,19 @@ class AssignComponent extends Component {
                 }
             }
         }
+        let newTargets = '';
+        for (let key in targets) {
+            newTargets = newTargets + `${key}:${targets[key]},`;
+        }
+        const newTargetsLen = newTargets.length;
+        newTargets = newTargets.substr(0, newTargetsLen - 1);
         let infoData = {
             pageCode: pageCode,
             templateId: templatePks,
             orgId: orgidObj.refpk,
             appCode: appCode
         };
-        infoData.targets = targets;
+        infoData.targets = newTargets;
         if (activeKey === '1') {
             infoData.templateType = 'bill';
         } else if (activeKey === '2') {
@@ -539,8 +545,10 @@ class AssignComponent extends Component {
                         </div>
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
-                                {treeRoVisible ? ( this.treeResAndUser(treeRoData, 'resOnselect')
-                                ) : ( this.treeResAndUser(treeResData, 'resOnselect')
+                                {treeRoVisible ? (
+                                    this.treeResAndUser(treeRoData, 'resOnselect')
+                                ) : (
+                                    this.treeResAndUser(treeResData, 'resOnselect')
                                 )}
                             </div>
                             <div className='allocation-button'>

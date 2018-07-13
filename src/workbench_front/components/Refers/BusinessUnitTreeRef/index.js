@@ -8,12 +8,12 @@ const { Refer } = high;
 export default function (props={}) {
     var conf = {
         refType: 'tree',
-        refName: '业务单元',
-        refCode: 'uapbd.refer.org.BusinessUnitTreeRef',
+        refName: '业务单元',//'uapbd.refer.org.BusinessUnitTreeRef'
+        refCode: 'uapbd.org.BusinessUnitAndGroupTreeRef',//uapbd.org.BusinessUnitAndGroupTreeRef
         rootNode:{refname:'业务单元',refpk:'root'},
         placeholder:"业务单元",
-        queryTreeUrl: '/nccloud/uapbd/ref/businessunit.do',
-        treeConfig:{name:['编码', '名称'],code: ['refcode', 'refname']},
+        queryTreeUrl: '/nccloud/uapbd/ref/businessunitandgrouptreeref.do',
+        treeConfig:{name:['编码', '名称'],code: ['refcode', 'refname']},//	uapbd/refer/org/BusinessUnitAndGroupTreeRef/index	
         isMultiSelectedEnabled: false
     };
     return <Refer {...Object.assign(conf, props)} />

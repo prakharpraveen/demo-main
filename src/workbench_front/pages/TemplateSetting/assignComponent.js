@@ -406,13 +406,19 @@ class AssignComponent extends Component {
                 }
             }
         }
+        let newTargets = '';
+        for (let key in targets) {
+            newTargets = newTargets + `${key}:${targets[key]},`;
+        }
+        const newTargetsLen = newTargets.length;
+        newTargets = newTargets.substr(0, newTargetsLen - 1);
         let infoData = {
             pageCode: pageCode,
             templateId: templatePks,
             orgId: orgidObj.refpk,
             appCode: appCode
         };
-        infoData.targets = targets;
+        infoData.targets = newTargets;
         if (activeKey === '1') {
             infoData.templateType = 'bill';
         } else if (activeKey === '2') {
