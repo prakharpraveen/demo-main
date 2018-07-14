@@ -11,7 +11,8 @@ export default class Loading extends Component {
         className="nc-workbench-loading"
         style={{
           position: "absolute",
-          zIndex: "99999999"
+          zIndex: "99999999",
+          top:'0'
         }}
       >
         <Spin size="large" />
