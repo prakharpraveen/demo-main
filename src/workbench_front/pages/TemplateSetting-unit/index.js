@@ -80,6 +80,8 @@ class TemplateSetting extends Component {
             parentIdcon: '', //树节点的key
             activeKey: '1',
             templateType: '',
+            previewPrintVisible: false,
+            previewPrintContent: '',
             batchSettingModalVisibel: false //控制预览摸态框的显隐属性
         };
     }
@@ -273,10 +275,6 @@ class TemplateSetting extends Component {
                 } else {
                     url = `/nccloud/platform/template/deleteTemplateDetail.do`;
                 }
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
-                }
                 confirm({
                     title: '是否要删除?',
                     content: '',
@@ -309,17 +307,40 @@ class TemplateSetting extends Component {
                 });
                 break;
             case '浏览':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
+                if (activeKey === '3') {
+                    this.printModalAjax(templatePks);
+                } else {
+                    this.setState({
+                        batchSettingModalVisibel: true
+                    });
                 }
-                this.setState({
-                    batchSettingModalVisibel: true
-                });
                 break;
             default:
                 break;
         }
+    };
+    printModalAjax = (templateId) => {
+        let infoData = {};
+        infoData.templateId = templateId;
+        const url = `/nccloud/platform/template/previewPrintTemplate.do`;
+        Ajax({
+            url: url,
+            data: infoData,
+            info: {
+                name: '模板设置',
+                action: '打印模板预览'
+            },
+            success: ({ data }) => {
+                if (data.success) {
+                    this.setState(
+                        {
+                            previewPrintContent: data.data
+                        },
+                        this.showModal
+                    );
+                }
+            }
+        });
     };
     componentDidMount = () => {
         this.reqTreeData();
@@ -750,6 +771,9 @@ class TemplateSetting extends Component {
             orgidObj
         });
     };
+    showModal = () => {
+        this.setState({ previewPrintVisible: true });
+    };
     render() {
         const {
             treeData,
@@ -774,7 +798,9 @@ class TemplateSetting extends Component {
             expandedTemKeys,
             autoExpandParent,
             autoExpandTemParent,
-            orgidObj
+            orgidObj,
+            previewPrintContent,
+            previewPrintVisible
         } = this.state;
         const leftTreeData = [
             {
@@ -906,6 +932,11 @@ class TemplateSetting extends Component {
                         )}
                     </div>
                 </Modal>
+                {previewPrintContent && (
+                    <Modal title='打印模板预览' visible={previewPrintVisible} footer={null}>
+                        <div>{previewPrintContent}</div>
+                    </Modal>
+                )}
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}

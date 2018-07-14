@@ -86,7 +86,9 @@ class TemplateSetting extends Component {
             activeKey: '1',
             batchSettingModalVisibel: false, //控制预览摸态框的显隐属性
             isDefaultTem: '',
-            def1: ''
+            def1: '',
+            previewPrintContent: '',
+            previewPrintVisible: false
         };
     }
     // 按钮显隐性控制
@@ -136,7 +138,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '浏览':
-                if (activeKey === '3') {
+                if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -144,11 +146,6 @@ class TemplateSetting extends Component {
                     } else {
                         isShow = false;
                     }
-                }
-                break;
-            case '刷新':
-                if (activeKey === '3') {
-                    isShow = false;
                 }
                 break;
             default:
@@ -275,21 +272,17 @@ class TemplateSetting extends Component {
         let infoData = {
             templateId: templatePks
         };
+        if (!templatePks) {
+            Notice({ status: 'warning', msg: '请选择模板数据' });
+            return;
+        }
         switch (btnName) {
             case '复制':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
-                }
                 this.setState({
                     visible: true
                 });
                 break;
             case '修改':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
-                }
                 if (activeKey === '3') {
                     Ajax({
                         loading: true,
@@ -313,7 +306,8 @@ class TemplateSetting extends Component {
                             alert('lm:' + res.message);
                         }
                     });
-                } else {//openPage(`TemplateSetting`, false, { pk: templateId });
+                } else {
+                    //openPage(`TemplateSetting`, false, { pk: templateId });
                     openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
                 }
                 break;
@@ -323,10 +317,6 @@ class TemplateSetting extends Component {
                     url = `/nccloud/platform/template/deletePrintTemplate.do`;
                 } else {
                     url = `/nccloud/platform/template/deleteTemplateDetail.do`;
-                }
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
                 }
                 let _this = this;
                 confirm({
@@ -356,17 +346,40 @@ class TemplateSetting extends Component {
                 });
                 break;
             case '浏览':
-                if (!templatePks) {
-                    Notice({ status: 'warning', msg: '请选择模板数据' });
-                    return;
+                if (activeKey === '3') {
+                    this.printModalAjax(templatePks);
+                } else {
+                    this.setState({
+                        batchSettingModalVisibel: true
+                    });
                 }
-                this.setState({
-                    batchSettingModalVisibel: true
-                });
                 break;
             default:
                 break;
         }
+    };
+    printModalAjax = (templateId) => {
+        let infoData = {};
+        infoData.templateId = templateId;
+        const url = `/nccloud/platform/template/previewPrintTemplate.do`;
+        Ajax({
+            url: url,
+            data: infoData,
+            info: {
+                name: '模板设置',
+                action: '打印模板预览'
+            },
+            success: ({ data }) => {
+                if (data.success) {
+                    this.setState(
+                        {
+                            previewPrintContent: data.data
+                        },
+                        this.showModal
+                    );
+                }
+            }
+        });
     };
     /**
    * 设置默认模板的ajax请求
@@ -798,6 +811,9 @@ class TemplateSetting extends Component {
     setAssignModalVisible = (visibel) => {
         this.setState({ alloVisible: visibel });
     };
+    showModal = () => {
+        this.setState({ previewPrintVisible: true });
+    };
     render() {
         const {
             treeData,
@@ -822,7 +838,9 @@ class TemplateSetting extends Component {
             expandedKeys,
             expandedTemKeys,
             autoExpandParent,
-            autoExpandTemParent
+            autoExpandTemParent,
+            previewPrintContent,
+            previewPrintVisible
         } = this.state;
         const leftTreeData = [
             {
@@ -958,6 +976,15 @@ class TemplateSetting extends Component {
                         )}
                     </div>
                 </Modal>
+                {previewPrintContent && (
+                    <Modal
+                        title='打印模板预览'
+                        visible={previewPrintVisible}
+                        footer={null}
+                    >
+                        <div>{previewPrintContent}</div>
+                    </Modal>
+                )}
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}
