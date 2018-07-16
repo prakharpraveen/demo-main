@@ -262,14 +262,33 @@ class Layout extends Component {
                         userName: userName ? userName : "用户名",
                         userID: userId
                     });
-                    this.setState({
-                        newDate,
-                        currentData: data,
-                        selectedKey: pk_group
-                    });
+                    this.setState(
+                        {
+                            newDate,
+                            currentData: data,
+                            selectedKey: pk_group
+                        },
+                        () => {
+                            this.businessInfoSetting(bizDateTime, userId, pk_group);
+                        }
+                    );
                 }
             }
         });
+    };
+    /**
+     * 为全局添加业务信息
+     * 如： 业务日期 业务集团信息
+     * @param {String}  businessDate 业务日期
+     * @param {String} userId 用户id
+     * @param {String} groupId 集团id
+     */
+    businessInfoSetting = (businessDate, userId, groupId) => {
+        window.businessInfo = {
+            businessDate,
+            userId,
+            groupId
+        };
     };
     /**
      * 页签激活重新查询用户信息

@@ -14,15 +14,14 @@ class EditableCellPublic extends Component {
          */
         let { value, setCellEdit } = this.props;
         return (
-            <div style={{ paddingRight: 24, width: "100%", minHeight: "19px" }}>
+            <div
+                style={{ paddingRight: 24, width: "100%", minHeight: "19px" }}
+                onClick={() => {
+                    setCellEdit(true);
+                }}
+            >
                 {value || ""}
-                <Icon
-                    type="edit"
-                    className="editable-cell-icon"
-                    onClick={() => {
-                        setCellEdit(true);
-                    }}
-                />
+                <Icon type="edit" className="editable-cell-icon" />
             </div>
         );
     }

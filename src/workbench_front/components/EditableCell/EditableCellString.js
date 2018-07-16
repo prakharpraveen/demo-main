@@ -64,7 +64,7 @@ class EditableCellString extends Component {
     /**
      * 鼠标移出事件
      */
-    handleMouseLeave = () => {
+    handleBlur = () => {
         const {
             value,
             cellRequired,
@@ -110,14 +110,14 @@ class EditableCellString extends Component {
             value,
             cellErrorMsg
         } = this.props;
-        const suffix = value ? (
-            <Icon
-                type="close-circle"
-                onClick={() => {
-                    cellChange(cellKey, cellIndex, "");
-                }}
-            />
-        ) : null;
+        // const suffix = value ? (
+        //     <Icon
+        //         type="close-circle"
+        //         onClick={() => {
+        //             cellChange(cellKey, cellIndex, "");
+        //         }}
+        //     />
+        // ) : null;
         if (!cellErrorMsg) {
             cellErrorMsg = "不能为空！";
         }
@@ -132,12 +132,19 @@ class EditableCellString extends Component {
                     visible={this.state.hasError && this.state.visible}
                     title={cellErrorMsg}
                 >
-                    <Input
+                    {/* <Input
                         suffix={suffix}
                         value={value}
                         onChange={this.handleChange}
                         onPressEnter={this.handlePressEnter}
-                        onMouseLeave={this.handleMouseLeave}
+                        onBlur={this.handleBlur}
+                    /> */}
+                    <Input
+                        autoFocus = {true}
+                        value={value}
+                        onChange={this.handleChange}
+                        onPressEnter={this.handlePressEnter}
+                        onBlur={this.handleBlur}
                     />
                 </Tooltip>
             </div>
