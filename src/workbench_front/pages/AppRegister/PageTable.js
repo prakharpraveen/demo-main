@@ -695,7 +695,7 @@ class PageTable extends Component {
         this.cacheData = _.cloneDeep(newData);
         let activeKey = this.props.pageActiveKey;
         let { parentId, id, code } = this.props.nodeInfo;
-        let parentcode = this.props.nodeData.parentcode.value;
+        let parentcode = this.props.nodeData.parentcode;
         if (activeKey === "1") {
             newData.push({
                 editable: true,
@@ -747,7 +747,7 @@ class PageTable extends Component {
             return;
         }
         let { id, code } = this.props.nodeInfo;
-        let parentcode = this.props.nodeData.parentcode.value;
+        let parentcode = this.props.nodeData.parentcode;
         Ajax({
             url: `/nccloud/platform/templet/addpagetemplate.do`,
             info: {
