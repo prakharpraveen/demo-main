@@ -55,7 +55,7 @@ class MyContent extends Component {
 								}
 							
 							})
-						} else if (this.props.status ==='billTemplate'){
+						} else if (this.props.status ==='templateSetting'){
 							_.forEach(data, (d) => {
 								let tmpArea = {
 									...d
@@ -69,7 +69,21 @@ class MyContent extends Component {
 									areaList.push(tmpArea)
 								}
 							})
-						} 
+						} else if (this.props.status ==='templateSetting-unit'){
+							_.forEach(data, (d) => {
+								let tmpArea = {
+									...d
+								}
+								if (tmpArea.areatype !== '0') {
+									tmpArea.queryPropertyList = d.formPropertyList;
+									_.forEach(tmpArea.queryPropertyList, (q) => {
+										q.pk_query_property = q.pk_form_property,
+											q.myMetaPath = ''
+									})
+									areaList.push(tmpArea)
+								}
+							})
+						}
 						// 开发态
 						else{
 							_.forEach(data, (d) => {

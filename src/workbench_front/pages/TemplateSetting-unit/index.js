@@ -264,7 +264,7 @@ class TemplateSetting extends Component {
                         }
                     });
                 } else {
-                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
+                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'templateSetting-unit' });
                 }
                 break;
             case '删除':

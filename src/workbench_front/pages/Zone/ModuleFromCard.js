@@ -107,7 +107,6 @@ class ModuleFromCard extends Component {
 		return DOMDATA;
 	}
 	render() {
-
 		let { DOMDATA } = this.state;
 		DOMDATA = this.getFormItem(DOMDATA);
 		return (

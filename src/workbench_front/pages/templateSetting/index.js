@@ -41,10 +41,6 @@ const Btns = [
     {
         name: '浏览',
         type: 'primary'
-    },
-    {
-        name: '刷新',
-        type: 'primary'
     }
 ];
 class TemplateSetting extends Component {
@@ -308,7 +304,7 @@ class TemplateSetting extends Component {
                     });
                 } else {
                     //openPage(`TemplateSetting`, false, { pk: templateId });
-                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'billTemplate' });
+                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'templateSetting' });
                 }
                 break;
             case '删除':
@@ -814,6 +810,9 @@ class TemplateSetting extends Component {
     showModal = () => {
         this.setState({ previewPrintVisible: true });
     };
+    hideModal = () => {
+        this.setState({ previewPrintVisible: false });
+    };
     render() {
         const {
             treeData,
@@ -980,9 +979,11 @@ class TemplateSetting extends Component {
                     <Modal
                         title='打印模板预览'
                         visible={previewPrintVisible}
-                        footer={null}
+                        onCancel={this.hideModal}
+                        content={previewPrintContent}
+                        confirmLoading={false}
                     >
-                        <div>{previewPrintContent}</div>
+                    <div escape={false}>{previewPrintContent}</div>
                     </Modal>
                 )}
                 {alloVisible && (
