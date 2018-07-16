@@ -358,6 +358,12 @@ class MenuItem extends Component {
             }
         });
     };
+    /**
+     * 页面跳转
+     */
+    pageBack = () => {
+        window.history.back(-1);
+    };
     componentWillMount() {
         let { id, mn, mt } = GetQuery(this.props.location.search);
         this.setState({ id, mn: mn && mn != "null" ? mn : "", mt: mt - 0 });
@@ -517,7 +523,13 @@ class MenuItem extends Component {
             <PageLayout
                 header={
                     <PageLayoutHeader>
-                        <div>{mn}</div>
+                        <div>
+                            <i
+                                className="iconfont icon-cela"
+                                onClick={this.pageBack}
+                            />
+                            {mn}
+                        </div>
                         <ButtonCreate
                             dataSource={btnList}
                             onClick={this.handleBtnClick}
