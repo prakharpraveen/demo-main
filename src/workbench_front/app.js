@@ -47,14 +47,14 @@ class App extends Component {
       },
       success: ({ data: { data } }) => {
         if (data) {
-          // if (!data.is_haspower) {
-          //   Notice({
-          //     status: "error",
-          //     msg: data.hint_message
-          //   });
-          //   win.close();
-          //   return;
-          // }
+          if (!data.is_haspower) {
+            Notice({
+              status: "error",
+              msg: data.hint_message
+            });
+            win.close();
+            return;
+          }
           if (data.pageurl && data.pageurl.length > 0) {
             // 应用菜单名
             window.peData.nodeName = data.menu;
