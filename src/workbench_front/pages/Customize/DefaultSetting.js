@@ -100,6 +100,7 @@ class DefaultSetting extends Component {
                     Notice({
                         status: "success"
                     });
+                    data = this.defaultRefValueInit(data);
                     this.setState(data);
                 }
             }
@@ -124,15 +125,26 @@ class DefaultSetting extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    for (const key in data) {
-                        if (!data[key]) {
-                            data[key] = {};
-                        }
-                    }
+                    data = this.defaultRefValueInit(data);
                     this.setState({ ...data });
                 }
             }
         });
+    }
+    /**
+     * 初始化默认参照的数据
+     */
+    defaultRefValueInit =(Object)=>{
+        for (const key in Object) {
+            if (!Object[key]) {
+                Object[key] = {
+                    refcode: "",
+                    refname: "",
+                    refpk: null
+                };
+            }
+        }
+        return Object;
     }
     render() {
         let {
