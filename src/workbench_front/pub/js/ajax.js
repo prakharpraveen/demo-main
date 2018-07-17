@@ -20,7 +20,7 @@ const Ajax = ({
     loading = false,
     info = { name: "", action: "" },
     success = res => {
-        cosnole.log(res);
+        console.log(res);
     }
 }) => {
 	let div;

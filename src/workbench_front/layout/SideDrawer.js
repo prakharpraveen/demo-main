@@ -7,6 +7,8 @@ import { Modal } from "antd";
 import { changeDrawer } from "Store/appStore/action";
 import UserLogo from "Assets/images/userLogo.jpg";
 import { openPage } from "Pub/js/superJump";
+import Notice from "Components/Notice";
+import Ajax from "Pub/js/ajax";
 import { sprLog } from "./spr";
 class SideDrawer extends Component {
     constructor(props) {
@@ -34,15 +36,25 @@ class SideDrawer extends Component {
      */
     handleExit = () => {
         this.props.changeDrawer(false);
-
         Modal.confirm({
             title: "注销",
-            maskClosable:true,
+            maskClosable: true,
             content: "注销当前账号？",
             okText: "确认",
             cancelText: "取消",
             onOk: () => {
-                window.location.href = "/nccloud";
+                Ajax({
+                    url: `/nccloud/riart/login/logout.do`,
+                    info: {
+                        name: "工作桌面",
+                        action: "注销"
+                    },
+                    success: () => {
+                        Ajax({
+                            url:`/nccloud/platform/appregister/querypersonsettings.do`,
+                        });
+                    }
+                });
             }
         });
     };
@@ -53,6 +65,33 @@ class SideDrawer extends Component {
         let { sprType } = this.state;
         sprType = sprLog(sprType, sprType => {
             this.setState({ sprType });
+        });
+    };
+    /**
+     * 联系用友服务人员
+     */
+    sysinitAccessorAction = () => {
+        let win = window.open("", "_blank");
+        Ajax({
+            url: `/nccloud/baseapp/param/paQry.do`,
+            data: {
+                initCodes: "ISMURL"
+            },
+            info: {
+                name: "首页",
+                action: "联系服务人员"
+            },
+            success: ({ data: { data } }) => {
+                if (data) {
+                    win.location.href = data;
+                } else {
+                    win.close();
+                    Notice({
+                        status: "error",
+                        msg: "请联系系统管理员配置本地ism服务器ip地址！"
+                    });
+                }
+            }
         });
     };
     render() {
@@ -148,6 +187,7 @@ class SideDrawer extends Component {
                                 <span
                                     field="contact"
                                     fieldname="联系用友服务人员"
+                                    onClick={this.sysinitAccessorAction}
                                 >
                                     联系用友服务人员
                                 </span>
