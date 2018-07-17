@@ -5,11 +5,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
  * webpack 基础配置
  */
 const pubPath = __dirname.split('config')[0];
+console.log(pubPath);
+const antdTheme = {
+    '@icon-url': `"${path.resolve(pubPath, 'src/workbench_front/assets')}/iconfont/antd-iconfont/iconfont"`,
+};
 module.exports = {
 	configInfo: {
 		context: path.resolve(pubPath, 'src/workbench_front'),
 		entry: './app.js',
-
 		// 包(bundle)应该运行的环境
 		target: 'web',
 		module: {
@@ -26,7 +29,7 @@ module.exports = {
 						devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
 						'css-loader',
 						'postcss-loader',
-						{ loader: 'less-loader', options: { javascriptEnabled: true } }
+						{ loader: 'less-loader', options: { javascriptEnabled: true,modifyVars: antdTheme } }
 					]
 					// loader: 'style-loader!postcss-loader!less-loader'
 				},
