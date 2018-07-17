@@ -196,9 +196,7 @@ class TemplateSetting extends Component {
                     Notice({ status: 'success', msg: '复制成功' });
                     this.reqTreeTemData();
                     this.setState({
-                        visible: false,
-                        templateNameVal: '',
-                        templateTitleVal: ''
+                        visible: false
                     });
                 }
             }
@@ -207,9 +205,7 @@ class TemplateSetting extends Component {
     //取消
     handleCancel = (e) => {
         this.setState({
-            visible: false,
-            templateNameVal: '',
-            templateTitleVal: ''
+            visible: false
         });
     };
     //设置默认模板 菜单栏

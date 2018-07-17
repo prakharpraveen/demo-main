@@ -29,20 +29,6 @@ class PreviewModal extends Component {
         let { NCCreateSearch } = search;
         let { forms, tables, searchs } = this.state;
         let result = [];
-        // 表单
-        if (forms.length) {
-            forms.map((val, i) => {
-                result.push(
-                    <div className='area' key={`form${i}`}>
-                        <div className='descrip'>
-                            <span> ▼ </span>
-                            {`表单区${i + 1}_${val.name}`}
-                        </div>
-                        {createForm(val.id)}
-                    </div>
-                );
-            });
-        }
         // 查询区
         if (searchs.length) {
             searchs.map((val, i) => {
@@ -53,6 +39,20 @@ class PreviewModal extends Component {
                             {`查询区${i + 1}_${val.name}`}
                         </div>
                         {NCCreateSearch(val.id)}
+                    </div>
+                );
+            });
+        }
+        // 表单
+        if (forms.length) {
+            forms.map((val, i) => {
+                result.push(
+                    <div className='area' key={`form${i}`}>
+                        <div className='descrip'>
+                            <span> ▼ </span>
+                            {`表单区${i + 1}_${val.name}`}
+                        </div>
+                        {createForm(val.id)}
                     </div>
                 );
             });
