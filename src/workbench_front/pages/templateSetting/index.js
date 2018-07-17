@@ -134,14 +134,10 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '浏览':
-                if (parentIdcon === 'root') {
-                    isShow = false;
+                if (parentIdcon) {
+                    isShow = true;
                 } else {
-                    if (parentIdcon) {
-                        isShow = true;
-                    } else {
-                        isShow = false;
-                    }
+                    isShow = false;
                 }
                 break;
             default:
@@ -983,7 +979,7 @@ class TemplateSetting extends Component {
                         content={previewPrintContent}
                         confirmLoading={false}
                     >
-                    <div escape={false}>{previewPrintContent}</div>
+                    {previewPrintContent}
                     </Modal>
                 )}
                 {alloVisible && (
