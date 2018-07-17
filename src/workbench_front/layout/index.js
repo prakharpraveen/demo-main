@@ -244,10 +244,11 @@ class Layout extends Component {
      * 用户信息查询
      */
     reqInfoData = () => {
+        let { n = "首页" } = GetQuery(this.props.location.search);
         Ajax({
             url: `/nccloud/platform/appregister/querypersonsettings.do`,
             info: {
-                name: "工作桌面",
+                name: n,
                 action: "业务日期|集团|个人头像|用户名称"
             },
             success: ({ data: { data } }) => {
@@ -269,7 +270,11 @@ class Layout extends Component {
                             selectedKey: pk_group
                         },
                         () => {
-                            this.businessInfoSetting(bizDateTime, userId, pk_group);
+                            this.businessInfoSetting(
+                                bizDateTime,
+                                userId,
+                                pk_group
+                            );
                         }
                     );
                 }
