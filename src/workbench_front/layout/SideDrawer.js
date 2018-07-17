@@ -53,6 +53,7 @@ class SideDrawer extends Component {
                         Ajax({
                             url:`/nccloud/platform/appregister/querypersonsettings.do`,
                         });
+                        sessionStorage.removeItem("gzip");
                     }
                 });
             }
