@@ -66,8 +66,8 @@ class MyContent extends Component {
 										q.pk_query_property = q.pk_form_property,
 											q.myMetaPath = ''
 									})
-									areaList.push(tmpArea)
 								}
+								areaList.push(tmpArea)
 							})
 						} else if (this.props.status ==='templateSetting-unit'){
 							_.forEach(data, (d) => {
@@ -80,8 +80,8 @@ class MyContent extends Component {
 										q.pk_query_property = q.pk_form_property,
 											q.myMetaPath = ''
 									})
-									areaList.push(tmpArea)
 								}
+								areaList.push(tmpArea)
 							})
 						}
 						// 开发态
