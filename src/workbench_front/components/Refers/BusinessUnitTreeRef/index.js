@@ -12,7 +12,7 @@ export default function (props={}) {
         refCode: 'uapbd.org.BusinessUnitAndGroupTreeRef',//uapbd.org.BusinessUnitAndGroupTreeRef
         rootNode:{refname:'业务单元',refpk:'root'},
         placeholder:"业务单元",
-        queryTreeUrl: '/nccloud/uapbd/ref/businessunitandgrouptreeref.do',
+        queryTreeUrl: '/nccloud/uapbd/ref/BusinessUnitAndGroupTreeRef.do',
         treeConfig:{name:['编码', '名称'],code: ['refcode', 'refname']},//	uapbd/refer/org/BusinessUnitAndGroupTreeRef/index	
         isMultiSelectedEnabled: false
     };

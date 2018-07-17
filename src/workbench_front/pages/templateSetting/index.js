@@ -335,7 +335,7 @@ class TemplateSetting extends Component {
                 break;
             case '浏览':
                 if (activeKey === '3') {
-                    this.printModalAjax(templatePks);
+                    this.showModal();
                 } else {
                     this.setState({
                         batchSettingModalVisibel: true
@@ -359,12 +359,7 @@ class TemplateSetting extends Component {
             },
             success: ({ data }) => {
                 if (data.success) {
-                    this.setState(
-                        {
-                            previewPrintContent: data.data
-                        },
-                        this.showModal
-                    );
+                    document.getElementsByClassName("printContent")[0].innerHTML=data.data;
                 }
             }
         });
@@ -800,11 +795,13 @@ class TemplateSetting extends Component {
         this.setState({ alloVisible: visibel });
     };
     showModal = () => {
-        this.setState({ previewPrintVisible: true });
+        this.setState({ previewPrintVisible: true },()=>{
+            this.printModalAjax(this.state.templatePks);
+        });
     };
     hideModal = () => {
         this.setState({ previewPrintVisible: false });
-    };
+    }
     render() {
         const {
             treeData,
@@ -967,17 +964,14 @@ class TemplateSetting extends Component {
                         )}
                     </div>
                 </Modal>
-                {previewPrintContent && (
-                    <Modal
+                <Modal
                         title='打印模板预览'
                         visible={previewPrintVisible}
                         onCancel={this.hideModal}
-                        content={previewPrintContent}
-                        confirmLoading={false}
+                        footer={null}
                     >
-                    {previewPrintContent}
+                        <div className='printContent'></div>
                     </Modal>
-                )}
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}

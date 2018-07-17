@@ -768,7 +768,30 @@ class TemplateSetting extends Component {
         });
     };
     showModal = () => {
-        this.setState({ previewPrintVisible: true });
+        this.setState({ previewPrintVisible: true },()=>{
+            this.printModalAjax(this.state.templatePks);
+        });
+    };
+    hideModal = () => {
+        this.setState({ previewPrintVisible: false });
+    };
+    printModalAjax = (templateId) => {
+        let infoData = {};
+        infoData.templateId = templateId;
+        const url = `/nccloud/platform/template/previewPrintTemplate.do`;
+        Ajax({
+            url: url,
+            data: infoData,
+            info: {
+                name: '模板设置',
+                action: '打印模板预览'
+            },
+            success: ({ data }) => {
+                if (data.success) {
+                    document.getElementsByClassName("printContent")[0].innerHTML=data.data;
+                }
+            }
+        });
     };
     render() {
         const {
@@ -928,11 +951,14 @@ class TemplateSetting extends Component {
                         )}
                     </div>
                 </Modal>
-                {previewPrintContent && (
-                    <Modal title='打印模板预览' visible={previewPrintVisible} footer={null}>
-                        <div>{previewPrintContent}</div>
+                <Modal
+                        title='打印模板预览'
+                        visible={previewPrintVisible}
+                        onCancel={this.hideModal}
+                        footer={null}
+                    >
+                        <div className='printContent'></div>
                     </Modal>
-                )}
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}
