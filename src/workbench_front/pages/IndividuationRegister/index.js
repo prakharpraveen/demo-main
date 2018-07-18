@@ -108,7 +108,7 @@ class IndividuationRegister extends Component {
                                 item =>
                                     item.pk_individualreg === pk_individualreg
                             );
-                            _this.setState({
+                            this.setState({
                                 treeData,
                                 parentKey: "",
                                 selectedKeys: ["00"]
