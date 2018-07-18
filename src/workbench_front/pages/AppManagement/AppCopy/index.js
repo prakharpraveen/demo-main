@@ -24,6 +24,36 @@ class AppCopy extends Component {
                 code: "newMenuItemCode",
                 isRequired: true,
                 isedit: true,
+                check: (rule, value, callback) => {
+                    if (value.length < 8) {
+                        callback("新菜单编码长度最少为8");
+                    } else {
+                        let target = this.props.menuTreeData.find(item => {
+                            return (
+                                item.refcode.length === 6 &&
+                                item.refcode === value.slice(0, 6)
+                            );
+                        });
+                        if (target) {
+                            let targetRepeat = this.props.menuTreeData.find(
+                                item => {
+                                    return (
+                                        item.refcode.length > 6 &&
+                                        item.refcode === value
+                                    );
+                                }
+                            );
+                            if (targetRepeat) {
+                                console.log(targetRepeat);
+                                callback("请规范填写新菜单编码");
+                            } else {
+                                callback();
+                            }
+                        } else {
+                            callback("请规范填写新菜单编码");
+                        }
+                    }
+                },
                 initialValue: newMenuItemCode,
                 lg: 12
             },
@@ -85,11 +115,13 @@ class AppCopy extends Component {
     }
 }
 AppCopy.propTypes = {
-    copyNodeData: PropTypes.object.isRequired
+    copyNodeData: PropTypes.object.isRequired,
+    menuTreeData: PropTypes.array.isRequired
 };
 export default connect(
     state => ({
-        copyNodeData: state.AppManagementData.copyNodeData
+        copyNodeData: state.AppManagementData.copyNodeData,
+        menuTreeData: state.AppManagementData.menuTreeData
     }),
     {}
 )(AppCopy);
