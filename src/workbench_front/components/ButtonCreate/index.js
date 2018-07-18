@@ -19,7 +19,7 @@ class CreateButton extends Component {
             if (item.isshow) {
                 return (
                     <Button
-                        className={`margin-left-10 ${
+                        className={`margin-left-6 ${
                             item.className ? item.className : ""
                         }`}
                         key={item.code}
