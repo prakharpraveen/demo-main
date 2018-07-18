@@ -14,7 +14,8 @@ class AppCopy extends Component {
             newMenuItemCode,
             newMenuItemName,
             oldAppCode,
-            newAppName
+            newAppName,
+            isCopyUserTemplet
         } = this.props.copyNodeData;
         let appCopyFormData = [
             {
@@ -51,6 +52,15 @@ class AppCopy extends Component {
                 isRequired: true,
                 isedit: true,
                 initialValue: newAppName,
+                lg: 12
+            },
+            {
+                label: "复制用户自定义模板",
+                type: "checkbox",
+                code: "isCopyUserTemplet",
+                isRequired: true,
+                isedit: true,
+                initialValue: isCopyUserTemplet,
                 lg: 12
             }
         ];

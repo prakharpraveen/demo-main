@@ -9,7 +9,7 @@ class PageCopy extends Component {
         this.state = {};
     }
     render() {
-        let { newPageName, newPageCode } = this.props.pageCopyData;
+        let { newPageName, newPageCode,isCopyUserTemplet } = this.props.pageCopyData;
         let pageCopyFormData = [
             {
                 label: "新页面名称",
@@ -29,6 +29,15 @@ class PageCopy extends Component {
                 initialValue: newPageCode,
                 options: this.props.newPageOtions,
                 lg: 24
+            },
+            {
+                label: "复制用户自定义模板",
+                type: "checkbox",
+                code: "isCopyUserTemplet",
+                isRequired: true,
+                isedit: true,
+                initialValue: isCopyUserTemplet,
+                lg: 12
             }
         ];
         return (
@@ -49,11 +58,11 @@ class PageCopy extends Component {
     }
 }
 PageCopy.propTypes = {
-    pageCopyData: PropTypes.object.isRequired,
+    pageCopyData: PropTypes.object.isRequired
 };
 export default connect(
     state => ({
         pageCopyData: state.AppManagementData.pageCopyData
     }),
-    {  }
+    {}
 )(PageCopy);
