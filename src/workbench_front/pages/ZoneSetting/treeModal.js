@@ -87,7 +87,8 @@ class TreeModal extends Component {
                     define4: "",
                     define5: "",
                     itemtype: "input",
-                    myrefpk: refpk
+                    myrefpk: refpk,
+                    visibleposition: ''
                 };
             } else {
                 //非查询区
@@ -120,14 +121,23 @@ class TreeModal extends Component {
                 cardObj.width = '';
                 cardObj.istotal = false;
             }
+            //参照
             if (cardObj.datatype === "204") {
                 cardObj.metaid = refpk;
                 cardObj.iscode = false;
                 cardObj.modelname = modelname;
             }
+            //小数或者金额
+            if (cardObj.datatype === "2" || cardObj.datatype === "52") {
+                cardObj.dataval = '2,,'
+            }
             cardObj.itemtype = utilService.getItemtypeByDatatype(
                 cardObj.datatype
             );
+            // //查询区的若干逻辑组件，默认值设为false
+            // if (this.props.targetAreaType === "0" && _.includes(utilService.shouldSetDefaultValueList, cardObj.itemtype)) {
+            //     cardObj.defaultvalue='false'
+            // }
             cardList.push(cardObj);
         });
         //查询区&非查询区下拉类型需要添加默认dataval

@@ -27,7 +27,7 @@ class CustomModal extends Component {
 		return (
 		<div className='myZoneModal'>
 			<Modal
-				title='自定义文档'
+				title='类型设置'
 				mask={false}
 				wrapClassName='zonesetting-customModal'
 				visible={this.props.modalVisibel}

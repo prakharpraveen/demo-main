@@ -5,7 +5,6 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import * as utilService from './utilService';
 import { updateSelectCard, updateAreaList } from 'Store/ZoneSetting/action';
-import InterModal from './interModal';
 import MoneyModal from './moneyModal';
 import ReferModal from './referModal';
 import CustomModal from './customModal';
@@ -48,7 +47,6 @@ class MyRightSider extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			interModalVal: false,
 			moneyModalVisibel: false,
 			ReferModalVisibel: false,
 			relateMetaModalVisibel: false
@@ -107,6 +105,9 @@ class MyRightSider extends Component {
 		}
 		selectCard = { ...selectCard };
 		selectCard[property] = value;
+		if(property === 'visible'){
+			selectCard.visibleposition = '';
+		}
 		this.asyncUpdataCardAndAreaList(selectCard, property);
 	};
 	onPressEnter = (value, property) => {
@@ -170,10 +171,16 @@ class MyRightSider extends Component {
 		}
 		selectCard = { ...selectCard };
 		selectCard[property] = value;
-
+		//进行业务相关的联动处理
 		if (property === 'datatype') {
+			selectCard.dataval = '';
 			selectCard.itemtype = utilService.getItemtypeByDatatype(selectCard.datatype);
+			 //小数或者金额
+			 if (value === "2" || value === "52") {
+                selectCard.dataval = '2,,'
+            }
 		}
+
 		this.asyncUpdataCardAndAreaList(selectCard, property);
 	};
 	//异步更新selectCard后更新areaList
@@ -189,9 +196,6 @@ class MyRightSider extends Component {
 					_.isEmpty(this.props.selectCard[property]) ? mySelectObj[0].value : this.props.selectCard[property]
 				}
 				onChange={(value) => {
-					if (property === 'datatype') {
-						this.props.selectCard.dataval = '';
-					}
 					this.handleSelectChange(value, property);
 				}}
 				style={{ width: 176 }}
@@ -263,11 +267,18 @@ class MyRightSider extends Component {
 						<li>显示名称</li>
 						<li>{this.getMyInput('显示名称', 'label')}</li>
 						<li>数据类型</li>
-						<li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>
+						{/* 元数据，禁止设置datatype属性，除了56自定义项*/}
+						{(()=>{
+							if(selectCard.datatype === '56'){
+								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
+							}else{
+								let showDataTypeName = utilService.getDatatypeName(selectCard.datatype);
+								showDataTypeName = showDataTypeName===""?selectCard.datatype:showDataTypeName;
+								return <li>{showDataTypeName}</li>;
+							}
+						})()}
 						<li>类型设置</li>
 						<li>{this.getMyInput('类型设置', 'dataval')}</li>
-						{/* 两处代码，放开限制，guozhiqi要求,但是这样可以满足定义项的数据类型设置 */}
-						{/* <li>{utilService.getDatatypeName(selectCard.datatype)}</li> */}
 						<li>非元数据条件</li>
 						<li>{this.getMyCheckbox('isnotmeta')}</li>
 						<li>使用</li>
@@ -284,6 +295,16 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>默认显示</li>
 						<li>{this.getMyCheckbox('visible')}</li>
+						{/* 如果默认显示为true才显示*/}
+						{(()=>{
+							if(selectCard.visible){
+								return ([
+									<li key='visibleposition0'>默认显示字段排序</li>,
+									<li key='visibleposition1'>{this.getMyInput('默认显示字段排序', 'visibleposition')}</li>
+								])
+							}
+						})()
+						}
 						<li>多选</li>
 						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
 						<li>固定条件</li>
@@ -352,6 +373,16 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>默认显示</li>
 						<li>{this.getMyCheckbox('visible')}</li>
+						{/* 如果默认显示为true才显示*/}
+						{(()=>{
+							if(selectCard.visible){
+								return ([
+									<li key='visibleposition0'>默认显示字段排序</li>,
+									<li key='visibleposition1'>{this.getMyInput('默认显示字段排序', 'visibleposition')}</li>
+								])
+							}
+						})()
+						}
 						<li>多选</li>
 						<li>{this.getMyCheckbox('ismultiselectedenabled')}</li>
 						<li>固定条件</li>
@@ -404,9 +435,6 @@ class MyRightSider extends Component {
 	// 设置不同弹框的显示和隐藏
 	setModalVisibel = (type, val) => {
 		switch (type) {
-			case 'inter':
-				this.setState({ interModalVisibel: val });
-				break;
 			case 'money':
 				this.setState({ moneyModalVisibel: val });
 				break;
@@ -505,19 +533,24 @@ class MyRightSider extends Component {
 				<TabPane tab='高级属性' key='2'>
 					<ul className='basic-property'>
 						<li>数据类型</li>
+						{/* 元数据，禁止设置datatype属性，除了56自定义项*/}
 						{(() => {
 							if (isMetaData) {
-								//* 两处代码，放开限制，guozhiqi要求 */
-								// return <li>{utilService.getDatatypeName(selectCard.datatype)}</li>;
-								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
+								if(selectCard.datatype === '56'){
+									return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
+								}else{
+									let showDataTypeName = utilService.getDatatypeName(selectCard.datatype);
+									showDataTypeName = showDataTypeName===""?selectCard.datatype:showDataTypeName;
+									return <li>{showDataTypeName}</li>;
+								}
 							} else {
 								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
 							}
 						})()}
 						<li>类型设置</li>
 						{(() => {
-							if (isMetaData) {
-								if (selectCard.datatype === '204') {
+							switch (true) {
+								case selectCard.datatype==='204'://参照
 									return (
 										<li>
 											{this.getMySearch('refname', 'ReferModalVisibel')}
@@ -531,82 +564,33 @@ class MyRightSider extends Component {
 											/>
 										</li>
 									);
-								} else {
+								case selectCard.datatype==='2'||selectCard.datatype==='52'||selectCard.datatype === '4'://2小数、4整数、52金额
+									return (
+										<li>
+											{this.getMySearch('dataval', 'moneyModalVisibel')}
+											<MoneyModal
+												datatype={selectCard.datatype}
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.moneyModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
+										</li>
+									);
+								case selectCard.datatype === '57'://自定义档案
+									return (
+										<li>
+											{this.getMySearch('dataval', 'CustomModalVisibel')}
+											<CustomModal
+												handleSelectChange={this.handleSelectChange}
+												initVal={selectCard.dataval}
+												modalVisibel={this.state.CustomModalVisibel}
+												setModalVisibel={this.setModalVisibel}
+											/>
+										</li>
+									);
+								default:
 									return <li>{this.getMyInput('类型设置', 'dataval')}</li>;
-								}
-							} else {
-								switch (selectCard.datatype) {
-									case '204'://参照
-										return (
-											<li>
-												{this.getMySearch('refname', 'ReferModalVisibel')}
-												<ReferModal
-													handleSelectChange={this.handleSelectChange}
-													dataval={selectCard.dataval}
-													refname={selectCard.refname}
-													iscode={selectCard.iscode}
-													modalVisibel={this.state.ReferModalVisibel}
-													setModalVisibel={this.setModalVisibel}
-												/>
-											</li>
-										);
-									case '2'://小数
-										return (
-											<li>
-												{this.getMySearch('dataval', 'moneyModalVisibel')}
-												<MoneyModal
-													type='小数'
-													handleSelectChange={this.handleSelectChange}
-													initVal={selectCard.dataval}
-													modalVisibel={this.state.moneyModalVisibel}
-													setModalVisibel={this.setModalVisibel}
-												/>
-											</li>
-										);
-									case '4'://整数
-										return (
-											<li>
-												{this.getMySearch('dataval', 'interModalVisibel')}
-												<InterModal
-													handleSelectChange={this.handleSelectChange}
-													initVal={selectCard.dataval}
-													modalVisibel={this.state.interModalVisibel}
-													setModalVisibel={this.setModalVisibel}
-												/>
-											</li>
-										);
-									case '52'://金额
-										return (
-											<li>
-												{this.getMySearch('dataval', 'moneyModalVisibel')}
-												<MoneyModal
-													type='金额'
-													handleSelectChange={this.handleSelectChange}
-													initVal={selectCard.dataval}
-													modalVisibel={this.state.moneyModalVisibel}
-													setModalVisibel={this.setModalVisibel}
-												/>
-											</li>
-										);
-									case '57'://自定义档案
-										return (
-											<li>
-												{this.getMySearch('dataval', 'CustomModalVisibel')}
-												<CustomModal
-													handleSelectChange={this.handleSelectChange}
-													initVal={selectCard.dataval}
-													modalVisibel={this.state.CustomModalVisibel}
-													setModalVisibel={this.setModalVisibel}
-												/>
-											</li>
-										);
-									case '203'://下拉
-										return (
-											<li>{this.getMyInput('类型设置', 'dataval')}</li>
-										);
-									default:
-										return <li>{this.getMyInput('类型设置', 'dataval')}</li>;
-								}
 							}
 						})()}
 
