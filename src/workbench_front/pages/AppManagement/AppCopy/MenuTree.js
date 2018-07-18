@@ -4,14 +4,15 @@ import PropTypes from "prop-types";
 import { Tree } from "antd";
 import { createTree } from "Pub/js/createTree.js";
 import { Pad } from "Pub/js/utils";
-import { dataTransfer, dataRestore } from "Components/FormCreate";
+import Svg from "Components/Svg";
 import { setCopyNodeData } from "Store/AppManagement/action.js";
 const TreeNode = Tree.TreeNode;
 class MenuTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedKeys: []
+            selectedKeys: [],
+            expandedKeys: []
         };
     }
     handleSelect = (selectedKeys, info) => {
@@ -35,6 +36,11 @@ class MenuTree extends Component {
             this.setState({ selectedKeys });
         }
     };
+    handleExpand = expandedKeys => {
+        this.setState({
+            expandedKeys
+        });
+    };
     render() {
         const loop = data =>
             data.map(item => {
@@ -42,7 +48,24 @@ class MenuTree extends Component {
                 let itemContent = `${code} ${name}`;
                 if (item.children) {
                     return (
-                        <TreeNode key={code} title={itemContent} refData={item}>
+                        <TreeNode
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        this.state.expandedKeys.indexOf(
+                                            item.refcode
+                                        ) === -1
+                                            ? "#icon-wenjianjia"
+                                            : "#icon-wenjianjiadakai"
+                                    }
+                                />
+                            }
+                            key={code}
+                            title={itemContent}
+                            refData={item}
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
@@ -55,8 +78,11 @@ class MenuTree extends Component {
         return (
             <Tree
                 showLine
+                showIcon
                 onSelect={this.handleSelect}
                 selectedKeys={this.state.selectedKeys}
+                onExpand={this.handleExpand}
+                expandedKeys={this.state.expandedKeys}
             >
                 {loop(newTreeData)}
             </Tree>
