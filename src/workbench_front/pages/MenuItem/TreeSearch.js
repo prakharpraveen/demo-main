@@ -1,48 +1,62 @@
-import React, {Component} from "react";
-import {Tree, Input} from "antd";
-import {createTree} from "Pub/js/createTree.js";
+import React, { Component } from "react";
+import { Tree, Input } from "antd";
+import Svg from "Components/Svg";
+import { createTree } from "Pub/js/createTree.js";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 class TreeSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ['00'],
             searchValue: "",
-            autoExpandParent: true
+            autoExpandParent: false
         };
     }
+    /**
+     * 树节点展开事件
+     */
     onExpand = expandedKeys => {
-        expandedKeys.push('00');
+        this.props.setExpandedKeys(expandedKeys);
         this.setState({
-            expandedKeys,
             autoExpandParent: false
         });
     };
+    /**
+     * 查询框值改变事件
+     */
     onChange = e => {
         const value = e.target.value;
-        this.setState({searchValue: value}, () => {
+        this.setState({ searchValue: value }, () => {
             this.props.onSearch(value, this.handleExpanded);
         });
     };
+    /**
+     * 查询后展开满足条件的树节点
+     */
     handleExpanded = dataList => {
-        const expandedKeys = dataList.map((item, index) => {
-            return item.menuitemcode;
-        });
-        expandedKeys.push('00');
+        if (this.state.searchValue.length > 0) {
+            const expandedKeys = dataList.map((item, index) => {
+                return item.menuitemcode;
+            });
+            this.props.setExpandedKeys(expandedKeys);
+        } else {
+            this.props.setExpandedKeys(["00"]);
+        }
         this.setState({
-            expandedKeys,
             autoExpandParent: true
         });
     };
+    /**
+     * 树选中节点事件
+     */
     handleSelect = selectedKey => {
-        this.props.onSelect(selectedKey[0]);
+        this.props.setSelectedKeys(selectedKey);
     };
     render() {
-        const {searchValue, expandedKeys, autoExpandParent} = this.state;
+        const { searchValue, autoExpandParent } = this.state;
         const loop = data =>
             data.map(item => {
-                let {menuitemcode, menuitemname} = item;
+                let { menuitemcode, menuitemname } = item;
                 let itemContent;
                 if (menuitemcode === "00") {
                     itemContent = `${menuitemname}`;
@@ -56,7 +70,7 @@ class TreeSearch extends Component {
                     index > -1 ? (
                         <span>
                             {beforeStr}
-                            <span style={{color: "#f50"}}>{searchValue}</span>
+                            <span style={{ color: "#f50" }}>{searchValue}</span>
                             {afterStr}
                         </span>
                     ) : (
@@ -64,7 +78,23 @@ class TreeSearch extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={menuitemcode} title={title}>
+                        <TreeNode
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        this.props.expandedKeys.indexOf(
+                                            item.menuitemcode
+                                        ) === -1
+                                            ? "#icon-wenjianjia"
+                                            : "#icon-wenjianjiadakai"
+                                    }
+                                />
+                            }
+                            key={menuitemcode}
+                            title={title}
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
@@ -86,16 +116,19 @@ class TreeSearch extends Component {
         return (
             <div className="menuitem-tree-search">
                 <Search
-                    style={{marginBottom: 8}}
+                    style={{ marginBottom: 8 }}
                     placeholder="查询应用"
                     onChange={this.onChange}
                 />
                 <Tree
                     showLine
+                    showIcon
                     onExpand={this.onExpand}
-                    expandedKeys={expandedKeys}
+                    expandedKeys={this.props.expandedKeys}
+                    selectedKeys={this.props.selectedKeys}
                     onSelect={this.handleSelect}
-                    autoExpandParent={autoExpandParent}>
+                    autoExpandParent={autoExpandParent}
+                >
                     {loop(newTreeData)}
                 </Tree>
             </div>
