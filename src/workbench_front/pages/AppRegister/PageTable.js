@@ -161,7 +161,7 @@ class PageTable extends Component {
                 render: text => text - 0 + 1
             },
             {
-                title: "按钮编码",
+                title: RenderTableTitle("按钮编码"),
                 dataIndex: "btncode",
                 width: "10%",
                 render: (text, record, index) => (
@@ -178,7 +178,7 @@ class PageTable extends Component {
                 )
             },
             {
-                title: RenderTableTitle("按钮名称"),
+                title: "按钮名称",
                 dataIndex: "btnname",
                 width: "10%",
                 render: (text, record, index) => (
