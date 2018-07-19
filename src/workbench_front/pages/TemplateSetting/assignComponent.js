@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
@@ -13,6 +13,7 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+const TabPane = Tabs.TabPane;
 const initRoTreeData = {
     key: 'abc1234567',
     id: 'abc1234567',
@@ -58,7 +59,6 @@ class AssignComponent extends Component {
                 refname: '',
                 refpk: ''
             },
-            treeRoVisible: true,
             dataRoKey: '',
             dataRoObj: {},
             roleUserDatas: {},
@@ -67,6 +67,7 @@ class AssignComponent extends Component {
             allowedTreeKey: '',
             orgidObj: {},
             treeRoDataObj: {},
+            tabActiveKey: '1',
             activeKey: this.props.activeKey
         };
     }
@@ -471,11 +472,12 @@ class AssignComponent extends Component {
             org_df_biz,
             treeRoData,
             treeResData,
-            treeRoVisible,
             allowDataArray,
             treeAllowedData,
             templatePks,
-            nodeKey
+            nodeKey,
+            activeKey,
+            tabActiveKey
         } = this.state;
         return (
             <Modal
@@ -484,6 +486,8 @@ class AssignComponent extends Component {
                 onOk={this.handleAlloOk}
                 onCancel={this.handleOrlCancel}
                 width={720}
+                keyboard={true}
+                bodyStyle={{padding:"15px"}}
             >
                 <div className='allocationPage'>
                     <div className='pageCode-show'>
@@ -491,8 +495,7 @@ class AssignComponent extends Component {
                             <span>功能节点：</span>
                             <span>{pageCode ? pageCode : ''}</span>
                         </p>
-                        {nodeKey &&
-                        nodeKey.length > 0 && (
+                        {activeKey === '3' && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}
@@ -506,36 +509,16 @@ class AssignComponent extends Component {
                                 filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
-                                {nodeKey.map((item, index) => {
-                                    return <Option value={item}>{item}</Option>;
-                                })}
+                                {nodeKey &&
+                                    nodeKey.length > 0 &&
+                                    nodeKey.map((item, index) => {
+                                        return <Option value={item}>{item}</Option>;
+                                    })}
                             </Select>
                         )}
                     </div>
                     <div className='allocationPage-content'>
                         <div className='allocationPage-content-select'>
-                            <Select
-                                showSearch
-                                style={{ width: 200 }}
-                                placeholder='按角色和用户分配'
-                                optionFilterProp='children'
-                                onSelect={(e) => {
-                                    if (e === '按角色和用户分配') {
-                                        this.setState({
-                                            treeRoVisible: true
-                                        });
-                                    } else if (e === '按职责分配') {
-                                        this.setState({
-                                            treeRoVisible: false
-                                        });
-                                    }
-                                }}
-                                filterOption={(input, option) =>
-                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                            >
-                                <Option value='按角色和用户分配'>按角色和用户分配</Option>
-                                <Option value='按职责分配'>按职责分配</Option>
-                            </Select>
                             <BusinessUnitTreeRef
                                 value={org_df_biz}
                                 placeholder={'默认业务单元'}
@@ -546,11 +529,21 @@ class AssignComponent extends Component {
                         </div>
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
-                                {treeRoVisible ? (
-                                    this.treeResAndUser(treeRoData, 'resOnselect')
-                                ) : (
-                                    this.treeResAndUser(treeResData, 'resOnselect')
-                                )}
+                                <Tabs
+                                    defaultActiveKey='1'
+                                    onChange={(tabActiveKey) => {
+                                        this.setState({ tabActiveKey });
+                                    }}
+                                    type='card'
+                                    activeKey={tabActiveKey}
+                                >
+                                    <TabPane tab='按角色和用户分配' key='1'>
+                                        {this.treeResAndUser(treeRoData, 'resOnselect')}
+                                    </TabPane>
+                                    <TabPane tab='按职责分配' key='2'>
+                                        {this.treeResAndUser(treeResData, 'resOnselect')}
+                                    </TabPane>
+                                </Tabs>
                             </div>
                             <div className='allocation-button'>
                                 <p>
