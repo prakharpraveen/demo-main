@@ -70,12 +70,6 @@ class TemplateSetting extends Component {
             appCode: '',
             nodeKey: [],
             alloVisible: false,
-            org_df_biz: {
-                // 默认业务单元
-                refcode: '',
-                refname: '',
-                refpk: ''
-            },
             orgidObj: {},
             parentIdcon: '', //树节点的key
             activeKey: '1',
@@ -812,7 +806,6 @@ class TemplateSetting extends Component {
             visible,
             alloVisible,
             pageCode,
-            org_df_biz,
             activeKey,
             templatePks,
             batchSettingModalVisibel,

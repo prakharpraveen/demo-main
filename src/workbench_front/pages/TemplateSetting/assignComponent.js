@@ -82,7 +82,6 @@ class AssignComponent extends Component {
     componentDidMount() {
         let { orgidObj, org_df_biz } = this.state;
         if (org_df_biz.refpk) {
-            console.log(org_df_biz.refpk);
             orgidObj['refpk'] = org_df_biz.refpk;
             this.setState(
                 {
