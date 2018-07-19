@@ -34,6 +34,8 @@ class MenuItem extends Component {
             parentKey: "",
             isedit: false,
             isNew: false,
+            expandedKeys: ["00"],
+            selectedKeys: ["00"],
             treeData: [],
             fields: {},
             formData: {}
@@ -47,6 +49,9 @@ class MenuItem extends Component {
         };
         this.historyData;
     }
+    /**
+     * 按钮点击事件
+     */
     handleBtnClick = key => {
         switch (key) {
             case "add":
@@ -86,6 +91,9 @@ class MenuItem extends Component {
                 break;
         }
     };
+    /**
+     * 新增事件
+     */
     add = () => {
         let fields = this.state.fields;
         let newCode;
@@ -146,6 +154,9 @@ class MenuItem extends Component {
             }
         });
     };
+    /**
+     * 保存事件
+     */
     save = () => {
         let { fields, isNew, parentKey } = this.state;
         this.props.form.validateFields(errors => {
@@ -242,6 +253,9 @@ class MenuItem extends Component {
             }
         });
     };
+    /**
+     * 删除事件
+     */
     del = () => {
         confirm({
             title: "是否要删除?",
@@ -294,6 +308,9 @@ class MenuItem extends Component {
             }
         });
     };
+    /**
+     * 树查询
+     */
     handleSearch = (value, callback) => {
         Ajax({
             url: `/nccloud/platform/appregister/searchappmenuitem.do`,
@@ -321,11 +338,25 @@ class MenuItem extends Component {
         });
     };
     /**
-     * 菜单树选中事件
+     * 设置树展开节点
+     * @param {Array} expandedKeys 展开的树节点数组
      */
-    handleSelect = selectedKey => {
+    setExpandedKeys = expandedKeys => {
+        expandedKeys = expandedKeys.concat(["00"]);
+        expandedKeys = Array.from(new Set(expandedKeys));
+        this.setState({
+            expandedKeys
+        });
+    };
+    /**
+     * 设置树选中节点
+     * @param {Array} selectedKeys 选中的树节点数组
+     */
+    setSelectedKeys = selectedKeys => {
+        let selectedKey = selectedKeys[0];
         if (selectedKey === "00" || selectedKey === undefined) {
             this.setState({
+                selectedKeys,
                 isedit: false,
                 isNew: false,
                 parentKey: selectedKey ? selectedKey : "",
@@ -346,6 +377,7 @@ class MenuItem extends Component {
         }
         this.historyData = { ...treeItem };
         this.setState({
+            selectedKeys,
             isedit: false,
             parentKey: selectedKey,
             fields: { ...treeItem },
@@ -389,7 +421,18 @@ class MenuItem extends Component {
         });
     }
     render() {
-        let { treeData, mn, mt, isedit, isNew, fields } = this.state;
+        let {
+            treeData,
+            mn,
+            mt,
+            isedit,
+            isNew,
+            fields,
+            expandedKeys,
+            selectedKeys,
+            parentKey
+        } = this.state;
+        console.log(parentKey);
         let {
             menuitemcode,
             menuitemname,
@@ -405,6 +448,7 @@ class MenuItem extends Component {
                 isRequired: true,
                 isedit: isedit,
                 initialValue: menuitemcode,
+                len: parentKey.length < 6 ? parentKey.length + 2 : undefined,
                 xs: 24,
                 md: 12,
                 lg: 12
@@ -540,7 +584,10 @@ class MenuItem extends Component {
             >
                 <PageLayoutLeft>
                     <TreeSearch
-                        onSelect={this.handleSelect}
+                        setExpandedKeys={this.setExpandedKeys}
+                        expandedKeys={expandedKeys}
+                        setSelectedKeys={this.setSelectedKeys}
+                        selectedKeys={selectedKeys}
                         onSearch={this.handleSearch}
                         dataSource={treeData}
                     />

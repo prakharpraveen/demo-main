@@ -54,7 +54,8 @@ class AddNotMetaDataModal extends Component {
 				define3: '',
 				define4: '',
 				define5: '',
-				itemtype: 'input'
+				itemtype: 'input',
+				visibleposition: ''
 			};
 		} else {
 			//非查询区

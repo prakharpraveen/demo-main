@@ -75,8 +75,8 @@ class AppManagement extends Component {
                         action: "页面编码"
                     },
                     data: {
-                        // appCode: parentcode
-                        appCode: "1011DETAILUSER"
+                        appCode: parentcode
+                        // appCode: "1011DETAILUSER"
                     },
                     success: ({ data: { data } }) => {
                         if (data) {
@@ -130,7 +130,8 @@ class AppManagement extends Component {
         let pageCopyData = {
             pageId: id,
             newPageCode: "",
-            newPageName: ""
+            newPageName: "",
+            isCopyUserTemplet: false
         };
         this.props.setPageCopyData(pageCopyData);
     };
@@ -141,7 +142,8 @@ class AppManagement extends Component {
             oldAppCode: code,
             newMenuItemCode: "",
             newAppName: "",
-            newMenuItemName: ""
+            newMenuItemName: "",
+            isCopyUserTemplet: false
         };
         this.props.setCopyNodeData(copyNodeData);
     };
@@ -355,7 +357,8 @@ class AppManagement extends Component {
                         oldAppCode,
                         newMenuItemCode,
                         newAppName,
-                        newMenuItemName
+                        newMenuItemName,
+                        isCopyUserTemplet
                     } = copyNodeData;
                     Ajax({
                         url: `/nccloud/platform/appregister/copyapp.do`,
@@ -363,7 +366,8 @@ class AppManagement extends Component {
                             oldAppCode,
                             newMenuItemCode,
                             newAppName,
-                            newMenuItemName
+                            newMenuItemName,
+                            isCopyUserTemplet
                         },
                         info: {
                             name: "应用管理",
@@ -378,8 +382,16 @@ class AppManagement extends Component {
                         }
                     });
                 } else {
-                    let { newPageCode, newPageName } = copyNodeData;
-                    let pageCopyData = { newPageCode, newPageName };
+                    let {
+                        newPageCode,
+                        newPageName,
+                        isCopyUserTemplet
+                    } = copyNodeData;
+                    let pageCopyData = {
+                        newPageCode,
+                        newPageName,
+                        isCopyUserTemplet
+                    };
                     pageCopyData = {
                         ...this.props.pageCopyData,
                         ...pageCopyData

@@ -25,7 +25,7 @@ class PageLayout extends Component {
             let layoutLeft = document.querySelector("#layoutLeft");
             let blockLeft = layoutLeft.getBoundingClientRect().left;
             console.log(blockLeft);
-            let w = parseInt(mouseLeft - blockLeft) + 7;
+            let w = parseInt(mouseLeft - blockLeft)+3;
             if (w < 200) {
                 return;
             } else {

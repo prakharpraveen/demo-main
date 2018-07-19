@@ -51,21 +51,29 @@ export const getItemtypeObjByDatatype = datatype => {
 };
 
 export const opersignObj = [
-    { name: "=@<>@", value: "203" },
+    { name: "=@like@left like@right like@", value: "1" },
+    { name: "between@=@>@>=@<@<=@", value: "2" },
+    { name: "between@=@>@>=@<@<=@", value: "4" },
+    { name: "=@", value: "32" },
+    { name: "between@=@>@>=@<@<=@", value: "33" },
     { name: "between@=@>@>=@<@<=@", value: "34" },
+    { name: "between@=@>@>=@<@<=@", value: "52" },
     { name: "=@like@left like@right like@", value: "56" },
     { name: "=@like@left like@right like@", value: "58" },
-    { name: "between@=@>@>=@<@<=@", value: "4" },
-    { name: "=@like@left like@right like@", value: "1" },
+    { name: "=@<>@", value: "203" },
     { name: "=", value: "204" }
 ];
 export const opersignNameObj = [
-    { name: "等于@不等于@", value: "203" },
+    { name: "等于@包含@左包含@右包含@", value: "1" },
+    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "2" },
+    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "4" },
+    { name: "等于@", value: "32" },
+    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "33" },
     { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "34" },
+    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "52" },
     { name: "等于@包含@左包含@右包含@", value: "56" },
     { name: "等于@包含@左包含@右包含@", value: "58" },
-    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "4" },
-    { name: "等于@包含@左包含@右包含@", value: "1" },
+    { name: "等于@不等于@", value: "203" },
     { name: "等于@", value: "204" }
 ];
 export const componentWidthObj = [
@@ -202,3 +210,5 @@ export const filterItemtypeObj = [
         ]
     }
 ];
+//应该设默认值为false的组件类型
+export const shouldSetDefaultValueList = ['switch','checkbox_switch','switch_browse']
