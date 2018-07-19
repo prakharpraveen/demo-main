@@ -161,7 +161,7 @@ class PageTable extends Component {
                 render: text => text - 0 + 1
             },
             {
-                title: RenderTableTitle("按钮编码"),
+                title: "按钮编码",
                 dataIndex: "btncode",
                 width: "10%",
                 render: (text, record, index) => (
@@ -188,7 +188,7 @@ class PageTable extends Component {
                         editable={record.editable}
                         cellIndex={index}
                         cellKey={"btnname"}
-                        cellRequired={true}
+                        cellRequired={false}
                         cellChange={this.handleBtnCellChange}
                         cellCheck={this.handleBtnCheck}
                     />
