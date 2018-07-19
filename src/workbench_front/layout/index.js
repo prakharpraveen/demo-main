@@ -253,9 +253,13 @@ class Layout extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data.length > 0) {
-                    let { pk_group, bizDateTime, userName, userId } = data.find(
-                        item => item.is_selected
-                    );
+                    let {
+                        pk_group,
+                        bizDateTime,
+                        userName,
+                        userId,
+                        name
+                    } = data.find(item => item.is_selected);
                     let newDate = moment(bizDateTime - 0 * 1000);
                     this.props.setAccountInfo({
                         newDate,
@@ -273,7 +277,9 @@ class Layout extends Component {
                             this.businessInfoSetting(
                                 bizDateTime,
                                 userId,
-                                pk_group
+                                userName,
+                                pk_group,
+                                name
                             );
                         }
                     );
@@ -283,12 +289,20 @@ class Layout extends Component {
     };
     /**
      * 为全局添加业务信息
-     * 如： 业务日期 业务集团信息 用户id
-     * @param {String}  businessDate 业务日期
+     * 如： 业务日期 业务集团信息 用户id 用户名称 集团id 集团名称
+     * @param {String} businessDate 业务日期
      * @param {String} userId 用户id
+     * @param {String} userName 用户名称
      * @param {String} groupId 集团id
+     * @param {String} groupName 集团名称
      */
-    businessInfoSetting = (businessDate, userId, groupId) => {
+    businessInfoSetting = (
+        businessDate,
+        userId,
+        userName,
+        groupId,
+        groupName
+    ) => {
         window.businessInfo = {
             businessDate,
             userId,
