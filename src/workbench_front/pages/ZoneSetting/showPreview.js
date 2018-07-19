@@ -7,7 +7,7 @@ import { updatePreviewData } from 'Store/ZoneSetting/action';
 import { createPage } from 'nc-lightapp-front';
 import  initTemplate  from './events';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
-// sunlei 
+//预览模态框
 class PreviewModal extends Component {
 	constructor(props) {
 		super(props);

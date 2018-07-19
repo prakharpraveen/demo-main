@@ -6,7 +6,7 @@ import { Tree, Modal, Button, Checkbox, Select } from "antd";
 import * as utilService from "./utilService";
 const TreeNode = Tree.TreeNode;
 const Option = Select.Option;
-
+//添加元数据模态框
 class TreeModal extends Component {
     constructor(props) {
         super(props);

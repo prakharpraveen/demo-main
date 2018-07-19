@@ -1,9 +1,7 @@
 import { DragSource, DropTarget } from 'react-dnd';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-/**
- * 工作桌面 配置模板区域
- */
+//卡片属性
 const cardSource = {
 	beginDrag(props) {
 		return {

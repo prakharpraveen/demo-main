@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Input, Modal, Button} from 'antd';
 import { updateAreaList } from 'Store/ZoneSetting/action';
-
+//添加非元数据模态框
 class AddNotMetaDataModal extends Component {
 	constructor(props) {
 		super(props);

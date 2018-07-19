@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { InputNumber, Modal, Button } from "antd";
 import Notice from "Components/Notice";
-// sunlei
+//整数、小数、金融类型模态框
 export default class MoneyModal extends Component {
     constructor(props) {
         super(props);

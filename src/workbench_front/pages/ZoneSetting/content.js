@@ -3,17 +3,12 @@ import { connect } from 'react-redux';
 import { updateSelectCard, updateAreaList, clearData } from 'Store/ZoneSetting/action';
 import Ajax from 'Pub/js/ajax';
 import './index.less';
-// import { DragDropContext } from 'react-dnd';
-// import HTML5Backend from 'react-dnd-html5-backend';
 import withDragDropContext from 'Pub/js/withDragDropContext';
 import AreaItem from './areaItem';
 import TreeModal from './treeModal';
 import _ from 'lodash';
 import Notice from 'Components/Notice';
-/**
- * 工作桌面 配置模板区域
- */
-// @withDragDropContext(HTML5Backend)
+//内容
 class MyContent extends Component {
 	constructor(props) {
 		super(props);
@@ -206,7 +201,6 @@ class MyContent extends Component {
 	selectThisCard =(cardIndex, areaItemIndex)=>{
 		let { areaList } = this.props;
 		let card = areaList[areaItemIndex].queryPropertyList[cardIndex];
-		// this.setState({ selectCard: card });
 		this.props.updateSelectCard(card)
 	};
 
@@ -222,7 +216,6 @@ class MyContent extends Component {
 							index={i}
 							areatype = {a.areatype}
 							metaid={a.metaid}
-							// selectCard = {this.props.selectCard}
 							moveCard={this.moveCard}
 							deleteCard={this.deleteCard}
 							addMetaInArea={this.addMetaInArea}
@@ -247,8 +240,7 @@ class MyContent extends Component {
 	}
 }
 export default connect((state) => ({
-	areaList: state.zoneSettingData.areaList,
-	// selectCard: state.zoneSettingData.selectCard
+	areaList: state.zoneSettingData.areaList
 }), {
 		clearData,
 	updateAreaList,

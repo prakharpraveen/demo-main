@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Icon, Tree, Modal, Button } from 'antd';
 import { PageLayout, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
 const TreeNode = Tree.TreeNode;
-
+//元数据编辑关联项模态框
 class RelateMetaModal extends Component {
 	constructor(props) {
 		super(props);

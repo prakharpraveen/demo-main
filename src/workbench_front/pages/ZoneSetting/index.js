@@ -7,9 +7,7 @@ import MyRightSider from './rightSider';
 import { Steps } from 'antd';
 import {GetQuery} from 'Pub/js/utils';
 const Step = Steps.Step;
-/**
- * 工作桌面 配置模板区域
- */
+//模板配置首页
 class ZoneSetting extends Component {
 	constructor(props) {
 		super(props);

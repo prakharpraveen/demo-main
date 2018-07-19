@@ -4,8 +4,7 @@ import { Table, Input, InputNumber, Select,Switch} from 'antd';
 import _ from 'lodash'; 
 import * as utilService from './utilService';
 const Option = Select.Option
-
-// 下拉组件 
+//批量设置查询区
 class SelectCell extends Component {
 	state = {
 		value: this.props.value,

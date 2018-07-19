@@ -4,7 +4,7 @@ import Ajax from 'Pub/js/ajax';
 import { connect } from 'react-redux';
 import { Modal, Button, Select, Checkbox } from 'antd';
 const Option = Select.Option;
-// sunlei
+//参照模态框
 class ReferModal extends Component {
 	constructor(props) {
 		super(props);

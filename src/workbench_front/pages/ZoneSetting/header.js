@@ -7,10 +7,7 @@ import { withRouter } from 'react-router-dom';
 import PreviewModal from './showPreview';
 import { GetQuery } from 'Pub/js/utils';
 import { openPage } from 'Pub/js/superJump';
-/**
- * 工作桌面 配置模板区域
- */
-
+//页面头部
 class MyHeader extends Component {
     constructor(props) {
         super(props);

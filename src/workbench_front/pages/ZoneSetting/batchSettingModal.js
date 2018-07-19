@@ -4,7 +4,7 @@ import {  Modal, Button } from 'antd';
 import {  updateAreaList } from 'Store/ZoneSetting/action';
 import BatchSearchTable from './batchSearchTable';
 import BatchNoSearchTable from './batchNoSearchTable';
-// sunlei 
+//批量设置模态框
 class BatchSettingModal extends Component {
 	constructor(props) {
 		super(props);

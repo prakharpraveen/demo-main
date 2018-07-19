@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import MyCard from './card';
 import BatchSettingModal from './batchSettingModal';
 import AddNotMetaDataModal from './addNotMetaDataModal';
-/**
- * 工作桌面 配置模板区域
- */
+//区域
 class AreaItem extends Component {
 	constructor(props) {
 		super(props);
