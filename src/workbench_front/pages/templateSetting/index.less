@@ -91,8 +91,7 @@ body {
         .allocationPage-content-select {
             display: flex;
             justify-content: space-between;
-            padding: 15px 20px 0 20px;
-            margin-bottom: 15px;
+            padding: 15px 20px;
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
@@ -101,9 +100,20 @@ body {
             justify-content: space-between;
             .allocation-treeCom {
                 width: 50%;
-                max-height: 370px;
-                min-height: 250px;
-                overflow: auto;
+                .allocation-treeScrollName {
+                    max-height: 370px;
+                    min-height: 250px;
+                    border: 1px solid #ccc;
+                    border-left: 0;
+                    overflow: auto;
+                }
+                .allocation-treeScrollResp {
+                    max-height: 370px;
+                    min-height: 250px;
+                    border: 1px solid #ccc;
+                    border-left: 0;
+                    overflow: auto;
+                }
             }
             .allocation-button {
                 width: 16%;
@@ -115,12 +125,23 @@ body {
                     margin-bottom: 30px;
                 }
             }
-            .allocation-tree {
+            .allocation-treeContainer {
                 min-height: 250px;
                 width: 34%;
-                padding: 20px;
                 max-height: 370px;
-                border: 1px solid #ccc;
+                display: flex;
+                flex-direction: column;
+                .allocation-select {
+                    padding: 5px 20px 5px 0px;
+                }
+                .allocation-tree {
+                    max-height: 370px;
+                    min-height: 250px;
+                    border: 1px solid #ccc;
+                    border-right: 0;
+                    overflow: auto;
+                    border: 1px solid #ccc;
+                }
             }
         }
     }

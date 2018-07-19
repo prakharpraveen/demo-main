@@ -7,7 +7,7 @@ import { createTree } from 'Pub/js/createTree';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
-import BusinessUnitTreeRef from 'Components/Refers/BusinessUnitTreeRef';
+import BusinessUnitTreeRefUnit from 'Components/Refers/BusinessUnitTreeRefUnit';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
@@ -834,7 +834,7 @@ class TemplateSetting extends Component {
                 className='nc-workbench-templateSetting'
                 header={
                     <PageLayoutHeader>
-                        <BusinessUnitTreeRef
+                        <BusinessUnitTreeRefUnit
                             value={org_df_biz}
                             placeholder={'默认业务单元'}
                             onChange={(value) => {

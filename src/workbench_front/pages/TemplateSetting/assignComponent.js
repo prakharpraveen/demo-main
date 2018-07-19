@@ -6,7 +6,7 @@ import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
-import BusinessUnitTreeRef from 'Components/Refers/BusinessUnitTreeRef';
+import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const Option = Select.Option;
@@ -56,8 +56,8 @@ class AssignComponent extends Component {
             org_df_biz: {
                 // 默认业务单元
                 refcode: '',
-                refname: '',
-                refpk: ''
+                refname: '集团',
+                refpk: window.businessInfo.groupId
             },
             dataRoKey: '',
             dataRoObj: {},
@@ -78,6 +78,21 @@ class AssignComponent extends Component {
             activeKey: nextProps.activeKey,
             appCode: nextProps.appCode
         });
+    }
+    componentDidMount() {
+        let { orgidObj, org_df_biz } = this.state;
+        if (org_df_biz.refpk) {
+            console.log(org_df_biz.refpk);
+            orgidObj['refpk'] = org_df_biz.refpk;
+            this.setState(
+                {
+                    orgidObj
+                },
+                () => {
+                    this.reqRoTreeData();
+                }
+            );
+        }
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
@@ -375,7 +390,12 @@ class AssignComponent extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onSearch} />}
+                {data.length > 0 &&
+                    (hideSearch ? (
+                        ''
+                    ) : (
+                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onSearch} />
+                    ))}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -487,7 +507,7 @@ class AssignComponent extends Component {
                 onCancel={this.handleOrlCancel}
                 width={720}
                 keyboard={true}
-                bodyStyle={{padding:"15px"}}
+                bodyStyle={{ padding: '15px' }}
             >
                 <div className='allocationPage'>
                     <div className='pageCode-show'>
@@ -518,15 +538,6 @@ class AssignComponent extends Component {
                         )}
                     </div>
                     <div className='allocationPage-content'>
-                        <div className='allocationPage-content-select'>
-                            <BusinessUnitTreeRef
-                                value={org_df_biz}
-                                placeholder={'默认业务单元'}
-                                onChange={(value) => {
-                                    this.handdleRefChange(value);
-                                }}
-                            />
-                        </div>
                         <div className='allocationPage-content-tree'>
                             <div className='allocation-treeCom'>
                                 <Tabs
@@ -538,10 +549,14 @@ class AssignComponent extends Component {
                                     activeKey={tabActiveKey}
                                 >
                                     <TabPane tab='按角色和用户分配' key='1'>
-                                        {this.treeResAndUser(treeRoData, 'resOnselect')}
+                                        <div className='allocation-treeScrollName'>
+                                            {this.treeResAndUser(treeRoData, 'resOnselect')}
+                                        </div>
                                     </TabPane>
                                     <TabPane tab='按职责分配' key='2'>
-                                        {this.treeResAndUser(treeResData, 'resOnselect')}
+                                        <div className='allocation-treeScrollResp'>
+                                            {this.treeResAndUser(treeResData, 'resOnselect')}
+                                        </div>
                                     </TabPane>
                                 </Tabs>
                             </div>
@@ -553,9 +568,20 @@ class AssignComponent extends Component {
                                     <Button onClick={this.allowClick.bind(this, 'allowRoleCancel')}>取消</Button>
                                 </p>
                             </div>
-                            <div className='allocation-tree'>
-                                {treeAllowedData.length > 0 &&
-                                    this.treeResAndUser(treeAllowedData, 'allowedOnselect', 'hideSearch')}
+                            <div className='allocation-treeContainer'>
+                                <div className='allocation-select'>
+                                    <BusinessUnitGroupTreeRef
+                                        value={org_df_biz}
+                                        placeholder={'默认业务单元'}
+                                        onChange={(value) => {
+                                            this.handdleRefChange(value);
+                                        }}
+                                    />
+                                </div>
+                                <div className='allocation-tree'>
+                                    {treeAllowedData.length > 0 &&
+                                        this.treeResAndUser(treeAllowedData, 'allowedOnselect', 'hideSearch')}
+                                </div>
                             </div>
                         </div>
                     </div>
