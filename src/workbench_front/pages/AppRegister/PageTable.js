@@ -862,7 +862,6 @@ class PageTable extends Component {
                         this.props.setPageActiveKey(activeKey);
                     }}
                     activeKey={this.props.pageActiveKey}
-                    type="card"
                     tabBarExtraContent={this.creatAddLineBtn()}
                 >
                     <TabPane tab="按钮注册" key="1">

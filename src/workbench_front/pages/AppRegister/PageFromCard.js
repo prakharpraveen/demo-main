@@ -92,9 +92,8 @@ class PageFormCard extends Component {
                 />
                 <div
                     style={{
-                        marginTop: "16px",
+                        marginTop: "30px",
                         background: "#ffffff",
-                        padding: "10px",
                         borderRadius: "6px"
                     }}
                 >

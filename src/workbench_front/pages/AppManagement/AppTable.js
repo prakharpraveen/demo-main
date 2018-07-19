@@ -89,7 +89,6 @@ class AppTable extends Component {
     return (
       <Tabs
         activeKey="1"
-        type="card"
       >
         <TabPane tab="参数注册" key="1">
           <Table
