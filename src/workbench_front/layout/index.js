@@ -306,7 +306,9 @@ class Layout extends Component {
         window.businessInfo = {
             businessDate,
             userId,
-            groupId
+            userName,
+            groupId,
+            groupName 
         };
     };
     /**
