@@ -484,7 +484,9 @@ class PageTable extends Component {
         if (value.length === 0) {
             newData[index]["hasError"] = true;
             this.setNewData(newData);
-            return false;
+            return {
+                hasError:true
+            };
         } else {
             // 按钮编码字段不能重复
             if (key === "btncode") {
@@ -492,12 +494,17 @@ class PageTable extends Component {
                 if (itemList.length > 1) {
                     newData[index]["hasError"] = true;
                     this.setNewData(newData);
-                    return false;
+                    return {
+                        hasError:true,
+                        cellErrorMsg:'按钮编码不能重复'
+                    };
                 }
             }
             newData[index]["hasError"] = false;
             this.setNewData(newData);
-            return true;
+            return {
+                hasError:false
+            };
         }
     };
     /**

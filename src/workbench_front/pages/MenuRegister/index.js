@@ -11,6 +11,16 @@ import { openPage } from "Pub/js/superJump";
 import { PageLayout } from "Components/PageLayout";
 import Notice from "Components/Notice";
 import "./index.less";
+/**
+ * 表格表头必输项渲染
+ * @param {String} title
+ */
+const RenderTableTitle = title => (
+    <div>
+        <span style={{ color: "#e14c46" }}>*</span>
+        <span>{title}</span>
+    </div>
+);
 class MenuRegister extends Component {
     constructor(props) {
         super(props);
@@ -24,10 +34,10 @@ class MenuRegister extends Component {
             {
                 title: "序号",
                 dataIndex: "num",
-                key: "num",
+                key: "num"
             },
             {
-                title: "菜单编码",
+                title: RenderTableTitle("菜单编码"),
                 dataIndex: "menucode",
                 key: "menucode",
                 render: (text, record, index) => (
@@ -44,7 +54,7 @@ class MenuRegister extends Component {
                 )
             },
             {
-                title: "菜单名称",
+                title: RenderTableTitle("菜单名称"),
                 dataIndex: "menuname",
                 key: "menuname",
                 render: (text, record, index) => (
@@ -120,7 +130,7 @@ class MenuRegister extends Component {
             {
                 title: "创建时间",
                 dataIndex: "creationtime",
-                key: "creationtime",
+                key: "creationtime"
             },
             {
                 title: "最后修改人",
@@ -137,7 +147,7 @@ class MenuRegister extends Component {
             {
                 title: "最后修改时间",
                 dataIndex: "modifiedtime",
-                key: "modifiedtime",
+                key: "modifiedtime"
             },
             {
                 title: "操作",
@@ -219,7 +229,9 @@ class MenuRegister extends Component {
             this.setState({
                 listData
             });
-            return false;
+            return {
+                hasError: true
+            };
         } else {
             // 菜单编码不能重复
             if (key === "menucode") {
@@ -229,14 +241,19 @@ class MenuRegister extends Component {
                     this.setState({
                         listData
                     });
-                    return false;
+                    return {
+                        hasError: true,
+                        cellErrorMsg: "菜单编码不能重复"
+                    };
                 }
             }
             listData[index]["hasError"] = false;
             this.setState({
                 listData
             });
-            return true;
+            return {
+                hasError: false
+            };
         }
     };
     /**

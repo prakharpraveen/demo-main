@@ -20,7 +20,7 @@ const RenderTableTitle = title => (
 );
 /**
  * 应用页面 参数表格组件
- * 
+ *
  */
 class AppTable extends Component {
     constructor(props) {
@@ -130,14 +130,18 @@ class AppTable extends Component {
      */
     handleCellCheck = (key, index, value) => {
         let newData = this.getNewData();
-        if (!value&&value.length === 0) {
+        if (!value && value.length === 0) {
             newData[index]["hasError"] = true;
             this.props.setAppParamData(newData);
-            return false;
+            return {
+                hasError: true
+            };
         } else {
             newData[index]["hasError"] = false;
             this.props.setAppParamData(newData);
-            return true;
+            return {
+                hasError: false
+            };
         }
     };
     edit(record) {
@@ -282,10 +286,7 @@ class AppTable extends Component {
     render() {
         let appParamVOs = this.props.appParamVOs;
         return (
-            <Tabs
-                activeKey="1"
-                tabBarExtraContent={this.creatAddLineBtn()}
-            >
+            <Tabs activeKey="1" tabBarExtraContent={this.creatAddLineBtn()}>
                 <TabPane tab="参数注册" key="1">
                     <Table
                         bordered

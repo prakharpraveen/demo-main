@@ -9,7 +9,8 @@ class EditableCellString extends Component {
         super(props);
         this.state = {
             hasError: false,
-            visible: false
+            visible: false,
+            cellErrorMsg: "不能为空！"
         };
     }
     /**
@@ -19,11 +20,8 @@ class EditableCellString extends Component {
         let value = e.target.value;
         const { cellChange, cellKey, cellIndex, cellRequired } = this.props;
         if (cellRequired) {
-            if (cellNonempty(value)) {
-                this.setState({ hasError: false });
-            } else {
-                this.setState({ hasError: true });
-            }
+            let flag = cellNonempty(value);
+            this.setState({ hasError: flag });
         }
         cellChange(cellKey, cellIndex, value);
     };
@@ -41,21 +39,21 @@ class EditableCellString extends Component {
         } = this.props;
         if (cellRequired) {
             if (cellCheck) {
-                if (cellCheck(cellKey, cellIndex, value)) {
-                    this.setState({ hasError: false });
-                    setCellEdit(false);
+                let { cellErrorMsg, hasError } = cellCheck(
+                    cellKey,
+                    cellIndex,
+                    value
+                );
+                if (cellErrorMsg) {
+                    this.setState({ hasError, cellErrorMsg });
                 } else {
-                    this.setState({ hasError: true });
-                    setCellEdit(true);
+                    this.setState({ hasError});
                 }
+                setCellEdit(hasError);
             } else {
-                if (cellNonempty(value)) {
-                    this.setState({ hasError: false });
-                    setCellEdit(false);
-                } else {
-                    this.setState({ hasError: true });
-                    setCellEdit(true);
-                }
+                let flag = cellNonempty(value);
+                this.setState({ hasError: flag });
+                setCellEdit(flag);
             }
         } else {
             setCellEdit(false);
@@ -75,21 +73,21 @@ class EditableCellString extends Component {
         } = this.props;
         if (cellRequired) {
             if (cellCheck) {
-                if (cellCheck(cellKey, cellIndex, value)) {
-                    this.setState({ hasError: false });
-                    setCellEdit(false);
+                let { cellErrorMsg, hasError } = cellCheck(
+                    cellKey,
+                    cellIndex,
+                    value
+                );
+                if (cellErrorMsg) {
+                    this.setState({ hasError, cellErrorMsg });
                 } else {
-                    this.setState({ hasError: true });
-                    setCellEdit(true);
+                    this.setState({ hasError});
                 }
+                setCellEdit(hasError);
             } else {
-                if (cellNonempty(value)) {
-                    this.setState({ hasError: false });
-                    setCellEdit(false);
-                } else {
-                    this.setState({ hasError: true });
-                    setCellEdit(true);
-                }
+                let flag = cellNonempty(value);
+                this.setState({ hasError: flag });
+                setCellEdit(flag);
             }
         } else {
             setCellEdit(false);
@@ -103,24 +101,9 @@ class EditableCellString extends Component {
         this.setState({ visible: false });
     };
     render() {
-        let {
-            cellChange,
-            cellKey,
-            cellIndex,
-            value,
-            cellErrorMsg
-        } = this.props;
-        // const suffix = value ? (
-        //     <Icon
-        //         type="close-circle"
-        //         onClick={() => {
-        //             cellChange(cellKey, cellIndex, "");
-        //         }}
-        //     />
-        // ) : null;
-        if (!cellErrorMsg) {
-            cellErrorMsg = "不能为空！";
-        }
+        let { cellChange, cellKey, cellIndex, value } = this.props;
+        console.log(this.state.hasError);
+        
         return (
             <div
                 className={this.state.hasError ? "has-error" : ""}
@@ -130,17 +113,10 @@ class EditableCellString extends Component {
                 <Tooltip
                     placement="topRight"
                     visible={this.state.hasError && this.state.visible}
-                    title={cellErrorMsg}
+                    title={this.state.cellErrorMsg}
                 >
-                    {/* <Input
-                        suffix={suffix}
-                        value={value}
-                        onChange={this.handleChange}
-                        onPressEnter={this.handlePressEnter}
-                        onBlur={this.handleBlur}
-                    /> */}
                     <Input
-                        autoFocus = {true}
+                        autoFocus={true}
                         value={value}
                         onChange={this.handleChange}
                         onPressEnter={this.handlePressEnter}

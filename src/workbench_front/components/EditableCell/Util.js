@@ -15,13 +15,13 @@ export const cellValue = props => {
     }
 };
 /**
- * 单元格非空校验 true - 非空 false - 空
+ * 单元格非空校验  false - 非空 true - 空
  * @param {String} value
  */
 export const cellNonempty = value => {
     if (!value || (value && value.length < 1)) {
-        return false;
-    } else {
         return true;
+    } else {
+        return false;
     }
 };
