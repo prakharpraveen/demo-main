@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Icon, Tooltip } from "antd";
+import { Input, Tooltip } from "antd";
 import { cellNonempty } from "./Util";
 /**
  * 表格编辑单元格 - String类型

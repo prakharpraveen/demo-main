@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { cellValue, cellNonempty } from "./Util";
+import { cellValue } from "./Util";
 import EditableCellShow from "./EditableCellShow";
 import EditableCellPublic from "./EditableCellPublic";
 import EditableCellString from "./EditableCellString";
