@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Form, Row, Col, Input, Select, Checkbox } from "antd";
+import { Form, Row, Col, Input, Select, Checkbox,Tooltip } from "antd";
 import _ from "lodash";
 import { high } from "nc-lightapp-front";
 import ChooseImageForForm from "Components/ChooseImageForForm";
+import PubError from "./PubError";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 import "./index.less";
 const { Refer } = high;
@@ -79,7 +80,7 @@ export class FormContent extends Component {
         super(props);
         this.history;
     }
-    createComponent = item => {
+    createComponent = (item,index) => {
         const { getFieldDecorator } = this.props.form;
         let {
             type = "string",
@@ -103,16 +104,16 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     type: "string",
-                                    message: `${label}数据类型-string`
+                                    message: <Tooltip title={`${label}数据类型-string`} visible={true}/>
                                 },
                                 {
                                     required: isRequired,
                                     whitespace: true,
-                                    message: `${label}为必输项`
+                                    message: <Tooltip title={`${label}为必输项`} visible={true} />
                                 },
                                 {
                                     len: len,
-                                    message: `${label}长度为${len}`
+                                    message: <Tooltip title={`${label}长度为${len}`} visible={true} />
                                 },
                                 {
                                     validator: check
@@ -126,7 +127,9 @@ export class FormContent extends Component {
                                           }
                                 }
                             ]
-                        })(isedit ? <Input /> : <NormalShow />)}
+                        })(
+                            isedit ? (<Input />) : (<NormalShow />)
+                        )}
                     </FormItem>
                 );
             case "refer":
@@ -140,11 +143,11 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: `${label}为必输项`
+                                    message: <Tooltip title={`${label}为必输项`} visible={true}/>
                                 },
                                 {
                                     type: "object",
-                                    message: `${label}数据类型-object`,
+                                    message: <Tooltip title={`${label}数据类型-object`} visible={true}/>,
                                     validator: null
                                 }
                             ]
@@ -164,12 +167,12 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     type: "string",
-                                    message: `${label}数据类型-string`,
+                                    message: <Tooltip title={`${label}数据类型-string`} visible={true}/>,
                                     validator: null
                                 },
                                 {
                                     required: isRequired,
-                                    message: `${label}为必输项`
+                                    message: <Tooltip title={`${label}为必输项`} visible={true}/>
                                 }
                             ]
                         })(
@@ -200,7 +203,7 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: "请选择图标"
+                                    message: <Tooltip title={"请选择图标"} visible={true}/>
                                 }
                             ]
                         })(
@@ -220,14 +223,14 @@ export class FormContent extends Component {
      * 创建表单项
      */
     createFormItem = () => {
-        let children = this.props.formData.map(item => {
+        let children = this.props.formData.map((item,index) => {
             let { xs = 24, md = 12, lg = 12, code, hidden = false } = item;
             if (hidden === true) {
                 return null;
             }
             return (
                 <Col xs={xs} md={md} lg={lg} key={code}>
-                    {this.createComponent(item)}
+                    {this.createComponent(item,index)}
                 </Col>
             );
         });
@@ -246,14 +249,14 @@ export class FormContent extends Component {
             );
         });
     };
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         this.history = this.props.datasources;
     }
     componentDidMount() {
         this.props.form.setFieldsValue(this.props.datasources);
     }
     componentDidUpdate() {
-        // 判断历史datasources 与最新的datasources 相等的情况下去更新dom 
+        // 判断历史datasources 与最新的datasources 相等的情况下去更新dom
         if (!_.isEqual(this.props.datasources, this.history)) {
             this.props.form.setFieldsValue(this.props.datasources);
         }
@@ -266,75 +269,6 @@ export class FormContent extends Component {
         );
     }
 }
-/**
- * 数据转换
- * @param {*} object
- */
-export const dataTransfer = (object, defaultObj) => {
-    if (JSON.stringify(object) == "{}") {
-        console.error("dataTransfer 函数参数不能为空对象");
-        return;
-    }
-    let obj = {};
-    if (defaultObj) {
-        for (const key in defaultObj) {
-            if (object.hasOwnProperty(key)) {
-                const element = object[key];
-                obj[key] = {};
-                obj[key]["value"] = element;
-            }
-        }
-    } else {
-        for (const key in object) {
-            if (object.hasOwnProperty(key)) {
-                const element = object[key];
-                obj[key] = {};
-                obj[key]["value"] = element;
-            }
-        }
-    }
-    return obj;
-};
-/**
- * 数据还原
- */
-export const dataRestore = object => {
-    if (JSON.stringify(object) == "{}") {
-        console.error("dataTransfer 函数参数不能为空对象");
-        return;
-    }
-    let obj = {};
-    for (const key in object) {
-        if (object.hasOwnProperty(key)) {
-            const element = object[key];
-            obj[key] = element.value;
-        }
-    }
-    return obj;
-};
-/**
- * 数据检查
- */
-export const dataCheck = object => {
-    if (JSON.stringify(object) == "{}") {
-        console.error("dataTransfer 函数参数不能为空对象");
-        return;
-    }
-    let objArray = [];
-    for (const key in object) {
-        if (object.hasOwnProperty(key)) {
-            const element = object[key];
-            if (element.errors) {
-                objArray.push(element);
-            }
-        }
-    }
-    if (objArray.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-};
 /**
  * 数据剔除
  *

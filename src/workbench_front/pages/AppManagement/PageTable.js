@@ -9,7 +9,6 @@ import {
   setPageTemplateData,
   setPageActiveKey
 } from "Store/AppManagement/action";
-import { dataTransfer, dataRestore } from "Components/FormCreate";
 import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
@@ -260,30 +259,6 @@ class PageTable extends Component {
       this.props.setPageTemplateData(newData);
     }
   }
-  /**
-   * 获取页面数据
-   */
-  getPageData = key => {
-    // 查询页面数据
-    Ajax({
-      url: `/nccloud/platform/appregister/querypagedetail.do`,
-      info: {
-        name: "应用注册页面",
-        action: "查询"
-      },
-      data: {
-        pk_apppage: key
-      },
-      success: ({ data }) => {
-        if (data.success && data.data) {
-          let { apppageVO, appButtonVOs, pageTemplets } = data.data;
-          this.props.setPageButtonData(appButtonVOs);
-          this.props.setPageTemplateData(pageTemplets);
-          this.props.setNodeData(dataTransfer(apppageVO));
-        }
-      }
-    });
-  };
   render() {
     let { appButtonVOs = [], pageTemplets = [] } = this.props;
     return (

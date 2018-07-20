@@ -12,7 +12,6 @@ import {
     setPageTemplateData,
     setPageActiveKey
 } from "Store/AppRegister/action";
-import { dataTransfer } from "Components/FormCreate";
 import EditableCell from "Components/EditableCell";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
@@ -821,7 +820,7 @@ class PageTable extends Component {
                     let { apppageVO, appButtonVOs, pageTemplets } = data.data;
                     this.props.setPageButtonData(appButtonVOs);
                     this.props.setPageTemplateData(pageTemplets);
-                    this.props.setNodeData(dataTransfer(apppageVO));
+                    this.props.setNodeData(apppageVO);
                 }
             }
         });

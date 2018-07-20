@@ -93,7 +93,6 @@ class EditableCellString extends Component {
             setCellEdit(false);
         }
     };
-
     handleMouseOver = () => {
         this.setState({ visible: true });
     };
@@ -101,9 +100,7 @@ class EditableCellString extends Component {
         this.setState({ visible: false });
     };
     render() {
-        let { cellChange, cellKey, cellIndex, value } = this.props;
-        console.log(this.state.hasError);
-        
+        let { value } = this.props;
         return (
             <div
                 className={this.state.hasError ? "has-error" : ""}

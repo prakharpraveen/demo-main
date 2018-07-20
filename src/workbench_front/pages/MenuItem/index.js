@@ -13,12 +13,6 @@ import { FormContent, dataDefaults } from "Components/FormCreate";
 import Ajax from "Pub/js/ajax.js";
 import { GetQuery, Pad } from "Pub/js/utils.js";
 import TreeSearch from "./TreeSearch";
-import {
-    FormCreate,
-    dataTransfer,
-    dataRestore,
-    dataCheck
-} from "Components/FormCreate";
 import ButtonCreate from "Components/ButtonCreate";
 import Notice from "Components/Notice";
 import "./index.less";
