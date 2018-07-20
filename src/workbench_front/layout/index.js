@@ -71,7 +71,7 @@ class Layout extends Component {
                 action: "更改业务日期"
             },
             data: {
-                bizDateTime: `${newDate.valueOf()}`
+                bizDateTime: `${newDate}`
             },
             success: ({ data: { data } }) => {
                 if (data) {
@@ -260,7 +260,7 @@ class Layout extends Component {
                         userId,
                         name
                     } = data.find(item => item.is_selected);
-                    let newDate = moment(bizDateTime - 0 * 1000);
+                    let newDate = moment(bizDateTime);
                     this.props.setAccountInfo({
                         newDate,
                         selectedKey: pk_group,
