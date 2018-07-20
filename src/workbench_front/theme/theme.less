@@ -126,15 +126,16 @@ body {
     .ant-tabs-ink-bar {
         background-color: #e14c46;
     }
-    // .ant-tree li .ant-tree-node-content-wrapper {
-    // }
-    // .ant-tree li .ant-tree-node-content-wrapper:hover {
-    //     background-color: #fcedec !important;
-    // }
-    // .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
-    //     background-color: #f4f5f7 !important;
-    //     color: #e14c46;
-    // }
+    .has-error .ant-input,
+    .has-error .ant-input:hover {
+        border-color: #f5222d;
+    }
+    .has-error .ant-input:focus {
+        border-color: #ff4d4f;
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(245, 34, 45, 0.2);
+        border-right-width: 1px !important;
+    }
     .ant-tree {
         li {
             .ant-tree-node-content-wrapper {
@@ -150,10 +151,10 @@ body {
             }
         }
         &.ant-tree-show-line {
-            .ant-tree-icon__customize{
+            .ant-tree-icon__customize {
                 width: 15px;
                 margin-right: 5px;
-                svg{
+                svg {
                     margin-top: 5px;
                 }
             }
@@ -169,8 +170,8 @@ body {
                     margin: 0 20px;
                 }
             }
-            &>li{
-                &::after{
+            & > li {
+                &::after {
                     top: 19px;
                 }
             }
