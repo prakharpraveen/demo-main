@@ -99,7 +99,13 @@ class TreeSearch extends Component {
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={menuitemcode} title={title} />;
+                return (
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={menuitemcode}
+                        title={title}
+                    />
+                );
             });
         let newTreeData = [
             {

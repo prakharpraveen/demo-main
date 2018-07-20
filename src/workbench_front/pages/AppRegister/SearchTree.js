@@ -114,7 +114,9 @@ class SearchTree extends Component {
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={code} title={title} refData={item} />;
+                return <TreeNode icon={
+                    <span className='tree-dot'/>
+                } key={code} title={title} refData={item} />;
             });
         let newTreeData = [
             {

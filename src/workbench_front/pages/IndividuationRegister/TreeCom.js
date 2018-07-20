@@ -70,9 +70,7 @@ class TreeCom extends Component {
                                     width={15}
                                     height={13}
                                     xlinkHref={
-                                        expandedKeys.indexOf(
-                                            item.code
-                                        ) === -1
+                                        expandedKeys.indexOf(item.code) === -1
                                             ? "#icon-wenjianjia"
                                             : "#icon-wenjianjiadakai"
                                     }
@@ -85,7 +83,13 @@ class TreeCom extends Component {
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={code} title={title} />;
+                return (
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={code}
+                        title={title}
+                    />
+                );
             });
         let newTreeData = [
             {
