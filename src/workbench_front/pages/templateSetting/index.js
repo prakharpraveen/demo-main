@@ -301,7 +301,12 @@ class TemplateSetting extends Component {
                 }
                 let _this = this;
                 confirm({
-                    title: '确认删除这个模板信息吗?',
+                    title: "是否要删除?",
+                    content: "",
+                    okText: "确认",
+                    okType: "danger",
+                    cancelText: "取消",
+                    mask: false,
                     onOk() {
                         Ajax({
                             url: url,
@@ -929,7 +934,8 @@ class TemplateSetting extends Component {
                         setModalVisibel={this.setModalVisibel}
                     />
                 )}
-                <Modal title='请录入正确的模板名称和编码' visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                <Modal title='请录入正确的模板名称和编码' visible={visible} onOk={this.handleOk} okText= {"确认"}
+                    cancelText= {"取消"} onCancel={this.handleCancel}>
                     <div className='copyTemplate'>
                         <Input
                             value={templateNameVal}
@@ -958,6 +964,8 @@ class TemplateSetting extends Component {
                 </Modal>
                 <Modal
                         title='打印模板预览'
+                        okText= {"确认"}
+                    cancelText= {"取消"}
                         visible={previewPrintVisible}
                         onCancel={this.hideModal}
                         footer={null}

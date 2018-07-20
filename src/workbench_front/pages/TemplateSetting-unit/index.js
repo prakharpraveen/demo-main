@@ -768,7 +768,7 @@ class TemplateSetting extends Component {
         });
     };
     showModal = () => {
-        this.setState({ previewPrintVisible: true },()=>{
+        this.setState({ previewPrintVisible: true }, () => {
             this.printModalAjax(this.state.templatePks);
         });
     };
@@ -788,7 +788,7 @@ class TemplateSetting extends Component {
             },
             success: ({ data }) => {
                 if (data.success) {
-                    document.getElementsByClassName("printContent")[0].innerHTML=data.data;
+                    document.getElementsByClassName('printContent')[0].innerHTML = data.data;
                 }
             }
         });
@@ -925,7 +925,14 @@ class TemplateSetting extends Component {
                         setModalVisibel={this.setModalVisibel}
                     />
                 )}
-                <Modal title='请录入正确的模板名称和标题' visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                <Modal
+                    title='请录入正确的模板名称和标题'
+                    visible={visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    okText={'确认'}
+                    cancelText={'取消'}
+                >
                     <div className='copyTemplate'>
                         <Input
                             value={templateNameVal}
@@ -951,14 +958,9 @@ class TemplateSetting extends Component {
                         )}
                     </div>
                 </Modal>
-                <Modal
-                        title='打印模板预览'
-                        visible={previewPrintVisible}
-                        onCancel={this.hideModal}
-                        footer={null}
-                    >
-                        <div className='printContent'></div>
-                    </Modal>
+                <Modal title='打印模板预览' visible={previewPrintVisible} onCancel={this.hideModal} footer={null}>
+                    <div className='printContent' />
+                </Modal>
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}

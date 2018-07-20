@@ -504,6 +504,8 @@ class AssignComponent extends Component {
                 visible={this.props.alloVisible}
                 onOk={this.handleAlloOk}
                 onCancel={this.handleOrlCancel}
+                okText={'确认'}
+                cancelText={'取消'}
                 width={720}
                 keyboard={true}
                 bodyStyle={{ padding: '15px' }}

@@ -511,6 +511,8 @@ class AssignComponent extends Component {
                 onOk={this.handleAlloOk}
                 onCancel={this.handleOrlCancel}
                 width={720}
+                okText={'确认'}
+                cancelText={'取消'}
             >
                 <div className='allocationPage'>
                     <div className='pageCode-show'>
