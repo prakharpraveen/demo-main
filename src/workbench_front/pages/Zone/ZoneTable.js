@@ -303,11 +303,27 @@ class ZoneTable extends Component {
             areaCode: '', //区域编码
             areaPk: '', //区域主键
             areatype: '0', //区域类型
-            position: 1, //
+            position: 1, //序号
             metaname: null, //关联元数据
             areastatus: '', //区域状态
             relationcode: null, //关联编码
             visible: false,
+            clazz: null, //设置类
+            creationtime: null,
+            creator: null,
+            headcode: null,
+            formPropertyList: null,
+            metaid: '',
+            metaspace: '',
+            modifiedtime: null,
+            modifer: null,
+            pagination: null,
+            queryPropertyList: null,
+            templetid: '',
+            resid: null,
+            //
+            //
+            //
             oldData: {
                 areaCode: '',
                 areaName: ''
@@ -442,7 +458,6 @@ class ZoneTable extends Component {
         let { oldData } = this.state;
         oldData.areaCode = record.code;
         oldData.areaName = record.name;
-        console.log(record);
         this.setState({
             visible: true,
             areaCode: record.code,
@@ -452,7 +467,20 @@ class ZoneTable extends Component {
             areatype: record.areatype,
             metaname: record.metaname,
             areastatus: record.areastatus,
-            relationcode: record.relationcode
+            relationcode: record.relationcode,
+            clazz:record.clazz,
+            creationtime:record.creationtime,
+            creator:record.creator,
+            headcode:record.headcode,
+            formPropertyList:record.formPropertyList,
+            metaid:record.metaid,
+            metaspace:record.metaspace,
+            modifiedtime:record.modifiedtime,
+            modifer:record.modifer,
+            pagination:record.pagination,
+            queryPropertyList:record.queryPropertyList,
+            templetid:record.templetid,
+            resid:record.resid
         });
     }
     // 闭包 只对具体的单元格修改
@@ -517,7 +545,20 @@ class ZoneTable extends Component {
             areatype,
             metaname,
             areastatus,
-            relationcode
+            relationcode,
+            clazz,
+            creationtime,
+            creator,
+            headcode,
+            formPropertyList,
+            metaid,
+            metaspace,
+            modifiedtime,
+            modifer,
+            pagination,
+            queryPropertyList,
+            templetid,
+            resid
         } = this.state;
         if (!areaCode) {
             Notice({ status: 'warning', msg: '请输入区域编码' });
@@ -559,7 +600,20 @@ class ZoneTable extends Component {
                         areatype: areatype,
                         metaname: metaname,
                         areastatus: areastatus,
-                        relationcode: relationcode
+                        relationcode: relationcode,
+                        clazz:clazz,
+                        creationtime:creationtime,
+                        creator:creator,
+                        headcode:headcode,
+                        formPropertyList:formPropertyList,
+                        metaid:metaid,
+                        metaspace:metaspace,
+                        modifiedtime:modifiedtime,
+                        modifer:modifer,
+                        pagination:pagination,
+                        queryPropertyList:queryPropertyList,
+                        templetid:templetid,
+                        resid:resid
                     };
                     this.setState(
                         {
