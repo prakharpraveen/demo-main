@@ -3,7 +3,6 @@ import { Form, Row, Col, Input, Select, Checkbox,Tooltip } from "antd";
 import _ from "lodash";
 import { high } from "nc-lightapp-front";
 import ChooseImageForForm from "Components/ChooseImageForForm";
-import PubError from "./PubError";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 import "./index.less";
 const { Refer } = high;
