@@ -139,15 +139,26 @@ body {
     .ant-tree {
         li {
             .ant-tree-node-content-wrapper {
+                line-height: 28px;
+                height: 28px;
                 padding: 0;
                 padding-right: 5px;
+                color: #111111;
                 &:hover {
-                    background-color: #fcedec !important;
+                    background-color: #F3F3F3 !important;
                 }
                 &.ant-tree-node-selected {
-                    background-color: #f4f5f7 !important;
+                    background-color: #E4E4E4 !important;
                     color: #e14c46;
                 }
+            }
+            span.ant-tree-switcher{
+                line-height: 28px;
+                height: 28px;
+            }
+            span.ant-tree-iconEle{
+                line-height: 28px;
+                height: 28px;
             }
             .tree-dot{
                 display: inline-block;
@@ -163,7 +174,7 @@ body {
                 margin-right: 5px;
                 line-height: 1.5;
                 svg {
-                    margin-top: 5px;
+                    margin-top: 7px;
                 }
             }
             li {
@@ -174,7 +185,7 @@ body {
                     border-top: 1px dashed #d9d9d9;
                     position: absolute;
                     left: 0;
-                    top: 16px;
+                    top: 17px;
                     margin: 0 20px;
                 }
             }
