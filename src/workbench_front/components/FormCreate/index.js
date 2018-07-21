@@ -94,7 +94,8 @@ export class FormContent extends Component {
             case "string":
                 return (
                     <FormItem
-                        className="form-item margin-bottom-20"
+                        className="form-item margin-bottom-8"
+                        colon={!isedit}
                         label={label}
                     >
                         {getFieldDecorator(code, {
@@ -137,7 +138,8 @@ export class FormContent extends Component {
             case "refer":
                 return (
                     <FormItem
-                        className="form-item margin-bottom-20"
+                        className="form-item margin-bottom-8"
+                        colon={!isedit}
                         label={label}
                     >
                         {getFieldDecorator(code, {
@@ -178,7 +180,8 @@ export class FormContent extends Component {
             case "select":
                 return (
                     <FormItem
-                        className="form-item margin-bottom-20"
+                        className="form-item margin-bottom-8"
+                        colon={!isedit}
                         label={label}
                     >
                         {getFieldDecorator(code, {
@@ -209,7 +212,7 @@ export class FormContent extends Component {
                 );
             case "checkbox":
                 return (
-                    <FormItem className="form-item margin-bottom-20">
+                    <FormItem className="form-item margin-bottom-8">
                         {getFieldDecorator(code, {
                             initialValue: initialValue,
                             valuePropName: "checked"
