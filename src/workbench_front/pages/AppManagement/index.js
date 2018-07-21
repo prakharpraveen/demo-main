@@ -276,6 +276,7 @@ class AppManagement extends Component {
                     let appCallBack = data => {
                         this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
+                        this.props.form.resetFields();
                     };
                     this.reqTreeNodeData(
                         { name: "应用注册", action: "应用查询" },

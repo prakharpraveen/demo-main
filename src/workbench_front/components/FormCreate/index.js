@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Form, Row, Col, Input, Select, Checkbox,Tooltip } from "antd";
+import { Form, Row, Col, Checkbox } from "antd";
 import _ from "lodash";
-import { high } from "nc-lightapp-front";
-import ChooseImageForForm from "Components/ChooseImageForForm";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
+import EditableChooseImage from "./EditableChooseImage";
+import EditableString from "./EditableString";
+import EditableSelect from "./EditableSelect";
+import EditableRefer from "./EditableRefer";
 import "./index.less";
-const { Refer } = high;
 const FormItem = Form.Item;
-const Option = Select.Option;
 /**
  * 常规显示
  * 其中包括 type 类型为 string
@@ -79,7 +78,7 @@ export class FormContent extends Component {
         super(props);
         this.history;
     }
-    createComponent = (item,index) => {
+    createComponent = (item, index) => {
         const { getFieldDecorator } = this.props.form;
         let {
             type = "string",
@@ -103,16 +102,16 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     type: "string",
-                                    message: <Tooltip title={`${label}数据类型-string`} visible={true}/>
+                                    message: `${label}数据类型-string`
                                 },
                                 {
                                     required: isRequired,
                                     whitespace: true,
-                                    message: <Tooltip title={`${label}为必输项`} visible={true} />
+                                    message: `${label}为必输项`
                                 },
                                 {
                                     len: len,
-                                    message: <Tooltip title={`${label}长度为${len}`} visible={true} />
+                                    message: `${label}长度为${len}`
                                 },
                                 {
                                     validator: check
@@ -127,7 +126,11 @@ export class FormContent extends Component {
                                 }
                             ]
                         })(
-                            isedit ? (<Input />) : (<NormalShow />)
+                            isedit ? (
+                                <EditableString form={this.props.form} />
+                            ) : (
+                                <NormalShow />
+                            )
                         )}
                     </FormItem>
                 );
@@ -142,16 +145,29 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: <Tooltip title={`${label}为必输项`} visible={true}/>
+                                    validator: (rule, value, callback) => {
+                                        if (value && value.refname) {
+                                            callback();
+                                        } else {
+                                            callback(`${label}为必输项`);
+                                        }
+                                    }
                                 },
                                 {
                                     type: "object",
-                                    message: <Tooltip title={`${label}数据类型-object`} visible={true}/>,
+                                    message: `${label}数据类型-object`,
                                     validator: null
                                 }
                             ]
                         })(
-                            isedit ? <Refer {...item.options} /> : <ReferShow />
+                            isedit ? (
+                                <EditableRefer
+                                    form={this.props.form}
+                                    options={item.options}
+                                />
+                            ) : (
+                                <ReferShow />
+                            )
                         )}
                     </FormItem>
                 );
@@ -166,19 +182,21 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     type: "string",
-                                    message: <Tooltip title={`${label}数据类型-string`} visible={true}/>,
+                                    message: `${label}数据类型-string`,
                                     validator: null
                                 },
                                 {
                                     required: isRequired,
-                                    message: <Tooltip title={`${label}为必输项`} visible={true}/>
+                                    message: `${label}为必输项`
                                 }
                             ]
                         })(
                             isedit ? (
-                                <Select placeholder={`请选择${label}`}>
-                                    {this.createOption(item.options)}
-                                </Select>
+                                <EditableSelect
+                                    form={this.props.form}
+                                    placeholder={`请选择${label}`}
+                                    options={item.options}
+                                />
                             ) : (
                                 <SelectShow options={item.options} />
                             )
@@ -202,11 +220,12 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    message: <Tooltip title={"请选择图标"} visible={true}/>
+                                    message: "请选择图标"
                                 }
                             ]
                         })(
-                            <ChooseImageForForm
+                            <EditableChooseImage
+                                form={this.props.form}
                                 isedit={isedit}
                                 data={item.options}
                                 title={isedit ? "图标选择" : "已选图标"}
@@ -222,31 +241,18 @@ export class FormContent extends Component {
      * 创建表单项
      */
     createFormItem = () => {
-        let children = this.props.formData.map((item,index) => {
+        let children = this.props.formData.map((item, index) => {
             let { xs = 24, md = 12, lg = 12, code, hidden = false } = item;
             if (hidden === true) {
                 return null;
             }
             return (
                 <Col xs={xs} md={md} lg={lg} key={code}>
-                    {this.createComponent(item,index)}
+                    {this.createComponent(item, index)}
                 </Col>
             );
         });
         return children;
-    };
-    /**
-     * 创建 下拉内容
-     * @param {Array} options 下拉项数组
-     */
-    createOption = options => {
-        return options.map((item, index) => {
-            return (
-                <Option key={item.value} value={item.value}>
-                    {item.text}
-                </Option>
-            );
-        });
     };
     componentWillReceiveProps() {
         this.history = this.props.datasources;

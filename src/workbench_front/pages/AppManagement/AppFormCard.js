@@ -377,7 +377,7 @@ class AppFromCard extends Component {
                     formData={appFormData}
                     datasources={dataDefaults(
                         this.props.nodeData,
-                        appFormData,
+                        appFormData.filter(item => item.hidden === false),
                         "code"
                     )}
                 />

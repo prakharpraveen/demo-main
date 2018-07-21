@@ -155,6 +155,7 @@ class AppRegister extends Component {
             optype = "4";
         }
         this.historyNodeData = this.props.nodeData;
+        this.props.form.resetFields();
         let appData = {
             code: "",
             name: "",
@@ -580,6 +581,7 @@ class AppRegister extends Component {
                     let appCallBack = data => {
                         this.props.setNodeData(data.appRegisterVO);
                         this.props.setAppParamData(data.appParamVOs);
+                        this.props.form.resetFields();
                     };
                     this.reqTreeNodeData(
                         { name: "应用注册", action: "应用查询" },

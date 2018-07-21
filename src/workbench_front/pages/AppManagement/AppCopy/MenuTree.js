@@ -71,7 +71,12 @@ class MenuTree extends Component {
                     );
                 }
                 return (
-                    <TreeNode key={code} title={itemContent} refData={item} />
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={code}
+                        title={itemContent}
+                        refData={item}
+                    />
                 );
             });
         let newTreeData = createTree(this.props.menuTreeData, "refcode", "pid");

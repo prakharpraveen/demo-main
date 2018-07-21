@@ -105,16 +105,6 @@ body {
             }
         }
     }
-    .ant-form {
-        .ant-checkbox-wrapper {
-            margin-left: 65px;
-            .ant-checkbox + span,
-            .ant-checkbox-wrapper + span {
-                padding-left: 16px;
-                padding-right: 8px;
-            }
-        }
-    }
     .ant-tabs-nav {
         padding: 0 12px;
         .ant-tabs-tab {
@@ -134,7 +124,7 @@ body {
         height: 30px;
     }
     .has-error .ant-form-explain{
-        width: 100%;
+        display: none;
     }
     .has-error .ant-input,
     .has-error .ant-input:hover {
@@ -199,7 +189,7 @@ body {
                     margin: 0 20px;
                 }
             }
-            & > li {
+            & > li:first-child {
                 &::after {
                     top: 21px;
                 }
