@@ -308,8 +308,21 @@ class Layout extends Component {
             userId,
             userName,
             groupId,
-            groupName 
+            groupName
         };
+    };
+    /**
+     * session激活 心跳请求
+     */
+    heartbeat = () => {
+        let { n = "首页" } = GetQuery(this.props.location.search);
+        Ajax({
+            url: `/nccloud/platform/pub/sessionalive.do`,
+            info: {
+                name: n,
+                action: "session激活"
+            }
+        });
     };
     /**
      * 页签激活重新查询用户信息
@@ -317,11 +330,16 @@ class Layout extends Component {
     handleVisibilityChange = () => {
         if (document.visibilityState !== "hidden") {
             this.reqInfoData();
+            console.log("进入");
+            this.IntSessionaLive = setInterval(()=>this.heartbeat(), 20*60*1000);
+        } else {
+            console.log("离开");
+            window.clearInterval(this.IntSessionaLive);
         }
     };
     componentDidMount() {
         this.handleUpdateTitleName();
-        this.reqInfoData();
+        this.handleVisibilityChange();
         window.addEventListener("hashchange", this.handleUpdateTitleName);
         window.addEventListener(
             "visibilitychange",
