@@ -145,13 +145,17 @@ export class FormContent extends Component {
                             rules: [
                                 {
                                     required: isRequired,
-                                    validator: (rule, value, callback) => {
-                                        if (value && value.refname) {
-                                            callback();
-                                        } else {
-                                            callback(`${label}为必输项`);
-                                        }
-                                    }
+                                    validator: isRequired
+                                        ? (rule, value, callback) => {
+                                              if (value && value.refname) {
+                                                  callback();
+                                              } else {
+                                                  callback(`${label}为必输项`);
+                                              }
+                                          }
+                                        : (rule, value, callback) => {
+                                              callback();
+                                          }
                                 },
                                 {
                                     type: "object",
