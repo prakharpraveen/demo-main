@@ -331,10 +331,10 @@ class Layout extends Component {
         if (document.visibilityState !== "hidden") {
             this.reqInfoData();
             console.log("进入");
-            this.IntSessionaLive = setInterval(()=>this.heartbeat(), 20*60*1000);
+            this.SessionaLive = setInterval(()=>this.heartbeat(), 20*60*1000);
         } else {
             console.log("离开");
-            window.clearInterval(this.IntSessionaLive);
+            window.clearInterval(this.SessionaLive);
         }
     };
     componentDidMount() {
