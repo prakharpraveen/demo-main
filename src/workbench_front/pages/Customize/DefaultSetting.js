@@ -57,8 +57,11 @@ class DefaultSetting extends Component {
                 refcode: "",
                 refname: "",
                 refpk: ""
-            }
+            },
+            // 应用按钮是否可用
+            disabled: true
         };
+        this.historyData;
     }
     getAllData = () => {
         let individualPropertyVOs = [
@@ -108,33 +111,19 @@ class DefaultSetting extends Component {
     };
     handdleRefChange = (value, type) => {
         console.log(value, type);
-        let { refname, refcode, refpk } = value;
+        let { refname = "", refcode = "", refpk = "" } = value;
+        let flag = this.historyData[type]["refcode"] === refcode;
         let obj = {};
         obj[type] = {};
         obj[type]["refname"] = refname;
         obj[type]["refcode"] = refcode;
         obj[type]["refpk"] = refpk;
-        this.setState(obj);
+        this.setState({ ...obj, disabled: flag });
     };
-    componentDidMount() {
-        Ajax({
-            url: `/nccloud/platform/appregister/queryindividualpro.do`,
-            info: {
-                name: "个性化-默认设置",
-                action: "查询"
-            },
-            success: ({ data: { data } }) => {
-                if (data) {
-                    data = this.defaultRefValueInit(data);
-                    this.setState({ ...data });
-                }
-            }
-        });
-    }
     /**
      * 初始化默认参照的数据
      */
-    defaultRefValueInit =(Object)=>{
+    defaultRefValueInit = Object => {
         for (const key in Object) {
             if (!Object[key]) {
                 Object[key] = {
@@ -145,6 +134,22 @@ class DefaultSetting extends Component {
             }
         }
         return Object;
+    };
+    componentDidMount() {
+        Ajax({
+            url: `/nccloud/platform/appregister/queryindividualpro.do`,
+            info: {
+                name: "个性化-默认设置",
+                action: "查询"
+            },
+            success: ({ data: { data } }) => {
+                if (data) {
+                    this.historyData = data;
+                    data = this.defaultRefValueInit(data);
+                    this.setState({ ...data });
+                }
+            }
+        });
     }
     render() {
         let {
@@ -153,7 +158,8 @@ class DefaultSetting extends Component {
             org_df_cost,
             org_df_fa,
             contentLang,
-            dataFormat
+            dataFormat,
+            disabled
         } = this.state;
         return (
             <ComLayout title={this.props.title}>
@@ -238,7 +244,11 @@ class DefaultSetting extends Component {
                         </div>
                     </div>
                     <div className="default-footer">
-                        <Button type="primary" onClick={this.getAllData}>
+                        <Button
+                            type="primary"
+                            disabled={disabled}
+                            onClick={this.getAllData}
+                        >
                             应用
                         </Button>
                     </div>
