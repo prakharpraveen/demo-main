@@ -67,7 +67,6 @@ class AppRegister extends Component {
                     // { first: true, force: true },
                     (errors, values) => {
                         if (!errors) {
-                            let aaa = this.props.form.getFieldsValue();
                             this.save();
                         }
                     }
@@ -537,7 +536,10 @@ class AppRegister extends Component {
      * 数据点选择事件
      * @param {Object} obj 选中的数节点对象
      */
-    handleTreeNodeSelect = obj => {
+    handleTreeNodeSelect = (obj, selectedKey) => {
+        if (this.treeNodeChange()) {
+            return;
+        }
         let optype = "";
         let id;
         let nodeInfo = {
@@ -632,6 +634,7 @@ class AppRegister extends Component {
         this.props.setIsEdit(false);
         this.props.setNodeInfo(nodeInfo);
         this.props.setOptype(optype);
+        this.props.setSelectedKeys(selectedKey);
     };
     /**
      * 更新树数组
@@ -662,6 +665,31 @@ class AppRegister extends Component {
             { search_content: value },
             searchCallback
         );
+    };
+    /**
+     * 树节点切换校验
+     *
+     */
+    treeNodeChange = () => {
+        let flag = true;
+        if (this.props.isEdit) {
+            confirm({
+                title: "是否保存数据?",
+                content: "",
+                okText: "确认",
+                okType: "danger",
+                cancelText: "取消",
+                mask: false,
+                onOk: () => {
+                    this.handleClick("save");
+                    flag = false;
+                },
+                onCancel() {}
+            });
+        } else {
+            flag = false;
+        }
+        return flag;
     };
     componentDidMount() {
         let {
