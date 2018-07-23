@@ -524,6 +524,8 @@ class MyRightSider extends Component {
 						<li>{this.getMyCheckbox('required')}</li>
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
+						<li>默认取值</li>
+						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
 						<li>默认系统变量</li>
 						<li>{this.getMySelect(utilService.defaultvarObj, 'defaultvar')}</li>
 						<li>显示颜色</li>

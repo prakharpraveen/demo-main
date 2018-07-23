@@ -210,6 +210,7 @@ class MySider extends Component {
 						onChange={this.onCascaderChange}
 						placeholder='请选择领域-模块'
 						expandTrigger='hover'
+						popupClassName="desk-setting-cascader-popup"
 					/>
 					<span className='switch-search' onClick={this.switchSearch}>
 						<Icon type='search' title='切换至名称搜索' />

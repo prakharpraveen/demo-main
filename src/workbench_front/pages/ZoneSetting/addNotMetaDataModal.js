@@ -73,6 +73,7 @@ class AddNotMetaDataModal extends Component {
 				disabled: false,
 				visible: true,
 				maxlength: '20',
+				defaultvalue:"",
 				defaultvar: '',
 				define1: '',
 				define2: '',

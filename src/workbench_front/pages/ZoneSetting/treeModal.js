@@ -105,6 +105,7 @@ class TreeModal extends Component {
                     disabled: false,
                     visible: true,
                     maxlength: length,
+                    defaultvalue:"",
                     defaultvar: "",
                     define1: "",
                     define2: "",
