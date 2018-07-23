@@ -6,7 +6,6 @@ import Svg from "Components/Svg";
 import { createTree } from "Pub/js/createTree.js";
 import {
     setExpandedKeys,
-    setSelectedKeys,
     setPageActiveKey
 } from "Store/AppRegister/action";
 const TreeNode = Tree.TreeNode;
@@ -49,11 +48,10 @@ class SearchTree extends Component {
         if (info["selectedNodes"].length > 0) {
             selectedNode = info["selectedNodes"][0]["props"]["refData"];
         }
-        this.props.setSelectedKeys(selectedKey);
         // 当树节点切换时 重置 页面节点 激活页签
         this.props.setPageActiveKey("1");
         // 为父组件返回选中的树节点对象
-        this.props.onSelect(selectedNode);
+        this.props.onSelect(selectedNode,selectedKey);
     };
     render() {
         const { searchValue, autoExpandParent } = this.state;
@@ -157,7 +155,6 @@ SearchTree.propTypes = {
     expandedKeys: PropTypes.array.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     setExpandedKeys: PropTypes.func.isRequired,
-    setSelectedKeys: PropTypes.func.isRequired,
     setPageActiveKey: PropTypes.func.isRequired
 };
 export default connect(
@@ -166,5 +163,5 @@ export default connect(
         expandedKeys: state.AppRegisterData.expandedKeys,
         selectedKeys: state.AppRegisterData.selectedKeys
     }),
-    { setExpandedKeys, setSelectedKeys, setPageActiveKey }
+    { setExpandedKeys, setPageActiveKey }
 )(SearchTree);
