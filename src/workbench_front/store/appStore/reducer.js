@@ -1,11 +1,13 @@
 import * as appStore from "./action-type";
 import renameActionType from "Store/renameActionType";
+import UserLogo from "Assets/images/userLogo.jpg";
 renameActionType(appStore, "appStore");
 
 let defaultState = {
     lang: "zh-CN",
     userInfo: "xxx",
     intlDone: false,
+    userLogo: UserLogo,
     isOpen: false,
     userID: "0001Z51000000005I123",
     userName: "用户名称"

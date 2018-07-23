@@ -60,7 +60,10 @@ class UserInfo extends Component {
             editData: {},
             infoType: "",
             modalTitle: "",
-            visible: false
+            visible: false,
+            picture: "",
+            phone: "",
+            email: ""
         };
     }
     /**
@@ -131,11 +134,22 @@ class UserInfo extends Component {
             visible: false
         });
     };
+    componentDidMount() {
+        /**
+         * 获取账户数据
+         */
+    }
     render() {
+        let { picture, phone, email } = this.state;
         return (
-            <PageLayout header={<PageLayoutHeader>账户设置</PageLayoutHeader>}>
+            <PageLayout>
                 <div className="workbench-userinfo">
-                    <InfoForm infoSetting={this.showModal} />
+                    <InfoForm
+                        picture={picture}
+                        phone={phone}
+                        email={email}
+                        infoSetting={this.showModal}
+                    />
                     <Modal
                         title={this.state.modalTitle}
                         mask={false}

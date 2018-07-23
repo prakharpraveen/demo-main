@@ -1,47 +1,82 @@
 .workbench-userinfo {
-  height: calc(100vh - 160px);
-  min-height: 500px;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  .userinfo-container {
-    margin-top: 100px;
-    min-width: 600px;
-    height: 350;
-    .userinfo-item {
-      padding: 20px 10px;
-      min-width: 240px;
-      .userinfo-item-label {
-        padding: 10px 5px;
+    height: calc(100vh - 100px);
+    min-height: 500px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    .userinfo-container {
+        min-width: 540px;
         display: flex;
-        justify-content: flex-end;
         align-items: center;
-        height: 50px;
-      }
-      .userinfo-item-content {
-        height: 50px;
-        padding: 10px 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .iconfont{
-          font-size: 14px;
+        justify-content: flex-start;
+        flex-direction: column;
+        font-size: 14px;
+        & > div {
+            width: 100%;
         }
-      }
+        .margin-bottom-12 {
+            margin-bottom: 12px;
+        }
+        .border-bottom {
+            border-bottom: 1px solid #d0d0d0;
+        }
+        .title {
+            margin-top: 46px;
+            font-size: 17px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            .label {
+                min-width: 120px;
+            }
+            .item-content {
+                width: 100%;
+                color: #111111;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .btn {
+                    color: #007ace;
+                    cursor: pointer;
+                }
+            }
+        }
+        .info {
+            color: #111111;
+        }
+        .userlogo {
+            width: 64px;
+            height: 64px;
+            position: relative;
+            img {
+                border-radius: 50%;
+            }
+            .iconfont {
+                position: absolute;
+                top: 60%;
+                left: 60%;
+                font-size: 15px;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: #555555;
+                color: #ffffff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .not-setting {
+            color: #555555;
+            .iconfont {
+                font-size: 13px;
+            }
+        }
     }
-    .userinfo-name {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      span {
-        display: inline-block;
-        padding: 20px 30px;
-        background: #f2f2f2;
-        border-radius: 3px;
-      }
-    }
-  }
 }
 .userinfo-modal-content {
-  padding-right: 60px;
+    padding-right: 60px;
 }
