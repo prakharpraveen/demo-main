@@ -94,7 +94,7 @@ class ModuleFromCard extends Component {
 		}
 		function creatOption() {
 			let newArray = newListData && newListData.filter((v, i) => {
-				return v.areatype === '1'
+				return v.areatype !=='0'
 			})
 			return (newArray && newArray.map((item, i) => {
 				return (
