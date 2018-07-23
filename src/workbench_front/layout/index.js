@@ -32,7 +32,7 @@ class Layout extends Component {
             // 所属集团
             currentData: [],
             selectedKey: "",
-            newDate: moment(),
+            newDate: moment().format("YYYY-MM-DD hh:mm:ss"),
             allAppsVisible: false
         };
     }
@@ -75,7 +75,12 @@ class Layout extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    this.setState({ newDate });
+                    newDate = moment(
+                        newDate
+                    ).format("YYYY-MM-DD hh:mm:ss");
+                    this.setState({ newDate }, () => {
+                        window.businessInfo.businessDate = newDate;
+                    });
                 }
             }
         });
@@ -260,16 +265,15 @@ class Layout extends Component {
                         userId,
                         name
                     } = data.find(item => item.is_selected);
-                    let newDate = moment(bizDateTime);
                     this.props.setAccountInfo({
-                        newDate,
+                        newDate:bizDateTime,
                         selectedKey: pk_group,
                         userName: userName ? userName : "用户名",
                         userID: userId
                     });
                     this.setState(
                         {
-                            newDate,
+                            newDate:bizDateTime,
                             currentData: data,
                             selectedKey: pk_group
                         },
@@ -331,7 +335,10 @@ class Layout extends Component {
         if (document.visibilityState !== "hidden") {
             this.reqInfoData();
             console.log("进入");
-            this.SessionaLive = setInterval(()=>this.heartbeat(), 20*60*1000);
+            this.SessionaLive = setInterval(
+                () => this.heartbeat(),
+                20 * 60 * 1000
+            );
         } else {
             console.log("离开");
             window.clearInterval(this.SessionaLive);
@@ -490,7 +497,7 @@ class Layout extends Component {
                             <Breadcrumb />
                         )}
                         <BusinessDate
-                            onChange={this.handleDateChange}
+                            onOk={this.handleDateChange}
                             date={newDate}
                         />
                     </div>

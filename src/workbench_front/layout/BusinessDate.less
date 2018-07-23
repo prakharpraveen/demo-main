@@ -1,0 +1,50 @@
+.workbench-ExtraFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .btn {
+        color: #007ace;
+        cursor: pointer;
+    }
+    .left {
+    }
+    .right {
+    }
+}
+.nc-workbench-businessdate-dropdown {
+    .ant-calendar-selected-day {
+        .ant-calendar-date {
+            background: #e14c46;
+            color: #ffffff;
+        }
+    }
+    .ant-calendar-today {
+        .ant-calendar-date {
+            border-color: #e14c46;
+            color: #e14c46;
+        }
+    }
+    .ant-calendar-today.ant-calendar-selected-day {
+        .ant-calendar-date {
+            border-color: #e14c46;
+            color: #ffffff;
+            &:hover {
+                background: #fef1f1;
+                color: #e14c46;
+            }
+        }
+    }
+    .ant-calendar-date {
+        &:hover {
+            background: #fef1f1;
+            color: #e14c46;
+        }
+        &:active {
+            background: #fef1f1;
+            color: #e14c46;
+        }
+        &:focus {
+            outline-color: #fef1f1;
+        }
+    }
+}
