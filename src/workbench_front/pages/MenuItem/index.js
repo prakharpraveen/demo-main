@@ -353,7 +353,7 @@ class MenuItem extends Component {
                 selectedKeys,
                 isedit: false,
                 isNew: false,
-                parentKey: selectedKey ? selectedKey : "",
+                parentKey: "",
                 fields: this.newFormData,
                 formData: { ...this.newFormData }
             });
@@ -503,7 +503,7 @@ class MenuItem extends Component {
             {
                 code: "menudes",
                 type: "string",
-                label: "多语字段",
+                label: "菜单描述",
                 isRequired: false,
                 isedit: isedit,
                 initialValue: menudes,
