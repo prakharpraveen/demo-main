@@ -168,6 +168,8 @@ class MenuItem extends Component {
                     resid
                 } = newFields;
                 let resData, urlData;
+                console.log(appcodeRef); 
+                
                 if (isNew) {
                     if (parentKey === "" || parentKey === "00") {
                         resData = {
@@ -426,7 +428,6 @@ class MenuItem extends Component {
             selectedKeys,
             parentKey
         } = this.state;
-        console.log(parentKey);
         let {
             menuitemcode,
             menuitemname,
@@ -471,7 +472,6 @@ class MenuItem extends Component {
                     isTreelazyLoad: false,
                     onlyLeafCanSelect: true,
                     queryTreeUrl: "/nccloud/platform/appregister/appregref.do",
-                    onChange: val => {},
                     disabled:
                         this.state.fields.menuitemcode &&
                         this.state.fields.menuitemcode.length < 8 &&

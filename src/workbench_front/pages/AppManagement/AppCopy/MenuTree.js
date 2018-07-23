@@ -24,11 +24,8 @@ class MenuTree extends Component {
             }
             let newMenuItemCode = `${selectedNode.refcode + Pad(1, 2)}`;
             if (selectedNode.children && selectedNode.children.length > 0) {
-                newMenuItemCode = `${selectedNode["children"][
-                    selectedNode.children.length - 1
-                ]["refcode"] -
-                    0 +
-                    1}`;
+                newMenuItemCode = `${selectedNode.refcode +
+                    Pad(selectedNode.children.length, 2)}`;
             }
             this.props.form.setFieldsValue({
                 newMenuItemCode: newMenuItemCode
