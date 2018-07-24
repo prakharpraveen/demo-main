@@ -104,9 +104,7 @@ class AssignComponent extends Component {
         };
         if (activeKey === '1') {
             infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
-            infoData.templateType = 'query';
-        } else if (activeKey === '3') {
+        }  else if (activeKey === '2') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -395,7 +393,7 @@ class AssignComponent extends Component {
                     (hideSearch ? (
                         ''
                     ) : (
-                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onSearch} />
+                        <Search placeholder='Search' onChange={this.onSearch} />
                     ))}
                 {data.length > 0 && (
                     <Tree
@@ -444,8 +442,6 @@ class AssignComponent extends Component {
         if (activeKey === '1') {
             infoData.templateType = 'bill';
         } else if (activeKey === '2') {
-            infoData.templateType = 'query';
-        } else if (activeKey === '3') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -520,7 +516,7 @@ class AssignComponent extends Component {
                             <span>功能节点：</span>
                             <span>{pageCode ? pageCode : ''}</span>
                         </p>
-                        {activeKey === '3' && (
+                        {activeKey === '2' && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}
