@@ -413,7 +413,7 @@ class AssignComponent extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
-                        showIcon
+                        //showIcon
                         onExpand={this.onExpand}
                         expandedKeys={expandedKeys}
                         onSelect={this.onSelect.bind(this, typeSelect)}

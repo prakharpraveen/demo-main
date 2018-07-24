@@ -678,7 +678,7 @@ class TemplateSetting extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
-                        showIcon
+                        //showIcon
                         onExpand={(key, node) => {
                             this.onExpand(typeSelect, key);
                         }}
