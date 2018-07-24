@@ -7,6 +7,7 @@ import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
 import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
+import Svg from 'Components/Svg';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const Option = Select.Option;
@@ -379,12 +380,26 @@ class AssignComponent extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={key} title={text} refData={item}>
+                        <TreeNode key={key} title={text} refData={item}
+                        icon={
+                            <Svg
+                                width={15}
+                                height={13}
+                                xlinkHref={
+                                    expandedKeys.indexOf(item.pk) === -1 ? (
+                                        '#icon-wenjianjia'
+                                    ) : (
+                                        '#icon-wenjianjiadakai'
+                                    )
+                                }
+                            />
+                        }
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={key} title={text} refData={item} />;
+                return <TreeNode icon={<span className='tree-dot' />} key={key} title={text} refData={item} />;
             });
         };
         return (
@@ -398,6 +413,7 @@ class AssignComponent extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
+                        showIcon
                         onExpand={this.onExpand}
                         expandedKeys={expandedKeys}
                         onSelect={this.onSelect.bind(this, typeSelect)}

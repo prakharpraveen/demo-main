@@ -12,6 +12,7 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
 import { openPage } from 'Pub/js/superJump';
+import Svg from 'Components/Svg';
 import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
@@ -649,12 +650,26 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={pk} title={title} refData={item}>
+                        <TreeNode key={pk} title={title} refData={item}
+                        icon={
+                            <Svg
+                                width={15}
+                                height={13}
+                                xlinkHref={
+                                    expandedKeys.indexOf(item.pk) === -1 ? (
+                                        '#icon-wenjianjia'
+                                    ) : (
+                                        '#icon-wenjianjiadakai'
+                                    )
+                                }
+                            />
+                        }
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={pk} title={title} refData={item} />;
+                return <TreeNode icon={<span className='tree-dot' />} key={pk} title={title} refData={item} />;
             });
         };
         return (
@@ -663,6 +678,7 @@ class TemplateSetting extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
+                        showIcon
                         onExpand={(key, node) => {
                             this.onExpand(typeSelect, key);
                         }}

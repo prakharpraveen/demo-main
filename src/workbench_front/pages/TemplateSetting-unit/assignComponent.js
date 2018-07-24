@@ -7,6 +7,7 @@ import Ajax from 'Pub/js/ajax.js';
 import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
 import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
+import Svg from 'Components/Svg';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
 const TabPane = Tabs.TabPane;
@@ -382,13 +383,27 @@ class AssignComponent extends Component {
                     );
                 if (children) {
                     return (
-                        <TreeNode key={key} title={text}>
+                        <TreeNode key={key} title={text}
+                        icon={
+                            <Svg
+                                width={15}
+                                height={13}
+                                xlinkHref={
+                                    expandedKeys.indexOf(item.pk) === -1 ? (
+                                        '#icon-wenjianjia'
+                                    ) : (
+                                        '#icon-wenjianjiadakai'
+                                    )
+                                }
+                            />
+                        }
+                        >
                             {' '}
                             {loop(children)}{' '}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={key} title={text} />;
+                return <TreeNode icon={<span className='tree-dot' />} key={key} title={text} />;
             });
         };
         return (
@@ -402,6 +417,7 @@ class AssignComponent extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
+                        showIcon
                         onExpand={this.onExpand}
                         expandedKeys={expandedKeys}
                         onSelect={this.onSelect.bind(this, typeSelect)}

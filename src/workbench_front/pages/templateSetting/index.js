@@ -11,6 +11,7 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
 import { openPage } from 'Pub/js/superJump';
+import Svg from 'Components/Svg';
 import { generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
@@ -164,7 +165,7 @@ class TemplateSetting extends Component {
         if (activeKey === '1') {
             infoData.templateType = 'bill';
             url = `/nccloud/platform/template/copyTemplate.do`;
-        }  else if (activeKey === '2') {
+        } else if (activeKey === '2') {
             if (!templateTitleVal) {
                 Notice({ status: 'warning', msg: '请输入模板标题' });
                 return;
@@ -296,11 +297,11 @@ class TemplateSetting extends Component {
                 }
                 let _this = this;
                 confirm({
-                    title: "是否要删除?",
-                    content: "",
-                    okText: "确认",
-                    okType: "danger",
-                    cancelText: "取消",
+                    title: '是否要删除?',
+                    content: '',
+                    okText: '确认',
+                    okType: 'danger',
+                    cancelText: '取消',
                     mask: false,
                     onOk() {
                         Ajax({
@@ -352,7 +353,7 @@ class TemplateSetting extends Component {
             },
             success: ({ data }) => {
                 if (data.success) {
-                    document.getElementsByClassName("printContent")[0].innerHTML=data.data;
+                    document.getElementsByClassName('printContent')[0].innerHTML = data.data;
                 }
             }
         });
@@ -462,7 +463,7 @@ class TemplateSetting extends Component {
             this.setState({
                 treeTemBillData
             });
-        }  else if (templateType === 'print') {
+        } else if (templateType === 'print') {
             if (activeKey === '2') {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
@@ -708,12 +709,29 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={pk} title={title} refData={item}>
+                        <TreeNode
+                            key={pk}
+                            title={title}
+                            refData={item}
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        expandedKeys.indexOf(item.pk) === -1 ? (
+                                            '#icon-wenjianjia'
+                                        ) : (
+                                            '#icon-wenjianjiadakai'
+                                        )
+                                    }
+                                />
+                            }
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={pk} title={title} refData={item} />;
+                return <TreeNode icon={<span className='tree-dot' />} key={pk} title={title} refData={item} />;
             });
         };
         return (
@@ -722,6 +740,7 @@ class TemplateSetting extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
+                        showIcon
                         onExpand={(key, node) => {
                             this.onExpand(typeSelect, key, node);
                         }}
@@ -747,13 +766,13 @@ class TemplateSetting extends Component {
         this.setState({ alloVisible: visibel });
     };
     showModal = () => {
-        this.setState({ previewPrintVisible: true },()=>{
+        this.setState({ previewPrintVisible: true }, () => {
             this.printModalAjax(this.state.templatePks);
         });
     };
     hideModal = () => {
         this.setState({ previewPrintVisible: false });
-    }
+    };
     render() {
         const {
             treeData,
@@ -795,8 +814,7 @@ class TemplateSetting extends Component {
                     <PageLayoutHeader>
                         <div>模板设置-集团</div>
                         <div className='buttons-component'>
-                            {(treeTemBillData.length > 0 ||
-                                treeTemPrintData.length > 0) &&
+                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
@@ -875,8 +893,14 @@ class TemplateSetting extends Component {
                         setModalVisibel={this.setModalVisibel}
                     />
                 )}
-                <Modal title='请录入正确的模板名称和编码' visible={visible} onOk={this.handleOk} okText= {"确认"}
-                    cancelText= {"取消"} onCancel={this.handleCancel}>
+                <Modal
+                    title='请录入正确的模板名称和编码'
+                    visible={visible}
+                    onOk={this.handleOk}
+                    okText={'确认'}
+                    cancelText={'取消'}
+                    onCancel={this.handleCancel}
+                >
                     <div className='copyTemplate'>
                         <Input
                             value={templateNameVal}
@@ -904,15 +928,15 @@ class TemplateSetting extends Component {
                     </div>
                 </Modal>
                 <Modal
-                        title='打印模板预览'
-                        okText= {"确认"}
-                    cancelText= {"取消"}
-                        visible={previewPrintVisible}
-                        onCancel={this.hideModal}
-                        footer={null}
-                    >
-                        <div className='printContent'></div>
-                    </Modal>
+                    title='打印模板预览'
+                    okText={'确认'}
+                    cancelText={'取消'}
+                    visible={previewPrintVisible}
+                    onCancel={this.hideModal}
+                    footer={null}
+                >
+                    <div className='printContent' />
+                </Modal>
                 {alloVisible && (
                     <AssignComponent
                         templatePks={templatePks}
