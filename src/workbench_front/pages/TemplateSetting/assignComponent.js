@@ -159,14 +159,13 @@ class AssignComponent extends Component {
             data: infoData,
             success: ({ data }) => {
                 if (data.success && data.data) {
-                    if (data.data.roles || data.data.users) {
+                    if (data.data.roles || data.data.users || data.data.resps) {
                         this.setState(
                             {
                                 treeRoDataObj: data.data
                             },
                             this.restoreRoTreeData
                         );
-                    } else if (data.data.resps) {
                         this.restoreResTreeData(data.data.resps);
                     }
                     this.setState({
@@ -179,19 +178,22 @@ class AssignComponent extends Component {
     };
     //职责数据组装
     restoreResTreeData = (data) => {
-        let { treeResData } = this.state;
-        treeResData = [];
-        let initResData = initAbiTreeData;
-        data.map((item, index) => {
-            let { code, id, name } = item;
-            item.key = id;
-            item.text = name + code;
-        });
-        initResData.children = data;
-        treeResData.push(initResData);
-        this.setState({
-            treeResData
-        });
+        if (data && data.length) {
+            let { treeResData } = this.state;
+            treeResData = [];
+            let initResData = initAbiTreeData;
+            data.map((item, index) => {
+                let { code, id, name } = item;
+                item.key = id;
+                item.text = name + code;
+            });
+            initResData.children = data;
+            treeResData.push(initResData);
+            treeResData = generateTreeData(treeResData);
+            this.setState({
+                treeResData
+            });
+        }
     };
     //用户和角色数据的组装
     restoreRoTreeData = (data) => {
@@ -448,7 +450,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            if(nodeKeyValue){
+            if (nodeKeyValue) {
                 infoData.pageCode = nodeKeyValue;
             }
         }
@@ -535,7 +537,9 @@ class AssignComponent extends Component {
                                 {nodeKey &&
                                     nodeKey.length > 0 &&
                                     nodeKey.map((item, index) => {
-                                        return <Option value={item}>{item}</Option>;
+                                        if (item) {
+                                            return <Option value={item}>{item}</Option>;
+                                        }
                                     })}
                             </Select>
                         )}
