@@ -75,9 +75,7 @@ class Layout extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    newDate = moment(
-                        newDate
-                    ).format("YYYY-MM-DD hh:mm:ss");
+                    newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss");
                     this.setState({ newDate }, () => {
                         window.businessInfo.businessDate = newDate;
                     });
@@ -263,17 +261,18 @@ class Layout extends Component {
                         bizDateTime,
                         userName,
                         userId,
-                        name
+                        groupName,
+                        userCode
                     } = data.find(item => item.is_selected);
                     this.props.setAccountInfo({
-                        newDate:bizDateTime,
+                        newDate: bizDateTime,
                         selectedKey: pk_group,
                         userName: userName ? userName : "用户名",
                         userID: userId
                     });
                     this.setState(
                         {
-                            newDate:bizDateTime,
+                            newDate: bizDateTime,
                             currentData: data,
                             selectedKey: pk_group
                         },
@@ -283,7 +282,8 @@ class Layout extends Component {
                                 userId,
                                 userName,
                                 pk_group,
-                                name
+                                groupName,
+                                userCode
                             );
                         }
                     );
@@ -293,26 +293,29 @@ class Layout extends Component {
     };
     /**
      * 为全局添加业务信息
-     * 如： 业务日期 业务集团信息 用户id 用户名称 集团id 集团名称
+     * 如： 业务日期 业务集团信息 用户id 用户名称 集团id 集团名称 用户编码
      * @param {String} businessDate 业务日期
      * @param {String} userId 用户id
      * @param {String} userName 用户名称
      * @param {String} groupId 集团id
      * @param {String} groupName 集团名称
+     * @param {String} userCode 用户编码
      */
     businessInfoSetting = (
         businessDate,
         userId,
         userName,
         groupId,
-        groupName
+        groupName,
+        userCode
     ) => {
         window.businessInfo = {
             businessDate,
             userId,
             userName,
             groupId,
-            groupName
+            groupName,
+            userCode
         };
     };
     /**
@@ -415,7 +418,7 @@ class Layout extends Component {
                                                 key={item.pk_group}
                                                 value={item.pk_group}
                                             >
-                                                {item.name}
+                                                {item.groupName}
                                             </Option>
                                         );
                                     })}
