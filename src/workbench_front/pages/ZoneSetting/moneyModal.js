@@ -19,7 +19,13 @@ export default class MoneyModal extends Component {
             this.setState({ initVal: nextProps.initVal }, () => {
                 let { datatype } = nextProps;
                 let { initVal } = this.state;
-                if (initVal !== "") {
+                if (initVal === "" || initVal===null) {
+                    this.setState({
+                        customScale: datatype === "4" ? 0 : 2,
+                        small: "",
+                        big: ""
+                    });
+                } else {
                     let initArray = initVal.split(",");
                     if (datatype === "4") {//整数
                         this.setState({
@@ -34,12 +40,6 @@ export default class MoneyModal extends Component {
                             big: initArray ? initArray[2] : ""
                         });
                     }
-                } else {
-                    this.setState({
-                        customScale: datatype === "4" ? 0 : 2,
-                        small: "",
-                        big: ""
-                    });
                 }
             });
         }
