@@ -84,7 +84,7 @@ class SideDrawer extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    win.location.href = data;
+                    win.location.href = `${window.location.protocol}//${data}`;
                 } else {
                     win.close();
                     Notice({
