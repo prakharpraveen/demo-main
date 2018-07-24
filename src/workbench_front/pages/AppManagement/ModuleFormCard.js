@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form } from "antd";
 import { FormContent, dataDefaults } from "Components/FormCreate";
 import { setNodeData } from "Store/AppManagement/action";
 import Ajax from "Pub/js/ajax";

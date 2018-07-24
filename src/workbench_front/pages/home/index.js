@@ -66,61 +66,6 @@ class Home extends Component {
     };
 
     /**
-     * 创建 小部件 script 标签
-     */
-    createScript = () => {
-        let { groups } = this.state;
-        let scripts = document.getElementsByTagName("script");
-        // 将 HTMLCollection 类数组对象转换成真正的数组
-        let scriptsArray = Array.prototype.slice.call(scripts, 0);
-        let bodyDOM = document.getElementsByTagName("body")[0];
-        // 将所有的 script 标签 src 值数组
-        scriptsArray = scriptsArray.map(scriptItem => {
-            // script 标签上真正书写的 src 字符串
-            if (scriptItem.attributes.src) {
-                return scriptItem.attributes.src.value;
-            }
-        });
-        // paths 后台返回的当前用户首页所有小部件相关内容
-        groups.map((group, i) => {
-            group.apps.map((item, index) => {
-                let { target_path, apptype } = item;
-                if (apptype === "2") {
-                    // 查找后台提供的小部件 js 路径是否已经加载到 dom 中
-                    let flag = scriptsArray.find(scriptsSrc => {
-                        return scriptsSrc === target_path;
-                    });
-                    // 如果没有，进行 script 标签创建及加载指定 js 文件
-                    if (typeof flag === "undefined") {
-                        let script = document.createElement("script");
-                        script.type = "text/javascript";
-                        script.src = target_path;
-                        bodyDOM.appendChild(script);
-                    } else {
-                        for (
-                            let scriptIndex = 0;
-                            scriptIndex < scripts.length;
-                            scriptIndex++
-                        ) {
-                            const element = scripts[scriptIndex];
-                            if (
-                                element.attributes.src &&
-                                element.attributes.src.value === flag
-                            ) {
-                                bodyDOM.removeChild(element);
-                                let script = document.createElement("script");
-                                script.type = "text/javascript";
-                                script.src = flag;
-                                bodyDOM.appendChild(script);
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    };
-
-    /**
      * 动态创建小应用
      * @param {Object} appOption // 小部件类型
      */
