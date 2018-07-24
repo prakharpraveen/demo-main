@@ -136,7 +136,7 @@ class TemplateSetting extends Component {
                 }
                 break;
             case '浏览':
-                if (activeKey === '3' || parentIdcon === 'groupRoot') {
+                if (parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
                     if (parentIdcon) {

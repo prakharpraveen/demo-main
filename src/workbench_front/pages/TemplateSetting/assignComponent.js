@@ -93,7 +93,7 @@ class AssignComponent extends Component {
             );
         }
     }
-    //已分配用户和职责的数据请求
+    //已分配用户角色和职责的数据请求
     reqAllowTreeData = () => {
         let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
         let infoData = {
@@ -111,7 +111,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            infoData.nodeKey = nodeKeyValue;
+            infoData.pageCode = nodeKeyValue;
         }
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
@@ -448,7 +448,9 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            infoData.nodeKey = nodeKeyValue;
+            if(nodeKeyValue){
+                infoData.pageCode = nodeKeyValue;
+            }
         }
         Ajax({
             url: `/nccloud/platform/template/assignTemplate.do`,
