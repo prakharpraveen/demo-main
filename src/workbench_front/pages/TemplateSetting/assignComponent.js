@@ -146,6 +146,9 @@ class AssignComponent extends Component {
     //角色和用户职责的数据请求
     reqRoTreeData = () => {
         let { orgidObj } = this.state;
+        if(!orgidObj.refpk){
+            return;
+        }
         let infoData = {
             orgId: orgidObj.refpk
         };
