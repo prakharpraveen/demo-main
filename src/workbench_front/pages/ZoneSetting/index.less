@@ -1,4 +1,7 @@
 .template-setting-page {
+    .ant-input-sm {
+        height: 24px;
+    }
     margin-top: 90px;
     .template-setting-steps {
         margin-left: 20%;
@@ -146,16 +149,14 @@
                     list-style-type: none;
                     width: 40%;
                     display: inline-block;
-                    line-height: 30px;
-                    /* border-color: rgba(235, 235, 235, 1); */
+                    line-height: 30px; /* border-color: rgba(235, 235, 235, 1); */
                     border-bottom: 1px solid rgba(235, 235, 235, 1);
                 }
                 li:nth-child(even) {
                     list-style-type: none;
                     width: 60%;
                     display: inline-block;
-                    line-height: 30px;
-                    /* border-color: rgba(235, 235, 235, 1); */
+                    line-height: 30px; /* border-color: rgba(235, 235, 235, 1); */
                     border-bottom: 1px solid rgba(235, 235, 235, 1);
                 }
                 .metapath {
@@ -218,7 +219,6 @@
                 }
             }
         }
-
         .sider-tree {
             height: calc(100vh - 100px - 100px);
             overflow: auto;
@@ -235,7 +235,6 @@
     // height: calc(100vh - 90px - 50px - 60px);
     background: #fff;
 }
-
 .template-setting-sider {
     border: 1px solid rgba(204, 204, 204, 1);
     border-radius: 4px;
@@ -314,7 +313,6 @@
         }
     }
 }
-
 .zonesetting-referModal {
     .descrip_label {
         padding: 10px;
@@ -337,7 +335,6 @@
         margin-right: 20px;
     }
 }
-
 .zonesetting-customModal {
     .ant-modal-body {
         height: 100px;
@@ -350,6 +347,20 @@
         }
     }
 }
-input.ant-input.ant-input-sm {
+.custom-filter-dropdown {
+    padding: 8px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+.custom-filter-dropdown input.ant-input.ant-input-sm {
     height: 24px;
+    width: 130px;
+    margin-right: 8px;
+}
+.custom-filter-dropdown button {
+    margin-right: 8px;
+}
+.highlight {
+    color: #f50;
 }
