@@ -213,7 +213,7 @@ class TemplateSetting extends Component {
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, pageCode, activeKey, orgidObj } = this.state;
+        let { templateNameVal, templatePks, appCode, pageCode, activeKey, orgidObj } = this.state;
         let infoData = {
             templateId: templatePks
         };
@@ -399,7 +399,7 @@ class TemplateSetting extends Component {
             this.setState({
                 treeTemBillData
             });
-        }  else if (templateType === 'print') {
+        } else if (templateType === 'print') {
             if (activeKey === '2') {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
@@ -500,7 +500,7 @@ class TemplateSetting extends Component {
                                 this.restoreTreeTemData(templateType);
                             }
                         );
-                    }  else if (templateType === 'print') {
+                    } else if (templateType === 'print') {
                         this.setState(
                             {
                                 treeTemPrintDataArray: data.data
@@ -520,7 +520,7 @@ class TemplateSetting extends Component {
         let templateType = '';
         if (activeKey === '1') {
             templateType = 'bill';
-        }  else if (activeKey === '2') {
+        } else if (activeKey === '2') {
             templateType = 'print';
             if (key.length > 0) {
                 this.setState({
@@ -650,20 +650,23 @@ class TemplateSetting extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={pk} title={title} refData={item}
-                        icon={
-                            <Svg
-                                width={15}
-                                height={13}
-                                xlinkHref={
-                                    expandedKeys.indexOf(item.pk) === -1 ? (
-                                        '#icon-wenjianjia'
-                                    ) : (
-                                        '#icon-wenjianjiadakai'
-                                    )
-                                }
-                            />
-                        }
+                        <TreeNode
+                            key={pk}
+                            title={title}
+                            refData={item}
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        expandedKeys.indexOf(item.pk) === -1 ? (
+                                            '#icon-wenjianjia'
+                                        ) : (
+                                            '#icon-wenjianjiadakai'
+                                        )
+                                    }
+                                />
+                            }
                         >
                             {loop(item.children)}
                         </TreeNode>
@@ -790,8 +793,7 @@ class TemplateSetting extends Component {
                             }}
                         />
                         <div className='buttons-component'>
-                            {(treeTemBillData.length > 0 ||
-                                treeTemPrintData.length > 0) &&
+                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
