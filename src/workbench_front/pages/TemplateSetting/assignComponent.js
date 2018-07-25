@@ -180,7 +180,6 @@ class AssignComponent extends Component {
     };
     //职责数据组装
     restoreResTreeData = (data) => {
-        if (data && data.length) {
             let { treeResData } = this.state;
             treeResData = [];
             let initResData = initAbiTreeData;
@@ -192,10 +191,10 @@ class AssignComponent extends Component {
             initResData.children = data;
             treeResData.push(initResData);
             treeResData = generateTreeData(treeResData);
+            console.log(treeResData);
             this.setState({
                 treeResData
             });
-        }
     };
     //用户和角色数据的组装
     restoreRoTreeData = (data) => {

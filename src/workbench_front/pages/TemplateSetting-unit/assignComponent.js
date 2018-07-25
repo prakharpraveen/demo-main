@@ -181,22 +181,20 @@ class AssignComponent extends Component {
     };
     //职责数据组装
     restoreResTreeData = (data) => {
-        if (data && data.length) {
-            let { treeResData } = this.state;
-            treeResData = [];
-            let initResData = initAbiTreeData;
-            data.map((item, index) => {
-                let { code, id, name } = item;
-                item.key = id;
-                item.text = name + code;
-            });
-            initResData.children = data;
-            treeResData.push(initResData);
-            treeResData = generateTreeData(treeResData);
-            this.setState({
-                treeResData
-            });
-        }
+        let { treeResData } = this.state;
+        treeResData = [];
+        let initResData = initAbiTreeData;
+        data.map((item, index) => {
+            let { code, id, name } = item;
+            item.key = id;
+            item.text = name + code;
+        });
+        initResData.children = data;
+        treeResData.push(initResData);
+        treeResData = generateTreeData(treeResData);
+        this.setState({
+            treeResData
+        });
     };
     //用户和角色数据的组装
     restoreRoTreeData = (data) => {
