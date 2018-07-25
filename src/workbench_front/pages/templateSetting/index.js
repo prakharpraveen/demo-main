@@ -142,7 +142,7 @@ class TemplateSetting extends Component {
         let { name, isShow, type } = btnObj;
         if (isShow) {
             return (
-                <Button key={name} className='margin-left-10' type={type} onClick={this.handleClick.bind(this, name)}>
+                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, name)}>
                     {name}
                 </Button>
             );
