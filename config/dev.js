@@ -49,7 +49,7 @@ module.exports = {
 				// 代理地址
 				target: 'http://10.11.115.25:8888/',
 				// target: 'http://10.11.115.30:8006',
-				//target: 'http://10.11.115.164:80',
+				//target: 'http://10.11.115.169:80',
 				bypass: function (req, res, proxyOptions) {
 					if (req.headers.accept.indexOf('html') !== -1) {
 						// console.log('Skipping proxy for browser request.');
