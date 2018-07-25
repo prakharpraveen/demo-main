@@ -502,9 +502,11 @@ class AssignComponent extends Component {
         orgidObj['refname'] = refname;
         orgidObj['refcode'] = refcode;
         orgidObj['refpk'] = refpk;
+        
         this.setState(
             {
-                orgidObj
+                orgidObj,
+                org_df_biz: value
             },
             this.reqRoTreeData
         );
@@ -601,6 +603,7 @@ class AssignComponent extends Component {
                                         value={org_df_biz}
                                         placeholder={'默认业务单元'}
                                         onChange={(value) => {
+                                            console.log()
                                             this.handdleRefChange(value);
                                         }}
                                     />
