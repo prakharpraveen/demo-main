@@ -35,6 +35,7 @@ class EditableString extends Component {
         return (
             <Tooltip
                 placement="top"
+                overlayClassName='tootip-white'
                 visible={this.state.visible && hasError}
                 title={errorMsg && errorMsg[errorMsg.length - 1]}
             >

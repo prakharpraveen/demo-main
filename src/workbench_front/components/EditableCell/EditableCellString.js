@@ -108,7 +108,8 @@ class EditableCellString extends Component {
                 onMouseOver={this.handleMouseOver}
             >
                 <Tooltip
-                    placement="topRight"
+                    placement="top"
+                    overlayClassName='tootip-white'
                     visible={this.state.hasError && this.state.visible}
                     title={this.state.cellErrorMsg}
                 >
