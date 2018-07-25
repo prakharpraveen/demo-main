@@ -733,17 +733,17 @@ class MyRightSider extends Component {
 		const { selectCard, areaList } = this.props;
 		if (_.isEmpty(selectCard) || _.isEmpty(areaList)) return;
 		let headcode = areaList[0] && areaList[0].headcode;
-		let area = this.getArea(areaList, selectCard);
-		let mainArea = this.getMainArea(areaList, headcode);
+		let area = this.getArea(areaList, selectCard);//当前区域
 		let tab;
-		//  headcode 存在 时候最多有两个 table或者自己主表单时为一个
-		//  headcode 不存在 只有一个 tab
+		//  tab页需要展示当前区域和表头区域
+		//如果headcode不存在存在
 		if (!headcode || (headcode && headcode === area.code)) {
 			tab = [ { tab: area.name, TabPaneContent: Formula, params: { name: area } } ];
-		} else if (headcode && headcode !== area.code) {
+		} else if (headcode && headcode !== area.code) {//如果headcode不存在存在
+			let mainArea = this.getMainArea(areaList, headcode);//表头区域
 			tab = [
-				{ tab: area.name, TabPaneContent: Formula, params: { name: area } },
-				{ tab: mainArea.name, TabPaneContent: Formula, params: { name: mainArea } }
+				{ tab: area.name, key:'main', TabPaneContent: Formula, params: { name: area } },
+				{ tab: mainArea.name,key:'head', TabPaneContent: Formula, params: { name: mainArea } }
 			];
 		}
 		this.setState({ tab });
