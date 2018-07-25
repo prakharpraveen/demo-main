@@ -708,7 +708,7 @@ class TemplateSetting extends Component {
         0;
     };
     //参照的回调函数
-    handdleRefChange = (value, type) => {
+    handdleRefChange = (value) => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
         orgidObj = {};
@@ -716,7 +716,8 @@ class TemplateSetting extends Component {
         orgidObj['refcode'] = refcode;
         orgidObj['refpk'] = refpk;
         this.setState({
-            orgidObj
+            orgidObj,
+            org_df_biz: value
         });
     };
     showModal = () => {
@@ -789,7 +790,7 @@ class TemplateSetting extends Component {
                             value={org_df_biz}
                             placeholder={'默认业务单元'}
                             onChange={(value) => {
-                                this.handdleRefChange(value, 'org_df_biz');
+                                this.handdleRefChange(value);
                             }}
                         />
                         <div className='buttons-component'>
