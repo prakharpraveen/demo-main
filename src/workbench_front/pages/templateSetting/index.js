@@ -859,7 +859,6 @@ class TemplateSetting extends Component {
                         onChange={(activeKey) => {
                             this.setState({ activeKey });
                         }}
-                        type='card'
                         activeKey={activeKey}
                     >
                         <TabPane tab='页面模板' key='1'>

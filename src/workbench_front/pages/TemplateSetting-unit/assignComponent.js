@@ -575,7 +575,6 @@ class AssignComponent extends Component {
                                     onChange={(tabActiveKey) => {
                                         this.setState({ tabActiveKey });
                                     }}
-                                    type='card'
                                     activeKey={tabActiveKey}
                                 >
                                     <TabPane tab='按角色和用户分配' key='1'>
