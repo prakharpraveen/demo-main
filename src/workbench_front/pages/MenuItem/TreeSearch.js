@@ -81,8 +81,8 @@ class TreeSearch extends Component {
                         <TreeNode
                             icon={
                                 <Svg
-                                    width={15}
-                                    height={13}
+                                    width={16}
+                                    height={16}
                                     xlinkHref={
                                         this.props.expandedKeys.indexOf(
                                             item.menuitemcode

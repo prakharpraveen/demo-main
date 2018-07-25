@@ -4,10 +4,7 @@ import PropTypes from "prop-types";
 import { Tree, Input } from "antd";
 import Svg from "Components/Svg";
 import { createTree } from "Pub/js/createTree.js";
-import {
-    setExpandedKeys,
-    setPageActiveKey
-} from "Store/AppRegister/action";
+import { setExpandedKeys, setPageActiveKey } from "Store/AppRegister/action";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 class SearchTree extends Component {
@@ -51,7 +48,7 @@ class SearchTree extends Component {
         // 当树节点切换时 重置 页面节点 激活页签
         this.props.setPageActiveKey("1");
         // 为父组件返回选中的树节点对象
-        this.props.onSelect(selectedNode,selectedKey);
+        this.props.onSelect(selectedNode, selectedKey);
     };
     render() {
         const { searchValue, autoExpandParent } = this.state;
@@ -93,8 +90,8 @@ class SearchTree extends Component {
                         <TreeNode
                             icon={
                                 <Svg
-                                    width={15}
-                                    height={13}
+                                    width={16}
+                                    height={16}
                                     xlinkHref={
                                         this.props.expandedKeys.indexOf(
                                             item.moduleid
@@ -112,9 +109,14 @@ class SearchTree extends Component {
                         </TreeNode>
                     );
                 }
-                return <TreeNode icon={
-                    <span className='tree-dot'/>
-                } key={code} title={title} refData={item} />;
+                return (
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={code}
+                        title={title}
+                        refData={item}
+                    />
+                );
             });
         let newTreeData = [
             {

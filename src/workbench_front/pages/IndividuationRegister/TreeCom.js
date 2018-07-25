@@ -67,8 +67,8 @@ class TreeCom extends Component {
                         <TreeNode
                             icon={
                                 <Svg
-                                    width={15}
-                                    height={13}
+                                    width={16}
+                                    height={16}
                                     xlinkHref={
                                         expandedKeys.indexOf(item.code) === -1
                                             ? "#icon-wenjianjia"

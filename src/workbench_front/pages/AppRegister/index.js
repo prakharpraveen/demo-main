@@ -553,15 +553,31 @@ class AppRegister extends Component {
             switch (obj.flag) {
                 // 对应树的第一层
                 case "0":
-                    optype = "1";
                     id = obj.moduleid;
-                    this.props.setNodeData(obj);
+                    let appFieldCallBack = data => {
+                        this.props.setNodeData(data);
+                    };
+                    this.reqTreeNodeData(
+                        { name: "应用注册", action: "应用查询" },
+                        `/nccloud/platform/appregister/querymodule.do`,
+                        { moduleid: id },
+                        appFieldCallBack
+                    );
+                    optype = "1";
                     break;
                 // 对应树的第二层
                 case "1":
-                    optype = "2";
                     id = obj.moduleid;
-                    this.props.setNodeData(obj);
+                    let appModuleCallBack = data => {
+                        this.props.setNodeData(data);
+                    };
+                    this.reqTreeNodeData(
+                        { name: "应用注册", action: "应用查询" },
+                        `/nccloud/platform/appregister/querymodule.do`,
+                        { moduleid: id },
+                        appModuleCallBack
+                    );
+                    optype = "2";
                     break;
                 // 对应树的第三层
                 case "2":
@@ -603,8 +619,12 @@ class AppRegister extends Component {
                             parentId: parent_id
                         });
                         this.props.setNodeData(data.apppageVO);
-                        this.props.setPageButtonData(data.appButtonVOs);
-                        this.props.setPageTemplateData(data.pageTemplets);
+                        this.props.setPageButtonData(
+                            data.appButtonVOs ? data.appButtonVOs : []
+                        );
+                        this.props.setPageTemplateData(
+                            data.pageTemplets ? data.pageTemplets : []
+                        );
                     };
                     this.reqTreeNodeData(
                         { name: "应用注册", action: "应用页面查询" },
