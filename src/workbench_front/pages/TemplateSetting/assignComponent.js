@@ -377,9 +377,9 @@ class AssignComponent extends Component {
                             {afterStr}
                         </span>
                     ) : (
-                        <div>
+                        <span>
                             <span> {text} </span>
-                        </div>
+                        </span>
                     );
                 if (item.children) {
                     return (
@@ -416,7 +416,7 @@ class AssignComponent extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
-                        //showIcon
+                        showIcon
                         onExpand={this.onExpand}
                         expandedKeys={expandedKeys}
                         onSelect={this.onSelect.bind(this, typeSelect)}

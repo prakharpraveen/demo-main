@@ -703,9 +703,9 @@ class TemplateSetting extends Component {
                             {afterStr}
                         </span>
                     ) : (
-                        <div>
+                        <span>
                             <span> {text} </span>
-                        </div>
+                        </span>
                     );
                 if (item.children) {
                     return (
@@ -740,7 +740,7 @@ class TemplateSetting extends Component {
                 {data.length > 0 && (
                     <Tree
                         showLine
-                        //showIcon
+                        showIcon
                         onExpand={(key, node) => {
                             this.onExpand(typeSelect, key, node);
                         }}
