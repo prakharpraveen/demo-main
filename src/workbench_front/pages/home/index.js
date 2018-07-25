@@ -58,7 +58,7 @@ class Home extends Component {
                     g.apps = compactedLayout;
                 });
                 this.setState({ groups, layout }, () => {
-                    animateScroll.scrollTo(0);
+                    // animateScroll.scrollTo(0);
                     scrollSpy.update();
                 });
             }, 500);
