@@ -223,7 +223,7 @@ class Home extends Component {
                 if (success && data && data.length > 0) {
                     if (data[0].groups.length === 0) {
                         Notice({
-                            status: "error",
+                            status: "warning",
                             msg: "工作桌面为空，请配置"
                         });
                     }
@@ -242,7 +242,7 @@ class Home extends Component {
                 } else {
                     if (success && data && data.length === 0) {
                         Notice({
-                            status: "error",
+                            status: "warning",
                             msg: "工作桌面为空，请配置"
                         });
                     } else {
