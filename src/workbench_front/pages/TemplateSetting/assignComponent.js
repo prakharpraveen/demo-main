@@ -57,8 +57,8 @@ class AssignComponent extends Component {
             org_df_biz: {
                 // 默认业务单元
                 refcode: '',
-                refname: '集团',
-                refpk: window.businessInfo.groupId
+                refname: window.businessInfo.groupName,
+                refpk: window.businessInfo.groupId//groupName
             },
             dataRoKey: '',
             dataRoObj: {},
@@ -432,6 +432,10 @@ class AssignComponent extends Component {
     //模态框确定按钮方法
     handleAlloOk = () => {
         let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
+        if(!orgidObj.refpk){
+            Notice({ status: 'warning', msg: '业务单元信息为空' });
+            return;
+        }
         if (!treeAllowedData) {
             Notice({ status: 'warning', msg: '请选中信息' });
             return;
