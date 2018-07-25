@@ -58,7 +58,7 @@ class AssignComponent extends Component {
                 // 默认业务单元
                 refcode: '',
                 refname: window.businessInfo.groupName,
-                refpk: window.businessInfo.groupId//groupName
+                refpk: window.businessInfo.groupId //groupName
             },
             dataRoKey: '',
             dataRoObj: {},
@@ -105,7 +105,7 @@ class AssignComponent extends Component {
         };
         if (activeKey === '1') {
             infoData.templateType = 'bill';
-        }  else if (activeKey === '2') {
+        } else if (activeKey === '2') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -146,7 +146,7 @@ class AssignComponent extends Component {
     //角色和用户职责的数据请求
     reqRoTreeData = () => {
         let { orgidObj } = this.state;
-        if(!orgidObj.refpk){
+        if (!orgidObj.refpk) {
             return;
         }
         let infoData = {
@@ -180,21 +180,20 @@ class AssignComponent extends Component {
     };
     //职责数据组装
     restoreResTreeData = (data) => {
-            let { treeResData } = this.state;
-            treeResData = [];
-            let initResData = initAbiTreeData;
-            data.map((item, index) => {
-                let { code, id, name } = item;
-                item.key = id;
-                item.text = name + code;
-            });
-            initResData.children = data;
-            treeResData.push(initResData);
-            treeResData = generateTreeData(treeResData);
-            console.log(treeResData);
-            this.setState({
-                treeResData
-            });
+        let { treeResData } = this.state;
+        treeResData = [];
+        let initResData = initAbiTreeData;
+        data.map((item, index) => {
+            let { code, id, name } = item;
+            item.key = id;
+            item.text = name + code;
+        });
+        initResData.children = data;
+        treeResData.push(initResData);
+        treeResData = generateTreeData(treeResData);
+        this.setState({
+            treeResData
+        });
     };
     //用户和角色数据的组装
     restoreRoTreeData = (data) => {
@@ -382,20 +381,23 @@ class AssignComponent extends Component {
                     );
                 if (item.children) {
                     return (
-                        <TreeNode key={key} title={text} refData={item}
-                        icon={
-                            <Svg
-                                width={15}
-                                height={13}
-                                xlinkHref={
-                                    expandedKeys.indexOf(item.pk) === -1 ? (
-                                        '#icon-wenjianjia'
-                                    ) : (
-                                        '#icon-wenjianjiadakai'
-                                    )
-                                }
-                            />
-                        }
+                        <TreeNode
+                            key={key}
+                            title={text}
+                            refData={item}
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        expandedKeys.indexOf(item.pk) === -1 ? (
+                                            '#icon-wenjianjia'
+                                        ) : (
+                                            '#icon-wenjianjiadakai'
+                                        )
+                                    }
+                                />
+                            }
                         >
                             {loop(item.children)}
                         </TreeNode>
@@ -406,12 +408,7 @@ class AssignComponent extends Component {
         };
         return (
             <div>
-                {data.length > 0 &&
-                    (hideSearch ? (
-                        ''
-                    ) : (
-                        <Search placeholder='Search' onChange={this.onSearch} />
-                    ))}
+                {data.length > 0 && (hideSearch ? '' : <Search placeholder='Search' onChange={this.onSearch} />)}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -431,7 +428,7 @@ class AssignComponent extends Component {
     //模态框确定按钮方法
     handleAlloOk = () => {
         let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
-        if(!orgidObj.refpk){
+        if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
         }
@@ -501,7 +498,8 @@ class AssignComponent extends Component {
         orgidObj['refpk'] = refpk;
         this.setState(
             {
-                orgidObj
+                orgidObj,
+                org_df_biz: value
             },
             this.reqRoTreeData
         );
