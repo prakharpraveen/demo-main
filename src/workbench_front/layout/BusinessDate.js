@@ -8,38 +8,23 @@ class BusinessDate extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            value: this.props.date,
-            mode: "time"
+            value: this.props.date
         };
     }
-    handleOpenChange = open => {
-        if (open) {
-            this.setState({ mode: "time" });
-        }
-    };
-
-    handlePanelChange = (value, mode) => {
-        this.setState({ mode });
-    };
     /**
      * 业务日期切换
      */
     onChange = newDate => {
         newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss");
         this.setState({
-            value: newDate
-        });
-    };
-    handleDatePickerOpen = () => {
-        this.setState({
+            value: newDate,
             isOpen: true
         });
     };
     /**
      * 取消日期
      */
-    handleCancel = e => {
-        e.stopPropagation();
+    handleCancel = () => {
         this.setState({
             isOpen: false,
             value: this.props.date
@@ -48,8 +33,7 @@ class BusinessDate extends Component {
     /**
      * 确定事件
      */
-    handleOk = e => {
-        e.stopPropagation();
+    handleOk = () => {
         this.props.onOk(moment(this.state.value));
         this.setState({
             isOpen: false
@@ -58,12 +42,21 @@ class BusinessDate extends Component {
     /**
      * 今天事件
      */
-    handleToday = e => {
-        e.stopPropagation();
+    handleToday = () => {
         this.setState({
             value: moment().format("YYYY-MM-DD hh:mm:ss")
         });
     };
+    handleOpenChange = open => {
+        this.setState({isOpen:open});
+    };
+    handlePanelChange=(value)=>{
+        value = moment(value).format("YYYY-MM-DD hh:mm:ss");
+        this.setState({
+            value: value,
+            isOpen: true
+        });
+    }
     componentWillReceiveProps(nextProps) {
         if (nextProps.date !== this.state.date) {
             this.setState({ value: nextProps.date });
@@ -73,17 +66,17 @@ class BusinessDate extends Component {
         const ExtraFooter = (
             <div className="workbench-ExtraFooter">
                 <div className="left">
-                    <span className="btn" onClick={e => this.handleToday(e)}>
+                    <span className="btn" onClick={this.handleToday}>
                         今天
                     </span>
                 </div>
                 <div className="right">
-                    <span className="btn" onClick={e => this.handleOk(e)}>
+                    <span className="btn" onClick={this.handleOk}>
                         确定
                     </span>
                     <span
                         className="btn margin-left-8"
-                        onClick={e => this.handleCancel(e)}
+                        onClick={this.handleCancel}
                     >
                         取消
                     </span>
@@ -97,41 +90,23 @@ class BusinessDate extends Component {
                 fieldname="业务日期"
                 title="业务日期"
                 className="nc-workbench-businessdate"
-                onClick={this.handleDatePickerOpen}
             >
                 <DatePicker
-                    locale={locale}
-                    mode={this.state.mode}
+                    dropdownClassName={
+                        "field_business-date nc-workbench-businessdate-dropdown"
+                    }
                     showToday={false}
-                    showTime
+                    locale={locale}
+                    value={moment(value)}
+                    onChange={this.onChange}
+                    open={isOpen}
+                    renderExtraFooter={() => ExtraFooter}
                     onOpenChange={this.handleOpenChange}
                     onPanelChange={this.handlePanelChange}
-                    renderExtraFooter={() => ExtraFooter}
+                    allowClear={false}
                 />
             </div>
         );
-        // return (
-        //     <div
-        //         field="business-date"
-        //         fieldname="业务日期"
-        //         title="业务日期"
-        //         className="nc-workbench-businessdate"
-        //         onClick={this.handleDatePickerOpen}
-        //     >
-        //         <DatePicker
-        //             dropdownClassName={
-        //                 "field_business-date nc-workbench-businessdate-dropdown"
-        //             }
-        //             showToday={false}
-        //             locale={locale}
-        //             value={moment(value)}
-        //             onChange={this.onChange}
-        //             open={isOpen}
-        //             renderExtraFooter={() => ExtraFooter}
-        //             allowClear={false}
-        //         />
-        //     </div>
-        // );
     }
 }
 export default BusinessDate;

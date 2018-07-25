@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Tabs, Button, Table, Input, Popconfirm } from "antd";
+import { Tabs, Button, Table, Popconfirm } from "antd";
 import _ from "lodash";
 import { setAppParamData } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";

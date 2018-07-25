@@ -56,6 +56,8 @@ class Layout extends Component {
                         { selectedKey: value },
                         this.props.updateHomePage
                     );
+                    // 切换集团之后重新查询业务日期
+                    this.reqInfoData();
                 }
             }
         });
@@ -274,6 +276,12 @@ class Layout extends Component {
                         // 集团名称
                         group_name = groupName;
                     }
+                    this.props.setAccountInfo({
+                        newDate: bizDateTime,
+                        selectedKey: selectedKey,
+                        userName: userName ? userName : "用户名",
+                        userID: userId
+                    });
                     this.setState(
                         {
                             newDate: bizDateTime,
