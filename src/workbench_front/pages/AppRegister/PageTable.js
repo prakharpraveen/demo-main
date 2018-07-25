@@ -484,7 +484,7 @@ class PageTable extends Component {
             newData[index]["hasError"] = true;
             this.setNewData(newData);
             return {
-                hasError:true
+                hasError: true
             };
         } else {
             // 按钮编码字段不能重复
@@ -494,15 +494,15 @@ class PageTable extends Component {
                     newData[index]["hasError"] = true;
                     this.setNewData(newData);
                     return {
-                        hasError:true,
-                        cellErrorMsg:'按钮编码不能重复'
+                        hasError: true,
+                        cellErrorMsg: "按钮编码不能重复"
                     };
                 }
             }
             newData[index]["hasError"] = false;
             this.setNewData(newData);
             return {
-                hasError:false
+                hasError: false
             };
         }
     };
@@ -859,7 +859,7 @@ class PageTable extends Component {
         );
     };
     render() {
-        let { appButtonVOs = [], pageTemplets = [] } = this.props;
+        let { appButtonVOs, pageTemplets } = this.props;
         let { batchSettingModalVisibel, templetid } = this.state;
         return (
             <div>
