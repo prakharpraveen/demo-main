@@ -8,14 +8,24 @@ class BusinessDate extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            value:this.props.date
+            value: this.props.date,
+            mode: "time"
         };
     }
+    handleOpenChange = open => {
+        if (open) {
+            this.setState({ mode: "time" });
+        }
+    };
+
+    handlePanelChange = (value, mode) => {
+        this.setState({ mode });
+    };
     /**
      * 业务日期切换
      */
     onChange = newDate => {
-        newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss")
+        newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss");
         this.setState({
             value: newDate
         });
@@ -55,7 +65,7 @@ class BusinessDate extends Component {
         });
     };
     componentWillReceiveProps(nextProps) {
-        if(nextProps.date !== this.state.date){
+        if (nextProps.date !== this.state.date) {
             this.setState({ value: nextProps.date });
         }
     }
@@ -90,19 +100,38 @@ class BusinessDate extends Component {
                 onClick={this.handleDatePickerOpen}
             >
                 <DatePicker
-                    dropdownClassName={
-                        "field_business-date nc-workbench-businessdate-dropdown"
-                    }
-                    showToday={false}
                     locale={locale}
-                    value={moment(value)}
-                    onChange={this.onChange}
-                    open={isOpen}
+                    mode={this.state.mode}
+                    showToday={false}
+                    showTime
+                    onOpenChange={this.handleOpenChange}
+                    onPanelChange={this.handlePanelChange}
                     renderExtraFooter={() => ExtraFooter}
-                    allowClear={false}
                 />
             </div>
         );
+        // return (
+        //     <div
+        //         field="business-date"
+        //         fieldname="业务日期"
+        //         title="业务日期"
+        //         className="nc-workbench-businessdate"
+        //         onClick={this.handleDatePickerOpen}
+        //     >
+        //         <DatePicker
+        //             dropdownClassName={
+        //                 "field_business-date nc-workbench-businessdate-dropdown"
+        //             }
+        //             showToday={false}
+        //             locale={locale}
+        //             value={moment(value)}
+        //             onChange={this.onChange}
+        //             open={isOpen}
+        //             renderExtraFooter={() => ExtraFooter}
+        //             allowClear={false}
+        //         />
+        //     </div>
+        // );
     }
 }
 export default BusinessDate;

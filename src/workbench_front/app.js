@@ -60,6 +60,12 @@ class App extends Component {
                         window.peData.nodeName = data.menu;
                         // 应用编码
                         window.peData.nodeCode = appcode;
+                        // 用户id
+                        window.peData.userID = window.businessInfo.userID;
+                        // 项目编码  开发阶段 用nccloud
+                        // window.peData.projectCode =
+                        //     window.businessInfo.projectCode;
+                        window.peData.projectCode = 'nccloud';
                         // 打开应用
                         proxyAction(openApp, this, "打开应用")(
                             win,
@@ -86,10 +92,7 @@ class App extends Component {
         /**
          * 为spr统计提供基本信息
          */
-        window.peData = {
-            userID: "xxx",
-            projectCode: "nccloud"
-        };
+        window.peData = {};
         /**
          * 在新页签中打开
          * @param　{Object} appOption // 应用 描述信息 name 和 code 及 pk_appregister
@@ -132,20 +135,19 @@ class App extends Component {
                         window.peData.nodeName = data.data.menu;
                         // 应用编码
                         window.peData.nodeCode = appcode;
+                        // 用户id
+                        window.peData.userID = window.businessInfo.userID;
+                        // 开发阶段 用nccloud
+                        // 项目编码
+                        // window.peData.projectCode =
+                        //     window.businessInfo.projectCode;
+                        window.peData.projectCode = 'nccloud';
                         /**
                          * 校验回调
                          * @param {Object} win - 窗口对象
                          * @param {Object} data - 检验之后的参数
                          */
                         proxyAction(callback, this, "打开应用")(win, data);
-                        // } else {
-                        //   Notice({
-                        //     status: "error",
-                        //     msg: data.data.hint_message
-                        //   });
-                        //   win.close();
-                        //   return;
-                        // }
                     }
                 });
             } else {
@@ -159,27 +161,27 @@ class App extends Component {
         };
         /////////////////////////////////////////////////////////////
         // 已经弃用
-        /**
-         * 当前页打开新页面 不做应用校验
-         * @param {String} url  目标页面 url 地址
-         * @param {Object} object 需要传递的参数对象 非必输
-         */
-        window.openNewPage = (url, object) => {
-            if (object) {
-                /**
-                 * defParam 首字符为 &
-                 * searchParam 首字符为 ？
-                 */
-                let { defParam, searchParam } = CreateQuery(query);
-                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                    encodeURIComponent(url + searchParam)
-                )}`;
-            } else {
-                window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-                    encodeURIComponent(url)
-                )}`;
-            }
-        };
+        // /**
+        //  * 当前页打开新页面 不做应用校验
+        //  * @param {String} url  目标页面 url 地址
+        //  * @param {Object} object 需要传递的参数对象 非必输
+        //  */
+        // window.openNewPage = (url, object) => {
+        //     if (object) {
+        //         /**
+        //          * defParam 首字符为 &
+        //          * searchParam 首字符为 ？
+        //          */
+        //         let { defParam, searchParam } = CreateQuery(query);
+        //         window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+        //             encodeURIComponent(url + searchParam)
+        //         )}`;
+        //     } else {
+        //         window.location.hash = `#/ifr?ifr=${encodeURIComponent(
+        //             encodeURIComponent(url)
+        //         )}`;
+        //     }
+        // };
         ////////////////////////////////////////////////////////////////
     }
     componentDidMount() {

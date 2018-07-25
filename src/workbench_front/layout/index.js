@@ -255,34 +255,38 @@ class Layout extends Component {
                 action: "业务日期|集团|个人头像|用户名称"
             },
             success: ({ data: { data } }) => {
-                if (data.length > 0) {
+                if (data) {
                     let {
-                        pk_group,
+                        groupVOs,
                         bizDateTime,
-                        userName,
+                        userCode,
                         userId,
-                        groupName,
-                        userCode
-                    } = data.find(item => item.is_selected);
-                    this.props.setAccountInfo({
-                        newDate: bizDateTime,
-                        selectedKey: pk_group,
-                        userName: userName ? userName : "用户名",
-                        userID: userId
-                    });
+                        userName
+                    } = data;
+                    let selectedKey = "";
+                    let group_name = "";
+                    if (groupVOs.length > 0) {
+                        let { pk_group, groupName } = groupVOs.find(
+                            item => item.is_selected
+                        );
+                        // 集团主键
+                        selectedKey = pk_group;
+                        // 集团名称
+                        group_name = groupName;
+                    }
                     this.setState(
                         {
                             newDate: bizDateTime,
-                            currentData: data,
-                            selectedKey: pk_group
+                            currentData: groupVOs,
+                            selectedKey
                         },
                         () => {
                             this.businessInfoSetting(
                                 bizDateTime,
                                 userId,
                                 userName,
-                                pk_group,
-                                groupName,
+                                selectedKey,
+                                group_name,
                                 userCode
                             );
                         }
