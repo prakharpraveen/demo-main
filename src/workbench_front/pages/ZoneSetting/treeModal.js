@@ -128,6 +128,10 @@ class TreeModal extends Component {
                 cardObj.iscode = false;
                 cardObj.modelname = modelname;
             }
+            //自定义项
+            if (cardObj.datatype === "56") {
+                cardObj.isdefined = true;
+            }
             //小数或者金额
             if (cardObj.datatype === "2" || cardObj.datatype === "52") {
                 cardObj.dataval = '2,,'

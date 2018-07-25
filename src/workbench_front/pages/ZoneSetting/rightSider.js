@@ -269,7 +269,7 @@ class MyRightSider extends Component {
 						<li>数据类型</li>
 						{/* 元数据，禁止设置datatype属性，除了56自定义项*/}
 						{(()=>{
-							if(selectCard.datatype === '56'){
+							if(selectCard.isdefined){//通过isdefined判断是否为自定义项，可以选择数据类型
 								return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
 							}else{
 								let showDataTypeName = utilService.getDatatypeName(selectCard.datatype);
@@ -538,7 +538,7 @@ class MyRightSider extends Component {
 						{/* 元数据，禁止设置datatype属性，除了56自定义项*/}
 						{(() => {
 							if (isMetaData) {
-								if(selectCard.datatype === '56'){
+								if(selectCard.isdefined){//通过isdefined判断是否为自定义项，可以选择数据类型
 									return <li>{this.getMySelect(utilService.dataTypeObj, 'datatype')}</li>;
 								}else{
 									let showDataTypeName = utilService.getDatatypeName(selectCard.datatype);
