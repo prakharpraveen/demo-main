@@ -655,6 +655,7 @@ class MyRightSider extends Component {
 							<FormulaEditor
 								value={selectCard['editformula']}
 								noShowAttr={[ '元数据属性' ]}
+								isValidateOnOK={false}
 								show={this.state.editformula}
 								onHide={() => {
 									this.setState({ editformula: false });
