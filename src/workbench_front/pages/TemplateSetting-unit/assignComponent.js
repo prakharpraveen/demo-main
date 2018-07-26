@@ -413,7 +413,7 @@ class AssignComponent extends Component {
                     (hideSearch ? (
                         ''
                     ) : (
-                        <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onSearch} />
+                        <Search style={{ marginBottom: 8 }} placeholder='角色用户或指责查询' onChange={this.onSearch} />
                     ))}
                 {data.length > 0 && (
                     <Tree

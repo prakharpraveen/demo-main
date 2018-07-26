@@ -736,7 +736,7 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
+                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='菜单查询' onChange={this.onChange} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -855,15 +855,9 @@ class TemplateSetting extends Component {
                     )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
-                    <Tabs
-                        defaultActiveKey='1'
-                        onChange={(activeKey) => {
-                            this.setState({ activeKey });
-                        }}
-                        activeKey={activeKey}
-                    >
                     {
-                        def1=='apppage'?(<TabPane tab='页面模板' key='1'>
+                        def1=='apppage'?(<div>
+                            <p className='template-title'>页面模板</p>
                         {treeTemBillData.length > 0 &&
                             this.treeResAndUser(
                                 treeTemBillData,
@@ -873,7 +867,8 @@ class TemplateSetting extends Component {
                                 expandedTemKeys,
                                 autoExpandTemParent
                             )}
-                    </TabPane>):(def1=='menuitem'?(<TabPane tab='打印模板' key='2'>
+                    </div>):(def1=='menuitem'?(<div>
+                            <p className='template-title'>打印模板</p>
                             {treeTemPrintData.length > 0 &&
                                 this.treeResAndUser(
                                     treeTemPrintData,
@@ -883,9 +878,8 @@ class TemplateSetting extends Component {
                                     expandedTemKeys,
                                     autoExpandTemParent
                                 )}
-                        </TabPane>):'')
+                        </div>):'')
                     }
-                    </Tabs>
                 </PageLayoutRight>
                 {batchSettingModalVisibel && (
                     <PreviewModal
@@ -903,28 +897,36 @@ class TemplateSetting extends Component {
                     onCancel={this.handleCancel}
                 >
                     <div className='copyTemplate'>
-                        <Input
-                            value={templateNameVal}
-                            placeholder='请输入名称'
-                            onChange={(e) => {
-                                const templateNameVal = e.target.value;
-                                this.setState({
-                                    templateNameVal
-                                });
-                            }}
-                        />
-                        {activeKey === '2' &&
-                        treeTemPrintData.length > 0 && (
+                        <div>
+                            <label htmlFor=''>模板名称：</label>
                             <Input
-                                value={templateTitleVal}
-                                placeholder='请输入标题'
+                                value={templateNameVal}
+                                style={{width:'80%'}}
+                                placeholder='请输入名称'
                                 onChange={(e) => {
-                                    const templateTitleVal = e.target.value;
+                                    const templateNameVal = e.target.value;
                                     this.setState({
-                                        templateTitleVal
+                                        templateNameVal
                                     });
                                 }}
                             />
+                        </div>
+                        {activeKey === '2' &&
+                        treeTemPrintData.length > 0 && (
+                            <div>
+                                <label htmlFor=''>模板标题：</label>
+                                <Input
+                                    style={{width:'80%'}}
+                                    value={templateTitleVal}
+                                    placeholder='请输入标题'
+                                    onChange={(e) => {
+                                        const templateTitleVal = e.target.value;
+                                        this.setState({
+                                            templateTitleVal
+                                        });
+                                    }}
+                                />
+                            </div>
                         )}
                     </div>
                 </Modal>
