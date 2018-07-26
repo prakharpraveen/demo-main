@@ -43,24 +43,26 @@ class BusinessDate extends Component {
      * 今天事件
      */
     handleToday = () => {
-        
-        this.setState({
-            value: moment().format("YYYY-MM-DD hh:mm:ss"),
-            isOpen: false
-        },()=>{
-            this.props.onOk(moment(this.state.value));
-        });
+        this.setState(
+            {
+                value: moment().format("YYYY-MM-DD hh:mm:ss"),
+                isOpen: false
+            },
+            () => {
+                this.props.onOk(moment(this.state.value));
+            }
+        );
     };
     handleOpenChange = open => {
-        this.setState({isOpen:open});
+        this.setState({ isOpen: open });
     };
-    handlePanelChange=(value)=>{
+    handlePanelChange = value => {
         value = moment(value).format("YYYY-MM-DD hh:mm:ss");
         this.setState({
             value: value,
             isOpen: true
         });
-    }
+    };
     componentWillReceiveProps(nextProps) {
         if (nextProps.date !== this.state.date) {
             this.setState({ value: nextProps.date });
