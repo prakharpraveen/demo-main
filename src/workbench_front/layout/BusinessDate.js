@@ -43,8 +43,12 @@ class BusinessDate extends Component {
      * 今天事件
      */
     handleToday = () => {
+        
         this.setState({
-            value: moment().format("YYYY-MM-DD hh:mm:ss")
+            value: moment().format("YYYY-MM-DD hh:mm:ss"),
+            isOpen: false
+        },()=>{
+            this.props.onOk(moment(this.state.value));
         });
     };
     handleOpenChange = open => {
