@@ -109,14 +109,29 @@ class DefaultSetting extends Component {
         });
     };
     handdleRefChange = (value, type) => {
+        console.log(value, type);
         let { refname = "", refcode = "", refpk = "" } = value;
-        let flag = this.historyData[type]["refcode"] === refcode;
         let obj = {};
         obj[type] = {};
         obj[type]["refname"] = refname;
         obj[type]["refcode"] = refcode;
         obj[type]["refpk"] = refpk;
-        this.setState({ ...obj, disabled: flag });
+        this.setState({ ...obj }, () => {
+            let flag = this.DataCheck();
+            this.setState({
+                disabled: flag
+            });
+        });
+    };
+    // 数据检查
+    DataCheck = () => {
+        let Object = this.historyData;
+        for (let key in Object) {
+            if (Object[key]["refcode"] !== this.state[key]["refcode"]) {
+                return false;
+            }
+        }
+        return true;
     };
     /**
      * 初始化默认参照的数据
