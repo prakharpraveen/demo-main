@@ -62,10 +62,9 @@ class App extends Component {
                         window.peData.nodeCode = appcode;
                         // 用户id
                         window.peData.userID = window.businessInfo.userID;
-                        // 项目编码  开发阶段 用nccloud
-                        // window.peData.projectCode =
-                        //     window.businessInfo.projectCode;
-                        window.peData.projectCode = 'nccloud';
+                        // 项目编码 
+                        window.peData.projectCode =
+                            window.businessInfo.projectCode;
                         // 打开应用
                         proxyAction(openApp, this, "打开应用")(
                             win,
@@ -137,11 +136,9 @@ class App extends Component {
                         window.peData.nodeCode = appcode;
                         // 用户id
                         window.peData.userID = window.businessInfo.userID;
-                        // 开发阶段 用nccloud
                         // 项目编码
-                        // window.peData.projectCode =
-                        //     window.businessInfo.projectCode;
-                        window.peData.projectCode = 'nccloud';
+                        window.peData.projectCode =
+                            window.businessInfo.projectCode;
                         /**
                          * 校验回调
                          * @param {Object} win - 窗口对象

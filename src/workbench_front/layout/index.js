@@ -263,7 +263,8 @@ class Layout extends Component {
                         bizDateTime,
                         userCode,
                         userId,
-                        userName
+                        userName,
+                        projectCode
                     } = data;
                     let selectedKey = "";
                     let group_name = "";
@@ -295,7 +296,8 @@ class Layout extends Component {
                                 userName,
                                 selectedKey,
                                 group_name,
-                                userCode
+                                userCode,
+                                projectCode
                             );
                         }
                     );
@@ -319,7 +321,8 @@ class Layout extends Component {
         userName,
         groupId,
         groupName,
-        userCode
+        userCode,
+        projectCode
     ) => {
         window.businessInfo = {
             businessDate,
@@ -327,7 +330,8 @@ class Layout extends Component {
             userName,
             groupId,
             groupName,
-            userCode
+            userCode,
+            projectCode
         };
     };
     /**
