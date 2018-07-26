@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DatePicker } from "antd";
+import { DatePicker, Tooltip } from "antd";
 import moment from "moment";
 import locale from "antd/lib/date-picker/locale/zh_CN";
 import "./BusinessDate.less";
@@ -90,28 +90,34 @@ class BusinessDate extends Component {
             </div>
         );
         let { isOpen, value } = this.state;
+        let busunessTitle =
+            moment(this.state.value).format("YYYY-MM-DD") ===
+            moment().format("YYYY-MM-DD")
+                ? "业务日期"
+                : "该业务日期不是今日日期!";
         return (
-            <div
-                field="business-date"
-                fieldname="业务日期"
-                title="业务日期"
-                className="nc-workbench-businessdate"
-            >
-                <DatePicker
-                    dropdownClassName={
-                        "field_business-date nc-workbench-businessdate-dropdown"
-                    }
-                    showToday={false}
-                    locale={locale}
-                    value={moment(value)}
-                    onChange={this.onChange}
-                    open={isOpen}
-                    renderExtraFooter={() => ExtraFooter}
-                    onOpenChange={this.handleOpenChange}
-                    onPanelChange={this.handlePanelChange}
-                    allowClear={false}
-                />
-            </div>
+            <Tooltip placement="bottom" title={busunessTitle}>
+                <div
+                    field="business-date"
+                    fieldname="业务日期"
+                    className="nc-workbench-businessdate"
+                >
+                    <DatePicker
+                        dropdownClassName={
+                            "field_business-date nc-workbench-businessdate-dropdown"
+                        }
+                        showToday={false}
+                        locale={locale}
+                        value={moment(value)}
+                        onChange={this.onChange}
+                        open={isOpen}
+                        renderExtraFooter={() => ExtraFooter}
+                        onOpenChange={this.handleOpenChange}
+                        onPanelChange={this.handlePanelChange}
+                        allowClear={false}
+                    />
+                </div>
+            </Tooltip>
         );
     }
 }
