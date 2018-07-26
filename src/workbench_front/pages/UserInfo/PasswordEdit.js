@@ -63,7 +63,7 @@ class PasswordEdit extends Component {
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.formObj;
         if (value && value !== form.getFieldValue("newpw")) {
-            callback("您输入的两个密码不一致!");
+            callback("两次密码输入不一致，请重试");
         } else {
             callback();
         }
