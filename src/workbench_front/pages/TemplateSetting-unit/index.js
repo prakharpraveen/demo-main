@@ -679,7 +679,7 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='Search' onChange={this.onChange} />}
+                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='菜单查询' onChange={this.onChange} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
