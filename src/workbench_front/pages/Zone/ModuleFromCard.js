@@ -84,7 +84,7 @@ class ModuleFromCard extends Component {
 		});
 
 		//过滤掉表头列,当页面不存在Form表单区域
-		if(form.length){
+		if(form.length!==0||table.length!==0){
 			let item = DOMDATA.find(item => item.code === 'headcode');
 			if (item) {
 				item.options = creatOption();
