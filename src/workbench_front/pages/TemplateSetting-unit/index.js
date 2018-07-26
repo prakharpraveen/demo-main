@@ -80,6 +80,7 @@ class TemplateSetting extends Component {
             activeKey: '1',
             templateType: '',
             previewPrintVisible: false,
+            def1:'',
             previewPrintContent: '',
             batchSettingModalVisibel: false //控制预览摸态框的显隐属性
         };
@@ -449,7 +450,8 @@ class TemplateSetting extends Component {
                 {
                     selectedKeys: key,
                     pageCode: e.selectedNodes[0].props.refData.code,
-                    appCode: e.selectedNodes[0].props.refData.appCode
+                    appCode: e.selectedNodes[0].props.refData.appCode,
+                    def1: e.selectedNodes[0].props.refData.def1
                 },
                 this.reqTreeTemData
             );
@@ -771,7 +773,8 @@ class TemplateSetting extends Component {
             autoExpandTemParent,
             orgidObj,
             previewPrintContent,
-            previewPrintVisible
+            previewPrintVisible,
+            def1
         } = this.state;
         const leftTreeData = [
             {
@@ -832,18 +835,18 @@ class TemplateSetting extends Component {
                         }}
                         activeKey={activeKey}
                     >
-                        <TabPane tab='页面模板' key='1'>
-                            {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(
-                                    treeTemBillData,
-                                    'templateOnselect',
-                                    'hideSearch',
-                                    selectedTemKeys,
-                                    expandedTemKeys,
-                                    autoExpandTemParent
-                                )}
-                        </TabPane>
-                        <TabPane tab='打印模板' key='2'>
+                        {
+                        def1=='apppage'?(<TabPane tab='页面模板' key='1'>
+                        {treeTemBillData.length > 0 &&
+                            this.treeResAndUser(
+                                treeTemBillData,
+                                'templateOnselect',
+                                'hideSearch',
+                                selectedTemKeys,
+                                expandedTemKeys,
+                                autoExpandTemParent
+                            )}
+                    </TabPane>):(def1=='menuitem'?(<TabPane tab='打印模板' key='2'>
                             {treeTemPrintData.length > 0 &&
                                 this.treeResAndUser(
                                     treeTemPrintData,
@@ -853,7 +856,8 @@ class TemplateSetting extends Component {
                                     expandedTemKeys,
                                     autoExpandTemParent
                                 )}
-                        </TabPane>
+                        </TabPane>):'')
+                    }
                     </Tabs>
                 </PageLayoutRight>
                 {batchSettingModalVisibel && (

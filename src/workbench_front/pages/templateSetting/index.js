@@ -797,7 +797,8 @@ class TemplateSetting extends Component {
             autoExpandParent,
             autoExpandTemParent,
             previewPrintContent,
-            previewPrintVisible
+            previewPrintVisible,
+            def1
         } = this.state;
         const leftTreeData = [
             {
@@ -861,18 +862,18 @@ class TemplateSetting extends Component {
                         }}
                         activeKey={activeKey}
                     >
-                        <TabPane tab='页面模板' key='1'>
-                            {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(
-                                    treeTemBillData,
-                                    'templateOnselect',
-                                    'hideSearch',
-                                    selectedTemKeys,
-                                    expandedTemKeys,
-                                    autoExpandTemParent
-                                )}
-                        </TabPane>
-                        <TabPane tab='打印模板' key='2'>
+                    {
+                        def1=='apppage'?(<TabPane tab='页面模板' key='1'>
+                        {treeTemBillData.length > 0 &&
+                            this.treeResAndUser(
+                                treeTemBillData,
+                                'templateOnselect',
+                                'hideSearch',
+                                selectedTemKeys,
+                                expandedTemKeys,
+                                autoExpandTemParent
+                            )}
+                    </TabPane>):(def1=='menuitem'?(<TabPane tab='打印模板' key='2'>
                             {treeTemPrintData.length > 0 &&
                                 this.treeResAndUser(
                                     treeTemPrintData,
@@ -882,7 +883,8 @@ class TemplateSetting extends Component {
                                     expandedTemKeys,
                                     autoExpandTemParent
                                 )}
-                        </TabPane>
+                        </TabPane>):'')
+                    }
                     </Tabs>
                 </PageLayoutRight>
                 {batchSettingModalVisibel && (
