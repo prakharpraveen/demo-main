@@ -68,7 +68,7 @@ class AssignComponent extends Component {
             treeAllowedData: [],
             allowedTreeKey: '',
             treeRoDataObj: {},
-            activeKey: this.props.activeKey,
+            def1: this.props.def1,
             tabActiveKey: '1',
             orgidObj: this.props.orgidObj // 默认业务单元
         };
@@ -77,7 +77,7 @@ class AssignComponent extends Component {
         this.setState({
             templatePks: nextProps.templatePks,
             pageCode: nextProps.pageCode,
-            activeKey: nextProps.activeKey,
+            def1: nextProps.def1,
             appCode: nextProps.appCode
         });
     }
@@ -97,16 +97,16 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
+        let { pageCode, templatePks, orgidObj, def1, appCode, nodeKeyValue } = this.state;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
             templateId: templatePks,
             appCode: appCode
         };
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
+        } else if (def1 === 'menuitem') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -433,7 +433,7 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
+        let { templatePks, pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
         if(!orgidObj.refpk){
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -464,9 +464,9 @@ class AssignComponent extends Component {
             appCode: appCode
         };
         infoData.targets = newTargets;
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
+        } else if (def1 === 'menuitem') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -524,7 +524,7 @@ class AssignComponent extends Component {
             templatePks,
             nodeKey,
             orgidObj,
-            activeKey,
+            def1,
             tabActiveKey
         } = this.state;
         return (
@@ -543,7 +543,7 @@ class AssignComponent extends Component {
                             <span>功能节点：</span>
                             <span>{pageCode ? pageCode : ''}</span>
                         </p>
-                        {activeKey === '2' && (
+                        {def1 === 'menuitem' && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}

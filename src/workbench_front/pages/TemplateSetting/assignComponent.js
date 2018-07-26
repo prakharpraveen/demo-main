@@ -69,14 +69,14 @@ class AssignComponent extends Component {
             orgidObj: {},
             treeRoDataObj: {},
             tabActiveKey: '1',
-            activeKey: this.props.activeKey
+            def1: this.props.def1
         };
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
             templatePks: nextProps.templatePks,
             pageCode: nextProps.pageCode,
-            activeKey: nextProps.activeKey,
+            def1: nextProps.def1,
             appCode: nextProps.appCode
         });
     }
@@ -96,16 +96,16 @@ class AssignComponent extends Component {
     }
     //已分配用户角色和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
+        let { pageCode, templatePks, orgidObj, def1, appCode, nodeKeyValue } = this.state;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
             templateId: templatePks,
             appCode: appCode
         };
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
+        } else if (def1 === 'menuitem') {
             infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
@@ -367,6 +367,7 @@ class AssignComponent extends Component {
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
                 const afterStr = text.substr(index + searchValue.length);
+                console.log(searchValue);
                 const title =
                     index > -1 ? (
                         <span>
@@ -408,7 +409,7 @@ class AssignComponent extends Component {
         };
         return (
             <div>
-                {data.length > 0 && (hideSearch ? '' : <Search placeholder='角色用户或指责查询' onChange={this.onSearch} />)}
+                {data.length > 0 && (hideSearch ? '' : <Search placeholder='角色用户或指责查询' onChange={this.onSearch} value={searchValue} />)}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -427,7 +428,7 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, activeKey, appCode, nodeKeyValue } = this.state;
+        let { templatePks, pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
         if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -458,10 +459,10 @@ class AssignComponent extends Component {
             appCode: appCode
         };
         infoData.targets = newTargets;
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
-        } else if (activeKey === '2') {
-            infoData.templateType = 'print';
+        } else if (def1 === '2') {
+            infoData.templateType = 'menuitem';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
@@ -515,7 +516,7 @@ class AssignComponent extends Component {
             treeAllowedData,
             templatePks,
             nodeKey,
-            activeKey,
+            def1,
             tabActiveKey
         } = this.state;
         return (
@@ -536,7 +537,7 @@ class AssignComponent extends Component {
                             <span>功能节点：</span>
                             <span>{pageCode ? pageCode : ''}</span>
                         </p>
-                        {activeKey === '2' && (
+                        {def1 === 'menuitem' && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}

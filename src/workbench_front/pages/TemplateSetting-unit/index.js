@@ -77,7 +77,6 @@ class TemplateSetting extends Component {
             },
             orgidObj: {},
             parentIdcon: '', //树节点的key
-            activeKey: '1',
             templateType: '',
             previewPrintVisible: false,
             def1: '',
@@ -87,7 +86,7 @@ class TemplateSetting extends Component {
     }
     // 按钮显隐性控制
     setBtnsShow = (item) => {
-        let { parentIdcon, activeKey, templateType } = this.state;
+        let { parentIdcon, def1, templateType } = this.state;
         let { name } = item;
         let isShow = false;
         switch (name) {
@@ -164,7 +163,7 @@ class TemplateSetting extends Component {
     };
     //保存
     handleOk = (e) => {
-        let { templateNameVal, templateTitleVal, templatePks, pageCode, activeKey, appCode, orgidObj } = this.state;
+        let { templateNameVal, templateTitleVal, templatePks, pageCode, def1, appCode, orgidObj } = this.state;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板标题' });
             return;
@@ -177,10 +176,10 @@ class TemplateSetting extends Component {
             orgId: orgidObj.refpk
         };
         let url;
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
             url = `/nccloud/platform/template/copyTemplate.do`;
-        } else if (activeKey === '2') {
+        } else if (def1 === 'menuitem') {
             if (!templateTitleVal) {
                 Notice({ status: 'warning', msg: '请输入模板标题' });
                 return;
@@ -214,7 +213,7 @@ class TemplateSetting extends Component {
     };
     //按钮事件的触发
     handleClick = (btnName) => {
-        let { templateNameVal, templatePks, appCode, pageCode, activeKey, orgidObj } = this.state;
+        let { templateNameVal, templatePks, appCode, pageCode, def1, orgidObj } = this.state;
         let infoData = {
             templateId: templatePks
         };
@@ -233,7 +232,7 @@ class TemplateSetting extends Component {
                 });
                 break;
             case '修改':
-                if (activeKey === '2') {
+                if (def1 === 'menuitem') {
                     Ajax({
                         loading: true,
                         url: '/nccloud/riart/template/edittemplate.do',
@@ -263,7 +262,7 @@ class TemplateSetting extends Component {
             case '删除':
                 let url;
                 let _this = this;
-                if (activeKey === '2') {
+                if (def1 === 'menuitem') {
                     url = `/nccloud/platform/template/deletePrintTemplate.do`;
                 } else {
                     url = `/nccloud/platform/template/deleteTemplateDetail.do`;
@@ -300,7 +299,7 @@ class TemplateSetting extends Component {
                 });
                 break;
             case '浏览':
-                if (activeKey === '2') {
+                if (def1 === 'menuitem') {
                     this.showModal();
                 } else {
                     this.setState({
@@ -329,7 +328,7 @@ class TemplateSetting extends Component {
             treeTemPrintDataArray,
             selectedKeys,
             parentIdcon,
-            activeKey
+            def1
         } = this.state;
         let treeData = [];
         let treeInfo;
@@ -384,7 +383,7 @@ class TemplateSetting extends Component {
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
         if (templateType === 'bill') {
-            if (activeKey === '1') {
+            if (def1 === 'apppage') {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
@@ -401,7 +400,7 @@ class TemplateSetting extends Component {
                 treeTemBillData
             });
         } else if (templateType === 'print') {
-            if (activeKey === '2') {
+            if (def1 === 'menuitem') {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
@@ -465,7 +464,7 @@ class TemplateSetting extends Component {
     };
     //请求右侧树数据
     reqTreeTemData = (key) => {
-        let { pageCode, activeKey, appCode, orgidObj } = this.state;
+        let { pageCode, appCode, orgidObj } = this.state;
         let infoData = {
             pageCode: pageCode,
             appCode: appCode,
@@ -518,11 +517,11 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        let { activeKey } = this.state;
+        let { def1 } = this.state;
         let templateType = '';
-        if (activeKey === '1') {
+        if (def1 === 'apppage') {
             templateType = 'bill';
-        } else if (activeKey === '2') {
+        } else if (def1 === 'menuitem') {
             templateType = 'print';
             if (key.length > 0) {
                 this.setState({
@@ -758,7 +757,7 @@ class TemplateSetting extends Component {
             alloVisible,
             pageCode,
             org_df_biz,
-            activeKey,
+            def1,
             templatePks,
             batchSettingModalVisibel,
             appCode,
@@ -773,8 +772,7 @@ class TemplateSetting extends Component {
             autoExpandTemParent,
             orgidObj,
             previewPrintContent,
-            previewPrintVisible,
-            def1
+            previewPrintVisible
         } = this.state;
         const leftTreeData = [
             {
@@ -888,7 +886,7 @@ class TemplateSetting extends Component {
                                 }}
                             />
                         </div>
-                        {activeKey === '2' &&
+                        {def1 === 'menuitem' &&
                         treeTemPrintData.length > 0 && (
                             <div>
                                 <label htmlFor=''>模板标题：</label>
@@ -916,7 +914,7 @@ class TemplateSetting extends Component {
                         alloVisible={alloVisible}
                         setAssignModalVisible={this.setAssignModalVisible}
                         pageCode={pageCode}
-                        activeKey={activeKey}
+                        def1={def1}
                         appCode={appCode}
                         nodeKey={nodeKey}
                         orgidObj={orgidObj}
