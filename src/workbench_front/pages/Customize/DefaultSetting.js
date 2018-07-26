@@ -15,9 +15,7 @@ import ContentLangRef from "Components/Refers/ContentLangRef";
 import DataFormatRef from "Components/Refers/DataFormatRef";
 import Notice from "Components/Notice";
 import Ajax from "Pub/js/ajax";
-import { high } from "nc-lightapp-front";
 import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
-const { Refer } = high;
 class DefaultSetting extends Component {
     constructor(props) {
         super(props);
@@ -104,13 +102,13 @@ class DefaultSetting extends Component {
                         status: "success"
                     });
                     data = this.defaultRefValueInit(data);
-                    this.setState(data);
+                    this.historyData = data;
+                    this.setState({ ...data, disabled: true });
                 }
             }
         });
     };
     handdleRefChange = (value, type) => {
-        console.log(value, type);
         let { refname = "", refcode = "", refpk = "" } = value;
         let flag = this.historyData[type]["refcode"] === refcode;
         let obj = {};
@@ -144,9 +142,26 @@ class DefaultSetting extends Component {
             },
             success: ({ data: { data } }) => {
                 if (data) {
-                    this.historyData = data;
                     data = this.defaultRefValueInit(data);
+                    this.historyData = data;
                     this.setState({ ...data });
+                } else {
+                    let {
+                        org_df_biz,
+                        org_df_credit,
+                        org_df_cost,
+                        org_df_fa,
+                        dataFormat,
+                        contentLang
+                    } = this.state;
+                    this.historyData = {
+                        org_df_biz,
+                        org_df_credit,
+                        org_df_cost,
+                        org_df_fa,
+                        dataFormat,
+                        contentLang
+                    };
                 }
             }
         });

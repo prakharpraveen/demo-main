@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { high } from "nc-lightapp-front";
 const { Refer } = high;
 /**
@@ -14,7 +14,15 @@ export default function(props = {}) {
         placeholder: "业务单元",
         queryTreeUrl: "/nccloud/uapbd/ref/businessunit.do",
         treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] },
-        isMultiSelectedEnabled: false
+        isMultiSelectedEnabled: false,
+        unitProps: {
+            queryTreeUrl: "/nccloud/riart/ref/groupRefTreeAction.do",
+            refType: "tree",
+            //isMultiSelectedEnabled:true
+            refName: "集团",
+            rootNode: { refname: "集团", refpk: "root" }
+        },
+        isShowUnit: false
     };
     return <Refer {...Object.assign(conf, props)} />;
 }
