@@ -340,7 +340,7 @@ class AssignComponent extends Component {
     //树的查询方法
     onSearch = (e) => {
         const value = e.target.value;
-        let { treeRoData } = this.state;
+        let { treeRoData, tabActiveKey } = this.state;
         let keyArray = [];
         const expandedKeys = treeRoData
             .map((item) => {
@@ -355,6 +355,12 @@ class AssignComponent extends Component {
                 return null;
             })
             .filter((item, i, self) => item && self.indexOf(item) === i);
+            if(tabActiveKey==='1'){
+                expandedKeys.push('abc1234567');
+                expandedKeys.push('abc2234567');
+            }else if(tabActiveKey==='2'){
+                expandedKeys.push('abc3334567');
+            }
         this.setState({
             expandedKeys,
             searchValue: value,

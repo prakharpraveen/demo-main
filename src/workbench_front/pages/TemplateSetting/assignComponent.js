@@ -46,7 +46,7 @@ class AssignComponent extends Component {
             expandedKeys: [ '0' ],
             selectedKeys: [],
             searchValue: '',
-            autoExpandParent: true,
+            autoExpandParent: false,
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
@@ -338,9 +338,9 @@ class AssignComponent extends Component {
     };
     onSearch = (e) => {
         const value = e.target.value;
-        let { treeRoData } = this.state;
+        let { treeRoData, tabActiveKey } = this.state;
         let keyArray = [];
-        const expandedKeys = treeRoData
+        let expandedKeys = treeRoData
             .map((item) => {
                 if (item.children) {
                     item.children.map((ele) => {
@@ -353,6 +353,12 @@ class AssignComponent extends Component {
                 return null;
             })
             .filter((item, i, self) => item && self.indexOf(item) === i);
+        if(tabActiveKey==='1'){
+            expandedKeys.push('abc1234567');
+            expandedKeys.push('abc2234567');
+        }else if(tabActiveKey==='2'){
+            expandedKeys.push('abc3334567');
+        }
         this.setState({
             expandedKeys,
             searchValue: value,
@@ -367,7 +373,6 @@ class AssignComponent extends Component {
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
                 const afterStr = text.substr(index + searchValue.length);
-                console.log(searchValue);
                 const title =
                     index > -1 ? (
                         <span>
