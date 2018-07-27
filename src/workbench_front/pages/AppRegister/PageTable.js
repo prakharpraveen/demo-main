@@ -551,6 +551,10 @@ class PageTable extends Component {
                     action: "删除"
                 };
             } else if (activeKey === "2") {
+                if(record.isdefault){
+                    Notice({ status: "warning", msg: '已经设置的模板不允许删除！' });
+                    return;
+                }
                 url = `/nccloud/platform/template/deleteTemplateDetail.do`;
                 data = {
                     templateId: record.pk_page_templet
