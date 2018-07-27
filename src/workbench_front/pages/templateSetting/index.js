@@ -339,6 +339,7 @@ class TemplateSetting extends Component {
                 break;
         }
     };
+    //打印模板预览请求数据方法
     printModalAjax = (templateId) => {
         let infoData = {};
         infoData.templateId = templateId;
@@ -811,7 +812,7 @@ class TemplateSetting extends Component {
             {
                 code: '00',
                 name: '菜单树',
-                pk: '',
+                pk: '00',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
         ];

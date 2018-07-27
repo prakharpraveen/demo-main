@@ -48,7 +48,7 @@ class TemplateSetting extends Component {
         super(props);
         this.state = {
             siderHeight: '280',
-            expandedKeys: [ '0' ],
+            expandedKeys: [ '00' ],
             expandedTemKeys: [],
             selectedKeys: [],
             selectedTemKeys: [],
@@ -778,7 +778,7 @@ class TemplateSetting extends Component {
             {
                 code: '00',
                 name: '菜单树',
-                pk: '',
+                pk: '00',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
         ];
