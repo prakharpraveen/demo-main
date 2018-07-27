@@ -551,9 +551,9 @@ class PageTable extends Component {
                     action: "删除"
                 };
             } else if (activeKey === "2") {
-                url = `/nccloud/platform/templet/deletetemplet.do`;
+                url = `/nccloud/platform/template/deleteTemplateDetail.do`;
                 data = {
-                    templetid: record.pk_page_templet
+                    templateId: record.pk_page_templet
                 };
                 info = {
                     name: "页面模板",
