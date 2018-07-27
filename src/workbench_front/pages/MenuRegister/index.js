@@ -96,8 +96,12 @@ class MenuRegister extends Component {
                         onChange={checked => {
                             this.handleChange(checked, record);
                         }}
-                        checkedChildren={<Icon type="check" />}
-                        unCheckedChildren={<Icon type="cross" />}
+                        checkedChildren={
+                            <i className="iconfont icon-shenpitongguo" />
+                        }
+                        unCheckedChildren={
+                            <i className="iconfont icon-shenpibohui" />
+                        }
                         checked={text}
                     />
                 )
@@ -109,8 +113,8 @@ class MenuRegister extends Component {
                 render: (text, record) => (
                     <Switch
                         disabled
-                        checkedChildren={<Icon type="check" />}
-                        unCheckedChildren={<Icon type="cross" />}
+                        checkedChildren={<i className="iconfont icon-shenpitongguo" />}
+                        unCheckedChildren={<i className="iconfont icon-shenpibohui" />}
                         checked={text}
                     />
                 )

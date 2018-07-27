@@ -255,6 +255,41 @@ body {
             border-right: none;
         }
     }
+    .ant-switch {
+        background-color: #e7eff3;
+        .iconfont {
+            color: #768692;
+            font-size: 13px;
+        }
+        &::after {
+            background-color: #82919c;
+        }
+    }
+    .ant-switch-checked {
+        background: #cdf2e3;
+        .iconfont {
+            color: #00c66e;
+        }
+        &::after {
+            background-color: #00c66e;
+        }
+    }
+    .ant-switch-disabled {
+        background: #ededed;
+        .iconfont {
+            color: #a8abad;
+            font-size: 13px;
+        }
+    }
+    .ant-switch-disabled.ant-switch-checked {
+        background: #ededed;
+        .iconfont {
+            color: #a8abad;
+        }
+        &::after {
+            background-color: #a8abad;
+        }
+    }
 }
 .ant-modal-footer {
     & > div {
