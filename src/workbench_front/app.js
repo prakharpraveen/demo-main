@@ -10,7 +10,6 @@ import store from "./store";
 import Routes from "./routes";
 import Notice from "Components/Notice";
 import moment from "moment";
-import { CreateQuery } from "Pub/js/utils.js";
 import { openApp } from "Pub/js/superJump";
 import "moment/locale/zh-cn";
 import "Assets/iconfont/iconfont.js";
@@ -156,30 +155,6 @@ class App extends Component {
                 callback(win);
             }
         };
-        /////////////////////////////////////////////////////////////
-        // 已经弃用
-        // /**
-        //  * 当前页打开新页面 不做应用校验
-        //  * @param {String} url  目标页面 url 地址
-        //  * @param {Object} object 需要传递的参数对象 非必输
-        //  */
-        // window.openNewPage = (url, object) => {
-        //     if (object) {
-        //         /**
-        //          * defParam 首字符为 &
-        //          * searchParam 首字符为 ？
-        //          */
-        //         let { defParam, searchParam } = CreateQuery(query);
-        //         window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-        //             encodeURIComponent(url + searchParam)
-        //         )}`;
-        //     } else {
-        //         window.location.hash = `#/ifr?ifr=${encodeURIComponent(
-        //             encodeURIComponent(url)
-        //         )}`;
-        //     }
-        // };
-        ////////////////////////////////////////////////////////////////
     }
     componentDidMount() {
         // 模拟数据，应该在此处进行数据请求，返回用户初始信息

@@ -69,6 +69,34 @@ body {
     .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner:after {
         border-color: #fff;
     }
+    .ant-select-focused .ant-select-selection {
+        border-color: #d9d9d9;
+    }
+    .ant-select-selection:hover {
+        border-color: #999999;
+        .ant-select-arrow {
+            color: #999999;
+        }
+    }
+    .ant-select-selection:active,
+    .ant-select-selection:focus {
+        border-color: #999999;
+        box-shadow: none;
+        .ant-select-arrow {
+            color: #999999;
+        }
+    }
+    .ant-select-dropdown-menu-item-active {
+        background-color: #ffffff;
+    }
+    .ant-select-dropdown-menu-item:hover {
+        background-color: #f3f3f3;
+    }
+    .ant-select-dropdown-menu-item-selected,
+    .ant-select-dropdown-menu-item-selected:hover {
+        background-color: #f3f3f3;
+    }
+    
     .ant-table-tbody > tr.ant-table-row-hover > td,
     .ant-table-tbody > tr:hover > td,
     .ant-table-thead > tr.ant-table-row-hover > td,
@@ -77,6 +105,7 @@ body {
     }
     .ant-modal-mask {
         background: none;
+        z-index: 180;
     }
     /* 模态框垂直居中 */
     .vertical-center-modal {
