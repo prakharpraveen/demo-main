@@ -50,7 +50,7 @@ body {
         background-color: #b2332e;
         border-color: #b2332e;
     }
-    .ant-modal-wrap{
+    .ant-modal-wrap {
         z-index: 190;
     }
     .ant-checkbox-checked .ant-checkbox-inner,
@@ -247,16 +247,24 @@ body {
             box-shadow: 0px 3px 12px 0px rgba(93, 74, 74, 0.5);
         }
     }
+    .ant-table-bordered {
+        .ant-table-tbody > tr > td {
+            border-right: none;
+        }
+        .ant-table-thead > tr > th {
+            border-right: none;
+        }
+    }
 }
 .ant-modal-footer {
     & > div {
         display: flex;
         flex-direction: row-reverse;
-        .ant-btn{
+        .ant-btn {
             margin-left: 6px;
         }
     }
 }
-.ant-notification{
+.ant-notification {
     z-index: 1010;
 }
