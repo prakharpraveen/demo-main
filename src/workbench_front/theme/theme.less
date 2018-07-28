@@ -210,6 +210,22 @@ body {
         border-right-width: 1px !important;
     }
     .ant-tree {
+        .ant-tree-child-tree-open{
+            .ant-tree-treenode-switcher-close:last-child{
+                .ant-tree-switcher-noop{
+                    &::after{
+                        content: '' !important;
+                        display: block;
+                        width: 50%;
+                        height: 50%;
+                        position: absolute;
+                        left: 50%;
+                        border-left: 1px dashed #d9d9d9;
+                        border-bottom: 1px dashed #d9d9d9;
+                    }
+                }
+            }
+        }
         li {
             .ant-tree-node-content-wrapper {
                 line-height: 28px;
@@ -228,6 +244,17 @@ body {
             span.ant-tree-switcher {
                 line-height: 28px;
                 height: 28px;
+                &.ant-tree-switcher-noop{
+                    &::after{
+                        content: '' !important;
+                        display: block;
+                        width: 1px;
+                        height: 100%;
+                        position: absolute;
+                        left: 50%;
+                        border-left: 1px dashed #d9d9d9;
+                    }
+                }
             }
             span.ant-tree-iconEle {
                 line-height: 28px;
