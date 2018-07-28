@@ -750,9 +750,12 @@ class ZoneTable extends Component {
         const columns = this.columns;
         return (
             <div>
-                <Button className='editable-add-btn' onClick={this.handleAdd}>
-                    新增
-                </Button>
+                <p>
+                    <span style={{color:'rgb(225, 76, 70)',marginRight:'20px'}}>提示：表格可进行拖拽排序</span>
+                    <Button className='editable-add-btn' onClick={this.handleAdd}>
+                        新增
+                    </Button>
+                </p>
                 <Table
                     bordered
                     dataSource={dataSource.map((item, index) => {
