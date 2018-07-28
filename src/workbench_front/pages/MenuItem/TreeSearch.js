@@ -121,12 +121,13 @@ class TreeSearch extends Component {
         ];
         return (
             <div className="menuitem-tree-search">
-                <Input
-                    style={{ marginBottom: 8 }}
-                    placeholder="查询应用"
-                    onChange={this.onChange}
-                    suffix={<SearchIcon />}
-                />
+                <div className="fixed-search-input">
+                    <Input
+                        placeholder="查询应用"
+                        onChange={this.onChange}
+                        suffix={<SearchIcon />}
+                    />
+                </div>
                 <Tree
                     showLine
                     showIcon

@@ -137,12 +137,13 @@ class SearchTree extends Component {
         ];
         return (
             <div className={this.props.className}>
-                <Input
-                    style={{ marginBottom: 8 }}
-                    placeholder="应用查询"
-                    onChange={this.onChange}
-                    suffix={<SearchIcon />}
-                />
+                <div className="fixed-search-input">
+                    <Input
+                        placeholder="应用查询"
+                        onChange={this.onChange}
+                        suffix={<SearchIcon />}
+                    />
+                </div>
                 <Tree
                     showLine
                     showIcon
