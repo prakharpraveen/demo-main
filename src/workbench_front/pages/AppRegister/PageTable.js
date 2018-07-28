@@ -857,7 +857,7 @@ class PageTable extends Component {
                     onClick={() => this.add()}
                     style={{ marginLeft: "8px" }}
                 >
-                    新增行
+                    增行
                 </Button>
             </div>
         );
