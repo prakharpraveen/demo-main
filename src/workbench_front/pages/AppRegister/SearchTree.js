@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Tree, Input } from "antd";
 import Svg from "Components/Svg";
+import SearchIcon from 'Components/SearchIcon';
 import { createTree } from "Pub/js/createTree.js";
 import { setExpandedKeys, setPageActiveKey } from "Store/AppRegister/action";
 const TreeNode = Tree.TreeNode;
-const Search = Input.Search;
 class SearchTree extends Component {
     constructor(props) {
         super(props);
@@ -132,10 +132,11 @@ class SearchTree extends Component {
         ];
         return (
             <div className={this.props.className}>
-                <Search
+                <Input
                     style={{ marginBottom: 8 }}
                     placeholder="应用查询"
                     onChange={this.onChange}
+                    suffix={<SearchIcon/>}
                 />
                 <Tree
                     showLine
