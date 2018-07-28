@@ -678,7 +678,18 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='菜单查询' onChange={this.onChange} />}
+                {hideSearch ? (
+                    ''
+                ) : (
+                    <Affix offsetTop={170}>
+                        <Search
+                            style={{ marginBottom: 8 }}
+                            placeholder='菜单查询'
+                            onChange={this.onChange}
+                            value={searchValue}
+                        />
+                    </Affix>
+                )}
                 {data.length > 0 && (
                     <Tree
                         showLine
