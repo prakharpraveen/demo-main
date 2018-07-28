@@ -62,7 +62,7 @@ class ZoneRegister extends Component {
 
 	render() {
 		return (
-			<PageLayout className="nc-workbench-ZoneRegister">
+			<PageLayout className="nc-workbench-zone">
 				<Layout>
 					<Myhead />
 					<Layout>
