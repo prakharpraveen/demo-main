@@ -685,7 +685,7 @@ class TemplateSetting extends Component {
         }
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys, autoExpandParent) => {
+    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys, autoExpandParent, classType) => {
         const { searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
@@ -737,18 +737,18 @@ class TemplateSetting extends Component {
             });
         };
         return (
-            <div>
+            <div className={classType?classType:''}>
                 {hideSearch ? (
                     ''
                 ) : (
-                    <Affix offsetTop={170}>
+                    <div className='fixed-search-input'>
                         <Search
                             style={{ marginBottom: 8 }}
                             placeholder='菜单查询'
                             onChange={this.onChange}
                             value={searchValue}
                         />
-                    </Affix>
+                    </div>
                 )}
                 {data.length > 0 && (
                     <Tree
@@ -863,7 +863,8 @@ class TemplateSetting extends Component {
                         null,
                         selectedKeys,
                         expandedKeys,
-                        autoExpandParent
+                        autoExpandParent,
+                        'templateSetting-searchTree'
                     )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
