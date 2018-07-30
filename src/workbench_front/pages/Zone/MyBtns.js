@@ -141,15 +141,18 @@ class MyBtns extends Component {
         let param = GetQuery(this.props.location.search);
         let fromData = this.props.zoneFormData();
         let { newListData } = this.props;
+        debugger
         switch (name) {
             case "保存":
-                if (!fromData) {
+                if ((!fromData)||(!zoneDatas)||(zoneDatas.areaList.length===0)) {//
+                    Notice({ status: 'warning', msg: '清完善表格和表单信息' });
                     return;
                 }
                 this.saveZoneData(newListData, fromData, 1);
                 break;
             case "下一步":
-                if (!fromData) {
+                if ((!fromData)||(!zoneDatas)||(zoneDatas.areaList.length===0)) {//
+                    Notice({ status: 'warning', msg: '清完善表格和表单信息' });
                     return;
                 }
                 this.saveZoneData(newListData, fromData, 2);
