@@ -245,7 +245,8 @@ class RelateMetaModal extends Component {
 								<tbody>
 									{cards.map((c, i) => {
 										//必须是元数据并且不包含.,也就是根节点或者子表的根节点
-										if (c.metapath && c.metapath !== '' && c.metapath.indexOf('.') === -1) {
+										//最新逻辑去掉只显示根节点的逻辑
+										if (c.metapath && c.metapath !== '') {
 											return (
 												<tr
 													key={i}
