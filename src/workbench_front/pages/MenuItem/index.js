@@ -32,7 +32,13 @@ class MenuItem extends Component {
             selectedKeys: ["00"],
             treeData: [],
             fields: {},
-            formData: {}
+            formData: {
+                menuitemcode: "",
+                menuitemname: "",
+                menudes: "",
+                appcodeRef: {},
+                resid: ""
+            }
         };
         this.newFormData = {
             menuitemcode: "",
@@ -168,8 +174,6 @@ class MenuItem extends Component {
                     resid
                 } = newFields;
                 let resData, urlData;
-                console.log(appcodeRef); 
-                
                 if (isNew) {
                     if (parentKey === "" || parentKey === "00") {
                         resData = {
@@ -220,8 +224,10 @@ class MenuItem extends Component {
                     success: ({ data: { data } }) => {
                         if (data) {
                             let treeData = [...this.state.treeData];
+                            let newFields;
                             if (isNew) {
                                 treeData = _.concat(treeData, data);
+                                newFields = data;
                             } else {
                                 data.map(newItem => {
                                     let dataIndex = _.findIndex(
@@ -232,12 +238,16 @@ class MenuItem extends Component {
                                     );
                                     treeData[dataIndex] = newItem;
                                 });
+                                newFields = data.find(
+                                    item =>
+                                        item.pk_menuitem === resData.pk_menuitem
+                                );
                             }
                             this.setState({
                                 isedit: false,
                                 isNew: false,
                                 treeData,
-                                fields: data
+                                fields: newFields
                             });
                             Notice({
                                 status: "success",
@@ -371,6 +381,7 @@ class MenuItem extends Component {
                 refpk: ""
             };
         }
+
         this.historyData = { ...treeItem };
         this.setState({
             selectedKeys,
@@ -435,6 +446,16 @@ class MenuItem extends Component {
             resid,
             menudes
         } = this.state.formData;
+        let lenCheck = undefined;
+        if (isNew) {
+            if (parentKey.length < 6) {
+                lenCheck = parentKey.length + 2;
+            }
+        } else {
+            if (menuitemcode.length < 6) {
+                lenCheck = menuitemcode.length;
+            }
+        }
         let menuFormData = [
             {
                 code: "menuitemcode",
@@ -443,7 +464,7 @@ class MenuItem extends Component {
                 isRequired: true,
                 isedit: isedit,
                 initialValue: menuitemcode,
-                len: parentKey.length < 6 ? parentKey.length + 2 : undefined,
+                len: lenCheck,
                 xs: 24,
                 md: 12,
                 lg: 12
