@@ -467,7 +467,7 @@ class AssignComponent extends Component {
         if (def1 === 'apppage') {
             infoData.templateType = 'bill';
         } else if (def1 === 'menuitem') {
-            infoData.templateType = 'menuitem';
+            infoData.templateType = 'print';
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
