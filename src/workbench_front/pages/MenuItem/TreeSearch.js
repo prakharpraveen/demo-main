@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Tree, Input } from "antd";
 import Svg from "Components/Svg";
 import { createTree } from "Pub/js/createTree.js";
+import SearchIcon from "Components/SearchIcon";
 const TreeNode = Tree.TreeNode;
-const Search = Input.Search;
 class TreeSearch extends Component {
     constructor(props) {
         super(props);
@@ -121,11 +121,13 @@ class TreeSearch extends Component {
         ];
         return (
             <div className="menuitem-tree-search">
-                <Search
-                    style={{ marginBottom: 8 }}
-                    placeholder="查询应用"
-                    onChange={this.onChange}
-                />
+                <div className="fixed-search-input">
+                    <Input
+                        placeholder="查询应用"
+                        onChange={this.onChange}
+                        suffix={<SearchIcon />}
+                    />
+                </div>
                 <Tree
                     showLine
                     showIcon

@@ -537,7 +537,7 @@ class MenuItem extends Component {
             {
                 name: "删除",
                 code: "del",
-                type: "primary",
+                type: "",
                 isshow:
                     this.state.parentKey !== "" &&
                     this.state.parentKey !== "00" &&

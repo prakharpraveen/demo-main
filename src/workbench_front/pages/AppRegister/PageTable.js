@@ -551,9 +551,13 @@ class PageTable extends Component {
                     action: "删除"
                 };
             } else if (activeKey === "2") {
-                url = `/nccloud/platform/templet/deletetemplet.do`;
+                if(record.isdefault){
+                    Notice({ status: "warning", msg: '已经设置的模板不允许删除！' });
+                    return;
+                }
+                url = `/nccloud/platform/template/deleteTemplateDetail.do`;
                 data = {
-                    templetid: record.pk_page_templet
+                    templateId: record.pk_page_templet
                 };
                 info = {
                     name: "页面模板",
@@ -853,7 +857,7 @@ class PageTable extends Component {
                     onClick={() => this.add()}
                     style={{ marginLeft: "8px" }}
                 >
-                    新增行
+                    增行
                 </Button>
             </div>
         );

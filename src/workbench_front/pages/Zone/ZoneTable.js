@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Input, Icon, Button, Popconfirm, Select, Modal } from 'antd';
+import { DragSource, DropTarget } from 'react-dnd';
+import withDragDropContext from 'Pub/js/withDragDropContext';
+import update from 'immutability-helper';
 import _ from 'lodash';
 import { setNewList } from 'Store/Zone/action';
 import Ajax from 'Pub/js/ajax';
@@ -10,6 +13,86 @@ import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const Option = Select.Option;
 
 // sunlei
+function dragDirection(dragIndex, hoverIndex, initialClientOffset, clientOffset, sourceClientOffset) {
+    const hoverMiddleY = (initialClientOffset.y - sourceClientOffset.y) / 2;
+    const hoverClientY = clientOffset.y - sourceClientOffset.y;
+    if (dragIndex < hoverIndex && hoverClientY > hoverMiddleY) {
+        return 'downward';
+    }
+    if (dragIndex > hoverIndex && hoverClientY < hoverMiddleY) {
+        return 'upward';
+    }
+}
+let BodyRow = (props) => {
+    console.log(props);
+    const {
+        isOver,
+        connectDragSource,
+        connectDropTarget,
+        moveRow,
+        dragRow,
+        clientOffset,
+        sourceClientOffset,
+        initialClientOffset,
+        ...restProps
+    } = props;
+    const style = { ...restProps.style, cursor: 'move' };
+
+    let className = restProps.className;
+    if (isOver && initialClientOffset) {
+        const direction = dragDirection(
+            dragRow.index,
+            restProps.index,
+            initialClientOffset,
+            clientOffset,
+            sourceClientOffset
+        );
+        if (direction === 'downward') {
+            className += ' drop-over-downward';
+        }
+        if (direction === 'upward') {
+            className += ' drop-over-upward';
+        }
+    }
+
+    return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
+};
+const rowTarget = {
+    drop(props, monitor) {
+        const dragIndex = monitor.getItem().index;
+        const hoverIndex = props.index;
+        // Don't replace items with themselves
+        if (dragIndex === hoverIndex) {
+            return;
+        }
+        // Time to actually perform the action
+        props.moveRow(dragIndex, hoverIndex);
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        monitor.getItem().index = hoverIndex;
+    }
+};
+const rowSource = {
+    beginDrag(props) {
+        return {
+            index: props.index
+        };
+    }
+};
+BodyRow = DropTarget('row', rowTarget, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    sourceClientOffset: monitor.getSourceClientOffset()
+}))(
+    DragSource('row', rowSource, (connect, monitor) => ({
+        connectDragSource: connect.dragSource(),
+        dragRow: monitor.getItem(),
+        clientOffset: monitor.getClientOffset(),
+        initialClientOffset: monitor.getInitialClientOffset()
+    }))(BodyRow)
+);
 /**
  * 按钮类型选择
  * @param {String} value
@@ -321,9 +404,6 @@ class ZoneTable extends Component {
             queryPropertyList: null,
             templetid: '',
             resid: null,
-            //
-            //
-            //
             oldData: {
                 areaCode: '',
                 areaName: ''
@@ -468,19 +548,19 @@ class ZoneTable extends Component {
             metaname: record.metaname,
             areastatus: record.areastatus,
             relationcode: record.relationcode,
-            clazz:record.clazz,
-            creationtime:record.creationtime,
-            creator:record.creator,
-            headcode:record.headcode,
-            formPropertyList:record.formPropertyList,
-            metaid:record.metaid,
-            metaspace:record.metaspace,
-            modifiedtime:record.modifiedtime,
-            modifer:record.modifer,
-            pagination:record.pagination,
-            queryPropertyList:record.queryPropertyList,
-            templetid:record.templetid,
-            resid:record.resid
+            clazz: record.clazz,
+            creationtime: record.creationtime,
+            creator: record.creator,
+            headcode: record.headcode,
+            formPropertyList: record.formPropertyList,
+            metaid: record.metaid,
+            metaspace: record.metaspace,
+            modifiedtime: record.modifiedtime,
+            modifer: record.modifer,
+            pagination: record.pagination,
+            queryPropertyList: record.queryPropertyList,
+            templetid: record.templetid,
+            resid: record.resid
         });
     }
     // 闭包 只对具体的单元格修改
@@ -601,19 +681,19 @@ class ZoneTable extends Component {
                         metaname: metaname,
                         areastatus: areastatus,
                         relationcode: relationcode,
-                        clazz:clazz,
-                        creationtime:creationtime,
-                        creator:creator,
-                        headcode:headcode,
-                        formPropertyList:formPropertyList,
-                        metaid:metaid,
-                        metaspace:metaspace,
-                        modifiedtime:modifiedtime,
-                        modifer:modifer,
-                        pagination:pagination,
-                        queryPropertyList:queryPropertyList,
-                        templetid:templetid,
-                        resid:resid
+                        clazz: clazz,
+                        creationtime: creationtime,
+                        creator: creator,
+                        headcode: headcode,
+                        formPropertyList: formPropertyList,
+                        metaid: metaid,
+                        metaspace: metaspace,
+                        modifiedtime: modifiedtime,
+                        modifer: modifer,
+                        pagination: pagination,
+                        queryPropertyList: queryPropertyList,
+                        templetid: templetid,
+                        resid: resid
                     };
                     this.setState(
                         {
@@ -633,19 +713,63 @@ class ZoneTable extends Component {
             visible: false
         });
     };
+    components = {
+        body: {
+            row: BodyRow
+        }
+    };
+    moveRow = (dragIndex, hoverIndex) => {
+        let { dataSource } = this.state;
+        const dragRow = dataSource[dragIndex];
+        let sortData = update(dataSource, {
+            $splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragRow ] ]
+        });
+        this.setState({
+            dataSource:sortData
+        });
+        this.props.setNewList(sortData);
+        // Ajax({
+        //     url: `/nccloud/platform/appregister/orderbuttons.do`,
+        //     info: {
+        //         name: "页面按钮",
+        //         action: "排序"
+        //     },
+        //     data: sortData,
+        //     success: ({ data }) => {
+        //         if (data.success && data.data) {
+        //             //this.props.setPageButtonData(sortData);
+        //             this.props.setNewList(this.state.dataSource);
+        //         } else {
+        //             Notice({ status: "error", msg: data.data.true });
+        //         }
+        //     }
+        // });
+    };
     render() {
         let { dataSource, visible, areaCode, areaName, areaPk } = this.state;
-        dataSource &&
-            dataSource.map((v, i) => {
-                v.position = i + 1;
-            });
         const columns = this.columns;
         return (
             <div>
-                <Button className='editable-add-btn' onClick={this.handleAdd}>
-                    新增
-                </Button>
-                <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+                <p>
+                    <span style={{color:'rgb(225, 76, 70)',marginRight:'20px'}}>提示：表格可进行拖拽排序</span>
+                    <Button className='editable-add-btn' onClick={this.handleAdd}>
+                        新增
+                    </Button>
+                </p>
+                <Table
+                    bordered
+                    dataSource={dataSource.map((item, index) => {
+                        item.position = index + 1;
+                        return item;
+                    })}
+                    columns={columns}
+                    pagination={false}
+                    components={this.components}
+                    onRow={(record, index) => ({
+                        index,
+                        moveRow: this.moveRow
+                    })}
+                />
                 <Modal
                     title='表格区域复制'
                     okText='保存'
@@ -691,7 +815,7 @@ class ZoneTable extends Component {
         );
     }
 }
-
+let DragFromeTable = withDragDropContext(ZoneTable);
 export default connect(
     (state) => {
         return {
@@ -700,4 +824,4 @@ export default connect(
         };
     },
     { setNewList }
-)(ZoneTable);
+)(DragFromeTable);

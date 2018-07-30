@@ -767,15 +767,15 @@ class AppRegister extends Component {
                     nodeData.apptype === "1"
             },
             {
-                code: "cancel",
-                name: "取消",
-                type: "",
-                isshow: isEdit
-            },
-            {
                 code: "save",
                 name: "保存",
                 type: "primary",
+                isshow: isEdit
+            },
+            {
+                code: "cancel",
+                name: "取消",
+                type: "",
                 isshow: isEdit
             },
             {

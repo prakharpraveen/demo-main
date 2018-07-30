@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
+import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs, Affix } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
 import { createTree } from 'Pub/js/createTree';
 import Ajax from 'Pub/js/ajax.js';
@@ -46,6 +46,7 @@ const Btns = [
 class TemplateSetting extends Component {
     constructor(props) {
         super(props);
+        this.searchAreaHeight;
         this.state = {
             siderHeight: '280',
             expandedKeys: [ '00' ],
@@ -339,6 +340,7 @@ class TemplateSetting extends Component {
                 break;
         }
     };
+    //打印模板预览请求数据方法
     printModalAjax = (templateId) => {
         let infoData = {};
         infoData.templateId = templateId;
@@ -398,11 +400,12 @@ class TemplateSetting extends Component {
     };
     componentDidMount = () => {
         this.reqTreeData();
-        // 样式处理
-        // window.onresize = () => {
-        // 	let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
-        // 	this.setState({ siderHeight });
-        // };
+        //样式处理
+        window.onresize = () => {
+            //let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
+            this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
+        };
+        this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
     };
     //右侧树组装数据
     restoreTreeTemData = (templateType) => {
@@ -738,12 +741,14 @@ class TemplateSetting extends Component {
                 {hideSearch ? (
                     ''
                 ) : (
-                    <Search
-                        style={{ marginBottom: 8 }}
-                        placeholder='菜单查询'
-                        onChange={this.onChange}
-                        value={searchValue}
-                    />
+                    <Affix offsetTop={170}>
+                        <Search
+                            style={{ marginBottom: 8 }}
+                            placeholder='菜单查询'
+                            onChange={this.onChange}
+                            value={searchValue}
+                        />
+                    </Affix>
                 )}
                 {data.length > 0 && (
                     <Tree
@@ -811,7 +816,7 @@ class TemplateSetting extends Component {
             {
                 code: '00',
                 name: '菜单树',
-                pk: '',
+                pk: '00',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
         ];

@@ -106,7 +106,7 @@ export class FormContent extends Component {
                                     message: `${label}数据类型-string`
                                 },
                                 {
-                                    required: isRequired,
+                                    required: isRequired && isedit,
                                     whitespace: true,
                                     message: `${label}为必输项`
                                 },
@@ -146,7 +146,7 @@ export class FormContent extends Component {
                             initialValue: initialValue,
                             rules: [
                                 {
-                                    required: isRequired,
+                                    required: isRequired && isedit,
                                     validator: isRequired
                                         ? (rule, value, callback) => {
                                               if (value && value.refname) {
@@ -193,7 +193,7 @@ export class FormContent extends Component {
                                     validator: null
                                 },
                                 {
-                                    required: isRequired,
+                                    required: isRequired && isedit,
                                     message: `${label}为必输项`
                                 }
                             ]
@@ -226,7 +226,7 @@ export class FormContent extends Component {
                             initialValue: initialValue,
                             rules: [
                                 {
-                                    required: isRequired,
+                                    required: isRequired && isedit,
                                     message: "请选择图标"
                                 }
                             ]

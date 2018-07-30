@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
  * webpack 基础配置
  */
 const pubPath = __dirname.split('config')[0];
-console.log(pubPath);
 const antdTheme = {
     '@icon-url': `"${path.resolve(pubPath, 'src/workbench_front/assets')}/iconfont/antd-iconfont/iconfont"`,
 };

@@ -9,8 +9,8 @@ import {
     setSelectedKeys,
     setPageActiveKey
 } from "Store/AppManagement/action";
+import SearchIcon from "Components/SearchIcon";
 const TreeNode = Tree.TreeNode;
-const Search = Input.Search;
 class SearchTree extends Component {
     constructor(props) {
         super(props);
@@ -137,11 +137,13 @@ class SearchTree extends Component {
         ];
         return (
             <div className={this.props.className}>
-                <Search
-                    style={{ marginBottom: 8 }}
-                    placeholder="应用查询"
-                    onChange={this.onChange}
-                />
+                <div className="fixed-search-input">
+                    <Input
+                        placeholder="应用查询"
+                        onChange={this.onChange}
+                        suffix={<SearchIcon />}
+                    />
+                </div>
                 <Tree
                     showLine
                     showIcon

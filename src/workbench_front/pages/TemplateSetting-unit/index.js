@@ -48,7 +48,7 @@ class TemplateSetting extends Component {
         super(props);
         this.state = {
             siderHeight: '280',
-            expandedKeys: [ '0' ],
+            expandedKeys: [ '00' ],
             expandedTemKeys: [],
             selectedKeys: [],
             selectedTemKeys: [],
@@ -678,7 +678,18 @@ class TemplateSetting extends Component {
         };
         return (
             <div>
-                {hideSearch ? '' : <Search style={{ marginBottom: 8 }} placeholder='菜单查询' onChange={this.onChange} />}
+                {hideSearch ? (
+                    ''
+                ) : (
+                    <Affix offsetTop={170}>
+                        <Search
+                            style={{ marginBottom: 8 }}
+                            placeholder='菜单查询'
+                            onChange={this.onChange}
+                            value={searchValue}
+                        />
+                    </Affix>
+                )}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -778,7 +789,7 @@ class TemplateSetting extends Component {
             {
                 code: '00',
                 name: '菜单树',
-                pk: '',
+                pk: '00',
                 children: createTree(treeDataArray, 'code', 'pid')
             }
         ];

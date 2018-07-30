@@ -315,8 +315,12 @@ class AppManagement extends Component {
                         };
                         this.props.setNodeInfo(nodeInfo);
                         this.props.setNodeData(data.apppageVO);
-                        this.props.setPageButtonData(data.appButtonVOs);
-                        this.props.setPageTemplateData(data.pageTemplets);
+                        this.props.setPageButtonData(
+                            data.appButtonVOs ? data.appButtonVOs : []
+                        );
+                        this.props.setPageTemplateData(
+                            data.pageTemplets ? data.pageTemplets : []
+                        );
                     };
                     this.reqTreeNodeData(
                         { name: "应用注册", action: "应用页面查询" },
