@@ -184,6 +184,7 @@ class TemplateSetting extends Component {
                 Notice({ status: 'warning', msg: '请输入模板标题' });
                 return;
             }
+            infoData.templateType = 'print';
             infoData.templateCode = templateTitleVal;
             url = `/nccloud/platform/template/copyPrintTemplate.do`;
         }
