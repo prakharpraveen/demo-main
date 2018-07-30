@@ -24,7 +24,6 @@ function dragDirection(dragIndex, hoverIndex, initialClientOffset, clientOffset,
     }
 }
 let BodyRow = (props) => {
-    console.log(props);
     const {
         isOver,
         connectDragSource,
