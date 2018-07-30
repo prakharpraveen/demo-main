@@ -12,6 +12,7 @@ import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
 import BusinessDate from "./BusinessDate";
+import MTZBDate from './MTZBDate';
 import { sprLog } from "./spr";
 import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
@@ -519,6 +520,7 @@ class Layout extends Component {
                             onOk={this.handleDateChange}
                             date={newDate}
                         />
+                        <MTZBDate/>
                     </div>
                 </div>
                 <div className="nc-workbench-container">

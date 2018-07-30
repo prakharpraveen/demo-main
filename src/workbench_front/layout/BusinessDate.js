@@ -56,7 +56,9 @@ class BusinessDate extends Component {
     handleOpenChange = open => {
         this.setState({ isOpen: open });
     };
-    handlePanelChange = value => {
+    handlePanelChange = (value,mode) => {
+        console.log(value,mode);
+        
         value = moment(value).format("YYYY-MM-DD hh:mm:ss");
         this.setState({
             value: value,
