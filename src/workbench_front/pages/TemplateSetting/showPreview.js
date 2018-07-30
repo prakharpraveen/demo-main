@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import Ajax from 'Pub/js/ajax';
-import { connect } from 'react-redux';
-import { Input, Icon, Modal, Button } from 'antd';
-import { updatePreviewData } from 'Store/ZoneSetting/action';
-import { createPage } from 'nc-lightapp-front';
-import initTemplate from './events';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Modal, Button } from "antd";
+import { updatePreviewData } from "Store/ZoneSetting/action";
+import { createPage } from "nc-lightapp-front";
+import initTemplate from "./events";
+
 class PreviewModal extends Component {
     constructor(props) {
         super(props);
@@ -29,30 +27,30 @@ class PreviewModal extends Component {
         let { NCCreateSearch } = search;
         let { forms, tables, searchs } = this.state;
         let result = [];
-        // 查询区
-        if (searchs.length) {
-            searchs.map((val, i) => {
-                result.push(
-                    <div className='area' key={`search${i}`}>
-                        <div className='descrip'>
-                            <span> ▼ </span>
-                            {`查询区${i + 1}_${val.name}`}
-                        </div>
-                        {NCCreateSearch(val.id)}
-                    </div>
-                );
-            });
-        }
         // 表单
         if (forms.length) {
             forms.map((val, i) => {
                 result.push(
-                    <div className='area' key={`form${i}`}>
-                        <div className='descrip'>
-                            <span> ▼ </span>
+                    <div className="area" key={`form${i}`}>
+                        <div className="descrip">
+                            <span key={`forms${i}`}> ▼ </span>
                             {`表单区${i + 1}_${val.name}`}
                         </div>
                         {createForm(val.id)}
+                    </div>
+                );
+            });
+        }
+        // 查询区
+        if (searchs.length) {
+            searchs.map((val, i) => {
+                result.push(
+                    <div className="area" key={`search${i}`}>
+                        <div className="descrip">
+                            <span key={`searchs${i}`}> ▼ </span>
+                            {`查询区${i + 1}_${val.name}`}
+                        </div>
+                        {NCCreateSearch(val.id)}
                     </div>
                 );
             });
@@ -61,9 +59,9 @@ class PreviewModal extends Component {
         if (tables.length) {
             tables.map((val, i) => {
                 result.push(
-                    <div className='area' key={`table${i}`}>
-                        <div className='descrip'>
-                            <span> ▼ </span>
+                    <div className="area" key={`table${i}`}>
+                        <div className="descrip">
+                            <span key={`tables${i}`}> ▼ </span>
                             {`表格区${i + 1}_${val.name}`}
                         </div>
                         {createEditTable(val.id, {})}
@@ -73,7 +71,6 @@ class PreviewModal extends Component {
         }
         return result;
     };
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.previewData) {
             let reviewData = nextProps.previewData;
@@ -81,17 +78,21 @@ class PreviewModal extends Component {
                 form = [],
                 table = [];
             reviewData.forEach((v, i) => {
-                if (Object.keys(v) && v[Object.keys(v)[0]] && v[Object.keys(v)[0]].moduletype) {
+                if (
+                    Object.keys(v) &&
+                    v[Object.keys(v)[0]] &&
+                    v[Object.keys(v)[0]].moduletype
+                ) {
                     let key = v[Object.keys(v)[0]].moduletype;
                     let name = v[Object.keys(v)[0]].name;
                     switch (key) {
-                        case 'form':
+                        case "form":
                             form.push({ id: Object.keys(v)[0], name: name });
                             break;
-                        case 'table':
+                        case "table":
                             table.push({ id: Object.keys(v)[0], name: name });
                             break;
-                        case 'search':
+                        case "search":
                             search.push({ id: Object.keys(v)[0], name: name });
                             break;
                         default:
@@ -109,27 +110,24 @@ class PreviewModal extends Component {
     }
     render() {
         let { editTable, form, search } = this.props;
-        let { createForm } = form;
-        let { createEditTable } = editTable;
-        let { NCCreateSearch } = search;
+        console.log(this.props.previewData);
         return (
             <Modal
-                title='预览区'
+                title="预览区"
                 mask={false}
                 visible={this.props.batchSettingModalVisibel}
                 onOk={this.onOkDialog}
                 onCancel={this.showModalHidden}
-                width='100%'
+                width="100%"
                 footer={[
                     <Button
-                        key='submit'
-                        // disabled={}
-                        type='primary'
+                        key="submit"
+                        type="primary"
                         onClick={this.onOkDialog}
                     >
                         确定
                     </Button>,
-                    <Button key='back' onClick={this.showModalHidden}>
+                    <Button key="back" onClick={this.showModalHidden}>
                         取消
                     </Button>
                 ]}
@@ -143,8 +141,9 @@ class PreviewModal extends Component {
 PreviewModal = createPage({
     initTemplate: initTemplate
 })(PreviewModal);
+
 export default connect(
-    (state) => {
+    state => {
         return {
             areaList: state.zoneSettingData.areaList,
             previewData: state.zoneSettingData.previewData

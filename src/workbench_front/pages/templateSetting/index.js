@@ -401,11 +401,11 @@ class TemplateSetting extends Component {
     componentDidMount = () => {
         this.reqTreeData();
         //样式处理
-        window.onresize = () => {
-            //let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
-            this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
-        };
-        this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
+        // window.onresize = () => {
+        //     //let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
+        //     this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
+        // };
+        // this.searchAreaHeight=document.querySelector('.ant-input').offsetTop;
     };
     //右侧树组装数据
     restoreTreeTemData = (templateType) => {
