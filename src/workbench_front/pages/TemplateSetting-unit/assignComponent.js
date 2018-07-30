@@ -163,12 +163,7 @@ class AssignComponent extends Component {
             success: ({ data }) => {
                 if (data.success && data.data) {
                     if (data.data.roles || data.data.users || data.data.resps) {
-                        this.setState(
-                            {
-                                treeRoDataObj: data.data
-                            },
-                            this.restoreRoTreeData
-                        );
+                        this.restoreRoTreeData(data.data);
                         this.restoreResTreeData(data.data.resps);
                     }
                     this.setState({
@@ -198,12 +193,12 @@ class AssignComponent extends Component {
     };
     //用户和角色数据的组装
     restoreRoTreeData = (data) => {
-        let { treeRoData, treeRoDataObj } = this.state;
+        let { treeRoData } = this.state;
         treeRoData = [];
         let initRolesData = initRoTreeData;
         let initUsersData = initUserTreeData;
-        initRolesData.children = generateRoData(treeRoDataObj.roles);
-        initUsersData.children = generateRoData(treeRoDataObj.users);
+        initRolesData.children = generateRoData(data.roles);
+        initUsersData.children = generateRoData(data.users);
         treeRoData.push(initRolesData);
         treeRoData.push(initUsersData);
         treeRoData = generateTreeData(treeRoData);
