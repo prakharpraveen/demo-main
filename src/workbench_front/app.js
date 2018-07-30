@@ -60,7 +60,7 @@ class App extends Component {
                         // 应用编码
                         window.peData.nodeCode = appcode;
                         // 用户id
-                        window.peData.userID = window.businessInfo.userID;
+                        window.peData.userID = window.businessInfo.userId;
                         // 项目编码 
                         window.peData.projectCode =
                             window.businessInfo.projectCode;
@@ -134,7 +134,7 @@ class App extends Component {
                         // 应用编码
                         window.peData.nodeCode = appcode;
                         // 用户id
-                        window.peData.userID = window.businessInfo.userID;
+                        window.peData.userID = window.businessInfo.userId;
                         // 项目编码
                         window.peData.projectCode =
                             window.businessInfo.projectCode;
