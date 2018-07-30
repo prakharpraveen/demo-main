@@ -57,6 +57,7 @@ export const opersignObj = [
     { name: "=@", value: "32" },
     { name: "between@=@>@>=@<@<=@", value: "33" },
     { name: "between@=@>@>=@<@<=@", value: "34" },
+    { name: "between@=@>@>=@<@<=@", value: "36" },
     { name: "between@=@>@>=@<@<=@", value: "52" },
     { name: "=@like@left like@right like@", value: "56" },
     { name: "=@like@left like@right like@", value: "58" },
@@ -70,6 +71,7 @@ export const opersignNameObj = [
     { name: "等于@", value: "32" },
     { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "33" },
     { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "34" },
+    { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "36" },
     { name: "介于@等于@大于@大于等于@小于@小于等于@", value: "52" },
     { name: "等于@包含@左包含@右包含@", value: "56" },
     { name: "等于@包含@左包含@右包含@", value: "58" },
@@ -116,6 +118,7 @@ export const dataTypeObj = [
     { name: "逻辑", value: "32" },
     { name: "日期", value: "33" },
     { name: "日期时间", value: "34" },
+    { name: "时间", value: "36" },
     { name: "金额", value: "52" },
     { name: "自定义项", value: "56" },
     { name: "自定义档案", value: "57" },
@@ -143,6 +146,7 @@ export const itemtypeObj = [
     { name: "开关", value: "switch" },
     { name: "多行文本", value: "textarea" },
     { name: "日期时间", value: "datetimepicker" },
+    { name: "时间", value: "timepicker" },
     { name: "日期范围", value: "rangepicker" },
     { name: "开始日期时间", value: "NCTZDatePickerStart" },
     { name: "结束日期时间", value: "NCTZDatePickerEnd" },
@@ -196,7 +200,8 @@ export const filterItemtypeObj = [
         datatype: "34",
         itemtypeObj: [
             { name: "日期时间", value: "datetimepicker" },
-            { name: "单选日期", value: "datepicker" }
+            { name: "单选日期", value: "datepicker" },
+            { name: "时间", value: "timepicker" }
         ]
     },
     {
@@ -208,7 +213,67 @@ export const filterItemtypeObj = [
             { name: "开始日期时间", value: "NCTZDatePickerStart" },
             { name: "结束日期时间", value: "NCTZDatePickerEnd" }
         ]
+    },
+    {
+        datatype: "36",
+        itemtypeObj: [
+            { name: "时间", value: "timepicker" },
+            { name: "日期时间", value: "datetimepicker" },
+        ]
     }
 ];
 //应该设默认值为false的组件类型
-export const shouldSetDefaultValueList = ['switch','checkbox_switch','switch_browse']
+export const shouldSetDefaultValueList = [
+    "switch",
+    "checkbox_switch",
+    "switch_browse"
+];
+
+/* 参照用 */
+export function handleLoad(refcode) {
+    try {
+        let Item = window[refcode].default;
+        const myRefDom = typeof Item === "function" ? Item() : <Item />;
+        this.setState({ myRefDom: myRefDom });
+    } catch (e) {
+        console.error(e.message);
+        console.error(
+            `请检查引用的${refcode}这个文件是源码还是编译好的。源码需要在config.json/buildEntryPath配相应的路径，编译好的则不用`
+        );
+    }
+}
+
+/* refcode */
+export function createScript(src) {
+    var that = this,
+        scripts = Array.from(document.getElementsByTagName("script")),
+        s = src.split("/"),
+        flag,
+        refKey;
+    refKey = s.slice(s.length - 5).join("/");
+    refKey.includes(".js") && (refKey = refKey.substring(0, refKey.length - 3));
+    flag = scripts.find(e => {
+        return e.src.includes(refKey);
+    });
+    if (window[refKey]) {
+        // 已经加载过script标签
+        handleLoad.call(that, refKey);
+    } else {
+        let script;
+        if (flag) {
+            script = flag;
+        } else {
+            script = document.createElement("script");
+            script.src = "../" + refKey + ".js";
+            script.type = "text/javascript";
+            document.body.appendChild(script);
+        }
+
+        script.onload = script.onload || handleLoad.bind(that, refKey);
+        script.onerror =
+            script.onerror ||
+            function() {
+                console.error(`找不到${src}这个文件，请检查引用路径`);
+            };
+    }
+}
