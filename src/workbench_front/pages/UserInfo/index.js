@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Modal, Button } from "antd";
 import { PageLayout, PageLayoutHeader } from "Components/PageLayout";
+import { withRouter } from "react-router-dom";
 import Notice from "Components/Notice";
 import Ajax from "Pub/js/ajax";
 import InfoForm from "./InfoForm";
@@ -134,6 +135,12 @@ class UserInfo extends Component {
             visible: false
         });
     };
+    /**
+     * 返回按钮
+     */
+    handleBackClick = () => {
+        this.props.history.push("/");
+    };
     componentDidMount() {
         /**
          * 获取账户数据
@@ -144,6 +151,11 @@ class UserInfo extends Component {
         return (
             <PageLayout>
                 <div className="workbench-userinfo">
+                    <div className="userinfo-header">
+                        <div className="back" onClick={this.handleBackClick}>
+                            <i className="iconfont icon-cela" />
+                        </div>
+                    </div>
                     <InfoForm
                         picture={picture}
                         phone={phone}
@@ -177,4 +189,4 @@ class UserInfo extends Component {
     }
 }
 const WrappedUserInfo = Form.create()(UserInfo);
-export default WrappedUserInfo;
+export default withRouter(WrappedUserInfo);
