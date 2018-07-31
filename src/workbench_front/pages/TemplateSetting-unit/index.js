@@ -592,9 +592,18 @@ class TemplateSetting extends Component {
     //tree的查询方法
     onChange = (e) => {
         const value = e.target.value;
-        this.setState({ searchValue: value }, () => {
-            this.handleSearch(value, this.handleExpanded);
-        });
+        if(value){
+            this.setState({ searchValue: value }, () => {
+                this.handleSearch(value, this.handleExpanded);
+            });
+        }else{
+            this.reqTreeData();
+            const expandedKeys=["00"];
+            this.setState({
+                searchValue:'',
+                expandedKeys
+            })
+        }
     };
     handleExpanded = (dataList) => {
         const expandedKeys = dataList.map((item, index) => {
