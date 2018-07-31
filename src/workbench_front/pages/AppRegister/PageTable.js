@@ -270,7 +270,7 @@ class PageTable extends Component {
                             {editable ? (
                                 <span>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.save(record)}
                                     >
                                         保存
@@ -281,13 +281,13 @@ class PageTable extends Component {
                                         okText={"确定"}
                                         onConfirm={() => this.cancel(record)}
                                     >
-                                        <a className="margin-right-5">取消</a>
+                                        <a className="margin-right-15">取消</a>
                                     </Popconfirm>
                                 </span>
                             ) : (
                                 <span>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.edit(record)}
                                     >
                                         编辑
@@ -298,7 +298,7 @@ class PageTable extends Component {
                                         okText={"确定"}
                                         onConfirm={() => this.del(record)}
                                     >
-                                        <a className="margin-right-5">删除</a>
+                                        <a className="margin-right-15">删除</a>
                                     </Popconfirm>
                                 </span>
                             )}
@@ -338,7 +338,7 @@ class PageTable extends Component {
                             {editable ? (
                                 <span>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.save(record)}
                                     >
                                         保存
@@ -349,7 +349,7 @@ class PageTable extends Component {
                                         okText={"确定"}
                                         onConfirm={() => this.cancel(record)}
                                     >
-                                        <a className="margin-right-5">取消</a>
+                                        <a className="margin-right-15">取消</a>
                                     </Popconfirm>
                                 </span>
                             ) : (
@@ -360,16 +360,16 @@ class PageTable extends Component {
                                         okText={"确定"}
                                         onConfirm={() => this.del(record)}
                                     >
-                                        <a className="margin-right-5">删除</a>
+                                        <a className="margin-right-15">删除</a>
                                     </Popconfirm>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.jumpPage(record)}
                                     >
                                         设置页面模板
                                     </a>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => {
                                             this.showModal(record);
                                         }}
@@ -378,7 +378,7 @@ class PageTable extends Component {
                                     </a>
                                     {record.isdefault ? null : (
                                         <a
-                                            className="margin-right-5"
+                                            className="margin-right-15"
                                             onClick={() =>
                                                 this.setDefault(record)
                                             }

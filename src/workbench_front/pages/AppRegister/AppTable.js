@@ -75,7 +75,7 @@ class AppTable extends Component {
                             {editable ? (
                                 <span>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.save(record)}
                                     >
                                         保存
@@ -92,7 +92,7 @@ class AppTable extends Component {
                             ) : (
                                 <span>
                                     <a
-                                        className="margin-right-5"
+                                        className="margin-right-15"
                                         onClick={() => this.edit(record)}
                                     >
                                         编辑
@@ -103,7 +103,7 @@ class AppTable extends Component {
                                         okText={"确定"}
                                         onConfirm={() => this.del(record)}
                                     >
-                                        <a className="margin-right-5">删除</a>
+                                        <a className="margin-right-15">删除</a>
                                     </Popconfirm>
                                 </span>
                             )}
