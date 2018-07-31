@@ -627,8 +627,9 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('showformula')}
 							<FormulaEditor
 								value={selectCard['showformula']}
-								noControlBtns={[ 'validate' ]}
-								isValidateOnOK={false}
+								isValidateOnOK={true}
+								validateUrl={'/nccloud/platform/formula/check.do'}
+								formulaUrl={`/nccloud/platform/formula/control.do`}
 								treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
@@ -654,13 +655,14 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('editformula')}
 							<FormulaEditor
 								value={selectCard['editformula']}
+								isValidateOnOK={true}
+								validateUrl={'/nccloud/platform/formula/check.do'}
+								formulaUrl={`/nccloud/platform/formula/control.do`}
 								noShowAttr={[ '元数据属性' ]}
-								isValidateOnOK={false}
 								show={this.state.editformula}
 								onHide={() => {
 									this.setState({ editformula: false });
 								}}
-								noControlBtns={[ 'validate' ]}
 								attrConfig={this.state.tab}
 								onOk={(val) => {
 									this.handleSelectChange(val, 'editformula');
@@ -677,8 +679,9 @@ class MyRightSider extends Component {
 							{this.getMyFormulaSearch('validateformula')}
 							<FormulaEditor
 								value={selectCard['validateformula']}
-								noControlBtns={[ 'validate' ]}
-								isValidateOnOK={false}
+								isValidateOnOK={true}
+								validateUrl={'/nccloud/platform/formula/check.do'}
+								formulaUrl={`/nccloud/platform/formula/control.do`}
 								/* treeParam={{
 									pk_billtype: 'CM02',
 									bizmodelStyle: 'fip',
