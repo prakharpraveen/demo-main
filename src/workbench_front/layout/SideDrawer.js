@@ -37,6 +37,7 @@ class SideDrawer extends Component {
     handleExit = () => {
         this.props.changeDrawer(false);
         Modal.confirm({
+            closable:false,
             title: "注销",
             maskClosable: true,
             content: "注销当前账号？",

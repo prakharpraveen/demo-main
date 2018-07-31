@@ -518,6 +518,7 @@ class AppManagement extends Component {
                 <PageLayoutRight>
                     {this.switchFrom()}
                     <Modal
+                        closable={false}
                         title={modalType === "0" ? "应用复制" : "页面复制"}
                         mask={false}
                         okText={"确认"}

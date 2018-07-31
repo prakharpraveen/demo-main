@@ -264,6 +264,7 @@ class MenuItem extends Component {
      */
     del = () => {
         confirm({
+            closable: false,
             title: "是否要删除?",
             content: "",
             okText: "确认",

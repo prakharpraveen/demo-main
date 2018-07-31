@@ -19,7 +19,7 @@ export default class MoneyModal extends Component {
             this.setState({ initVal: nextProps.initVal }, () => {
                 let { datatype } = nextProps;
                 let { initVal } = this.state;
-                if (initVal === "" || initVal===null) {
+                if (initVal === "" || initVal === null) {
                     this.setState({
                         customScale: datatype === "4" ? 0 : 2,
                         small: "",
@@ -27,7 +27,8 @@ export default class MoneyModal extends Component {
                     });
                 } else {
                     let initArray = initVal.split(",");
-                    if (datatype === "4") {//整数
+                    if (datatype === "4") {
+                        //整数
                         this.setState({
                             customScale: 0,
                             small: initArray ? initArray[0] : "",
@@ -59,9 +60,10 @@ export default class MoneyModal extends Component {
                 });
             }
         }
-        if (datatype === "4") {//整数
+        if (datatype === "4") {
+            //整数
             result = `${small},${big}`;
-        }else{
+        } else {
             result = `${customScale},${small},${big}`;
         }
         this.props.handleSelectChange(result, "dataval");
@@ -79,6 +81,7 @@ export default class MoneyModal extends Component {
         return (
             <div className="myZoneModal">
                 <Modal
+                    closable={false}
                     title="类型设置"
                     mask={false}
                     wrapClassName="zonesetting-moneyModal"

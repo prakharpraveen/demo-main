@@ -1,106 +1,123 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
-import { PageLayout } from 'Components/PageLayout';
-import Ajax from 'Pub/js/ajax.js';
-import Item from 'antd/lib/list/Item';
-import Notice from 'Components/Notice';
-import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
-import Svg from 'Components/Svg';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
-import { generateData, generateTemData, generateTreeData, generateRoData, deepClone } from './method';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+    Button,
+    Layout,
+    Modal,
+    Tree,
+    Input,
+    Select,
+    Menu,
+    Dropdown,
+    Icon,
+    Tabs
+} from "antd";
+import { PageLayout } from "Components/PageLayout";
+import Ajax from "Pub/js/ajax.js";
+import Item from "antd/lib/list/Item";
+import Notice from "Components/Notice";
+import BusinessUnitGroupTreeRef from "Components/Refers/BusinessUnitGroupTreeRef";
+import Svg from "Components/Svg";
+import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
+import {
+    generateData,
+    generateTemData,
+    generateTreeData,
+    generateRoData,
+    deepClone
+} from "./method";
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const initRoTreeData = {
-    key: 'abc1234567',
-    id: 'abc1234567',
-    text: '角色',
-    name: '角色',
-    code: '1001',
-    title: '角色',
+    key: "abc1234567",
+    id: "abc1234567",
+    text: "角色",
+    name: "角色",
+    code: "1001",
+    title: "角色",
     children: []
 };
 const initUserTreeData = {
-    key: 'abc2234567',
-    id: 'abc2234567',
-    text: '用户',
-    name: '用户',
-    code: '1002',
-    title: '用户',
+    key: "abc2234567",
+    id: "abc2234567",
+    text: "用户",
+    name: "用户",
+    code: "1002",
+    title: "用户",
     children: []
 };
 const initRoTreeData2 = {
-    key: 'abc1234567',
-    id: 'abc1234567',
-    text: '角色',
-    name: '角色',
-    code: '1001',
-    title: '角色',
+    key: "abc1234567",
+    id: "abc1234567",
+    text: "角色",
+    name: "角色",
+    code: "1001",
+    title: "角色",
     children: []
 };
 const initUserTreeData2 = {
-    key: 'abc2234567',
-    id: 'abc2234567',
-    code: '1002',
-    text: '用户',
-    name: '用户',
-    title: '用户',
+    key: "abc2234567",
+    id: "abc2234567",
+    code: "1002",
+    text: "用户",
+    name: "用户",
+    title: "用户",
     children: []
 };
 const initAbiTreeData = {
-    key: 'abc3334567',
-    id: 'abc3334567',
-    text: '职责',
-    name: '职责',
-    code: '1003',
-    title: '职责',
+    key: "abc3334567",
+    id: "abc3334567",
+    text: "职责",
+    name: "职责",
+    code: "1003",
+    title: "职责",
     children: []
 };
 const initAbiTreeData2 = {
-    key: 'abc3334567',
-    id: 'abc3334567',
-    text: '职责',
-    name: '职责',
-    title: '职责',
-    code: '1003',
+    key: "abc3334567",
+    id: "abc3334567",
+    text: "职责",
+    name: "职责",
+    title: "职责",
+    code: "1003",
     children: []
 };
 class AssignComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: [ '0' ],
+            expandedKeys: ["0"],
             selectedKeys: [],
-            respSearchValue: '',
-            roleSearchValue: '',
+            respSearchValue: "",
+            roleSearchValue: "",
             autoExpandParent: true,
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
             nodeKey: this.props.nodeKey,
-            nodeKeyValue: '',
+            nodeKeyValue: "",
             treeRoData: [],
             treeResData: [],
             treeRoVisible: true,
-            dataRoKey: '',
+            dataRoKey: "",
             dataRoObj: {},
             roleUserDatas: {},
             allowDataArray: [],
             org_df_biz: {
                 // 默认业务单元
-                refcode: '',
+                refcode: "",
                 refname: window.businessInfo.groupName,
                 refpk: window.businessInfo.groupId
             },
             treeAllowedData: [],
-            allowedTreeKey: '',
+            allowedTreeKey: "",
             treeRoDataObj: {},
             def1: this.props.def1,
-            tabActiveKey: '1',
+            tabActiveKey: "1",
             orgidObj: this.props.orgidObj // 默认业务单元
         };
     }
@@ -115,7 +132,7 @@ class AssignComponent extends Component {
     componentDidMount() {
         let { orgidObj, org_df_biz } = this.state;
         if (org_df_biz.refpk) {
-            orgidObj['refpk'] = org_df_biz.refpk;
+            orgidObj["refpk"] = org_df_biz.refpk;
             this.setState(
                 {
                     orgidObj
@@ -128,17 +145,24 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let {
+            pageCode,
+            templatePks,
+            orgidObj,
+            def1,
+            appCode,
+            nodeKeyValue
+        } = this.state;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
             templateId: templatePks,
             appCode: appCode
         };
-        if (def1 === 'apppage') {
-            infoData.templateType = 'bill';
-        } else if (def1 === 'menuitem') {
-            infoData.templateType = 'print';
+        if (def1 === "apppage") {
+            infoData.templateType = "bill";
+        } else if (def1 === "menuitem") {
+            infoData.templateType = "print";
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
@@ -147,8 +171,8 @@ class AssignComponent extends Component {
         Ajax({
             url: `/nccloud/platform/template/listAssignmentsOfTemplate.do`,
             info: {
-                name: '模板设置模块',
-                action: '已分配用户和职责'
+                name: "模板设置模块",
+                action: "已分配用户和职责"
             },
             data: infoData,
             success: ({ data }) => {
@@ -166,7 +190,7 @@ class AssignComponent extends Component {
     //已分配用户和职责的数据的组装
     restoreAllowedTree = () => {
         let { allowDataArray, treeAllowedData } = this.state;
-        allowDataArray.map((item) => {
+        allowDataArray.map(item => {
             item.text = item.name + item.code;
             item.key = item.id;
         });
@@ -187,8 +211,8 @@ class AssignComponent extends Component {
         Ajax({
             url: `/nccloud/platform/template/getAllRoleUserAndResp.do`,
             info: {
-                name: '应用注册模块',
-                action: '角色和用户职责'
+                name: "应用注册模块",
+                action: "角色和用户职责"
             },
             data: infoData,
             success: ({ data }) => {
@@ -206,7 +230,7 @@ class AssignComponent extends Component {
         });
     };
     //职责数据组装
-    restoreResTreeData = (data) => {
+    restoreResTreeData = data => {
         let { treeResData } = this.state;
         treeResData = [];
         let initResData = initAbiTreeData;
@@ -223,16 +247,16 @@ class AssignComponent extends Component {
         });
     };
     //用户和角色数据的组装
-    restoreRoTreeData = (data) => {
+    restoreRoTreeData = data => {
         let { treeRoData } = this.state;
         treeRoData = [];
         let initRolesData = initRoTreeData;
         let initUsersData = initUserTreeData;
-        data.roles.map((item) => {
-            item.type = 'roles';
+        data.roles.map(item => {
+            item.type = "roles";
         });
-        data.users.map((item) => {
-            item.type = 'users';
+        data.users.map(item => {
+            item.type = "users";
         });
         initRolesData.children = generateRoData(data.roles);
         initUsersData.children = generateRoData(data.users);
@@ -256,7 +280,7 @@ class AssignComponent extends Component {
         } else {
             this.setState({
                 selectedKeys: key,
-                dataRoKey: ''
+                dataRoKey: ""
             });
         }
     };
@@ -264,7 +288,7 @@ class AssignComponent extends Component {
     lookDataFun = () => {
         let { dataRoKey, dataRoObj, roleUserDatas } = this.state;
         if (!dataRoKey) {
-            Notice({ status: 'warning', msg: '请选中信息' });
+            Notice({ status: "warning", msg: "请选中信息" });
             return;
         }
         for (let key in roleUserDatas) {
@@ -273,12 +297,12 @@ class AssignComponent extends Component {
                     dataRoObj.id = item.id;
                     dataRoObj.name = item.name;
                     dataRoObj.code = item.code;
-                    if (key === 'users') {
-                        dataRoObj.type = 'user';
-                    } else if (key === 'roles') {
-                        dataRoObj.type = 'role';
-                    } else if (key === 'resps') {
-                        dataRoObj.type = 'resp';
+                    if (key === "users") {
+                        dataRoObj.type = "user";
+                    } else if (key === "roles") {
+                        dataRoObj.type = "role";
+                    } else if (key === "resps") {
+                        dataRoObj.type = "resp";
                     }
                 }
             });
@@ -288,12 +312,17 @@ class AssignComponent extends Component {
         });
     };
     //分配和取消分配方法
-    allowClick = (name) => {
-        let { dataRoObj, allowDataArray, treeAllowedData, allowedTreeKey } = this.state;
+    allowClick = name => {
+        let {
+            dataRoObj,
+            allowDataArray,
+            treeAllowedData,
+            allowedTreeKey
+        } = this.state;
         let allowDataObj = {};
         switch (name) {
-            case 'allowRole':
-                let indexNum = '-1';
+            case "allowRole":
+                let indexNum = "-1";
                 if (allowDataArray && allowDataArray.length > 0) {
                     for (let i = 0; i < allowDataArray.length; i++) {
                         if (allowDataArray[i].id === dataRoObj.id) {
@@ -308,15 +337,15 @@ class AssignComponent extends Component {
                     allowDataObj.type = dataRoObj.type;
                     allowDataArray.push(allowDataObj);
                 }
-                allowDataArray.map((item) => {
+                allowDataArray.map(item => {
                     item.text = item.name + item.code;
                     item.key = item.id;
                 });
                 treeAllowedData = generateTreeData(allowDataArray);
                 break;
-            case 'allowRoleCancel':
+            case "allowRoleCancel":
                 if (!allowedTreeKey) {
-                    Notice({ status: 'warning', msg: '请选中信息' });
+                    Notice({ status: "warning", msg: "请选中信息" });
                     return;
                 }
                 Array.prototype.remove = function(val) {
@@ -341,7 +370,7 @@ class AssignComponent extends Component {
         });
     };
     //已分配树节点的选中方法
-    onSelectedAllow = (key) => {
+    onSelectedAllow = key => {
         if (key.length > 0) {
             this.setState({
                 selectedKeys: key,
@@ -350,38 +379,43 @@ class AssignComponent extends Component {
         } else {
             this.setState({
                 selectedKeys: key,
-                allowedTreeKey: ''
+                allowedTreeKey: ""
             });
         }
     };
     //树点击事件的集合
     onSelect = (typeSelect, key, e) => {
         switch (typeSelect) {
-            case 'resOnselect':
+            case "resOnselect":
                 this.selectRoFun(key, e);
                 break;
-            case 'allowedOnselect':
+            case "allowedOnselect":
                 this.onSelectedAllow(key, e);
             default:
                 break;
         }
     };
-    onExpand = (expandedKeys) => {
+    onExpand = expandedKeys => {
         this.setState({ expandedKeys, autoExpandParent: true });
     };
     //树的查询方法
-    onSearch = (e) => {
+    onSearch = e => {
         const value = e.target.value;
-        let { treeRoData, tabActiveKey, roleUserDatas, treeResData } = this.state;
+        let {
+            treeRoData,
+            tabActiveKey,
+            roleUserDatas,
+            treeResData
+        } = this.state;
         let expandedKeys = [];
         let searchTrees = [];
         let treeRoDataArry = [];
-        if (tabActiveKey === '1') {
+        if (tabActiveKey === "1") {
             if (value) {
                 for (let key in roleUserDatas) {
                     if (roleUserDatas.hasOwnProperty(key)) {
-                        if (key === 'users' || key === 'roles') {
-                            roleUserDatas[key].map((item) => {
+                        if (key === "users" || key === "roles") {
+                            roleUserDatas[key].map(item => {
                                 item.text = item.name + item.code;
                                 if (item.text.indexOf(value) > -1) {
                                     expandedKeys.push(item.key);
@@ -391,23 +425,23 @@ class AssignComponent extends Component {
                         }
                     }
                 }
-                searchTrees.map((item) => {
+                searchTrees.map(item => {
                     item.key = item.id;
                 });
                 let initRolesData = deepClone(initRoTreeData2);
                 let initUsersData = deepClone(initUserTreeData2);
-                searchTrees.map((item) => {
-                    if (item.type === 'roles') {
+                searchTrees.map(item => {
+                    if (item.type === "roles") {
                         initRolesData.children.push(item);
-                    } else if (item.type === 'users') {
+                    } else if (item.type === "users") {
                         initUsersData.children.push(item);
                     }
                 });
                 treeRoDataArry.push(initRolesData);
                 treeRoDataArry.push(initUsersData);
                 treeRoDataArry = generateTreeData(treeRoDataArry);
-                expandedKeys.push('abc1234567');
-                expandedKeys.push('abc2234567');
+                expandedKeys.push("abc1234567");
+                expandedKeys.push("abc2234567");
                 this.setState({
                     expandedKeys,
                     roleSearchValue: value,
@@ -420,12 +454,12 @@ class AssignComponent extends Component {
                     roleSearchValue: value
                 });
             }
-        } else if (tabActiveKey === '2') {
+        } else if (tabActiveKey === "2") {
             if (value) {
                 for (let key in roleUserDatas) {
                     if (roleUserDatas.hasOwnProperty(key)) {
-                        if (key === 'resps') {
-                            roleUserDatas[key].map((item) => {
+                        if (key === "resps") {
+                            roleUserDatas[key].map(item => {
                                 item.text = item.name + item.code;
                                 if (item.text.indexOf(value) > -1) {
                                     expandedKeys.push(item.key);
@@ -439,7 +473,7 @@ class AssignComponent extends Component {
                 initRolesData.children = searchTrees;
                 treeRoDataArry.push(initRolesData);
                 treeRoDataArry = generateTreeData(treeRoDataArry);
-                expandedKeys.push('abc3334567');
+                expandedKeys.push("abc3334567");
                 this.setState({
                     expandedKeys,
                     respSearchValue: value,
@@ -457,8 +491,8 @@ class AssignComponent extends Component {
     //树组件
     treeResAndUser = (data, typeSelect, hideSearch, searchValue) => {
         const { expandedKeys, autoExpandParent, selectedKeys } = this.state;
-        const loop = (data) => {
-            return data.map((item) => {
+        const loop = data => {
+            return data.map(item => {
                 let { text, key, children } = item;
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
@@ -467,7 +501,7 @@ class AssignComponent extends Component {
                     index > -1 ? (
                         <span>
                             {beforeStr}
-                            <span style={{ color: '#f50' }}>{searchValue}</span>
+                            <span style={{ color: "#f50" }}>{searchValue}</span>
                             {afterStr}
                         </span>
                     ) : (
@@ -485,32 +519,36 @@ class AssignComponent extends Component {
                                     width={15}
                                     height={13}
                                     xlinkHref={
-                                        expandedKeys.indexOf(item.pk) === -1 ? (
-                                            '#icon-wenjianjia'
-                                        ) : (
-                                            '#icon-wenjianjiadakai'
-                                        )
+                                        expandedKeys.indexOf(item.pk) === -1
+                                            ? "#icon-wenjianjia"
+                                            : "#icon-wenjianjiadakai"
                                     }
                                 />
                             }
                         >
-                            {' '}
-                            {loop(children)}{' '}
+                            {" "}
+                            {loop(children)}{" "}
                         </TreeNode>
                     );
                 }
-                return <TreeNode icon={<span className='tree-dot' />} key={key} title={text} />;
+                return (
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={key}
+                        title={text}
+                    />
+                );
             });
         };
         return (
             <div>
                 {data.length > 0 &&
                     (hideSearch ? (
-                        ''
+                        ""
                     ) : (
                         <Search
                             style={{ marginBottom: 8 }}
-                            placeholder='角色用户或职责查询'
+                            placeholder="角色用户或职责查询"
                             onChange={this.onSearch}
                             value={searchValue}
                         />
@@ -533,25 +571,33 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let {
+            templatePks,
+            pageCode,
+            treeAllowedData,
+            orgidObj,
+            def1,
+            appCode,
+            nodeKeyValue
+        } = this.state;
         if (!orgidObj.refpk) {
-            Notice({ status: 'warning', msg: '业务单元信息为空' });
+            Notice({ status: "warning", msg: "业务单元信息为空" });
             return;
         }
         if (!treeAllowedData) {
-            Notice({ status: 'warning', msg: '请选中信息' });
+            Notice({ status: "warning", msg: "请选中信息" });
             return;
         }
         let targets = {};
         for (let i = 0; i < treeAllowedData.length; i++) {
             let allowedData = treeAllowedData[i];
             for (let key in allowedData) {
-                if (key === 'id') {
+                if (key === "id") {
                     targets[allowedData[key]] = allowedData.type;
                 }
             }
         }
-        let newTargets = '';
+        let newTargets = "";
         for (let key in targets) {
             newTargets = newTargets + `${key}:${targets[key]},`;
         }
@@ -564,10 +610,10 @@ class AssignComponent extends Component {
             appCode: appCode
         };
         infoData.targets = newTargets;
-        if (def1 === 'apppage') {
-            infoData.templateType = 'bill';
-        } else if (def1 === 'menuitem') {
-            infoData.templateType = 'print';
+        if (def1 === "apppage") {
+            infoData.templateType = "bill";
+        } else if (def1 === "menuitem") {
+            infoData.templateType = "print";
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
@@ -579,12 +625,12 @@ class AssignComponent extends Component {
             url: `/nccloud/platform/template/assignTemplate.do`,
             data: infoData,
             info: {
-                name: '模板设置',
-                action: '模板分配保存'
+                name: "模板设置",
+                action: "模板分配保存"
             },
             success: ({ data }) => {
                 if (data.success) {
-                    Notice({ status: 'success', msg: '分配成功' });
+                    Notice({ status: "success", msg: "分配成功" });
                     this.props.setAssignModalVisible(false);
                 }
             }
@@ -595,13 +641,13 @@ class AssignComponent extends Component {
         this.props.setAssignModalVisible(false);
     };
     //业务单元参照回调方法
-    handdleRefChange = (value) => {
+    handdleRefChange = value => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
         orgidObj = {};
-        orgidObj['refname'] = refname;
-        orgidObj['refcode'] = refcode;
-        orgidObj['refpk'] = refpk;
+        orgidObj["refname"] = refname;
+        orgidObj["refcode"] = refcode;
+        orgidObj["refpk"] = refpk;
 
         this.setState(
             {
@@ -631,88 +677,122 @@ class AssignComponent extends Component {
         } = this.state;
         return (
             <Modal
-                title='多角色和用户模板分配'
+                closable={false}
+                title="多角色和用户模板分配"
                 visible={this.props.alloVisible}
                 onOk={this.handleAlloOk}
                 onCancel={this.handleOrlCancel}
                 width={720}
-                okText={'确认'}
-                cancelText={'取消'}
+                okText={"确认"}
+                cancelText={"取消"}
             >
-                <div className='allocationPage'>
-                    <div className='pageCode-show'>
-                        <p className='pageCodeName'>
+                <div className="allocationPage">
+                    <div className="pageCode-show">
+                        <p className="pageCodeName">
                             <span>功能节点：</span>
-                            <span>{pageCode ? pageCode : ''}</span>
+                            <span>{pageCode ? pageCode : ""}</span>
                         </p>
-                        {def1 === 'menuitem' && (
+                        {def1 === "menuitem" && (
                             <Select
                                 showSearch
                                 style={{ width: 200 }}
-                                placeholder='节点标识符'
-                                optionFilterProp='children'
-                                onSelect={(e) => {
+                                placeholder="节点标识符"
+                                optionFilterProp="children"
+                                onSelect={e => {
                                     this.setState({
                                         nodeKeyValue: e
                                     });
                                 }}
                                 filterOption={(input, option) =>
-                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                    option.props.children
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                }
                             >
                                 {nodeKey &&
                                     nodeKey.length > 0 &&
                                     nodeKey.map((item, index) => {
                                         if (item) {
-                                            return <Option value={item}>{item}</Option>;
+                                            return (
+                                                <Option value={item}>
+                                                    {item}
+                                                </Option>
+                                            );
                                         }
                                     })}
                             </Select>
                         )}
                     </div>
-                    <div className='allocationPage-content'>
-                        <div className='allocationPage-content-tree'>
-                            <div className='allocation-treeCom'>
+                    <div className="allocationPage-content">
+                        <div className="allocationPage-content-tree">
+                            <div className="allocation-treeCom">
                                 <Tabs
-                                    defaultActiveKey='1'
-                                    onChange={(tabActiveKey) => {
+                                    defaultActiveKey="1"
+                                    onChange={tabActiveKey => {
                                         this.setState({ tabActiveKey });
                                     }}
                                     activeKey={tabActiveKey}
                                 >
-                                    <TabPane tab='按角色和用户分配' key='1'>
-                                        <div className='allocation-treeScrollName'>
-                                            {this.treeResAndUser(treeRoData, 'resOnselect', roleSearchValue)}
+                                    <TabPane tab="按角色和用户分配" key="1">
+                                        <div className="allocation-treeScrollName">
+                                            {this.treeResAndUser(
+                                                treeRoData,
+                                                "resOnselect",
+                                                roleSearchValue
+                                            )}
                                         </div>
                                     </TabPane>
-                                    <TabPane tab='按职责分配' key='2'>
-                                        <div className='allocation-treeScrollResp'>
-                                            {this.treeResAndUser(treeResData, 'resOnselect', respSearchValue)}
+                                    <TabPane tab="按职责分配" key="2">
+                                        <div className="allocation-treeScrollResp">
+                                            {this.treeResAndUser(
+                                                treeResData,
+                                                "resOnselect",
+                                                respSearchValue
+                                            )}
                                         </div>
                                     </TabPane>
                                 </Tabs>
                             </div>
-                            <div className='allocation-button'>
+                            <div className="allocation-button">
                                 <p>
-                                    <Button onClick={this.allowClick.bind(this, 'allowRole')}>分配</Button>
+                                    <Button
+                                        onClick={this.allowClick.bind(
+                                            this,
+                                            "allowRole"
+                                        )}
+                                    >
+                                        分配
+                                    </Button>
                                 </p>
                                 <p>
-                                    <Button onClick={this.allowClick.bind(this, 'allowRoleCancel')}>取消</Button>
+                                    <Button
+                                        onClick={this.allowClick.bind(
+                                            this,
+                                            "allowRoleCancel"
+                                        )}
+                                    >
+                                        取消
+                                    </Button>
                                 </p>
                             </div>
-                            <div className='allocation-treeContainer'>
-                                <div className='allocation-select'>
+                            <div className="allocation-treeContainer">
+                                <div className="allocation-select">
                                     <BusinessUnitGroupTreeRef
                                         value={org_df_biz}
-                                        placeholder={'默认业务单元'}
-                                        onChange={(value) => {
+                                        placeholder={"默认业务单元"}
+                                        onChange={value => {
                                             console.log();
                                             this.handdleRefChange(value);
                                         }}
                                     />
                                 </div>
-                                <div className='allocation-tree'>
+                                <div className="allocation-tree">
                                     {treeAllowedData.length > 0 &&
-                                        this.treeResAndUser(treeAllowedData, 'allowedOnselect', 'hideSearch')}
+                                        this.treeResAndUser(
+                                            treeAllowedData,
+                                            "allowedOnselect",
+                                            "hideSearch"
+                                        )}
                                 </div>
                             </div>
                         </div>

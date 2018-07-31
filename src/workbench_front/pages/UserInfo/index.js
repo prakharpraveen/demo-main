@@ -151,6 +151,7 @@ class UserInfo extends Component {
                         infoSetting={this.showModal}
                     />
                     <Modal
+                        closable={false}
                         title={this.state.modalTitle}
                         mask={false}
                         wrapClassName="vertical-center-modal"

@@ -1,20 +1,41 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
-import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
-import { createTree } from 'Pub/js/createTree';
-import Ajax from 'Pub/js/ajax.js';
-import Item from 'antd/lib/list/Item';
-import Notice from 'Components/Notice';
-import BusinessUnitTreeRefUnit from 'Components/Refers/BusinessUnitTreeRefUnit';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
-import PreviewModal from './showPreview';
-import AssignComponent from './assignComponent';
-import { openPage } from 'Pub/js/superJump';
-import Svg from 'Components/Svg';
-import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
-import './index.less';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+    Button,
+    Layout,
+    Modal,
+    Tree,
+    Input,
+    Select,
+    Menu,
+    Dropdown,
+    Icon,
+    Tabs
+} from "antd";
+import {
+    PageLayout,
+    PageLayoutHeader,
+    PageLayoutLeft,
+    PageLayoutRight
+} from "Components/PageLayout";
+import { createTree } from "Pub/js/createTree";
+import Ajax from "Pub/js/ajax.js";
+import Item from "antd/lib/list/Item";
+import Notice from "Components/Notice";
+import BusinessUnitTreeRefUnit from "Components/Refers/BusinessUnitTreeRefUnit";
+import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
+import PreviewModal from "./showPreview";
+import AssignComponent from "./assignComponent";
+import { openPage } from "Pub/js/superJump";
+import Svg from "Components/Svg";
+import {
+    generateData,
+    generateTemData,
+    generateTreeData,
+    generateRoData
+} from "./method";
+import "./index.less";
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -23,38 +44,38 @@ const TabPane = Tabs.TabPane;
 const { Header, Footer, Sider, Content } = Layout;
 const Btns = [
     {
-        name: '修改',
-        type: 'primary'
+        name: "修改",
+        type: "primary"
     },
     {
-        name: '删除',
-        type: 'primary'
+        name: "删除",
+        type: "primary"
     },
     {
-        name: '复制',
-        type: 'primary'
+        name: "复制",
+        type: "primary"
     },
     {
-        name: '分配',
-        type: 'primary'
+        name: "分配",
+        type: "primary"
     },
     {
-        name: '浏览',
-        type: 'primary'
+        name: "浏览",
+        type: "primary"
     }
 ];
 class TemplateSetting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            siderHeight: '280',
-            expandedKeys: [ '00' ],
+            siderHeight: "280",
+            expandedKeys: ["00"],
             expandedTemKeys: [],
             selectedKeys: [],
             selectedTemKeys: [],
             treeDataArray: [],
             treeData: [],
-            searchValue: '',
+            searchValue: "",
             autoExpandParent: true,
             autoExpandTemParent: true,
             treeTemBillData: [], //单据模板数据
@@ -62,36 +83,40 @@ class TemplateSetting extends Component {
             treePrintTemData: [],
             treeTemBillDataArray: [],
             treeTemPrintDataArray: [],
-            templatePks: '',
+            templatePks: "",
             visible: false,
-            templateNameVal: '',
-            pageCode: '',
-            appCode: '',
-            nodeKey: '',
+            templateNameVal: "",
+            pageCode: "",
+            appCode: "",
+            nodeKey: "",
             alloVisible: false,
             org_df_biz: {
                 // 默认业务单元
-                refcode: '',
-                refname: '',
-                refpk: ''
+                refcode: "",
+                refname: "",
+                refpk: ""
             },
             orgidObj: {},
-            parentIdcon: '', //树节点的key
-            templateType: '',
+            parentIdcon: "", //树节点的key
+            templateType: "",
             previewPrintVisible: false,
-            def1: '',
-            previewPrintContent: '',
+            def1: "",
+            previewPrintContent: "",
             batchSettingModalVisibel: false //控制预览摸态框的显隐属性
         };
     }
     // 按钮显隐性控制
-    setBtnsShow = (item) => {
+    setBtnsShow = item => {
         let { parentIdcon, def1, templateType } = this.state;
         let { name } = item;
         let isShow = false;
         switch (name) {
-            case '修改':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
+            case "修改":
+                if (
+                    parentIdcon === "root" ||
+                    parentIdcon === "groupRoot" ||
+                    templateType === "group"
+                ) {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -101,8 +126,12 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '删除':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
+            case "删除":
+                if (
+                    parentIdcon === "root" ||
+                    parentIdcon === "groupRoot" ||
+                    templateType === "group"
+                ) {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -112,8 +141,8 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '复制':
-                if (parentIdcon === 'groupRoot') {
+            case "复制":
+                if (parentIdcon === "groupRoot") {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -123,8 +152,12 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '分配':
-                if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
+            case "分配":
+                if (
+                    parentIdcon === "root" ||
+                    parentIdcon === "groupRoot" ||
+                    templateType === "group"
+                ) {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -134,8 +167,8 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '浏览':
-                if (parentIdcon === 'groupRoot') {
+            case "浏览":
+                if (parentIdcon === "groupRoot") {
                     isShow = false;
                 } else {
                     if (parentIdcon) {
@@ -151,21 +184,34 @@ class TemplateSetting extends Component {
         return { ...item, isShow };
     };
     //生成按钮方法
-    creatBtn = (btnObj) => {
+    creatBtn = btnObj => {
         let { name, isShow, type } = btnObj;
         if (isShow) {
             return (
-                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, name)}>
+                <Button
+                    key={name}
+                    className="margin-left-6"
+                    type={type}
+                    onClick={this.handleClick.bind(this, name)}
+                >
                     {name}
                 </Button>
             );
         }
     };
     //保存
-    handleOk = (e) => {
-        let { templateNameVal, templateTitleVal, templatePks, pageCode, def1, appCode, orgidObj } = this.state;
+    handleOk = e => {
+        let {
+            templateNameVal,
+            templateTitleVal,
+            templatePks,
+            pageCode,
+            def1,
+            appCode,
+            orgidObj
+        } = this.state;
         if (!templateNameVal) {
-            Notice({ status: 'warning', msg: '请输入模板标题' });
+            Notice({ status: "warning", msg: "请输入模板标题" });
             return;
         }
         let infoData = {
@@ -176,15 +222,15 @@ class TemplateSetting extends Component {
             orgId: orgidObj.refpk
         };
         let url;
-        if (def1 === 'apppage') {
-            infoData.templateType = 'bill';
+        if (def1 === "apppage") {
+            infoData.templateType = "bill";
             url = `/nccloud/platform/template/copyTemplate.do`;
-        } else if (def1 === 'menuitem') {
+        } else if (def1 === "menuitem") {
             if (!templateTitleVal) {
-                Notice({ status: 'warning', msg: '请输入模板标题' });
+                Notice({ status: "warning", msg: "请输入模板标题" });
                 return;
             }
-            infoData.templateType = 'print';
+            infoData.templateType = "print";
             infoData.templateCode = templateTitleVal;
             url = `/nccloud/platform/template/copyPrintTemplate.do`;
         }
@@ -192,12 +238,12 @@ class TemplateSetting extends Component {
             url: url,
             data: infoData,
             info: {
-                name: '模板设置',
-                action: '模板复制'
+                name: "模板设置",
+                action: "模板复制"
             },
             success: ({ data }) => {
                 if (data.success) {
-                    Notice({ status: 'success', msg: '复制成功' });
+                    Notice({ status: "success", msg: "复制成功" });
                     this.reqTreeTemData();
                     this.setState({
                         visible: false
@@ -207,85 +253,104 @@ class TemplateSetting extends Component {
         });
     };
     //取消
-    handleCancel = (e) => {
+    handleCancel = e => {
         this.setState({
             visible: false
         });
     };
     //按钮事件的触发
-    handleClick = (btnName) => {
-        let { templateNameVal, templatePks, appCode, pageCode, def1, orgidObj } = this.state;
+    handleClick = btnName => {
+        let {
+            templateNameVal,
+            templatePks,
+            appCode,
+            pageCode,
+            def1,
+            orgidObj
+        } = this.state;
         let infoData = {
             templateId: templatePks
         };
         if (!orgidObj.refpk) {
-            Notice({ status: 'warning', msg: '请选中业务单元' });
+            Notice({ status: "warning", msg: "请选中业务单元" });
             return;
         }
         if (!templatePks) {
-            Notice({ status: 'warning', msg: '请选择模板数据' });
+            Notice({ status: "warning", msg: "请选择模板数据" });
             return;
         }
         switch (btnName) {
-            case '复制':
+            case "复制":
                 this.setState({
                     visible: true
                 });
                 break;
-            case '修改':
-                if (def1 === 'menuitem') {
+            case "修改":
+                if (def1 === "menuitem") {
                     Ajax({
                         loading: true,
-                        url: '/nccloud/riart/template/edittemplate.do',
+                        url: "/nccloud/riart/template/edittemplate.do",
                         data: { appcode: appCode, templateid: templatePks },
                         success: function(res) {
                             if (location.port) {
                                 window.open(
-                                    'uclient://start/' +
-                                        'http://' +
+                                    "uclient://start/" +
+                                        "http://" +
                                         location.hostname +
-                                        ':' +
+                                        ":" +
                                         location.port +
                                         res.data.data
                                 );
                             } else {
-                                window.open('uclient://start/' + 'http://' + location.hostname + res.data.data);
+                                window.open(
+                                    "uclient://start/" +
+                                        "http://" +
+                                        location.hostname +
+                                        res.data.data
+                                );
                             }
                         },
                         error: function(res) {
-                            alert('lm:' + res.message);
+                            alert("lm:" + res.message);
                         }
                     });
                 } else {
-                    openPage(`ZoneSetting`, false, { templetid: templatePks, status: 'templateSetting-unit' });
+                    openPage(`ZoneSetting`, false, {
+                        templetid: templatePks,
+                        status: "templateSetting-unit"
+                    });
                 }
                 break;
-            case '删除':
+            case "删除":
                 let url;
                 let _this = this;
-                if (def1 === 'menuitem') {
+                if (def1 === "menuitem") {
                     url = `/nccloud/platform/template/deletePrintTemplate.do`;
                 } else {
                     url = `/nccloud/platform/template/deleteTemplateDetail.do`;
                 }
                 confirm({
-                    title: '是否要删除?',
-                    content: '',
-                    okText: '确认',
-                    okType: 'danger',
-                    cancelText: '取消',
-                    title: '确认删除这个模板信息吗?',
+                    closable: false,
+                    title: "是否要删除?",
+                    content: "",
+                    okText: "确认",
+                    okType: "danger",
+                    cancelText: "取消",
+                    title: "确认删除这个模板信息吗?",
                     onOk() {
                         Ajax({
                             url: url,
                             data: infoData,
                             info: {
-                                name: '模板设置',
-                                action: '删除'
+                                name: "模板设置",
+                                action: "删除"
                             },
                             success: ({ data }) => {
                                 if (data.success) {
-                                    Notice({ status: 'success', msg: '删除成功' });
+                                    Notice({
+                                        status: "success",
+                                        msg: "删除成功"
+                                    });
                                     _this.reqTreeTemData();
                                 }
                             }
@@ -294,13 +359,13 @@ class TemplateSetting extends Component {
                     onCancel() {}
                 });
                 break;
-            case '分配':
+            case "分配":
                 this.setState({
                     alloVisible: true
                 });
                 break;
-            case '浏览':
-                if (def1 === 'menuitem') {
+            case "浏览":
+                if (def1 === "menuitem") {
                     this.showModal();
                 } else {
                     this.setState({
@@ -321,7 +386,7 @@ class TemplateSetting extends Component {
         // };
     };
     //右侧树组装数据
-    restoreTreeTemData = (templateType) => {
+    restoreTreeTemData = templateType => {
         let {
             treeTemBillData,
             treeTemPrintData,
@@ -333,17 +398,17 @@ class TemplateSetting extends Component {
         } = this.state;
         let treeData = [];
         let treeInfo;
-        if (templateType === 'bill') {
-            treeTemBillDataArray.map((item) => {
-                if (item.isDefault === 'y') {
-                    item.name = item.name + ' [默认]';
+        if (templateType === "bill") {
+            treeTemBillDataArray.map(item => {
+                if (item.isDefault === "y") {
+                    item.name = item.name + " [默认]";
                 }
             });
             treeInfo = generateTemData(treeTemBillDataArray);
-        } else if (templateType === 'print') {
-            treeTemPrintDataArray.map((item) => {
-                if (item.isDefault === 'y') {
-                    item.name = item.name + ' [默认]';
+        } else if (templateType === "print") {
+            treeTemPrintDataArray.map(item => {
+                if (item.isDefault === "y") {
+                    item.name = item.name + " [默认]";
                 }
             });
             treeInfo = generateTemData(treeTemPrintDataArray);
@@ -351,19 +416,19 @@ class TemplateSetting extends Component {
         let { treeArray, treeObj } = treeInfo;
         treeArray.map((item, index) => {
             const groupObj = {
-                name: '集团模板',
-                title: '集团模板',
-                pk: 'qazwsxedc1' + item.pk,
-                code: '1001',
-                parentId: 'groupRoot',
+                name: "集团模板",
+                title: "集团模板",
+                pk: "qazwsxedc1" + item.pk,
+                code: "1001",
+                parentId: "groupRoot",
                 children: []
             };
             const orgIdObj = {
-                title: '组织模板',
-                name: '组织模板',
-                pk: 'qazwsxedc2' + item.pk,
-                code: '1002',
-                parentId: 'groupRoot',
+                title: "组织模板",
+                name: "组织模板",
+                pk: "qazwsxedc2" + item.pk,
+                code: "1002",
+                parentId: "groupRoot",
                 children: []
             };
             item.children.push(groupObj);
@@ -371,9 +436,9 @@ class TemplateSetting extends Component {
             for (const key in treeObj) {
                 if (treeObj.hasOwnProperty(key)) {
                     if (item.templateId === treeObj[key][0].parentId) {
-                        if (treeObj[key][0].type === 'group') {
+                        if (treeObj[key][0].type === "group") {
                             item.children[0].children.push(treeObj[key][0]);
-                        } else if (treeObj[key][0].type === 'org') {
+                        } else if (treeObj[key][0].type === "org") {
                             item.children[1].children.push(treeObj[key][0]);
                         }
                     }
@@ -383,8 +448,8 @@ class TemplateSetting extends Component {
         //处理树数据
         treeData = treeInfo.treeArray;
         treeData = generateTreeData(treeData);
-        if (templateType === 'bill') {
-            if (def1 === 'apppage') {
+        if (templateType === "bill") {
+            if (def1 === "apppage") {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
@@ -400,8 +465,8 @@ class TemplateSetting extends Component {
             this.setState({
                 treeTemBillData
             });
-        } else if (templateType === 'print') {
-            if (def1 === 'menuitem') {
+        } else if (templateType === "print") {
+            if (def1 === "menuitem") {
                 if (treeData.length > 0) {
                     let newinitKeyArray = [];
                     newinitKeyArray.push(treeData[0].key);
@@ -422,13 +487,13 @@ class TemplateSetting extends Component {
     };
     onExpand = (typeSelect, expandedKeys) => {
         switch (typeSelect) {
-            case 'systemOnselect':
+            case "systemOnselect":
                 this.setState({
                     expandedKeys: expandedKeys,
                     autoExpandParent: false
                 });
                 break;
-            case 'templateOnselect':
+            case "templateOnselect":
                 this.setState({
                     expandedTemKeys: expandedKeys,
                     autoExpandTemParent: false
@@ -442,7 +507,7 @@ class TemplateSetting extends Component {
     onSelectQuery = (key, e) => {
         const { orgidObj } = this.state;
         if (!orgidObj.refpk) {
-            Notice({ status: 'warning', msg: '请选中业务单元' });
+            Notice({ status: "warning", msg: "请选中业务单元" });
             return;
         }
         if (key.length > 0) {
@@ -458,13 +523,13 @@ class TemplateSetting extends Component {
         } else {
             this.setState({
                 selectedKeys: key,
-                pageCode: '',
-                appCode: ''
+                pageCode: "",
+                appCode: ""
             });
         }
     };
     //请求右侧树数据
-    reqTreeTemData = (key) => {
+    reqTreeTemData = key => {
         let { pageCode, appCode, orgidObj } = this.state;
         let infoData = {
             pageCode: pageCode,
@@ -474,13 +539,13 @@ class TemplateSetting extends Component {
         if (!infoData.pageCode) {
             return;
         }
-        infoData.templateType = 'bill';
-        this.reqTreeTemAjax(infoData, 'bill');
+        infoData.templateType = "bill";
+        this.reqTreeTemAjax(infoData, "bill");
         if (infoData.pageCode) {
             delete infoData.pageCode;
         }
-        infoData.templateType = 'print';
-        this.reqTreeTemAjax(infoData, 'print');
+        infoData.templateType = "print";
+        this.reqTreeTemAjax(infoData, "print");
     };
     //请求右侧树数据ajax方法封装
     reqTreeTemAjax = (infoData, templateType) => {
@@ -488,12 +553,12 @@ class TemplateSetting extends Component {
             url: `/nccloud/platform/template/getTemplatesOfPage.do`,
             data: infoData,
             info: {
-                name: '模板设置',
-                action: '参数查询'
+                name: "模板设置",
+                action: "参数查询"
             },
             success: ({ data }) => {
                 if (data.success) {
-                    if (templateType === 'bill') {
+                    if (templateType === "bill") {
                         this.setState(
                             {
                                 treeTemBillDataArray: data.data
@@ -502,7 +567,7 @@ class TemplateSetting extends Component {
                                 this.restoreTreeTemData(templateType);
                             }
                         );
-                    } else if (templateType === 'print') {
+                    } else if (templateType === "print") {
                         this.setState(
                             {
                                 treeTemPrintDataArray: data.data
@@ -519,11 +584,11 @@ class TemplateSetting extends Component {
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
         let { def1 } = this.state;
-        let templateType = '';
-        if (def1 === 'apppage') {
-            templateType = 'bill';
-        } else if (def1 === 'menuitem') {
-            templateType = 'print';
+        let templateType = "";
+        if (def1 === "apppage") {
+            templateType = "bill";
+        } else if (def1 === "menuitem") {
+            templateType = "print";
             if (key.length > 0) {
                 this.setState({
                     nodeKey: e.selectedNodes[0].props.refData.nodeKey
@@ -542,23 +607,23 @@ class TemplateSetting extends Component {
         } else {
             this.setState({
                 selectedTemKeys: key,
-                templatePks: '',
-                templateNameVal: '',
-                parentIdcon: '',
-                templateTitleVal: '',
-                templateType: ''
+                templatePks: "",
+                templateNameVal: "",
+                parentIdcon: "",
+                templateTitleVal: "",
+                templateType: ""
             });
         }
     };
     /**
-	 * tree 数据请求
-	 */
+     * tree 数据请求
+     */
     reqTreeData = () => {
         Ajax({
             url: `/nccloud/platform/appregister/querymenuitemstree.do`,
             info: {
-                name: '应用注册模块',
-                action: '查询'
+                name: "应用注册模块",
+                action: "查询"
             },
             success: ({ data }) => {
                 if (data.success && data.data.length > 0) {
@@ -572,10 +637,10 @@ class TemplateSetting extends Component {
     //树点击事件的汇总
     onSelect = (typeSelect, key, e) => {
         switch (typeSelect) {
-            case 'systemOnselect':
+            case "systemOnselect":
                 this.onSelectQuery(key, e);
                 break;
-            case 'templateOnselect':
+            case "templateOnselect":
                 this.onTemSelect(key, e);
                 break;
             default:
@@ -583,17 +648,17 @@ class TemplateSetting extends Component {
         }
     };
     //tree的查询方法
-    onChange = (e) => {
+    onChange = e => {
         const value = e.target.value;
         this.setState({ searchValue: value }, () => {
             this.handleSearch(value, this.handleExpanded);
         });
     };
-    handleExpanded = (dataList) => {
+    handleExpanded = dataList => {
         const expandedKeys = dataList.map((item, index) => {
             return item.pk;
         });
-        expandedKeys.push('00');
+        expandedKeys.push("00");
         this.setState({
             expandedKeys,
             autoExpandParent: true
@@ -607,10 +672,10 @@ class TemplateSetting extends Component {
                 containAppPage: true
             },
             info: {
-                name: '菜单项',
-                action: '查询应用树'
+                name: "菜单项",
+                action: "查询应用树"
             },
-            success: (res) => {
+            success: res => {
                 let { success, data } = res.data;
                 if (success && data) {
                     this.setState(
@@ -626,13 +691,21 @@ class TemplateSetting extends Component {
         });
     };
     //树组件的封装
-    treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys, autoExpandParent, typeClass) => {
+    treeResAndUser = (
+        data,
+        typeSelect,
+        hideSearch,
+        selectedKeys,
+        expandedKeys,
+        autoExpandParent,
+        typeClass
+    ) => {
         const { searchValue } = this.state;
-        const loop = (data) => {
-            return data.map((item) => {
+        const loop = data => {
+            return data.map(item => {
                 let { code, name, pk } = item;
                 let text = `${code} ${name}`;
-                if (code === '00') {
+                if (code === "00") {
                     text = `${name}`;
                 }
                 const index = text.indexOf(searchValue);
@@ -642,7 +715,7 @@ class TemplateSetting extends Component {
                     index > -1 ? (
                         <span>
                             {beforeStr}
-                            <span style={{ color: '#f50' }}>{searchValue}</span>
+                            <span style={{ color: "#f50" }}>{searchValue}</span>
                             {afterStr}
                         </span>
                     ) : (
@@ -661,11 +734,9 @@ class TemplateSetting extends Component {
                                     width={15}
                                     height={13}
                                     xlinkHref={
-                                        expandedKeys.indexOf(item.pk) === -1 ? (
-                                            '#icon-wenjianjia'
-                                        ) : (
-                                            '#icon-wenjianjiadakai'
-                                        )
+                                        expandedKeys.indexOf(item.pk) === -1
+                                            ? "#icon-wenjianjia"
+                                            : "#icon-wenjianjiadakai"
                                     }
                                 />
                             }
@@ -674,18 +745,25 @@ class TemplateSetting extends Component {
                         </TreeNode>
                     );
                 }
-                return <TreeNode icon={<span className='tree-dot' />} key={pk} title={title} refData={item} />;
+                return (
+                    <TreeNode
+                        icon={<span className="tree-dot" />}
+                        key={pk}
+                        title={title}
+                        refData={item}
+                    />
+                );
             });
         };
         return (
-            <div className={typeClass?typeClass:""}>
+            <div className={typeClass ? typeClass : ""}>
                 {hideSearch ? (
-                    ''
+                    ""
                 ) : (
-                    <div className='fixed-search-input'>
+                    <div className="fixed-search-input">
                         <Search
                             style={{ marginBottom: 8 }}
-                            placeholder='菜单查询'
+                            placeholder="菜单查询"
                             onChange={this.onChange}
                             value={searchValue}
                         />
@@ -712,22 +790,22 @@ class TemplateSetting extends Component {
         );
     };
     //预览摸态框显示方法
-    setModalVisibel = (visibel) => {
+    setModalVisibel = visibel => {
         this.setState({ batchSettingModalVisibel: visibel });
     };
     //分配摸态框显示方法
-    setAssignModalVisible = (visibel) => {
+    setAssignModalVisible = visibel => {
         this.setState({ alloVisible: visibel });
         0;
     };
     //参照的回调函数
-    handdleRefChange = (value) => {
+    handdleRefChange = value => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
         orgidObj = {};
-        orgidObj['refname'] = refname;
-        orgidObj['refcode'] = refcode;
-        orgidObj['refpk'] = refpk;
+        orgidObj["refname"] = refname;
+        orgidObj["refcode"] = refcode;
+        orgidObj["refpk"] = refpk;
         this.setState({
             orgidObj,
             org_df_biz: value
@@ -741,7 +819,7 @@ class TemplateSetting extends Component {
     hideModal = () => {
         this.setState({ previewPrintVisible: false });
     };
-    printModalAjax = (templateId) => {
+    printModalAjax = templateId => {
         let infoData = {};
         infoData.templateId = templateId;
         const url = `/nccloud/platform/template/previewPrintTemplate.do`;
@@ -749,12 +827,15 @@ class TemplateSetting extends Component {
             url: url,
             data: infoData,
             info: {
-                name: '模板设置',
-                action: '打印模板预览'
+                name: "模板设置",
+                action: "打印模板预览"
             },
             success: ({ data }) => {
                 if (data.success) {
-                    document.getElementsByClassName('printContent')[0].innerHTML = data.data;
+                    document.getElementsByClassName(
+                        "printContent"
+                    )[0].innerHTML =
+                        data.data;
                 }
             }
         });
@@ -788,26 +869,27 @@ class TemplateSetting extends Component {
         } = this.state;
         const leftTreeData = [
             {
-                code: '00',
-                name: '菜单树',
-                pk: '00',
-                children: createTree(treeDataArray, 'code', 'pid')
+                code: "00",
+                name: "菜单树",
+                pk: "00",
+                children: createTree(treeDataArray, "code", "pid")
             }
         ];
         return (
             <PageLayout
-                className='nc-workbench-templateSetting'
+                className="nc-workbench-templateSetting"
                 header={
                     <PageLayoutHeader>
                         <BusinessUnitTreeRefUnit
                             value={org_df_biz}
-                            placeholder={'默认业务单元'}
-                            onChange={(value) => {
+                            placeholder={"默认业务单元"}
+                            onChange={value => {
                                 this.handdleRefChange(value);
                             }}
                         />
-                        <div className='buttons-component'>
-                            {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
+                        <div className="buttons-component">
+                            {(treeTemBillData.length > 0 ||
+                                treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
                                     item = this.setBtnsShow(item);
                                     return this.creatBtn(item);
@@ -818,55 +900,55 @@ class TemplateSetting extends Component {
             >
                 <PageLayoutLeft
                     width={280}
-                    height={'100%'}
+                    height={"100%"}
                     style={{
-                        background: '#fff',
-                        width: '500px',
-                        minHeight: 'calc(100vh - 64px - 48px)',
+                        background: "#fff",
+                        width: "500px",
+                        minHeight: "calc(100vh - 64px - 48px)",
                         height: `${this.state.siderHeight}px`,
-                        overflowY: 'auto',
-                        padding: '20px'
+                        overflowY: "auto",
+                        padding: "20px"
                     }}
                 >
                     {this.treeResAndUser(
                         leftTreeData,
-                        'systemOnselect',
+                        "systemOnselect",
                         null,
                         selectedKeys,
                         expandedKeys,
                         autoExpandParent,
-                        'templateSetting-searchTree'
+                        "templateSetting-searchTree"
                     )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
-                    {def1 == 'apppage' ? (
+                    {def1 == "apppage" ? (
                         <div>
-                            <p className='template-title'>页面模板</p>
+                            <p className="template-title">页面模板</p>
                             {treeTemBillData.length > 0 &&
                                 this.treeResAndUser(
                                     treeTemBillData,
-                                    'templateOnselect',
-                                    'hideSearch',
+                                    "templateOnselect",
+                                    "hideSearch",
                                     selectedTemKeys,
                                     expandedTemKeys,
                                     autoExpandTemParent
                                 )}
                         </div>
-                    ) : def1 == 'menuitem' ? (
+                    ) : def1 == "menuitem" ? (
                         <div>
-                            <p className='template-title'>打印模板</p>
+                            <p className="template-title">打印模板</p>
                             {treeTemPrintData.length > 0 &&
                                 this.treeResAndUser(
                                     treeTemPrintData,
-                                    'templateOnselect',
-                                    'hideSearch',
+                                    "templateOnselect",
+                                    "hideSearch",
                                     selectedTemKeys,
                                     expandedTemKeys,
                                     autoExpandTemParent
                                 )}
                         </div>
                     ) : (
-                        ''
+                        ""
                     )}
                 </PageLayoutRight>
                 {batchSettingModalVisibel && (
@@ -877,21 +959,22 @@ class TemplateSetting extends Component {
                     />
                 )}
                 <Modal
-                    title='请录入正确的模板名称和标题'
+                    closable={false}
+                    title="请录入正确的模板名称和标题"
                     visible={visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
-                    okText={'确认'}
-                    cancelText={'取消'}
+                    okText={"确认"}
+                    cancelText={"取消"}
                 >
-                    <div className='copyTemplate'>
+                    <div className="copyTemplate">
                         <div>
-                            <label htmlFor=''>模板名称：</label>
+                            <label htmlFor="">模板名称：</label>
                             <Input
                                 value={templateNameVal}
-                                style={{ width: '80%' }}
-                                placeholder='请输入名称'
-                                onChange={(e) => {
+                                style={{ width: "80%" }}
+                                placeholder="请输入名称"
+                                onChange={e => {
                                     const templateNameVal = e.target.value;
                                     this.setState({
                                         templateNameVal
@@ -899,27 +982,34 @@ class TemplateSetting extends Component {
                                 }}
                             />
                         </div>
-                        {def1 === 'menuitem' &&
-                        treeTemPrintData.length > 0 && (
-                            <div>
-                                <label htmlFor=''>模板标题：</label>
-                                <Input
-                                    style={{ width: '80%' }}
-                                    value={templateTitleVal}
-                                    placeholder='请输入标题'
-                                    onChange={(e) => {
-                                        const templateTitleVal = e.target.value;
-                                        this.setState({
-                                            templateTitleVal
-                                        });
-                                    }}
-                                />
-                            </div>
-                        )}
+                        {def1 === "menuitem" &&
+                            treeTemPrintData.length > 0 && (
+                                <div>
+                                    <label htmlFor="">模板标题：</label>
+                                    <Input
+                                        style={{ width: "80%" }}
+                                        value={templateTitleVal}
+                                        placeholder="请输入标题"
+                                        onChange={e => {
+                                            const templateTitleVal =
+                                                e.target.value;
+                                            this.setState({
+                                                templateTitleVal
+                                            });
+                                        }}
+                                    />
+                                </div>
+                            )}
                     </div>
                 </Modal>
-                <Modal title='打印模板预览' visible={previewPrintVisible} onCancel={this.hideModal} footer={null}>
-                    <div className='printContent' />
+                <Modal
+                    closable={false}
+                    title="打印模板预览"
+                    visible={previewPrintVisible}
+                    onCancel={this.hideModal}
+                    footer={null}
+                >
+                    <div className="printContent" />
                 </Modal>
                 {alloVisible && (
                     <AssignComponent

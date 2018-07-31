@@ -900,6 +900,7 @@ class PageTable extends Component {
                             size="middle"
                         />
                         <Modal
+                            closable={false}
                             title="导入页面模板"
                             okText="确认"
                             cancelText="取消"

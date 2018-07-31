@@ -55,7 +55,9 @@ class TreeModal extends Component {
             if (this.props.targetAreaType === "0") {
                 //查询区
                 const opersign = utilService.getOpersignByDatatype(datatype);
-                const opersignname = utilService.getOpersignNameByDatatype(datatype);
+                const opersignname = utilService.getOpersignNameByDatatype(
+                    datatype
+                );
                 cardObj = {
                     pk_query_property: `newMetaData_${myUniqID}`,
                     areaid: targetAreaID,
@@ -65,8 +67,10 @@ class TreeModal extends Component {
                     metapath: myUniqID,
                     isnotmeta: false,
                     isuse: true,
-                    opersign: opersign?opersign:'=@>@>=@<@<=@like@',
-                    opersignname: opersignname?opersignname:'等于@大于@大于等于@小于@小于等于@相似@',
+                    opersign: opersign ? opersign : "=@>@>=@<@<=@like@",
+                    opersignname: opersignname
+                        ? opersignname
+                        : "等于@大于@大于等于@小于@小于等于@相似@",
                     defaultvalue: "",
                     isfixedcondition: false,
                     required: false,
@@ -88,14 +92,14 @@ class TreeModal extends Component {
                     define5: "",
                     itemtype: "input",
                     myrefpk: refpk,
-                    visibleposition: ''
+                    visibleposition: ""
                 };
             } else {
                 //非查询区
                 cardObj = {
                     pk_query_property: `newMetaData_${myUniqID}`,
                     areaid: targetAreaID,
-                    code: notSearchAreaCode?notSearchAreaCode:myUniqID,
+                    code: notSearchAreaCode ? notSearchAreaCode : myUniqID,
                     datatype: datatype,
                     label: refname,
                     metapath: myUniqID,
@@ -105,7 +109,7 @@ class TreeModal extends Component {
                     disabled: false,
                     visible: datatype === "56" ? false : true,
                     maxlength: length,
-                    defaultvalue:"",
+                    defaultvalue: "",
                     defaultvar: "",
                     define1: "",
                     define2: "",
@@ -114,12 +118,14 @@ class TreeModal extends Component {
                     myrefpk: refpk
                 };
             }
-            if (this.props.targetAreaType === '1') {//表单
-                cardObj.colnum = '1';
+            if (this.props.targetAreaType === "1") {
+                //表单
+                cardObj.colnum = "1";
                 cardObj.isnextrow = false;
             }
-            if (this.props.targetAreaType === '2') {//表格
-                cardObj.width = '';
+            if (this.props.targetAreaType === "2") {
+                //表格
+                cardObj.width = "";
                 cardObj.istotal = false;
             }
             //参照
@@ -134,7 +140,7 @@ class TreeModal extends Component {
             }
             //小数或者金额
             if (cardObj.datatype === "2" || cardObj.datatype === "52") {
-                cardObj.dataval = '2,,'
+                cardObj.dataval = "2,,";
             }
             cardObj.itemtype = utilService.getItemtypeByDatatype(
                 cardObj.datatype
@@ -325,14 +331,24 @@ class TreeModal extends Component {
                                         r.refcode
                                     }`,
                                     isLeaf: r.isleaf
-                                }
+                                };
                                 //非查询区域的子表里的code不是全路径
-                                if(this.props.targetAreaType !== '0' && treeNode.props.notSearchAreaCode){
-                                    tmpMetaTree.notSearchAreaCode = `${treeNode.props.notSearchAreaCode}.${r.refcode}`
+                                if (
+                                    this.props.targetAreaType !== "0" &&
+                                    treeNode.props.notSearchAreaCode
+                                ) {
+                                    tmpMetaTree.notSearchAreaCode = `${
+                                        treeNode.props.notSearchAreaCode
+                                    }.${r.refcode}`;
                                 }
                                 //非查询区域的子表的code，若父级是205则直接为自身refcode
-                                if(this.props.targetAreaType !== '0' && treeNode.props.datatype === '205'){
-                                    tmpMetaTree.notSearchAreaCode = `${r.refcode}`
+                                if (
+                                    this.props.targetAreaType !== "0" &&
+                                    treeNode.props.datatype === "205"
+                                ) {
+                                    tmpMetaTree.notSearchAreaCode = `${
+                                        r.refcode
+                                    }`;
                                 }
                                 metaTree.push(tmpMetaTree);
                             });
@@ -488,6 +504,7 @@ class TreeModal extends Component {
     render() {
         return (
             <Modal
+                closable={false}
                 title={this.getModalTitleDom()}
                 mask={false}
                 wrapClassName="vertical-center-modal"
@@ -513,7 +530,6 @@ class TreeModal extends Component {
                 ]}
             >
                 {this.getContentDom()}
-                
             </Modal>
         );
     }

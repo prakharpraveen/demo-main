@@ -192,6 +192,7 @@ class RelateMetaModal extends Component {
 		}
 		return (
 			<Modal
+				closable={false}
 				title={
 					<div>
 						元数据编辑关联项

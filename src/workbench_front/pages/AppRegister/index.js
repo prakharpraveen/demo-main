@@ -408,6 +408,7 @@ class AppRegister extends Component {
             return;
         }
         confirm({
+            closable: false,
             title: "是否要删除?",
             content: "",
             okText: "确认",
@@ -694,6 +695,7 @@ class AppRegister extends Component {
         let flag = true;
         if (this.props.isEdit) {
             confirm({
+                closable: false,
                 title: "是否保存数据?",
                 content: "",
                 okText: "确认",
