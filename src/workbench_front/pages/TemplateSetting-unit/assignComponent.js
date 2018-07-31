@@ -75,7 +75,8 @@ class AssignComponent extends Component {
         this.state = {
             expandedKeys: [ '0' ],
             selectedKeys: [],
-            searchValue: '',
+            respSearchValue: '',
+            roleSearchValue: '',
             autoExpandParent: true,
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
@@ -177,7 +178,7 @@ class AssignComponent extends Component {
     //角色和用户职责的数据请求
     reqRoTreeData = () => {
         let { orgidObj } = this.state;
-        if(!orgidObj.refpk){
+        if (!orgidObj.refpk) {
             return;
         }
         let infoData = {
@@ -409,14 +410,14 @@ class AssignComponent extends Component {
                 expandedKeys.push('abc2234567');
                 this.setState({
                     expandedKeys,
-                    searchValue: value,
+                    roleSearchValue: value,
                     autoExpandParent: true,
                     treeRoData: treeRoDataArry
                 });
             } else {
                 this.restoreRoTreeData(roleUserDatas);
                 this.setState({
-                    searchValue: value
+                    roleSearchValue: value
                 });
             }
         } else if (tabActiveKey === '2') {
@@ -435,27 +436,27 @@ class AssignComponent extends Component {
                     }
                 }
                 let initRolesData = deepClone(initAbiTreeData2);
-                initRolesData.children=searchTrees;
+                initRolesData.children = searchTrees;
                 treeRoDataArry.push(initRolesData);
                 treeRoDataArry = generateTreeData(treeRoDataArry);
                 expandedKeys.push('abc3334567');
                 this.setState({
                     expandedKeys,
-                    searchValue: value,
+                    respSearchValue: value,
                     autoExpandParent: false,
                     treeResData: treeRoDataArry
                 });
-            }else{
+            } else {
                 this.restoreResTreeData(roleUserDatas.resps);
                 this.setState({
-                    searchValue: value
+                    respSearchValue: value
                 });
             }
         }
     };
     //树组件
-    treeResAndUser = (data, typeSelect, hideSearch) => {
-        const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
+    treeResAndUser = (data, typeSelect, hideSearch, searchValue) => {
+        const { expandedKeys, autoExpandParent, selectedKeys } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { text, key, children } = item;
@@ -476,20 +477,22 @@ class AssignComponent extends Component {
                     );
                 if (children) {
                     return (
-                        <TreeNode key={key} title={text}
-                        icon={
-                            <Svg
-                                width={15}
-                                height={13}
-                                xlinkHref={
-                                    expandedKeys.indexOf(item.pk) === -1 ? (
-                                        '#icon-wenjianjia'
-                                    ) : (
-                                        '#icon-wenjianjiadakai'
-                                    )
-                                }
-                            />
-                        }
+                        <TreeNode
+                            key={key}
+                            title={text}
+                            icon={
+                                <Svg
+                                    width={15}
+                                    height={13}
+                                    xlinkHref={
+                                        expandedKeys.indexOf(item.pk) === -1 ? (
+                                            '#icon-wenjianjia'
+                                        ) : (
+                                            '#icon-wenjianjiadakai'
+                                        )
+                                    }
+                                />
+                            }
                         >
                             {' '}
                             {loop(children)}{' '}
@@ -505,7 +508,12 @@ class AssignComponent extends Component {
                     (hideSearch ? (
                         ''
                     ) : (
-                        <Search style={{ marginBottom: 8 }} placeholder='角色用户或职责查询' onChange={this.onSearch} value={searchValue}/>
+                        <Search
+                            style={{ marginBottom: 8 }}
+                            placeholder='角色用户或职责查询'
+                            onChange={this.onSearch}
+                            value={searchValue}
+                        />
                     ))}
                 {data.length > 0 && (
                     <Tree
@@ -526,7 +534,7 @@ class AssignComponent extends Component {
     //模态框确定按钮方法
     handleAlloOk = () => {
         let { templatePks, pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
-        if(!orgidObj.refpk){
+        if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
         }
@@ -563,7 +571,7 @@ class AssignComponent extends Component {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
-            if(nodeKeyValue){
+            if (nodeKeyValue) {
                 infoData.pageCode = nodeKeyValue;
             }
         }
@@ -594,7 +602,7 @@ class AssignComponent extends Component {
         orgidObj['refname'] = refname;
         orgidObj['refcode'] = refcode;
         orgidObj['refpk'] = refpk;
-        
+
         this.setState(
             {
                 orgidObj,
@@ -617,7 +625,9 @@ class AssignComponent extends Component {
             nodeKey,
             orgidObj,
             def1,
-            tabActiveKey
+            tabActiveKey,
+            roleSearchValue,
+            respSearchValue
         } = this.state;
         return (
             <Modal
@@ -652,7 +662,7 @@ class AssignComponent extends Component {
                                 {nodeKey &&
                                     nodeKey.length > 0 &&
                                     nodeKey.map((item, index) => {
-                                        if(item){
+                                        if (item) {
                                             return <Option value={item}>{item}</Option>;
                                         }
                                     })}
@@ -671,12 +681,12 @@ class AssignComponent extends Component {
                                 >
                                     <TabPane tab='按角色和用户分配' key='1'>
                                         <div className='allocation-treeScrollName'>
-                                            {this.treeResAndUser(treeRoData, 'resOnselect')}
+                                            {this.treeResAndUser(treeRoData, 'resOnselect', roleSearchValue)}
                                         </div>
                                     </TabPane>
                                     <TabPane tab='按职责分配' key='2'>
                                         <div className='allocation-treeScrollResp'>
-                                            {this.treeResAndUser(treeResData, 'resOnselect')}
+                                            {this.treeResAndUser(treeResData, 'resOnselect', respSearchValue)}
                                         </div>
                                     </TabPane>
                                 </Tabs>
@@ -695,7 +705,7 @@ class AssignComponent extends Component {
                                         value={org_df_biz}
                                         placeholder={'默认业务单元'}
                                         onChange={(value) => {
-                                            console.log()
+                                            console.log();
                                             this.handdleRefChange(value);
                                         }}
                                     />

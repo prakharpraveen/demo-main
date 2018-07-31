@@ -75,7 +75,8 @@ class AssignComponent extends Component {
         this.state = {
             expandedKeys: [ '0' ],
             selectedKeys: [],
-            searchValue: '',
+            roleSearchValue:'',
+            respSearchValue:'',
             autoExpandParent: false,
             templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
@@ -409,14 +410,14 @@ class AssignComponent extends Component {
                 expandedKeys.push('abc2234567');
                 this.setState({
                     expandedKeys,
-                    searchValue: value,
+                    roleSearchValue: value,
                     autoExpandParent: true,
                     treeRoData: treeRoDataArry
                 });
             } else {
                 this.restoreRoTreeData(roleUserDatas);
                 this.setState({
-                    searchValue: value
+                    roleSearchValue: value
                 });
             }
         } else if (tabActiveKey === '2') {
@@ -441,20 +442,20 @@ class AssignComponent extends Component {
                 expandedKeys.push('abc3334567');
                 this.setState({
                     expandedKeys,
-                    searchValue: value,
+                    respSearchValue: value,
                     autoExpandParent: false,
                     treeResData: treeRoDataArry
                 });
             }else{
                 this.restoreResTreeData(roleUserDatas.resps);
                 this.setState({
-                    searchValue: value
+                    respSearchValue: value
                 });
             }
         }
     };
-    treeResAndUser = (data, typeSelect, searchType) => {
-        const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
+    treeResAndUser = (data, typeSelect, searchValue) => {
+        const { expandedKeys, autoExpandParent, selectedKeys } = this.state;
         const loop = (data) => {
             return data.map((item) => {
                 let { text, key, pk } = item;
@@ -610,7 +611,9 @@ class AssignComponent extends Component {
             templatePks,
             nodeKey,
             def1,
-            tabActiveKey
+            tabActiveKey,
+            roleSearchValue,
+            respSearchValue
         } = this.state;
         return (
             <Modal
@@ -666,12 +669,12 @@ class AssignComponent extends Component {
                                 >
                                     <TabPane tab='按角色和用户分配' key='1'>
                                         <div className='allocation-treeScrollName'>
-                                            {this.treeResAndUser(treeRoData, 'resOnselect')}
+                                            {this.treeResAndUser(treeRoData, 'resOnselect', roleSearchValue)}
                                         </div>
                                     </TabPane>
                                     <TabPane tab='按职责分配' key='2'>
                                         <div className='allocation-treeScrollResp'>
-                                            {this.treeResAndUser(treeResData, 'resOnselect')}
+                                            {this.treeResAndUser(treeResData, 'resOnselect', respSearchValue)}
                                         </div>
                                     </TabPane>
                                 </Tabs>
