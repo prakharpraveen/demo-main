@@ -90,7 +90,7 @@ class AssignComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ["0"],
+            expandedKeys: [],
             selectedKeys: [],
             respSearchValue: "",
             roleSearchValue: "",
@@ -494,26 +494,32 @@ class AssignComponent extends Component {
         const loop = data => {
             return data.map(item => {
                 let { text, key, children } = item;
-                const index = text.indexOf(searchValue);
-                const beforeStr = text.substr(0, index);
-                const afterStr = text.substr(index + searchValue.length);
-                const title =
-                    index > -1 ? (
-                        <span>
-                            {beforeStr}
-                            <span style={{ color: "#f50" }}>{searchValue}</span>
-                            {afterStr}
-                        </span>
-                    ) : (
-                        <span>
-                            <span> {text} </span>
-                        </span>
-                    );
+let title;
+                if (typeSelect === 'resOnselect') {
+                    const index = text.indexOf(searchValue);
+                    const beforeStr = text.substr(0, index);
+                    const afterStr = text.substr(index + searchValue.length);
+                    title =
+                        index > -1 ? (
+                            <span>
+                                {beforeStr}
+                                <span style={{ color: '#f50' }}>{searchValue}</span>
+                                {afterStr}
+                            </span>
+                        ) : (
+                            <span>
+                                <span> {text} </span>
+                            </span>
+                        );
+                } else if (typeSelect === 'allowedOnselect') {
+                    title = text;
+                }
+
                 if (children) {
                     return (
                         <TreeNode
                             key={key}
-                            title={text}
+                            title={title}
                             icon={
                                 <Svg
                                     width={15}
@@ -535,24 +541,23 @@ class AssignComponent extends Component {
                     <TreeNode
                         icon={<span className="tree-dot" />}
                         key={key}
-                        title={text}
+                        title={title}
                     />
                 );
             });
         };
         return (
             <div>
-                {data.length > 0 &&
-                    (hideSearch ? (
-                        ""
-                    ) : (
-                        <Search
-                            style={{ marginBottom: 8 }}
-                            placeholder="角色用户或职责查询"
-                            onChange={this.onSearch}
-                            value={searchValue}
-                        />
-                    ))}
+                {hideSearch ? (
+                    ''
+                ) : (
+                    <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder='角色用户或职责查询'
+                        onChange={this.onSearch}
+                        value={searchValue}
+                    />
+                )}
                 {data.length > 0 && (
                     <Tree
                         showLine
@@ -738,6 +743,7 @@ class AssignComponent extends Component {
                                             {this.treeResAndUser(
                                                 treeRoData,
                                                 "resOnselect",
+						null,
                                                 roleSearchValue
                                             )}
                                         </div>
@@ -747,6 +753,7 @@ class AssignComponent extends Component {
                                             {this.treeResAndUser(
                                                 treeResData,
                                                 "resOnselect",
+						null,
                                                 respSearchValue
                                             )}
                                         </div>
