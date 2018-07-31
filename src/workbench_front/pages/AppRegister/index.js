@@ -783,7 +783,7 @@ class AppRegister extends Component {
             {
                 code: "del",
                 name: "删除",
-                type: "primary",
+                type: "",
                 isshow: !isEdit && optype !== ""
             },
             {
