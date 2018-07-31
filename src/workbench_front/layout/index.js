@@ -11,8 +11,9 @@ import SideDrawer from "./SideDrawer";
 import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
+import { Forewarning } from "Components/Forewarning";
 import BusinessDate from "./BusinessDate";
-import MTZBDate from './MTZBDate';
+import MTZBDate from "./MTZBDate";
 import { sprLog } from "./spr";
 import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
@@ -364,7 +365,23 @@ class Layout extends Component {
             window.clearInterval(this.SessionaLive);
         }
     };
+    /**
+     * 预警事件触发
+     */
+    handleForewarning = () => {
+        /**
+         * @param {String} c 应用编码
+         * @param {String} n 应用名称
+         */
+        let { c, n } = GetQuery(this.props.location.search);
+        if (c && n) {
+            Forewarning(c, n);
+        } else {
+            Forewarning(undefined, "首页");
+        }
+    };
     componentDidMount() {
+        this.handleForewarning();
         this.handleUpdateTitleName();
         this.handleVisibilityChange();
         window.addEventListener("hashchange", this.handleUpdateTitleName);
@@ -520,7 +537,7 @@ class Layout extends Component {
                             onOk={this.handleDateChange}
                             date={newDate}
                         />
-                        <MTZBDate/>
+                        <MTZBDate />
                     </div>
                 </div>
                 <div className="nc-workbench-container">
