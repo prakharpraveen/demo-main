@@ -45,6 +45,9 @@ class SearchTree extends Component {
      * @param {Array} selectedKey
      */
     handleSelect = (selectedKey, info) => {
+        if(selectedKey.length === 0){
+            return;
+        }
         let selectedNode;
         if (info["selectedNodes"].length > 0) {
             selectedNode = info["selectedNodes"][0]["props"]["refData"];

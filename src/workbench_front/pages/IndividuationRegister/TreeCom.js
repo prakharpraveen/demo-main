@@ -36,6 +36,9 @@ class TreeCom extends Component {
         });
     };
     handleSelect = (selectedKey, info) => {
+        if (selectedKey.length === 0) {
+            return;
+        }
         this.props.onSelect(selectedKey[0]);
     };
     render() {

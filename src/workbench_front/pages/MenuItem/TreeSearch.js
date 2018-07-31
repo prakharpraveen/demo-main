@@ -50,6 +50,9 @@ class TreeSearch extends Component {
      * 树选中节点事件
      */
     handleSelect = selectedKey => {
+        if (selectedKey.length === 0) {
+            return;
+        }
         this.props.setSelectedKeys(selectedKey);
     };
     render() {
