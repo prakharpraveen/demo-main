@@ -89,36 +89,45 @@ export function generateTreeData(data) {
         return item;
     });
 }
-// 将平铺树数组转换为树状数组
-// export function restoreTreeData() {
-//     let { treeData, treeDataArray } = this.state;
-//     let treeInfo = generateData(treeDataArray);
-//     let { treeArray, treeObj } = treeInfo;
-//     for (const key in treeObj) {
-//         if (treeObj.hasOwnProperty(key)) {
-//             const element = treeObj[key];
-//             if (element.length > 0) {
-//                 treeObj[key] = element.map((item, index) => {
-//                     if (treeObj[item.moduleid]) {
-//                         item.children = treeObj[item.moduleid];
-//                     } else if (treeObj[item.systypecode]) {
-//                         item.children = treeObj[item.systypecode];
-//                     }
-//                     return item;
-//                 });
-//             }
-//         }
-//     }
-//     treeArray = treeArray.map((item, index) => {
-//         if (treeObj[item.moduleid]) {
-//             item.children = treeObj[item.moduleid];
-//         }
-//         return item;
-//     });
-//     // 处理树数据
-//     treeData[0].children = treeInfo.treeArray;
-//     treeData = generateTreeData(treeData);
-//     this.setState({
-//         treeData
-//     });
-// }
+function type(obj) {
+    var toString = Object.prototype.toString;
+    var map = {
+      '[object Boolean]' : 'boolean', 
+      '[object Number]'  : 'number', 
+      '[object String]'  : 'string', 
+      '[object Function]' : 'function', 
+      '[object Array]'  : 'array', 
+      '[object Date]'   : 'date', 
+      '[object RegExp]'  : 'regExp', 
+      '[object Undefined]': 'undefined',
+      '[object Null]'   : 'null', 
+      '[object Object]'  : 'object'
+    };
+    return map[toString.call(obj)];
+}
+export function deepClone(data) {
+    var t = type(data),
+        o,
+        i,
+        ni;
+
+    if (t === 'array') {
+        o = [];
+    } else if (t === 'object') {
+        o = {};
+    } else {
+        return data;
+    }
+
+    if (t === 'array') {
+        for (i = 0, ni = data.length; i < ni; i++) {
+            o.push(deepClone(data[i]));
+        }
+        return o;
+    } else if (t === 'object') {
+        for (i in data) {
+            o[i] = deepClone(data[i]);
+        }
+        return o;
+    }
+}

@@ -9,7 +9,7 @@ import Notice from 'Components/Notice';
 import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
 import Svg from 'Components/Svg';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
-import { generateData, generateTemData, generateTreeData, generateRoData } from './method';
+import { generateData, generateTemData, generateTreeData, generateRoData, deepClone } from './method';
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const TreeNode = Tree.TreeNode;
@@ -20,12 +20,32 @@ const initRoTreeData = {
     id: 'abc1234567',
     text: '角色',
     name: '角色',
+    code: '1001',
     title: '角色',
     children: []
 };
 const initUserTreeData = {
     key: 'abc2234567',
     id: 'abc2234567',
+    code: '1002',
+    text: '用户',
+    name: '用户',
+    title: '用户',
+    children: []
+};
+const initRoTreeData2 = {
+    key: 'abc1234567',
+    id: 'abc1234567',
+    text: '角色',
+    name: '角色',
+    code: '1001',
+    title: '角色',
+    children: []
+};
+const initUserTreeData2 = {
+    key: 'abc2234567',
+    id: 'abc2234567',
+    code: '1002',
     text: '用户',
     name: '用户',
     title: '用户',
@@ -35,6 +55,16 @@ const initAbiTreeData = {
     key: 'abc3334567',
     id: 'abc3334567',
     text: '职责',
+    code: '1003',
+    name: '职责',
+    title: '职责',
+    children: []
+};
+const initAbiTreeData2 = {
+    key: 'abc3334567',
+    id: 'abc3334567',
+    text: '职责',
+    code: '1003',
     name: '职责',
     title: '职责',
     children: []
@@ -196,6 +226,12 @@ class AssignComponent extends Component {
         treeRoData = [];
         let initRolesData = initRoTreeData;
         let initUsersData = initUserTreeData;
+        data.roles.map((item) => {
+            item.type = 'roles';
+        });
+        data.users.map((item) => {
+            item.type = 'users';
+        });
         initRolesData.children = generateRoData(data.roles);
         initUsersData.children = generateRoData(data.users);
         treeRoData.push(initRolesData);
@@ -328,6 +364,7 @@ class AssignComponent extends Component {
                 break;
         }
     };
+    //树的展开
     onExpand = (expandedKeys) => {
         this.setState({ expandedKeys, autoExpandParent: true });
     };
@@ -335,49 +372,46 @@ class AssignComponent extends Component {
     onSearch = (e) => {
         const value = e.target.value;
         let { treeRoData, tabActiveKey, roleUserDatas, treeResData } = this.state;
-        let keyArray = [];
+        let expandedKeys = [];
         let searchTrees = [];
+        let treeRoDataArry = [];
         if (tabActiveKey === '1') {
             if (value) {
-                let expandedKeys = treeRoData
-                    .map((item) => {
-                        if (item.children) {
-                            item.children.map((ele) => {
-                                if (ele.title.indexOf(value) > -1) {
-                                    keyArray.push(ele.key);
+                for (let key in roleUserDatas) {
+                    if (roleUserDatas.hasOwnProperty(key)) {
+                        if (key === 'users' || key === 'roles') {
+                            roleUserDatas[key].map((item) => {
+                                item.text = item.name + item.code;
+                                if (item.text.indexOf(value) > -1) {
+                                    expandedKeys.push(item.key);
                                     searchTrees.push(item);
                                 }
                             });
-                            return keyArray;
                         }
-                        return null;
-                    })
-                    .filter((item, i, self) => item && self.indexOf(item) === i);
-                    console.log(expandedKeys);
-                    console.log(roleUserDatas);
-                // for(let i=0;i<expandedKeys.length;i++){
-                //     for (let key in roleUserDatas) {
-                //         if (key === 'users' || key === 'roles') {
-                //             roleUserDatas[key].map((item) => {
-                //                 if (item.id === expandedKeys[i]) {
-                //                     searchTrees.push(item);
-                //                 }
-                //             });
-                //         }
-                //     }
-                // }
-                // searchTrees.map((item) => {
-                //     item.text = item.name + item.code;
-                //     item.key = item.id;
-                // });
-                // searchTrees = generateTreeData(searchTrees);
+                    }
+                }
+                searchTrees.map((item) => {
+                    item.key = item.id;
+                });
+                let initRolesData = deepClone(initRoTreeData2);
+                let initUsersData = deepClone(initUserTreeData2);
+                searchTrees.map((item) => {
+                    if (item.type === 'roles') {
+                        initRolesData.children.push(item);
+                    } else if (item.type === 'users') {
+                        initUsersData.children.push(item);
+                    }
+                });
+                treeRoDataArry.push(initRolesData);
+                treeRoDataArry.push(initUsersData);
+                treeRoDataArry = generateTreeData(treeRoDataArry);
                 expandedKeys.push('abc1234567');
                 expandedKeys.push('abc2234567');
                 this.setState({
                     expandedKeys,
                     searchValue: value,
                     autoExpandParent: true,
-                    // treeRoData: searchTrees
+                    treeRoData: treeRoDataArry
                 });
             } else {
                 this.restoreRoTreeData(roleUserDatas);
@@ -386,38 +420,37 @@ class AssignComponent extends Component {
                 });
             }
         } else if (tabActiveKey === '2') {
-            let expandedKeys = treeResData
-                .map((item) => {
-                    if (item.children) {
-                        item.children.map((ele) => {
-                            if (ele.title.indexOf(value) > -1) {
-                                keyArray.push(ele.key);
-                                treeResult.push(ele);
-                            }
-                        });
-                        return keyArray;
+            if (value) {
+                for (let key in roleUserDatas) {
+                    if (roleUserDatas.hasOwnProperty(key)) {
+                        if (key === 'resps') {
+                            roleUserDatas[key].map((item) => {
+                                item.text = item.name + item.code;
+                                if (item.text.indexOf(value) > -1) {
+                                    expandedKeys.push(item.key);
+                                    searchTrees.push(item);
+                                }
+                            });
+                        }
                     }
-                    return null;
-                })
-                .filter((item, i, self) => item && self.indexOf(item) === i);
-            // for (let key in roleUserDatas) {
-            //     if (key === 'resps') {
-            //         roleUserDatas[key].map((item, index) => {
-            //             if (item.id === dataRoKey) {
-            //                 dataRoObj.id = item.id;
-            //                 dataRoObj.name = item.name;
-            //                 dataRoObj.code = item.code;
-            //             }
-            //         });
-            //     }
-            // }
-            expandedKeys.push('abc3334567');
-            this.setState({
-                expandedKeys,
-                searchValue: value,
-                autoExpandParent: true
-                //treeResData: treeResult
-            });
+                }
+                let initRolesData = deepClone(initAbiTreeData2);
+                initRolesData.children=searchTrees;
+                treeRoDataArry.push(initRolesData);
+                treeRoDataArry = generateTreeData(treeRoDataArry);
+                expandedKeys.push('abc3334567');
+                this.setState({
+                    expandedKeys,
+                    searchValue: value,
+                    autoExpandParent: false,
+                    treeResData: treeRoDataArry
+                });
+            }else{
+                this.restoreResTreeData(roleUserDatas.resps);
+                this.setState({
+                    searchValue: value
+                });
+            }
         }
     };
     treeResAndUser = (data, typeSelect, searchType) => {
