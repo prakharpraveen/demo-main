@@ -331,37 +331,96 @@ class AssignComponent extends Component {
     onExpand = (expandedKeys) => {
         this.setState({ expandedKeys, autoExpandParent: true });
     };
+    //树的搜索
     onSearch = (e) => {
         const value = e.target.value;
-        let { treeRoData, tabActiveKey } = this.state;
+        let { treeRoData, tabActiveKey, roleUserDatas, treeResData } = this.state;
         let keyArray = [];
-        let expandedKeys = treeRoData
-            .map((item) => {
-                if (item.children) {
-                    item.children.map((ele) => {
-                        if (ele.title.indexOf(value) > -1) {
-                            keyArray.push(ele.key);
-                        }
-                    });
-                    return keyArray;
-                }
-                return null;
-            })
-            .filter((item, i, self) => item && self.indexOf(item) === i);
+        let searchTrees = [];
         if (tabActiveKey === '1') {
-            expandedKeys.push('abc1234567');
-            expandedKeys.push('abc2234567');
+            if (value) {
+                let expandedKeys = treeRoData
+                    .map((item) => {
+                        if (item.children) {
+                            item.children.map((ele) => {
+                                if (ele.title.indexOf(value) > -1) {
+                                    keyArray.push(ele.key);
+                                    searchTrees.push(item);
+                                }
+                            });
+                            return keyArray;
+                        }
+                        return null;
+                    })
+                    .filter((item, i, self) => item && self.indexOf(item) === i);
+                    console.log(expandedKeys);
+                    console.log(roleUserDatas);
+                // for(let i=0;i<expandedKeys.length;i++){
+                //     for (let key in roleUserDatas) {
+                //         if (key === 'users' || key === 'roles') {
+                //             roleUserDatas[key].map((item) => {
+                //                 if (item.id === expandedKeys[i]) {
+                //                     searchTrees.push(item);
+                //                 }
+                //             });
+                //         }
+                //     }
+                // }
+                // searchTrees.map((item) => {
+                //     item.text = item.name + item.code;
+                //     item.key = item.id;
+                // });
+                // searchTrees = generateTreeData(searchTrees);
+                expandedKeys.push('abc1234567');
+                expandedKeys.push('abc2234567');
+                this.setState({
+                    expandedKeys,
+                    searchValue: value,
+                    autoExpandParent: true,
+                    // treeRoData: searchTrees
+                });
+            } else {
+                this.restoreRoTreeData(roleUserDatas);
+                this.setState({
+                    searchValue: value
+                });
+            }
         } else if (tabActiveKey === '2') {
+            let expandedKeys = treeResData
+                .map((item) => {
+                    if (item.children) {
+                        item.children.map((ele) => {
+                            if (ele.title.indexOf(value) > -1) {
+                                keyArray.push(ele.key);
+                                treeResult.push(ele);
+                            }
+                        });
+                        return keyArray;
+                    }
+                    return null;
+                })
+                .filter((item, i, self) => item && self.indexOf(item) === i);
+            // for (let key in roleUserDatas) {
+            //     if (key === 'resps') {
+            //         roleUserDatas[key].map((item, index) => {
+            //             if (item.id === dataRoKey) {
+            //                 dataRoObj.id = item.id;
+            //                 dataRoObj.name = item.name;
+            //                 dataRoObj.code = item.code;
+            //             }
+            //         });
+            //     }
+            // }
             expandedKeys.push('abc3334567');
+            this.setState({
+                expandedKeys,
+                searchValue: value,
+                autoExpandParent: true
+                //treeResData: treeResult
+            });
         }
-        this.setState({
-            expandedKeys,
-            searchValue: value,
-            autoExpandParent: true,
-            treeRoData: searchTree
-        });
     };
-    treeResAndUser = (data, typeSelect, hideSearch) => {
+    treeResAndUser = (data, typeSelect, searchType) => {
         const { expandedKeys, autoExpandParent, selectedKeys, searchValue } = this.state;
         const loop = (data) => {
             return data.map((item) => {
@@ -410,8 +469,7 @@ class AssignComponent extends Component {
         };
         return (
             <div>
-                {data.length > 0 &&
-                    (hideSearch ? '' : <Search placeholder='角色用户或指责查询' onChange={this.onSearch} value={searchValue} />)}
+                {<Search placeholder='角色用户或职责查询' onChange={this.onSearch} value={searchValue} />}
                 {data.length > 0 && (
                     <Tree
                         showLine
