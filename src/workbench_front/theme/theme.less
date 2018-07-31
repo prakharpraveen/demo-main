@@ -9,6 +9,17 @@ body {
         height: 30px;
         font-size: 13px;
         line-height: 1;
+        &.ant-btn-danger {
+            color: #ffffff;
+            background-color: #e14c46;
+            border-color: #e14c46;
+            &:focus,
+            &:hover {
+                color: #ffffff;
+                background-color: #d7332c;
+                border-color: #d7332c;
+            }
+        }
     }
     .ant-btn[disabled] {
         background-color: #efefef;
@@ -210,11 +221,11 @@ body {
         border-right-width: 1px !important;
     }
     .ant-tree {
-        .ant-tree-child-tree-open{
-            .ant-tree-treenode-switcher-close:last-child{
-                .ant-tree-switcher-noop{
-                    &::after{
-                        content: '' !important;
+        .ant-tree-child-tree-open {
+            .ant-tree-treenode-switcher-close:last-child {
+                .ant-tree-switcher-noop {
+                    &::after {
+                        content: "" !important;
                         display: block;
                         width: 50%;
                         height: 50%;
@@ -244,9 +255,9 @@ body {
             span.ant-tree-switcher {
                 line-height: 28px;
                 height: 28px;
-                &.ant-tree-switcher-noop{
-                    &::after{
-                        content: '' !important;
+                &.ant-tree-switcher-noop {
+                    &::after {
+                        content: "" !important;
                         display: block;
                         width: 1px;
                         height: 100%;
