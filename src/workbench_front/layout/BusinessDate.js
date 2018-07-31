@@ -56,9 +56,9 @@ class BusinessDate extends Component {
     handleOpenChange = open => {
         this.setState({ isOpen: open });
     };
-    handlePanelChange = (value,mode) => {
-        console.log(value,mode);
-        
+    handlePanelChange = (value, mode) => {
+        console.log(value, mode);
+
         value = moment(value).format("YYYY-MM-DD hh:mm:ss");
         this.setState({
             value: value,
@@ -92,17 +92,20 @@ class BusinessDate extends Component {
             </div>
         );
         let { isOpen, value } = this.state;
-        let busunessTitle =
+        let flag =
             moment(this.state.value).format("YYYY-MM-DD") ===
-            moment().format("YYYY-MM-DD")
-                ? "业务日期"
-                : "该业务日期不是今日日期!";
+            moment().format("YYYY-MM-DD");
+        let busunessTitle = flag ? "业务日期" : "该业务日期不是今日日期!";
         return (
             <Tooltip placement="bottom" title={busunessTitle}>
                 <div
                     field="business-date"
                     fieldname="业务日期"
-                    className="nc-workbench-businessdate"
+                    className={
+                        flag
+                            ? "nc-workbench-businessdate"
+                            : "nc-workbench-businessdate unbusinessdate"
+                    }
                 >
                     <DatePicker
                         dropdownClassName={
@@ -118,6 +121,7 @@ class BusinessDate extends Component {
                         onPanelChange={this.handlePanelChange}
                         allowClear={false}
                     />
+                    {!flag ? <span className="business-date-flag">!</span> : ""}
                 </div>
             </Tooltip>
         );
