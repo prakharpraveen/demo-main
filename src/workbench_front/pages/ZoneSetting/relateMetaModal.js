@@ -126,9 +126,9 @@ class RelateMetaModal extends Component {
 		_.forEach(cards, (c, i) => {
 			if (c.myMetaPath && c.myMetaPath !== '') {
 				if (result === '') {
-					result = `${c.metapath}=${c.myMetaPath}`;
+					result = `${c.code}=${c.myMetaPath}`;
 				} else {
-					result = `${result},${c.metapath}=${c.myMetaPath}`;
+					result = `${result},${c.code}=${c.myMetaPath}`;
 				}
 			}
 		});
