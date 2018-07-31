@@ -37,7 +37,7 @@ const createFormItem = (props, itemInfo) => {
         case 'select': 
             if(nodeData.areaList&&nodeData.areaList.length>0){
                 nodeData.areaList.map((item)=>{
-                    if((nodeData[code]===item.code)&&(item.areatype!=='1')){
+                    if((nodeData[code]===item.code)&&(item.areatype==='0')){
                         Notice({ status: 'error', msg: '数据有误' });
                         return ;
                     }

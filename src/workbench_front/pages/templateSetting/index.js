@@ -554,7 +554,12 @@ class TemplateSetting extends Component {
                 this.handleSearch(value, this.handleExpanded);
             });
         }else{
-            
+            this.reqTreeData();
+            const expandedKeys=["00"];
+            this.setState({
+                searchValue:'',
+                expandedKeys
+            })
         }
     };
     handleExpanded = dataList => {
