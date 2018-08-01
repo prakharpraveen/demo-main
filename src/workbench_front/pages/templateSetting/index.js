@@ -897,7 +897,7 @@ class TemplateSetting extends Component {
                         </div>
                     ) : (
                         <div className='noPageData'>
-                            <p className='template-title'>页面模板</p>
+                            <p className='noDataTip'>该页面无页面模板</p>
                         </div>
                     ) : def1 == 'menuitem' ? treeTemPrintData.length > 0 ? (
                         <div>
@@ -913,7 +913,7 @@ class TemplateSetting extends Component {
                         </div>
                     ) : (
                         <div className='noPrintData'>
-                            <p className='template-title'>页面模板</p>
+                            <p className='noDataTip'>该页面无打印模板</p>
                         </div>
                     ) : (
                         ''
