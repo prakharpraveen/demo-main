@@ -12,6 +12,7 @@ import PreviewModal from './showPreview';
 import AssignComponent from './assignComponent';
 import { openPage } from 'Pub/js/superJump';
 import Svg from 'Components/Svg';
+import { GetQuery } from 'Pub/js/utils';
 import { generateTemData, generateTreeData, generateRoData } from './method';
 import './index.less';
 const Option = Select.Option;
@@ -47,6 +48,8 @@ class TemplateSetting extends Component {
     constructor(props) {
         super(props);
         this.searchAreaHeight;
+        this.urlRequestObj = GetQuery(this.props.location.search);
+        console.log(this.urlRequestObj);
         this.state = {
             siderHeight: '280',
             expandedKeys: [ '00' ],
@@ -76,7 +79,8 @@ class TemplateSetting extends Component {
             isDefaultTem: '',
             def1: '',
             previewPrintContent: '',
-            previewPrintVisible: false
+            previewPrintVisible: false,
+            paramPageCode: this.urlRequestObj.pageCode
         };
     }
     // 按钮显隐性控制
@@ -405,7 +409,14 @@ class TemplateSetting extends Component {
         });
     };
     componentDidMount = () => {
-        this.reqTreeData();
+        let { paramPageCode } = this.state;
+        if (paramPageCode) {
+            this.setState({ searchValue: paramPageCode }, () => {
+                this.handleSearch(paramPageCode, this.handleExpanded);
+            });
+        }else{
+            this.reqTreeData();
+        }
         //样式处理
         // window.onresize = () => {
         //     //let siderHeight = document.querySelector('.ant-layout-content').offsetHeight;
