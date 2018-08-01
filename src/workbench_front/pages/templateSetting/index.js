@@ -414,7 +414,7 @@ class TemplateSetting extends Component {
             this.setState({ searchValue: paramPageCode }, () => {
                 this.handleSearch(paramPageCode, this.handleExpanded);
             });
-        }else{
+        } else {
             this.reqTreeData();
         }
         //样式处理
@@ -735,7 +735,7 @@ class TemplateSetting extends Component {
                             <span> {text} </span>
                         </span>
                     );
-                if (item.children) {
+                if (item.children && item.children.length > 0) {
                     return (
                         <TreeNode
                             key={pk}

@@ -479,7 +479,7 @@ class AssignComponent extends Component {
                 } else if (typeSelect === 'allowedOnselect') {
                     title = text;
                 }
-                if (item.children) {
+                if (item.children && item.children.length > 0) {
                     return (
                         <TreeNode
                             key={key}

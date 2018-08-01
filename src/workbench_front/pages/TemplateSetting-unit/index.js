@@ -592,17 +592,17 @@ class TemplateSetting extends Component {
     //tree的查询方法
     onChange = (e) => {
         const value = e.target.value;
-        if(value){
+        if (value) {
             this.setState({ searchValue: value }, () => {
                 this.handleSearch(value, this.handleExpanded);
             });
-        }else{
+        } else {
             this.reqTreeData();
-            const expandedKeys=["00"];
+            const expandedKeys = [ '00' ];
             this.setState({
-                searchValue:'',
+                searchValue: '',
                 expandedKeys
-            })
+            });
         }
     };
     handleExpanded = (dataList) => {
@@ -666,7 +666,7 @@ class TemplateSetting extends Component {
                             <span> {text} </span>
                         </span>
                     );
-                if (item.children) {
+                if (item.children && item.children.length > 0) {
                     return (
                         <TreeNode
                             key={pk}
@@ -855,7 +855,7 @@ class TemplateSetting extends Component {
                     )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
-                {def1 == 'apppage' ? treeTemBillData.length > 0 ? (
+                    {def1 == 'apppage' ? treeTemBillData.length > 0 ? (
                         <div>
                             <p className='template-title'>页面模板</p>
                             {this.treeResAndUser(
@@ -884,7 +884,7 @@ class TemplateSetting extends Component {
                             )}
                         </div>
                     ) : (
-                        <div className='noPrintData' >
+                        <div className='noPrintData'>
                             <p className='noDataTip'>该页面无打印模板</p>
                         </div>
                     ) : (

@@ -467,7 +467,7 @@ class AssignComponent extends Component {
                     title = text;
                 }
 
-                if (children) {
+                if (children && children.length > 0) {
                     return (
                         <TreeNode
                             key={key}
