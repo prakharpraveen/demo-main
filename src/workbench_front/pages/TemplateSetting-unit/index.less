@@ -67,22 +67,31 @@ body {
             margin-bottom: 10px;
             background: #f4f4f4
         }
-        .noPageData{
-            background: url(../../pub/img/noPage.png) no-repeat 50% 30%;
+        .noPageData {
+            .noDataTip {
+                background: url(../../pub/img/noPage.png) no-repeat center;
+            }
         }
-        .noPrintData{
-            background: url(../../pub/img/noPrint.png) no-repeat 50% 30%;
+        .noPrintData {
+            .noDataTip {
+                background: url(../../pub/img/noPrint.png) no-repeat center;
+            }
         }
-        .noPageData,.noPrintData{
-            width:100%;
-            height:100%;
-            background-size:120px 120px;
-        }
-        .noDataTip{
-            position: relative;
-            top: 45%;
-            left: 45%;
-            color: #AEAEAE;
+        .noPageData,
+        .noPrintData {
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            .noDataTip {
+                width: 120px;
+                height: 160px;
+                line-height: 300px;
+                color: #aeaeae;
+                background-size: 120px 120px;
+                text-align: center;
+            }
         }
     }
     .ant-tree {

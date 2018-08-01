@@ -13,7 +13,7 @@ body {
         padding: 60px 20px 20px 20px;
         height: 100%;
         overflow-y: auto;
-        .templateSetting-searchTree{
+        .templateSetting-searchTree {
             padding: 10px 20px;
             overflow-x: hidden;
             overflow-y: auto;
@@ -59,30 +59,39 @@ body {
         .ant-checkbox-wrapper {
             margin-left: 70px;
         }
-        .template-title{
-            height:30px;
-            font-size:15px;
+        .template-title {
+            height: 30px;
+            font-size: 15px;
             line-height: 30px;
-            padding-left:20px;
+            padding-left: 20px;
             margin-bottom: 10px;
-            background: #f4f4f4
+            background: #f4f4f4;
         }
-        .noPageData{
-            background: url(../../pub/img/noPage.png) no-repeat 50% 30%;
+        .noPageData {
+            .noDataTip {
+                background: url(../../pub/img/noPage.png) no-repeat center;
+            }
         }
-        .noPrintData{
-            background: url(../../pub/img/noPrint.png) no-repeat 50% 30%;
+        .noPrintData {
+            .noDataTip {
+                background: url(../../pub/img/noPrint.png) no-repeat center;
+            }
         }
-        .noPageData,.noPrintData{
-            width:100%;
-            height:100%;
-            background-size:120px 120px;
-        }
-        .noDataTip{
-            position: relative;
-            top: 45%;
-            left: 45%;
-            color: #AEAEAE;
+        .noPageData,
+        .noPrintData {
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            .noDataTip {
+                width: 120px;
+                height: 160px;
+                line-height: 300px;
+                color: #aeaeae;
+                background-size: 120px 120px;
+                text-align: center;
+            }
         }
     }
     .ant-tree {
@@ -133,7 +142,7 @@ body {
             display: flex;
             justify-content: space-between;
             .allocation-treeCom {
-                .ant-tabs-bar{
+                .ant-tabs-bar {
                     margin: 0 0;
                 }
                 width: 44%;

@@ -80,7 +80,7 @@ class TemplateSetting extends Component {
             def1: '',
             previewPrintContent: '',
             previewPrintVisible: false,
-            paramPageCode: this.urlRequestObj.pageCode
+            param: this.urlRequestObj
         };
     }
     // 按钮显隐性控制
@@ -409,8 +409,8 @@ class TemplateSetting extends Component {
         });
     };
     componentDidMount = () => {
-        let { paramPageCode } = this.state;
-        if (paramPageCode) {
+        let { param } = this.state;
+        if (param&&param.code&&param.pageName==='equiptool') {
             this.setState({ searchValue: paramPageCode }, () => {
                 this.handleSearch(paramPageCode, this.handleExpanded);
             });
