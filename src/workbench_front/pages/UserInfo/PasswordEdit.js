@@ -68,6 +68,9 @@ class PasswordEdit extends Component {
             callback();
         }
     };
+    componentWillReceiveProps(nextProps){
+        this.setState({ confirmDirty: false });
+    }
     render() {
         let { layout, formObj } = this.props;
         let { getFieldDecorator } = formObj;
