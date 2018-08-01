@@ -714,6 +714,7 @@ class AppRegister extends Component {
         return flag;
     };
     componentDidMount() {
+        this.reqTreeData();
         let {
             selectedKeys,
             setSelectedKeys,
@@ -733,7 +734,6 @@ class AppRegister extends Component {
             setSelectedKeys(["00"]);
             setOptype("");
         }
-        this.reqTreeData();
     }
     render() {
         let optype = this.props.optype;

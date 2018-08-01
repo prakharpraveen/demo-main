@@ -6,6 +6,7 @@ import _ from "lodash";
 import { setAppParamData } from "Store/AppRegister/action";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
+import CoverPosotion from "Components/CoverPosition";
 import EditableCell from "Components/EditableCell";
 const TabPane = Tabs.TabPane;
 /**
@@ -290,6 +291,9 @@ class AppTable extends Component {
                 <TabPane tab="参数注册" key="1">
                     <Table
                         bordered
+                        locale={{
+                            emptyText: <CoverPosotion />
+                        }}
                         pagination={false}
                         rowKey="num"
                         dataSource={appParamVOs.map((item, index) => {

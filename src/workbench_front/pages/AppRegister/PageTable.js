@@ -13,6 +13,7 @@ import {
     setPageActiveKey
 } from "Store/AppRegister/action";
 import EditableCell from "Components/EditableCell";
+import CoverPosotion from "Components/CoverPosition";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import PreviewModal from "./showPreview";
@@ -872,6 +873,9 @@ class PageTable extends Component {
                     <TabPane tab="按钮注册" key="1">
                         <Table
                             bordered
+                            locale={{
+                                emptyText: <CoverPosotion />
+                            }}
                             pagination={false}
                             rowKey="btnorder"
                             components={this.components}
@@ -890,6 +894,9 @@ class PageTable extends Component {
                     <TabPane tab="页面模板注册" key="2">
                         <Table
                             bordered
+                            locale={{
+                                emptyText: <CoverPosotion />
+                            }}
                             pagination={false}
                             rowKey="num"
                             dataSource={pageTemplets.map((item, index) => {

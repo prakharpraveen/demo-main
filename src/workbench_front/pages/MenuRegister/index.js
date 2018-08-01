@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { updateMenuItemData } from "Store/MenuRegister/action";
 import EditableCell from "Components/EditableCell";
+import CoverPosotion from "Components/CoverPosition";
 import Ajax from "Pub/js/ajax";
 import { openPage } from "Pub/js/superJump";
 import { PageLayout } from "Components/PageLayout";
@@ -513,6 +514,9 @@ class MenuRegister extends Component {
                     <div className="menugister-list-table">
                         <Table
                             bordered
+                            locale={{
+                                emptyText: <CoverPosotion />
+                            }}
                             pagination={false}
                             size="middle"
                             rowKey={"pk_menu"}
