@@ -855,31 +855,37 @@ class TemplateSetting extends Component {
                     )}
                 </PageLayoutLeft>
                 <PageLayoutRight>
-                    {def1 == 'apppage' ? (
+                {def1 == 'apppage' ? treeTemBillData.length > 0 ? (
                         <div>
                             <p className='template-title'>页面模板</p>
-                            {treeTemBillData.length > 0 &&
-                                this.treeResAndUser(
-                                    treeTemBillData,
-                                    'templateOnselect',
-                                    'hideSearch',
-                                    selectedTemKeys,
-                                    expandedTemKeys,
-                                    autoExpandTemParent
-                                )}
+                            {this.treeResAndUser(
+                                treeTemBillData,
+                                'templateOnselect',
+                                'hideSearch',
+                                selectedTemKeys,
+                                expandedTemKeys,
+                                autoExpandTemParent
+                            )}
                         </div>
-                    ) : def1 == 'menuitem' ? (
+                    ) : (
+                        <div className='noPageData'>
+                            <p className='template-title'>打印模板</p>
+                        </div>
+                    ) : def1 == 'menuitem' ? treeTemPrintData.length > 0 ? (
                         <div>
                             <p className='template-title'>打印模板</p>
-                            {treeTemPrintData.length > 0 &&
-                                this.treeResAndUser(
-                                    treeTemPrintData,
-                                    'templateOnselect',
-                                    'hideSearch',
-                                    selectedTemKeys,
-                                    expandedTemKeys,
-                                    autoExpandTemParent
-                                )}
+                            {this.treeResAndUser(
+                                treeTemPrintData,
+                                'templateOnselect',
+                                'hideSearch',
+                                selectedTemKeys,
+                                expandedTemKeys,
+                                autoExpandTemParent
+                            )}
+                        </div>
+                    ) : (
+                        <div className='noPrintData' >
+                            <p className='template-title'>打印模板</p>
                         </div>
                     ) : (
                         ''
