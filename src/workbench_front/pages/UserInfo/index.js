@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Form, Modal, Button } from "antd";
-import { PageLayout, PageLayoutHeader } from "Components/PageLayout";
+import { Form, Modal } from "antd";
+import { PageLayout } from "Components/PageLayout";
 import { withRouter } from "react-router-dom";
 import Notice from "Components/Notice";
 import Ajax from "Pub/js/ajax";
@@ -164,8 +164,9 @@ class UserInfo extends Component {
                     />
                     <Modal
                         closable={false}
+                        maskClosable={false}
                         title={this.state.modalTitle}
-                        mask={false}
+                        mask={true}
                         wrapClassName="vertical-center-modal"
                         visible={this.state.visible}
                         onOk={e => {
