@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Tree, Input } from "antd";
 import Svg from "Components/Svg";
-import SearchIcon from "Components/SearchIcon";
 import { createTree } from "Pub/js/createTree.js";
 import { setExpandedKeys, setPageActiveKey } from "Store/AppRegister/action";
 const TreeNode = Tree.TreeNode;
@@ -34,6 +33,14 @@ class SearchTree extends Component {
         this.props.setExpandedKeys(expandedKeys);
         this.setState({
             autoExpandParent: true
+        });
+    };
+    /**
+     * 查询框删除按钮
+     */
+    handleSearchDel = () => {
+        this.setState({ searchValue: "" }, () => {
+            this.props.onSearch("");
         });
     };
     /**
@@ -138,8 +145,16 @@ class SearchTree extends Component {
                 <div className="fixed-search-input">
                     <Input
                         placeholder="应用查询"
+                        value={searchValue}
                         onChange={this.onChange}
-                        suffix={<SearchIcon />}
+                        suffix={searchValue.length > 0 ? (
+                                <i
+                                    className="iconfont icon-qingkong"
+                                    onClick={this.handleSearchDel}
+                                />
+                            ) : (
+                                <i className="iconfont icon-sousuo" />
+                            )}
                     />
                 </div>
                 <Tree

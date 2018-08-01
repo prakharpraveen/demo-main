@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Tree, Input } from "antd";
 import Svg from "Components/Svg";
 import { createTree } from "Pub/js/createTree.js";
-import SearchIcon from "Components/SearchIcon";
 const TreeNode = Tree.TreeNode;
 class TreeSearch extends Component {
     constructor(props) {
@@ -44,6 +43,14 @@ class TreeSearch extends Component {
         }
         this.setState({
             autoExpandParent: true
+        });
+    };
+    /**
+     * 查询框删除按钮
+     */
+    handleSearchDel = () => {
+        this.setState({ searchValue: "" }, () => {
+            this.props.onSearch("");
         });
     };
     /**
@@ -126,9 +133,19 @@ class TreeSearch extends Component {
             <div className="menuitem-tree-search">
                 <div className="fixed-search-input">
                     <Input
+                        value={searchValue}
                         placeholder="查询应用"
                         onChange={this.onChange}
-                        suffix={<SearchIcon />}
+                        suffix={
+                            searchValue.length > 0 ? (
+                                <i
+                                    className="iconfont icon-qingkong"
+                                    onClick={this.handleSearchDel}
+                                />
+                            ) : (
+                                <i className="iconfont icon-sousuo" />
+                            )
+                        }
                     />
                 </div>
                 <Tree

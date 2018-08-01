@@ -354,9 +354,13 @@ class AppManagement extends Component {
      */
     handleTreeSearch = value => {
         let searchCallback = data => {
-            let expandedKeys = data.map(item => item.moduleid);
+            if (value.length > 0) {
+                let expandedKeys = data.map(item => item.moduleid);
+                this.props.setExpandedKeys(expandedKeys);
+            }else{
+                this.props.setExpandedKeys(['00']);
+            }
             this.props.setTreeData(data);
-            this.props.setExpandedKeys(expandedKeys);
         };
         this.reqTreeNodeData(
             { name: "应用注册", action: "应用查询" },

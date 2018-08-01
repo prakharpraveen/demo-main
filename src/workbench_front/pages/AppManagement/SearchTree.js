@@ -9,7 +9,6 @@ import {
     setSelectedKeys,
     setPageActiveKey
 } from "Store/AppManagement/action";
-import SearchIcon from "Components/SearchIcon";
 const TreeNode = Tree.TreeNode;
 class SearchTree extends Component {
     constructor(props) {
@@ -25,10 +24,21 @@ class SearchTree extends Component {
             autoExpandParent: false
         });
     };
+    /**
+     * 查询框值改变
+     */
     onChange = e => {
         const value = e.target.value;
         this.setState({ searchValue: value }, () => {
             this.props.onSearch(value);
+        });
+    };
+    /**
+     * 查询框删除按钮
+     */
+    handleSearchDel = () => {
+        this.setState({ searchValue: "" }, () => {
+            this.props.onSearch("");
         });
     };
     handleExpanded = dataList => {
@@ -45,7 +55,7 @@ class SearchTree extends Component {
      * @param {Array} selectedKey
      */
     handleSelect = (selectedKey, info) => {
-        if(selectedKey.length === 0){
+        if (selectedKey.length === 0) {
             return;
         }
         let selectedNode;
@@ -143,8 +153,18 @@ class SearchTree extends Component {
                 <div className="fixed-search-input">
                     <Input
                         placeholder="应用查询"
+                        value={searchValue}
                         onChange={this.onChange}
-                        suffix={<SearchIcon />}
+                        suffix={
+                            searchValue.length > 0 ? (
+                                <i
+                                    className="iconfont icon-qingkong"
+                                    onClick={this.handleSearchDel}
+                                />
+                            ) : (
+                                <i className="iconfont icon-sousuo" />
+                            )
+                        }
                     />
                 </div>
                 <Tree
