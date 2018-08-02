@@ -8,59 +8,54 @@ const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const BaseData = require("./base");
 let { configInfo, pubPath } = BaseData;
 module.exports = {
-  ...configInfo,
-  /**
-   * mode
-   *
-   * production 生产模式
-   * development 开发模式
-   */
-  mode: "production",
-  output: {
-    path: path.join(pubPath, "dist/workbench"),
-    filename: "[name].[chunkhash:8].js", // 生产环境可以使用 chunkhash 文件内容 hash 校验
-    libraryTarget: "umd"
-  },
-  // 不要遵循/打包这些模块，而是在运行时从环境中请求他们
-  externals: {
-    react: "React",
-    "react-dom": "ReactDOM"
-  },
-  // 优化
-  optimization: {
-    splitChunks: {
-      // include all types of chunks
-      chunks: "all"
+    ...configInfo,
+    /**
+     * mode
+     *
+     * production 生产模式
+     * development 开发模式
+     */
+    mode: "production",
+    output: {
+        path: path.join(pubPath, "dist/workbench"),
+        filename: "[name].[chunkhash:8].js", // 生产环境可以使用 chunkhash 文件内容 hash 校验
+        libraryTarget: "umd"
     },
-    runtimeChunk: {
-      name: "workbench~main"
-    }
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: "./index.html",
-      inject: "body",
-      favicon: "assets/images/favicon.png",
-      cache: true,
-      showErrors: true
-    }),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].[chunkhash:8].css",
-      chunkFilename: "[id].[chunkhash:8].css"
-    }),
-    new LodashModuleReplacementPlugin({
-      collections: true,
-      paths: true
-    }),
-    new CleanWebpackPlugin(
-      ["../dist"],
-      { allowExternal: true } //匹配删除的文件
-    ),
-    new CopyWebpackPlugin([
-      { from: pubPath + "/src/workbench_front/assets", to: "./assets" }
-    ])
-  ]
+    // 优化
+    optimization: {
+        splitChunks: {
+            // include all types of chunks
+            chunks: "all"
+        },
+        runtimeChunk: {
+            name: "workbench~main"
+        }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: "index.html",
+            template: "./index.html",
+            inject: "body",
+            favicon: "assets/images/favicon.png",
+            cache: true,
+            showErrors: true
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].[chunkhash:8].css",
+            chunkFilename: "[id].[chunkhash:8].css"
+        }),
+        new LodashModuleReplacementPlugin({
+            collections: true,
+            paths: true
+        }),
+        new CleanWebpackPlugin(
+            ["../dist"],
+            { allowExternal: true } //匹配删除的文件
+        ),
+        new CopyWebpackPlugin([
+            { from: pubPath + "/src/workbench_front/assets", to: "./assets" }
+        ])
+    ]
 };
