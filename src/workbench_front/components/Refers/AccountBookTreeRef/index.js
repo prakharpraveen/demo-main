@@ -354,7 +354,7 @@ export default function(props = {}) {
                 TreeRefActionExt:
                     "nccloud.web.platform.workbench.ref.filter.AccountBookRefPermissionFilter"
             };
-          }
+        },
         treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] }
     };
     conf.rootNode = { ...conf.rootNode, treeid: "root" };
