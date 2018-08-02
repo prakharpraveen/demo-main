@@ -15,6 +15,12 @@ export default function(props = {}) {
         queryTreeUrl: "/nccloud/uapbd/ref/businessunit.do",
         treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] },
         isMultiSelectedEnabled: false,
+        queryCondition: () => {
+            return {
+                TreeRefAction:
+                    "nccloud.web.platform.workbench.ref.filter.OrgRefPermissionFilter"
+            };
+        },
         unitProps: {
             queryTreeUrl: "/nccloud/riart/ref/groupRefTreeAction.do",
             refType: "tree",
