@@ -1,3 +1,4 @@
+import React from "react";
 import { notification } from "antd";
 import Svg from "Components/Svg";
 import "./index.less";
@@ -18,7 +19,7 @@ const Notice = ({ status, msg = "操作成功", duration = 4.5 }) => {
                 description: msg,
                 duration: duration,
                 style: {
-                    color: "#67C23A",
+                    color: "#67C23A"
                 }
             };
             break;
@@ -30,7 +31,7 @@ const Notice = ({ status, msg = "操作成功", duration = 4.5 }) => {
                 description: msg,
                 duration: duration,
                 style: {
-                    color: "#FF8B00",
+                    color: "#FF8B00"
                 }
             };
             break;
@@ -42,7 +43,7 @@ const Notice = ({ status, msg = "操作成功", duration = 4.5 }) => {
                 description: msg,
                 duration: duration,
                 style: {
-                    color: "#F56C6C",
+                    color: "#F56C6C"
                 }
             };
             break;
