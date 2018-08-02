@@ -13,7 +13,7 @@ import Breadcrumb from "Components/Breadcrumb";
 import TabsLink from "Components/TabsLink";
 import { Forewarning } from "Components/Forewarning";
 import BusinessDate from "./BusinessDate";
-import MTZBDate from "./MTZBDate";
+// import MTZBDate from "./MTZBDate";
 import { sprLog } from "./spr";
 import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
@@ -81,7 +81,10 @@ class Layout extends Component {
                 if (data) {
                     newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss");
                     this.setState({ newDate }, () => {
-                        window.businessInfo.businessDate = newDate;
+                        this.businessInfoSetting({
+                            ...window.businessInfo,
+                            businessDate: newDate
+                        });
                     });
                 }
             }
@@ -292,15 +295,16 @@ class Layout extends Component {
                             selectedKey
                         },
                         () => {
-                            this.businessInfoSetting(
-                                bizDateTime,
-                                userId,
-                                userName,
-                                selectedKey,
-                                group_name,
-                                userCode,
-                                projectCode
-                            );
+                            let busubessInfo = {
+                                businessDate: bizDateTime,
+                                userId: userId,
+                                userName: userName,
+                                groupId: selectedKey,
+                                groupName: group_name,
+                                userCode: userCode,
+                                projectCode: projectCode
+                            };
+                            this.businessInfoSetting(busubessInfo);
                         }
                     );
                 }
@@ -317,7 +321,7 @@ class Layout extends Component {
      * @param {String} groupName 集团名称
      * @param {String} userCode 用户编码
      */
-    businessInfoSetting = (
+    businessInfoSetting = ({
         businessDate,
         userId,
         userName,
@@ -325,7 +329,10 @@ class Layout extends Component {
         groupName,
         userCode,
         projectCode
-    ) => {
+    }) => {
+        if (window.businessInfo && window.businessInfo.groupId !== groupId) {
+            this.refreshIframe();
+        }
         window.businessInfo = {
             businessDate,
             userId,
@@ -348,6 +355,18 @@ class Layout extends Component {
                 action: "session激活"
             }
         });
+    };
+    /**
+     * 刷新 iframe
+     */
+    refreshIframe = () => {
+        let ifr = document.getElementById("mainiframe");
+        if (ifr) {
+            
+            let ifrSrc = ifr.src;
+            console.log(ifrSrc);
+            document.getElementById("mainiframe").src = ifrSrc;
+        }
     };
     /**
      * 页签激活重新查询用户信息
@@ -537,7 +556,7 @@ class Layout extends Component {
                             onOk={this.handleDateChange}
                             date={newDate}
                         />
-                        <MTZBDate />
+                        {/* <MTZBDate /> */}
                     </div>
                 </div>
                 <div className="nc-workbench-container">
