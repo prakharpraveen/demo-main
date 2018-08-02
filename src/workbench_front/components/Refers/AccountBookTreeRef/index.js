@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import { base, high } from "nc-lightapp-front";
+import { base, high, ajax, toast } from "nc-lightapp-front";
 
 const { PopRefer } = high.Refer, // 引入PopRefer类
-    { NCRadio: Radio, NCTree } = base,
+    {
+        NCRadio: Radio,
+        NCTree,
+        NCMenu,
+        NCDropdown,
+        NCButton,
+        NCFormControl
+    } = base,
     { NCRadioGroup: RadioGroup } = Radio;
 const TreeNode = NCTree.NCTreeNode;
 
@@ -14,66 +21,42 @@ class ReferTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            group: {}
+            datas: []
         };
     }
-
     componentWillMount() {
-        this.group(this.props.data);
+        this.state.datas = this.props.data;
+        this.setState(this.state);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.group(nextProps.data);
+        this.state.datas = nextProps.data;
+        this.setState(this.state);
     }
-
-    group = data => {
-        let group = {};
-        const { root } = this.props;
-        data.forEach(e => {
-            group[e.pid] ? group[e.pid].push(e) : (group[e.pid] = [e]);
-        });
-        this.setState({
-            group
-        });
-    };
-
-    makeDOM = data => {
-        if (data === undefined) return;
-        if (typeof data === "boolean") {
-            return data ? "" : [];
-        }
-        let { group } = this.state;
-        const { onlyLeafCanSelect } = this.props;
-        return data.map((e, i) => {
-            let { refpk, _display, ...otherProps } = e;
-            return (
-                <TreeNode
-                    key={refpk}
-                    title={_display || e.refname}
-                    treeNodeData={e}
-                    disableCheckbox={
-                        onlyLeafCanSelect === true && e.isleaf === false
-                    }
-                >
-                    {this.makeDOM(group[e.treeid] || e.isleaf)}
-                </TreeNode>
-            );
-        });
-    };
-
     render() {
-        const { data, isTreelazyLoad, root, ...otherProps } = this.props;
-        let { group } = this.state;
-        return (
-            <NCTree
-                {...otherProps}
-                // filterTreeNode={(node) => {
-                // 	return node.props.treeNodeData.refname.includes('宣传品');
-                // }}
-            >
-                {this.makeDOM(group["undefined"])}
-            </NCTree>
-        );
+        var renderTitle = item => {
+            return item.refpk == "root"
+                ? item.refname
+                : item.nodeData.nodecode + " " + item.nodeData.nodetitle;
+        };
+        const { data, ...otherProps } = this.props;
+        const loop = datas =>
+            datas.map(item => {
+                var children = item.children || [];
+                debugger;
+                return (
+                    <NCTree.NCTreeNode
+                        title={renderTitle(item)}
+                        key={item.refpk}
+                        isLeaf={children.length == 0}
+                        treeNodeData={item.nodeData || {}}
+                        nodeData={item.nodeData || {}}
+                    >
+                        {loop(children)}
+                    </NCTree.NCTreeNode>
+                );
+            });
+        return <NCTree {...otherProps}>{loop(this.state.datas)}</NCTree>;
     }
 }
 
@@ -83,74 +66,79 @@ class Ref extends PopRefer {
         super(props);
         this.state = {
             ...this.state, // 继承state
-            treetype: "sobtablename"
+            treetype: "type"
         };
     }
 
     onTreeTypeChange = value => {
-        this.setState(
-            {
-                treetype: value
-            },
-            () => {
-                const { queryTreeUrl, isCacheable, rootNode } = this.props;
-                let param = {
-                    ...this.getParam(),
-                    treetype: this.state.treetype,
-                    disabledDataShow: false
+        this.state.treetype = value;
+        this.setState(this.state, () => {
+            this.loadTreeData(this.getParam()).then(data => {
+                var rootTitle = value === "type" ? "账簿类型" : "主账簿";
+                var root = {
+                    refname: rootTitle,
+                    refpk: "root"
                 };
-                this.loadTreeData(param).then(data => {
-                    this.setTreeData(
-                        "treeData",
-                        {
-                            refname:
-                                value === "sobtablename"
-                                    ? "账簿类型"
-                                    : "主账簿",
-                            refpk: "root",
-                            treeid: "root"
-                        },
-                        data
-                    );
-                });
-            }
-        );
+                this.setTreeData("treeData", root, data);
+            });
+        });
     };
     getParam = (param = {}) => {
-        let { queryCondition, pageSize, refType } = this.props,
-            { keyword = "", pid = "", pageInfo = {} } = param;
-        pageInfo = {
-            pageSize: pageInfo.pageSize || pageSize,
-            pageIndex: pageInfo.pageIndex || (refType === "tree" ? -1 : 0)
-        };
-        return {
-            pid, // 对应的树节点
-            keyword,
-            disabledDataShow: false,
-            queryCondition: queryCondition
+        var { queryCondition } = this.props,
+            queryCondition = queryCondition
                 ? typeof queryCondition === "function"
                     ? queryCondition()
                     : typeof queryCondition === "object"
                         ? queryCondition
                         : {}
-                : {},
-            pageInfo
+                : {};
+        return {
+            disabledDataShow: false,
+            queryCondition: {
+                ...queryCondition,
+                treetype: this.state.treetype,
+                textValue: this.state.textValue
+            },
+            pageInfo: { pageSize: 10, pageIndex: 1 } //放置报错
         };
     };
 
-    renderPopoverLeftHeader = () => {
-        return (
-            <div>
-                <RadioGroup
-                    name="booktype"
-                    selectedValue={this.state.treetype}
-                    onChange={this.onTreeTypeChange.bind(this)}
-                >
-                    <Radio value="sobtablename">账簿类型</Radio>
-                    <Radio value="acctypetablename">主账簿</Radio>
-                </RadioGroup>
-            </div>
-        );
+    loadTreeData = async param => {
+        return await new Promise(resolve => {
+            this.setState({ loading: true }, () => {
+                let { currentLevel, referVal } = this.state;
+                let { queryTreeUrl, queryCondition, isCacheable } = this.props;
+                ajax({
+                    url: queryTreeUrl,
+                    data: param,
+                    loading: false,
+                    success: res => {
+                        this.setState({ loading: false }, () => {
+                            if (!res.success) {
+                                throw new Error(res.error.message);
+                                return;
+                            }
+                            res.data.datarows.forEach(e => {
+                                e.nodeData.refpk = e.nodeData.nodeid;
+                                e.nodeData.refname = e.nodeData.nodetitle;
+                            });
+                            var newData = {
+                                //满足平台的格式
+                                rows: res.data.datarows
+                            };
+                            resolve(newData);
+                        });
+                    },
+                    error: e => {
+                        toast({ color: "danger", content: e.message });
+                        this.setState({
+                            loading: false
+                        });
+                        throw new Error(e);
+                    }
+                });
+            });
+        });
     };
 
     onTreeNodeSelectWapper(
@@ -159,7 +147,7 @@ class Ref extends PopRefer {
         ...rest
     ) {
         if (
-            this.state.treetype == "sobtablename" &&
+            this.state.treetype == "table" &&
             node.props.treeNodeData.pid == "root"
         )
             return;
@@ -169,10 +157,11 @@ class Ref extends PopRefer {
             ...rest
         );
     }
+    z;
 
     onTreeNodeCheckWapper(checkedKeys, { checked, checkedNodes, node, event }) {
         if (
-            this.state.treetype == "sobtablename" &&
+            this.state.treetype == "table" &&
             node.props.treeNodeData.pid == "root"
         )
             return;
@@ -184,26 +173,16 @@ class Ref extends PopRefer {
         });
     }
     setTreeData = (target, parentNode, data, cb) => {
-        let { expandedKeys } = this.state,
-            { isTreelazyLoad, rootNode } = this.props;
+        let { expandedKeys } = this.state;
         data.rows.forEach(e => {
-            e._display = this.props.treeConfig.code
-                .map(item => e[item] || e.values[item].value)
-                .join(" ");
+            e._display = e.title;
             e.pid = e.pid || rootNode.refpk;
         });
-
-        let newpks = data.rows.map(e => e.refpk);
-
-        this.state[target] = this.state[target]
-            .filter(e => !newpks.includes(e.refpk))
-            .concat(data.rows);
-
-        this.state[target] = data.rows.concat(parentNode);
         this.setState(
             {
-                [target]: this.state[target],
-                expandedKeys: expandedKeys.filter(e => !newpks.includes(e))
+                //[target]: this.state[target],
+                [target]: data.rows || [],
+                expandedKeys: []
             },
             () => {
                 typeof cb === "function" && cb();
@@ -227,23 +206,135 @@ class Ref extends PopRefer {
             rootNode,
             onlyLeafCanSelect
         } = this.props;
+
+        //树表state
+        var loopNode = (nodes, handler) => {
+            nodes.forEach(node => {
+                handler && handler(node, node.children || []);
+                loopNode(node.children || [], handler);
+            });
+        };
+
+        var laybtns = [],
+            createNumberBtns = nodes => {
+                //获取树节点层级号数组
+                var maxlaynumber = 1,
+                    i,
+                    btns = [],
+                    hander = (node, children) => {
+                        var nodenumber = parseInt(
+                            node.nodeData ? node.nodeData.laynumber : 0
+                        );
+                        maxlaynumber =
+                            nodenumber <= maxlaynumber
+                                ? maxlaynumber
+                                : nodenumber;
+                    };
+                loopNode(nodes, hander);
+                for (i = 0; i <= maxlaynumber; i++) {
+                    laybtns.push(
+                        <NCMenu.Item key={i} expandLay={true}>
+                            {i}层
+                        </NCMenu.Item>
+                    );
+                }
+            };
+        createNumberBtns(treeData || []);
+
+        var onMenuSelect = (domEvent, item, key) => {
+            if (domEvent.key == "expandAll") {
+                var key = [],
+                    keyHander = (node, children) => {
+                        key.push(node.key);
+                    };
+                loopNode(treeData, keyHander);
+                this.state.expandedKeys = key;
+                this.setState(this.state);
+            }
+            if (domEvent.key == "unexpandAll") {
+                this.state.expandedKeys = [];
+                this.setState(this.state);
+            }
+            if (domEvent.item.props.expandLay) {
+                var key = [],
+                    layno = domEvent.key,
+                    keyHander = (node, children) => {
+                        var nodenumber = parseInt(
+                            node.nodeData ? node.nodeData.laynumber : 0
+                        );
+                        if (nodenumber <= layno) {
+                            key.push(node.key);
+                        }
+                    };
+                loopNode(treeData, keyHander);
+                this.state.expandedKeys = key;
+                this.setState(this.state);
+            }
+        };
+
+        var createMore = () => {
+            return (
+                <NCMenu onSelect={onMenuSelect}>
+                    <NCMenu.Item key="expandAll">展开所有</NCMenu.Item>
+                    <NCMenu.Item key="unexpandAll">闭合所有</NCMenu.Item>
+                    <NCMenu.NCSubMenu key="expandLay" title="展开层级">
+                        {laybtns}
+                    </NCMenu.NCSubMenu>
+                </NCMenu>
+            );
+        };
+
         return (
-            <ReferTree
-                checkStrictly={true}
-                checkable={refType === "tree" && isMultiSelectedEnabled}
-                data={treeData}
-                onSelect={this.onTreeNodeSelectWapper.bind(this)}
-                onExpand={this.onTreeNodeExpand}
-                onCheck={this.onTreeNodeCheckWapper.bind(this)}
-                checkedKeys={[...selectedValues.keys()]}
-                selectedKeys={selectedKeys}
-                expandedKeys={expandedKeys}
-                autoExpandParent={false}
-                isTreelazyLoad={isTreelazyLoad}
-                root={rootNode}
-                onlyLeafCanSelect={onlyLeafCanSelect}
-                onDoubleClick={() => {}}
-            />
+            <div>
+                <div>
+                    <NCFormControl
+                        type="search"
+                        value={this.state.textValue}
+                        onChange={value => {
+                            this.state.textValue = value;
+                            this.setState(this.state);
+                        }}
+                        onSearch={() => {
+                            this.onTreeTypeChange(this.state.treetype);
+                        }}
+                    />
+                    <NCDropdown
+                        trigger={["click"]}
+                        overlay={createMore()}
+                        animation="slide-up"
+                    >
+                        <NCButton colors="primary" style={{ width: 50 }}>
+                            更多
+                        </NCButton>
+                    </NCDropdown>
+                </div>
+                <div>
+                    <RadioGroup
+                        name="booktype"
+                        selectedValue={this.state.treetype}
+                        onChange={this.onTreeTypeChange.bind(this)}
+                    >
+                        <Radio value="type">账簿类型</Radio>
+                        <Radio value="main">主账簿</Radio>
+                    </RadioGroup>
+                </div>
+                <ReferTree
+                    checkStrictly={true}
+                    checkable={refType === "tree" && isMultiSelectedEnabled}
+                    data={treeData}
+                    onSelect={this.onTreeNodeSelectWapper.bind(this)}
+                    onExpand={this.onTreeNodeExpand}
+                    onCheck={this.onTreeNodeCheckWapper.bind(this)}
+                    checkedKeys={[...selectedValues.keys()]}
+                    selectedKeys={selectedKeys}
+                    expandedKeys={expandedKeys}
+                    autoExpandParent={false}
+                    isTreelazyLoad={isTreelazyLoad}
+                    root={rootNode}
+                    onlyLeafCanSelect={onlyLeafCanSelect}
+                    onDoubleClick={() => {}}
+                />
+            </div>
         );
     };
 }
@@ -258,13 +349,13 @@ export default function(props = {}) {
         isMultiSelectedEnabled: false,
         refType: "tree",
         isTreelazyLoad: false,
-        treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] },
         queryCondition: () => {
             return {
-                TreeRefAction:
+                TreeRefActionExt:
                     "nccloud.web.platform.workbench.ref.filter.AccountBookRefPermissionFilter"
             };
-        }
+          }
+        treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] }
     };
     conf.rootNode = { ...conf.rootNode, treeid: "root" };
     return <Ref {...Object.assign(conf, props)} />;

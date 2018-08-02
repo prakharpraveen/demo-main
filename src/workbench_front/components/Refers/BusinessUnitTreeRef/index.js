@@ -17,7 +17,7 @@ export default function(props = {}) {
         isMultiSelectedEnabled: false,
         queryCondition: () => {
             return {
-                TreeRefAction:
+                TreeRefActionExt:
                     "nccloud.web.platform.workbench.ref.filter.OrgRefPermissionFilter"
             };
         },
