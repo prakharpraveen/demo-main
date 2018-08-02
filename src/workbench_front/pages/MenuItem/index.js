@@ -16,7 +16,6 @@ import TreeSearch from "./TreeSearch";
 import ButtonCreate from "Components/ButtonCreate";
 import Notice from "Components/Notice";
 import "./index.less";
-Modal.mask = false;
 const confirm = Modal.confirm;
 class MenuItem extends Component {
     constructor(props) {
@@ -228,6 +227,7 @@ class MenuItem extends Component {
                             if (isNew) {
                                 treeData = _.concat(treeData, data);
                                 newFields = data;
+                                this.setSelectedKeys([newFields.menuitemcode]);
                             } else {
                                 data.map(newItem => {
                                     let dataIndex = _.findIndex(

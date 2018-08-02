@@ -37,7 +37,7 @@ class SideDrawer extends Component {
     handleExit = () => {
         this.props.changeDrawer(false);
         Modal.confirm({
-            closable:false,
+            closable: false,
             title: "注销",
             maskClosable: true,
             content: "注销当前账号？",
@@ -52,7 +52,7 @@ class SideDrawer extends Component {
                     },
                     success: () => {
                         Ajax({
-                            url:`/nccloud/platform/appregister/querypersonsettings.do`,
+                            url: `/nccloud/platform/appregister/querypersonsettings.do`
                         });
                         sessionStorage.removeItem("gzip");
                     }
@@ -136,14 +136,14 @@ class SideDrawer extends Component {
                             <div
                                 onClick={() => {
                                     this.handeleSkipPage("/ds", {
-                                        n: "个人配置"
+                                        n: "桌面设置"
                                     });
                                 }}
                                 className="setting-btn"
                             >
                                 <i className="iconfont icon-bianji" />
-                                <span field="setting" fieldname="个人配置">
-                                    个人配置
+                                <span field="setting" fieldname="桌面设置">
+                                    桌面设置
                                 </span>
                             </div>
                             <div
@@ -188,18 +188,18 @@ class SideDrawer extends Component {
                             <li>
                                 <span
                                     field="contact"
-                                    fieldname="联系用友服务人员"
+                                    fieldname="用友服务支持"
                                     onClick={this.sysinitAccessorAction}
                                 >
-                                    联系用友服务人员
+                                    用友服务支持
                                 </span>
                             </li>
                             <li>
-                                <span field="register" fieldname="云注册链接">
-                                    云注册链接
+                                <span field="register" fieldname="用友云注册">
+                                    用友云注册
                                 </span>
                             </li>
-                            <li>
+                            {/* <li>
                                 <span
                                     field="spr"
                                     fieldname="录制SPR"
@@ -207,7 +207,7 @@ class SideDrawer extends Component {
                                 >
                                     {sprType ? `开始录制SPR` : `结束录制SPR`}
                                 </span>
-                            </li>
+                            </li> */}
                             <li>
                                 <span field="log" fieldname="日志">
                                     日志

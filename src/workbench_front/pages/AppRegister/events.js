@@ -23,10 +23,11 @@ export default function(props) {
                         cur[Object.keys(cur)[0]].items.map(formItem => {
                             if (formItem.col) {
                                 console.log(formItem.col - 0);
-                                if (formItem.col === "0") {
-                                    formItem.col = "1";
+                                if(formItem.col === '3'||formItem.col === '4'||formItem.col === '6'||formItem.col === '12'){
+
+                                }else{
+                                    formItem.col = "4";
                                 }
-                                formItem.col = formItem.col * 6;
                             }
                         });
                     }
