@@ -65,6 +65,11 @@ class BusinessDate extends Component {
             isOpen: true
         });
     };
+    handleBusinessOpen = () => {
+        this.setState({
+            isOpen: true
+        });
+    };
     componentWillReceiveProps(nextProps) {
         if (nextProps.date !== this.state.date) {
             this.setState({ value: nextProps.date });
@@ -97,33 +102,37 @@ class BusinessDate extends Component {
             moment().format("YYYY-MM-DD");
         let busunessTitle = flag ? "业务日期" : "该业务日期不是今日日期!";
         return (
-            <Tooltip placement="bottom" title={busunessTitle}>
-                <div
-                    field="business-date"
-                    fieldname="业务日期"
-                    className={
-                        flag
-                            ? "nc-workbench-businessdate"
-                            : "nc-workbench-businessdate unbusinessdate"
+            <div
+                field="business-date"
+                fieldname="业务日期"
+                className={
+                    flag
+                        ? "nc-workbench-businessdate"
+                        : "nc-workbench-businessdate unbusinessdate"
+                }
+            >
+                <DatePicker
+                    dropdownClassName={
+                        "field_business-date nc-workbench-businessdate-dropdown"
                     }
-                >
-                    <DatePicker
-                        dropdownClassName={
-                            "field_business-date nc-workbench-businessdate-dropdown"
-                        }
-                        showToday={false}
-                        locale={locale}
-                        value={moment(value)}
-                        onChange={this.onChange}
-                        open={isOpen}
-                        renderExtraFooter={() => ExtraFooter}
-                        onOpenChange={this.handleOpenChange}
-                        onPanelChange={this.handlePanelChange}
-                        allowClear={false}
+                    showToday={false}
+                    locale={locale}
+                    value={moment(value)}
+                    onChange={this.onChange}
+                    open={isOpen}
+                    renderExtraFooter={() => ExtraFooter}
+                    onOpenChange={this.handleOpenChange}
+                    onPanelChange={this.handlePanelChange}
+                    allowClear={false}
+                />
+                {!flag ? <span className="business-date-flag">!</span> : ""}
+                <Tooltip placement="bottom" title={busunessTitle}>
+                    <div
+                        className="business-date-block"
+                        onClick={this.handleBusinessOpen}
                     />
-                    {!flag ? <span className="business-date-flag">!</span> : ""}
-                </div>
-            </Tooltip>
+                </Tooltip>
+            </div>
         );
     }
 }
