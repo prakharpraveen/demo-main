@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Icon } from 'antd';
 import { connect } from 'react-redux';
 import MyCard from './card';
+import { updateSelectCard } from 'Store/ZoneSetting/action';
 import BatchSettingModal from './batchSettingModal';
 import AddNotMetaDataModal from './addNotMetaDataModal';
 //区域
@@ -28,6 +29,7 @@ class AreaItem extends Component {
 		this.props.selectThisCard(cardIndex, this.props.index);
 	};
 	openBatchSetting = () => {
+		this.props.updateSelectCard({})
 		this.setModalVisibel(true);
 	};
 	setModalVisibel = (visibel) => {
@@ -94,4 +96,6 @@ class AreaItem extends Component {
 		);
 	}
 }
-export default connect((state) => ({}), {})(AreaItem);
+export default connect((state) => ({}), {
+	updateSelectCard
+})(AreaItem);

@@ -118,7 +118,7 @@ class RelateMetaModal extends Component {
 				c.myMetaPath = '';
 			}
 		});
-		this.props.setModalVisibel('relatemeta', false);
+		this.props.setModalVisibel('relateMetaModalVisibel', false);
 	};
 	onOkDialog = () => {
 		let result = '';

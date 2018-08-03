@@ -46,7 +46,7 @@ export default class MoneyModal extends Component {
         }
     }
     showModalHidden = () => {
-        this.props.setModalVisibel("money", false);
+        this.props.setModalVisibel("moneyModalVisibel", false);
     };
     onOkDialog = () => {
         let { small, big, customScale } = this.state;

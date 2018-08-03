@@ -110,23 +110,6 @@ export const colorObj = [
     { name: "兰色", value: "#6FCBFF" },
     { name: "深兰色", value: "#00A2FE" }
 ];
-export const dataTypeObj = [
-    { name: "字符", value: "1" },
-    { name: "小数", value: "2" },
-    { name: "整数", value: "4" },
-    { name: "大文本", value: "30" },
-    { name: "逻辑", value: "32" },
-    { name: "日期", value: "33" },
-    { name: "日期时间", value: "34" },
-    { name: "时间", value: "36" },
-    { name: "金额", value: "52" },
-    { name: "自定义项", value: "56" },
-    { name: "自定义档案", value: "57" },
-    { name: "多语文本", value: "58" },
-    { name: "下拉", value: "203" },
-    { name: "参照", value: "204" },
-    { name: "密码框", value: "400" }
-];
 export const defaultvarObj = [
     { name: "", value: "" },
     { name: "@SYSCORP", value: "@SYSCORP" },
@@ -155,7 +138,91 @@ export const itemtypeObj = [
     { name: "多语文本", value: "residtxt" },
     { name: "密码框", value: "password" }
 ];
+export const dataTypeObj = [
+    { name: "字符", value: "1" },
+    { name: "小数", value: "2" },
+    { name: "整数", value: "4" },
+    { name: "大文本", value: "30" },
+    { name: "逻辑", value: "32" },
+    { name: "日期", value: "33" },
+    { name: "日期时间", value: "34" },
+    { name: "时间", value: "36" },
+    { name: "开始日期", value: "37" },
+    { name: "结束日期", value: "38" },
+    { name: "日期（无时区）", value: "39" },
+    { name: "金额", value: "52" },
+    { name: "自定义项", value: "56" },
+    { name: "自定义档案", value: "57" },
+    { name: "多语文本", value: "58" },
+    { name: "下拉", value: "203" },
+    { name: "参照", value: "204" },
+    { name: "密码框", value: "400" }
+];
 export const filterItemtypeObj = [
+    {
+        datatype: "1",
+        itemtypeObj: [
+            { name: "文本输入框", value: "input" },
+            { name: "静态文本", value: "label" }
+        ]
+    },
+    { datatype: "2", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
+    { datatype: "4", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
+    { datatype: "30", itemtypeObj: [{ name: "多行文本", value: "textarea" }] },
+    {
+        datatype: "32",
+        itemtypeObj: [
+            { name: "开关型复选框", value: "checkbox_switch" },
+            { name: "开关", value: "switch" },
+            { name: "复选", value: "checkbox" },
+            { name: "停启用开关", value: "switch_browse" },
+            { name: "单选", value: "radio" }
+        ]
+    },
+    {
+        datatype: "33",
+        itemtypeObj: [
+            { name: "日期", value: "datepicker" },
+            { name: "日期时间", value: "datetimepicker" },
+            { name: "开始日期", value: "NCTZDatePickerStart" },
+            { name: "结束日期", value: "NCTZDatePickerEnd" }
+        ]
+    },
+    {
+        datatype: "34",
+        itemtypeObj: [
+            { name: "日期时间", value: "datetimepicker" }
+        ]
+    },
+    {
+        datatype: "36",
+        itemtypeObj: [
+            { name: "时间", value: "timepicker" }
+        ]
+    },
+    {
+        datatype: "37",
+        itemtypeObj: [
+            { name: "开始日期", value: "NCTZDatePickerStart" },
+        ]
+    },
+    {
+        datatype: "38",
+        itemtypeObj: [
+            { name: "结束日期", value: "NCTZDatePickerEnd" }
+        ]
+    },
+    {
+        datatype: "39",
+        itemtypeObj: [
+            { name: "日期（无时区）", value: "datePickerNoTimeZone" }
+        ]
+    },
+
+    { datatype: "52", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
+    { datatype: "56", itemtypeObj: [{ name: "文本输入框", value: "input" }] },
+    { datatype: "57", itemtypeObj: [{ name: "参照", value: "refer" }] },
+    { datatype: "58", itemtypeObj: [{ name: "多语文本", value: "residtxt" }] },
     {
         datatype: "203",
         itemtypeObj: [
@@ -171,56 +238,7 @@ export const filterItemtypeObj = [
             { name: "下拉", value: "select" }
         ]
     },
-    { datatype: "52", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
-    { datatype: "57", itemtypeObj: [{ name: "参照", value: "refer" }] },
-    { datatype: "56", itemtypeObj: [{ name: "文本输入框", value: "input" }] },
-    { datatype: "4", itemtypeObj: itemtypeObj },
-    {
-        datatype: "1",
-        itemtypeObj: [
-            { name: "文本输入框", value: "input" },
-            { name: "静态文本", value: "label" }
-        ]
-    },
-    {
-        datatype: "32",
-        itemtypeObj: [
-            { name: "开关", value: "switch" },
-            { name: "复选", value: "checkbox" },
-            { name: "开关型复选框", value: "checkbox_switch" },
-            { name: "停启用开关", value: "switch_browse" },
-            { name: "单选", value: "radio" }
-        ]
-    },
-    { datatype: "2", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
-    { datatype: "58", itemtypeObj: [{ name: "多语文本", value: "residtxt" }] },
-    { datatype: "30", itemtypeObj: [{ name: "多行文本", value: "textarea" }] },
     { datatype: "400", itemtypeObj: [{ name: "密码框", value: "password" }] },
-    {
-        datatype: "34",
-        itemtypeObj: [
-            { name: "日期时间", value: "datetimepicker" },
-            { name: "单选日期", value: "datepicker" },
-            { name: "时间", value: "timepicker" }
-        ]
-    },
-    {
-        datatype: "33",
-        itemtypeObj: [
-            { name: "单选日期", value: "datepicker" },
-            { name: "日期时间", value: "datetimepicker" },
-            { name: "日期范围", value: "rangepicker" },
-            { name: "开始日期时间", value: "NCTZDatePickerStart" },
-            { name: "结束日期时间", value: "NCTZDatePickerEnd" }
-        ]
-    },
-    {
-        datatype: "36",
-        itemtypeObj: [
-            { name: "时间", value: "timepicker" },
-            { name: "日期时间", value: "datetimepicker" },
-        ]
-    }
 ];
 //应该设默认值为false的组件类型
 export const shouldSetDefaultValueList = [
@@ -233,8 +251,8 @@ export const shouldSetDefaultValueList = [
 export function handleLoad(refcode) {
     try {
         let Item = window[refcode].default;
-        const myRefDom = typeof Item === "function" ? Item() : <Item />;
-        this.setState({ myRefDom: myRefDom });
+        // const myRefDom = typeof Item === "function" ? Item() : <Item />;
+        this.setState({ [`myRefDom${refcode}`]: Item });
     } catch (e) {
         console.error(e.message);
         console.error(
@@ -245,7 +263,7 @@ export function handleLoad(refcode) {
 
 /* refcode */
 export function createScript(src) {
-    var that = this,
+    let that = this,
         scripts = Array.from(document.getElementsByTagName("script")),
         s = src.split("/"),
         flag,

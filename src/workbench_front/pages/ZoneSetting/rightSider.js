@@ -9,6 +9,7 @@ import MoneyModal from './moneyModal';
 import ReferModal from './referModal';
 import CustomModal from './customModal';
 import RelateMetaModal from './relateMetaModal';
+import DefaultValueModal from './defaultValueModal';
 import { high } from 'nc-lightapp-front';
 import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 const { Refer, FormulaEditor } = high;
@@ -48,8 +49,14 @@ class MyRightSider extends Component {
 		super(props);
 		this.state = {
 			moneyModalVisibel: false,
-			ReferModalVisibel: false,
-			relateMetaModalVisibel: false
+			referModalVisibel: false,
+			relateMetaModalVisibel: false,
+			customModalVisibel:false,
+			defaultValueModalVisibel:false,
+			showformula:false,
+			editformula:false,
+			validateformula:false,
+
 		};
 	}
 
@@ -86,7 +93,6 @@ class MyRightSider extends Component {
 		areaList[targetAreaIndex].queryPropertyList[targetCardIndex] = selectCard;
 		this.props.updateAreaList(areaList);
 	};
-
 	getCardListInAreaBySelectCard = () => {
 		let { areaList, selectCard } = this.props;
 		let targetAreaIndex = 0;
@@ -257,6 +263,41 @@ class MyRightSider extends Component {
 		});
 		return result;
 	};
+	// 设置不同弹框的显示和隐藏
+	setModalVisibel = (whichModalVisibel, val) => {
+		this.setState({ [whichModalVisibel]: val });
+	};
+	getMySearch = (key, whichModalVisibel) => {
+		const { selectCard } = this.props;
+		return (
+			<Search
+				size='small'
+				style={{ width: 176 }}
+				value={selectCard[key]}
+				onChange={() => {}}
+				onSearch={() => {
+					this.setState({ [whichModalVisibel]: true });
+				}}
+			/>
+		);
+	};
+	getMyFormulaSearch = (key) => {
+		const { selectCard } = this.props;
+		return (
+			<Search
+				size='small'
+				style={{ width: 176 }}
+				value={selectCard[key]}
+				onChange={() => {}}
+				onSearch={() => {
+					//this.refs[key].setShow(true);
+					this.handleFormula();
+					this.setState({ [key]: true });
+					//	this.refs[key].handleTextAreaChange(selectCard[key]);
+				}}
+			/>
+		);
+	};
 	//查询区，元数据属性
 	getDom1 = () => {
 		const { selectCard } = this.props;
@@ -290,7 +331,27 @@ class MyRightSider extends Component {
 						<li>操作符名称</li>
 						<li>{this.getMyInput('操作符名称', 'opersignname')}</li>
 						<li>默认取值</li>
-						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
+						{
+							(()=>{
+								if(selectCard.datatype === '204' && selectCard.refname !== '-99'){
+									return(<li>
+										{this.getMySearch('defaultvalue', 'defaultValueModalVisibel')}
+										<DefaultValueModal
+											areatype="0"
+											refcode = {selectCard.refcode}
+											refname = {selectCard.refname}
+											isMultiSelectedEnabled= {Boolean(selectCard.ismultiselectedenabled)}
+											handleSelectChange={this.handleSelectChange}
+											defaultvalue={selectCard.defaultvalue}
+											modalVisibel={this.state.defaultValueModalVisibel}
+											setModalVisibel={this.setModalVisibel}
+										/>
+									</li>) 
+								}else{
+									return (<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>)
+								}
+							})()
+						}
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>默认显示</li>
@@ -368,7 +429,27 @@ class MyRightSider extends Component {
 						<li>操作符名称</li>
 						<li>{this.getMyInput('操作符名称', 'opersignname')}</li>
 						<li>默认取值</li>
-						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
+						{
+							(()=>{
+								if(selectCard.datatype === '204' && selectCard.refname !== '-99'){
+									return(<li>
+										{this.getMySearch('defaultvalue', 'defaultValueModalVisibel')}
+										<DefaultValueModal
+											areatype="0"
+											refcode = {selectCard.refcode}
+											refname = {selectCard.refname}
+											isMultiSelectedEnabled= {Boolean(selectCard.ismultiselectedenabled)}
+											handleSelectChange={this.handleSelectChange}
+											defaultvalue={selectCard.defaultvalue}
+											modalVisibel={this.state.defaultValueModalVisibel}
+											setModalVisibel={this.setModalVisibel}
+										/>
+									</li>) 
+								}else{
+									return (<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>)
+								}
+							})()
+						}
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>默认显示</li>
@@ -432,56 +513,6 @@ class MyRightSider extends Component {
 			</Tabs>
 		);
 	};
-	// 设置不同弹框的显示和隐藏
-	setModalVisibel = (type, val) => {
-		switch (type) {
-			case 'money':
-				this.setState({ moneyModalVisibel: val });
-				break;
-			case 'refer':
-				this.setState({ ReferModalVisibel: val });
-				break;
-			case 'custom':
-				this.setState({ CustomModalVisibel: val });
-				break;
-			case 'relatemeta':
-				this.setState({ relateMetaModalVisibel: val });
-				break;
-			default:
-				break;
-		}
-	};
-	getMySearch = (key, whichModalVisibel) => {
-		const { selectCard } = this.props;
-		return (
-			<Search
-				size='small'
-				style={{ width: 176 }}
-				value={selectCard[key]}
-				onChange={() => {}}
-				onSearch={() => {
-					this.setState({ [whichModalVisibel]: true });
-				}}
-			/>
-		);
-	};
-	getMyFormulaSearch = (key) => {
-		const { selectCard } = this.props;
-		return (
-			<Search
-				size='small'
-				style={{ width: 176 }}
-				value={selectCard[key]}
-				onChange={() => {}}
-				onSearch={() => {
-					//this.refs[key].setShow(true);
-					this.handleFormula();
-					this.setState({ [key]: true });
-					//	this.refs[key].handleTextAreaChange(selectCard[key]);
-				}}
-			/>
-		);
-	};
 	//非查询区，元数据属性||非元数据
 	getDom3 = (areaType, isMetaData) => {
 		const { selectCard } = this.props;
@@ -525,7 +556,23 @@ class MyRightSider extends Component {
 						<li>不可修改</li>
 						<li>{this.getMyCheckbox('disabled')}</li>
 						<li>默认取值</li>
-						<li>{this.getMyInput('默认取值', 'defaultvalue')}</li>
+						{(() => {
+								if(selectCard.datatype === '204'&& !_.isUndefined(selectCard.refcode) && selectCard.refcode!=='' && selectCard.refcode!==null){//参照
+									return(<li>
+										{this.getMySearch('defaultvalue', 'defaultValueModalVisibel')}
+										<DefaultValueModal
+											refcode = {selectCard.refcode}
+											isMultiSelectedEnabled= {Boolean(selectCard.ismultiselectedenabled)}
+											handleSelectChange={this.handleSelectChange}
+											defaultvalue={selectCard.defaultvalue}
+											modalVisibel={this.state.defaultValueModalVisibel}
+											setModalVisibel={this.setModalVisibel}
+										/>
+									</li>) 
+								}else{
+									return <li>{this.getMyInput('默认取值', 'defaultvalue')}</li>;
+								}
+						})()}
 						<li>默认系统变量</li>
 						<li>{this.getMySelect(utilService.defaultvarObj, 'defaultvar')}</li>
 						<li>显示颜色</li>
@@ -555,13 +602,13 @@ class MyRightSider extends Component {
 								case selectCard.datatype==='204'://参照
 									return (
 										<li>
-											{this.getMySearch('refname', 'ReferModalVisibel')}
+											{this.getMySearch('refname', 'referModalVisibel')}
 											<ReferModal
 												handleSelectChange={this.handleSelectChange}
 												dataval={selectCard.dataval}
 												refname={selectCard.refname}
 												iscode={selectCard.iscode}
-												modalVisibel={this.state.ReferModalVisibel}
+												modalVisibel={this.state.referModalVisibel}
 												setModalVisibel={this.setModalVisibel}
 											/>
 										</li>
@@ -582,11 +629,11 @@ class MyRightSider extends Component {
 								case selectCard.datatype === '57'://自定义档案
 									return (
 										<li>
-											{this.getMySearch('dataval', 'CustomModalVisibel')}
+											{this.getMySearch('dataval', 'customModalVisibel')}
 											<CustomModal
 												handleSelectChange={this.handleSelectChange}
 												initVal={selectCard.dataval}
-												modalVisibel={this.state.CustomModalVisibel}
+												modalVisibel={this.state.customModalVisibel}
 												setModalVisibel={this.setModalVisibel}
 											/>
 										</li>
@@ -625,35 +672,42 @@ class MyRightSider extends Component {
 						<li>显示公式</li>
 						<li>
 							{this.getMyFormulaSearch('showformula')}
-							<FormulaEditor
-								value={selectCard['showformula']}
-								isValidateOnOK={true}
-								validateUrl={'/nccloud/platform/formula/check.do'}
-								formulaUrl={`/nccloud/platform/formula/control.do`}
-								treeParam={{
-									pk_billtype: 'CM02',
-									bizmodelStyle: 'fip',
-									classid: ''
-								}}
-								noShowAttr={[ '元数据属性' ]}
-								show={this.state.showformula}
-								onHide={() => {
-									this.setState({ showformula: false });
-								}}
-								attrConfig={this.state.tab}
-								onOk={(val) => {
-									this.handleSelectChange(val, 'showformula');
-									this.setState({ showformula: false });
-								}}
-								onCancel={() => {
-									this.setState({ showformula: false });
-								}}
-							/>
+							{(()=>{
+								if(this.state.showformula){
+									return(<FormulaEditor
+									value={selectCard['showformula']}
+									isValidateOnOK={true}
+									validateUrl={'/nccloud/platform/formula/check.do'}
+									formulaUrl={`/nccloud/platform/formula/control.do`}
+									treeParam={{
+										pk_billtype: 'CM02',
+										bizmodelStyle: 'fip',
+										classid: ''
+									}}
+									noShowAttr={[ '元数据属性' ]}
+									show={this.state.showformula}
+									onHide={() => {
+										this.setState({ showformula: false });
+									}}
+									attrConfig={this.state.tab}
+									onOk={(val) => {
+										this.handleSelectChange(val, 'showformula');
+										this.setState({ showformula: false });
+									}}
+									onCancel={() => {
+										this.setState({ showformula: false });
+									}}
+								/>)
+								}
+							})()}
 						</li>
 						<li>编辑公式</li>
 						<li>
 							{this.getMyFormulaSearch('editformula')}
-							<FormulaEditor
+							{(()=>{
+								if(this.state.editformula){
+									return(
+										<FormulaEditor
 								value={selectCard['editformula']}
 								isValidateOnOK={true}
 								validateUrl={'/nccloud/platform/formula/check.do'}
@@ -672,35 +726,40 @@ class MyRightSider extends Component {
 									this.setState({ editformula: false });
 								}}
 							/>
+									)
+								}
+							})()}
+							
 						</li>
 
 						<li>验证公式</li>
 						<li>
 							{this.getMyFormulaSearch('validateformula')}
-							<FormulaEditor
-								value={selectCard['validateformula']}
-								isValidateOnOK={true}
-								validateUrl={'/nccloud/platform/formula/check.do'}
-								formulaUrl={`/nccloud/platform/formula/control.do`}
-								/* treeParam={{
-									pk_billtype: 'CM02',
-									bizmodelStyle: 'fip',
-									classid: ''
-								}} */
-								noShowAttr={[ '元数据属性' ]}
-								show={this.state.validateformula}
-								onHide={() => {
-									this.setState({ validateformula: false });
-								}}
-								attrConfig={this.state.tab}
-								onOk={(val) => {
-									this.handleSelectChange(val, 'validateformula');
-									this.setState({ validateformula: false });
-								}}
-								onCancel={() => {
-									this.setState({ validateformula: false });
-								}}
-							/>
+							{(()=>{
+								if(this.state.validateformula){
+									return (<FormulaEditor
+										value={selectCard['validateformula']}
+										isValidateOnOK={true}
+										validateUrl={'/nccloud/platform/formula/check.do'}
+										formulaUrl={`/nccloud/platform/formula/control.do`}
+										noShowAttr={[ '元数据属性' ]}
+										show={this.state.validateformula}
+										onHide={() => {
+											this.setState({ validateformula: false });
+										}}
+										attrConfig={this.state.tab}
+										onOk={(val) => {
+											this.handleSelectChange(val, 'validateformula');
+											this.setState({ validateformula: false });
+										}}
+										onCancel={() => {
+											this.setState({ validateformula: false });
+										}}
+									/>)
+							
+								}
+							})()}
+							
 						</li>
 						<li>元数据访问路径</li>
 						<li title={selectCard.metapath} className='metapath'>{selectCard.metapath}</li>

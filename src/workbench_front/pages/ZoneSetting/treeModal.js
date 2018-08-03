@@ -225,6 +225,7 @@ class TreeModal extends Component {
                                                 d.pk_refinfo
                                             },code=N`;
                                             c.refname = d.name;
+                                            c.refcode = d.refpath;
                                         }
                                     });
                                 });

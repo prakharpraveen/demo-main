@@ -14,7 +14,7 @@ class CustomModal extends Component {
         this.setState({ initVal: nextProps.initVal });
     }
     showModalHidden = () => {
-        this.props.setModalVisibel("custom", false);
+        this.props.setModalVisibel("customModalVisibel", false);
     };
     onOkDialog = () => {
         let { initVal } = this.state;

@@ -53,13 +53,18 @@ class ReferModal extends Component {
         }
     }
 
-    showModalHidden = () => {
-        this.props.setModalVisibel("refer", false);
-    };
-    async onOkDialog() {
-        let { refname, iscode, pk_refinfo } = this.state;
-        const mycode = iscode ? "Y" : "N";
-
+	showModalHidden = () => {
+		this.props.setModalVisibel('referModalVisibel', false);
+	};
+	async  onOkDialog(){
+		let { refname, iscode, pk_refinfo,option } = this.state;
+		const mycode = iscode ? 'Y' : 'N';
+		const filterOption = _.filter(option,(o)=>{
+			return o.pk_refinfo === pk_refinfo
+		})
+		if(filterOption){
+			await this.props.handleSelectChange(filterOption[0].refpath, "refcode");
+		}
         //设置参照refname
         await this.props.handleSelectChange(refname, "refname");
         // 设置参照名称
@@ -142,6 +147,7 @@ class ReferModal extends Component {
                                     }
                                     value={pk_refinfo}
                                     onChange={(value, optionObj) => {
+										console.log(value,optionObj)
                                         this.handleSelectChange(
                                             value,
                                             optionObj.props.children
