@@ -41,7 +41,7 @@ class SideDrawer extends Component {
             title: "注销",
             maskClosable: true,
             content: "注销当前账号？",
-            okText: "确认",
+            okText: "确定",
             cancelText: "取消",
             onOk: () => {
                 Ajax({

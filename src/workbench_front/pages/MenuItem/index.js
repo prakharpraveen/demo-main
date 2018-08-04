@@ -278,7 +278,7 @@ class MenuItem extends Component {
             closable: false,
             title: "是否要删除?",
             content: "",
-            okText: "确认",
+            okText: "确定",
             okType: "danger",
             cancelText: "取消",
             mask: false,
