@@ -437,7 +437,7 @@ class Layout extends Component {
                         }
                     }}
                     ref="ncWorkbenchTopContainer"
-                    style={{ zIndex: "1" }}
+                    style={{ zIndex: "100" }}
                 >
                     <nav
                         field="top-area"

@@ -15,6 +15,7 @@ class TreeSearch extends Component {
      * 树节点展开事件
      */
     onExpand = expandedKeys => {
+        expandedKeys = expandedKeys.concat(["00"]);
         this.props.setExpandedKeys(expandedKeys);
         this.setState({
             autoExpandParent: false

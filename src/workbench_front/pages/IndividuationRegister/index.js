@@ -36,6 +36,10 @@ class IndividuationRegister extends Component {
         };
         this.historyData;
     }
+    /**
+     * 个性化注册所有按钮点击事件
+     * @param {String} key 按钮code
+     */
     handleBtnClick = key => {
         switch (key) {
             case "add":
@@ -80,12 +84,15 @@ class IndividuationRegister extends Component {
                 break;
         }
     };
+    /**
+     * 删除事件
+     */
     del = () => {
         confirm({
             closable: false,
             title: "是否要删除?",
             content: "",
-            okText: "确认",
+            okText: "确定",
             okType: "danger",
             cancelText: "取消",
             mask: false,
@@ -127,6 +134,9 @@ class IndividuationRegister extends Component {
             }
         });
     };
+    /**
+     * 保存事件
+     */
     save = () => {
         this.props.form.validateFields(errors => {
             if (!errors) {
@@ -163,15 +173,20 @@ class IndividuationRegister extends Component {
                                 );
                                 treeData[dataIndex] = newFields;
                             }
-                            this.setState({
-                                isNew: false,
-                                isedit: false,
-                                selectedKeys: [fields.code],
-                                parentKey: fields.code,
-                                treeData,
-                                fields: newFields,
-                                formData: { ...newFieldsData }
-                            });
+                            this.setState(
+                                {
+                                    isNew: false,
+                                    isedit: false,
+                                    selectedKeys: [fields.code],
+                                    parentKey: fields.code,
+                                    treeData,
+                                    fields: newFields,
+                                    formData: { ...newFieldsData }
+                                },
+                                () => {
+                                    this.handleSelect(newFields.code);
+                                }
+                            );
                             Notice({
                                 status: "success",
                                 msg: data.true ? data.true : "保存成功！"
@@ -182,6 +197,10 @@ class IndividuationRegister extends Component {
             }
         });
     };
+    /**
+     * 树节点选中事件
+     * @param {String} selectedKey
+     */
     handleSelect = selectedKey => {
         let { treeData, selectedKeys } = this.state;
         if (selectedKey === "00" || selectedKey === undefined) {
@@ -237,7 +256,6 @@ class IndividuationRegister extends Component {
             }
         });
     }
-
     render() {
         let {
             treeData,

@@ -174,7 +174,7 @@ class UserInfo extends Component {
                             this.handleOk(this.state.infoType);
                         }}
                         onCancel={this.handleCancel}
-                        okText={"确认"}
+                        okText={"确定"}
                         cancelText={"取消"}
                     >
                         <div className="userinfo-modal-content">

@@ -59,6 +59,17 @@ class SelectShow extends Component {
     }
 }
 /**
+ * 复选框显示
+ */
+class CheckboxShow extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return <div>{this.props.value ? "是" : "否"}</div>;
+    }
+}
+/**
  * 表单创建组件
  * formData - 表单数据描述
  * {
@@ -212,11 +223,21 @@ export class FormContent extends Component {
                 );
             case "checkbox":
                 return (
-                    <FormItem className="form-item margin-bottom-8">
+                    <FormItem
+                        colon={!isedit}
+                        label={label}
+                        className="form-item margin-bottom-8"
+                    >
                         {getFieldDecorator(code, {
                             initialValue: initialValue,
                             valuePropName: "checked"
-                        })(<Checkbox disabled={!isedit}>{label}</Checkbox>)}
+                        })(
+                            isedit ? (
+                                <Checkbox disabled={!isedit} />
+                            ) : (
+                                <CheckboxShow />
+                            )
+                        )}
                     </FormItem>
                 );
             case "chooseImage":

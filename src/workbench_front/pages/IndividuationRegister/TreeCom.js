@@ -14,6 +14,7 @@ class TreeCom extends Component {
     }
     onExpand = expandedKeys => {
         expandedKeys.push("00");
+        expandedKeys = Array.from(new Set(expandedKeys));
         this.setState({
             expandedKeys,
             autoExpandParent: false
@@ -26,10 +27,11 @@ class TreeCom extends Component {
         });
     };
     handleExpanded = dataList => {
-        const expandedKeys = dataList.map((item, index) => {
+        let expandedKeys = dataList.map((item, index) => {
             return item.code;
         });
         expandedKeys.push("00");
+        expandedKeys = Array.from(new Set(expandedKeys));
         this.setState({
             expandedKeys,
             autoExpandParent: true
