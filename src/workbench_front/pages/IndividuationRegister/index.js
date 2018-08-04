@@ -163,15 +163,20 @@ class IndividuationRegister extends Component {
                                 );
                                 treeData[dataIndex] = newFields;
                             }
-                            this.setState({
-                                isNew: false,
-                                isedit: false,
-                                selectedKeys: [fields.code],
-                                parentKey: fields.code,
-                                treeData,
-                                fields: newFields,
-                                formData: { ...newFieldsData }
-                            });
+                            this.setState(
+                                {
+                                    isNew: false,
+                                    isedit: false,
+                                    selectedKeys: [fields.code],
+                                    parentKey: fields.code,
+                                    treeData,
+                                    fields: newFields,
+                                    formData: { ...newFieldsData }
+                                },
+                                () => {
+                                    this.handleSelect(newFields.code);
+                                }
+                            );
                             Notice({
                                 status: "success",
                                 msg: data.true ? data.true : "保存成功！"
