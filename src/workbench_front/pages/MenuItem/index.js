@@ -227,7 +227,6 @@ class MenuItem extends Component {
                             if (isNew) {
                                 treeData = _.concat(treeData, data);
                                 newFields = data;
-                                this.setSelectedKeys([newFields.menuitemcode]);
                             } else {
                                 data.map(newItem => {
                                     let dataIndex = _.findIndex(
@@ -243,12 +242,24 @@ class MenuItem extends Component {
                                         item.pk_menuitem === resData.pk_menuitem
                                 );
                             }
-                            this.setState({
-                                isedit: false,
-                                isNew: false,
-                                treeData,
-                                fields: newFields
-                            });
+                            this.setState(
+                                {
+                                    isedit: false,
+                                    isNew: false,
+                                    treeData,
+                                    fields: newFields
+                                },
+                                () => {
+                                    this.setSelectedKeys([
+                                        newFields.menuitemcode
+                                    ]);
+                                    if (newFields.parentcode) {
+                                        this.setExpandedKeys([
+                                            newFields.parentcode
+                                        ]);
+                                    }
+                                }
+                            );
                             Notice({
                                 status: "success",
                                 msg: data.msg
@@ -349,7 +360,9 @@ class MenuItem extends Component {
      * @param {Array} expandedKeys 展开的树节点数组
      */
     setExpandedKeys = expandedKeys => {
-        expandedKeys = expandedKeys.concat(["00"]);
+        if (expandedKeys.length === 1) {
+            expandedKeys = expandedKeys.concat(this.state.expandedKeys);
+        }
         expandedKeys = Array.from(new Set(expandedKeys));
         this.setState({
             expandedKeys
