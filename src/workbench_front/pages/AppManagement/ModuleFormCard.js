@@ -138,7 +138,7 @@ class ModuleFromCard extends Component {
                 lg: 8
             },
             {
-                label: "是否支持开关帐设置",
+                label: "支持开关帐设置",
                 type: "checkbox",
                 code: "supportcloseaccbook",
                 isRequired: false,
@@ -147,7 +147,7 @@ class ModuleFromCard extends Component {
                 lg: 8
             },
             {
-                label: "是否发送会计平台",
+                label: "发送会计平台",
                 type: "checkbox",
                 code: "isaccount",
                 isRequired: false,
