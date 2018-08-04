@@ -111,6 +111,7 @@ class MyCard extends Component {
 			areaid,
 			visible,
 			color,
+			shouldHideGray,
 			isDragging,
 			connectDragSource,
 			connectDropTarget
@@ -118,6 +119,9 @@ class MyCard extends Component {
 		const opacity = isDragging ? 0 : visible ? 1 : 0.5;
 		const myClassName = this.getCardClassName();
 		const myShowName = _.isEmpty(name) ? String.fromCharCode(160) : name;
+		if(shouldHideGray===true && visible===false){
+			return null;
+		}
 		return connectDragSource(
 			connectDropTarget(
 				<li className='property-item' style={{ opacity: opacity }} onClick={this.selectThisCard}>

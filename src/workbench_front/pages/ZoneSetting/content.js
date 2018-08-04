@@ -211,7 +211,8 @@ class MyContent extends Component {
 					return (
 						<AreaItem
 							areaItem={a}
-                            key={i}
+							key={i}
+							areaListLength={this.props.areaList.length}
                             id={a.pk_area}
 							index={i}
 							areatype = {a.areatype}
