@@ -3,72 +3,77 @@ import { connect } from "react-redux";
 import { Modal, Button } from "antd";
 import { updateAreaList } from "Store/ZoneSetting/action";
 import BatchSearchTable from "./batchSearchTable";
-import BatchNoSearchTable from "./batchNoSearchTable";
+// import BatchNoSearchTable from "./batchNoSearchTable";
 //批量设置模态框
 class BatchSettingModal extends Component {
     constructor(props) {
         super(props);
         let { areaList, areaIndex } = this.props;
         this.state = {
-            newSource: areaList[areaIndex]
+            newSource: areaList[areaIndex].queryPropertyList
         };
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.batchSettingModalVisibel !== true) {
+            return;
+        } else {
+            let { areaList, areaIndex } = nextProps;
+            this.setState({ newSource: areaList[areaIndex].queryPropertyList });
+        }
     }
     showModalHidden = () => {
         this.props.setModalVisibel(false);
     };
     onOkDialog = () => {
         let { areaList, areaIndex } = this.props;
-        areaList[areaIndex] = this.state.newSource;
-        // 更新redux全局属性列表
+        areaList = _.cloneDeep(areaList);
+        areaList[areaIndex].queryPropertyList = this.state.newSource;
         this.props.updateAreaList(areaList);
-        console.log(areaList[areaIndex], "修改的区域");
         this.showModalHidden();
     };
-    saveState = newSource => {
+    saveNewSource = newSource => {
         this.setState({ newSource });
     };
     render() {
-        let { areaIndex } = this.props;
+        let { areaIndex, areaList } = this.props;
         let { newSource } = this.state;
         return (
-            <div className="myZoneModal">
-                <Modal
-                    closable={false}
-                    title="批量设置-卡片区"
-                    mask={false}
-                    visible={this.props.batchSettingModalVisibel}
-                    onOk={this.onOkDialog}
-                    destroyOnClose={true}
-                    onCancel={this.showModalHidden}
-                    width="100%"
-                    footer={[
-                        <Button
-                            key="submit"
-                            // disabled={}
-                            type="primary"
-                            onClick={this.onOkDialog}
-                        >
-                            确定
-                        </Button>,
-                        <Button key="back" onClick={this.showModalHidden}>
-                            取消
-                        </Button>
-                    ]}
-                >
-                    {newSource && newSource.areatype === "0" ? (
-                        <BatchSearchTable
-                            areaIndex={areaIndex}
-                            setNewList={this.saveState}
-                        />
-                    ) : (
-                        <BatchNoSearchTable
-                            areatype={newSource.areatype}
-                            areaIndex={areaIndex}
-                            setNewList={this.saveState}
-                        />
-                    )}
-                </Modal>
-            </div>
+            <Modal
+                closable={false}
+                className="zonesetting-batch-setting-modal"
+                title="批量设置-卡片区"
+                mask={false}
+                visible={this.props.batchSettingModalVisibel}
+                onOk={this.onOkDialog}
+                destroyOnClose={true}
+                onCancel={this.showModalHidden}
+                width="100%"
+                footer={[
+                    <Button
+                        key="submit"
+                        type="primary"
+                        onClick={this.onOkDialog}
+                    >
+                        确定
+                    </Button>,
+                    <Button key="back" onClick={this.showModalHidden}>
+                        取消
+                    </Button>
+                ]}
+            >
+                {areaList[areaIndex].areatype === "0" ? (
+                    <BatchSearchTable
+                        newSource={newSource}
+                        saveNewSource={this.saveNewSource}
+                    />
+                ) : (
+                    // <BatchNoSearchTable
+                    //     areatype={newSource.areatype}
+                    //     saveNewSource={this.saveState}
+                    // />
+                    <div>222</div>
+                )}
+            </Modal>
         );
     }
 }

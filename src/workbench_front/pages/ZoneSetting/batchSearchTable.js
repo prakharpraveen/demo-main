@@ -1,491 +1,162 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Table, Input, InputNumber, Select,Switch} from 'antd';
-import _ from 'lodash'; 
-import * as utilService from './utilService';
-const Option = Select.Option
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Table, Input, Button, Icon, Dropdown, Popover } from "antd";
+import _ from "lodash";
+import * as utilService from "./utilService";
+import {
+    EditableCell,
+    EditableCheck,
+    SelectCell,
+    EditAllCell
+} from "./editableCell";
+// const menu = (
+
+// );
+const batchSearchTableData = [
+    {
+        title: "显示名称",
+        property: "label",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "非元数据条件",
+        property: "isnotmeta",
+        type: "checkbox",
+        width: 50
+    },
+    {
+        title: "显示类型",
+        property: "showtype",
+        type: "select",
+        width: 50,
+        selectObj: utilService.showType
+    }
+];
 //批量设置查询区
-class SelectCell extends Component {
-	state = {
-		value: this.props.value,
-	}
-	handleSelectChange = (value) => {
-		this.setState({ value }, () => { this.props.onChange(value) });
-	}
-	render() {
-		const { value } = this.state;
-		const { type } = this.props;
-		let result_div;
-		switch (type) {
-			case 'color':
-				result_div = (
-					<Select
-						value={
-							this.props.value ? this.props.value : utilService['colorObj'][0].value
-						}
-						onChange={(value) => {
-							this.handleSelectChange(value, 'color');
-						}}
-						
-					>
-						{utilService['colorObj']&&utilService['colorObj'].map((c, index) => {
-							return (
-								<Option key={index} value={c.value}>
-									{c.name}
-									<span className="color-select-color" style={{ backgroundColor: c.value }}/>
-								</Option>
-							);
-						})}
-					</Select>
-				);
-				break;
-			case 'datatype':
-				result_div = (
-					<Select
-						value={
-							this.props.value ? this.props.value : utilService['dataTypeObj'][0].value
-						}
-						onChange={(value) => {
-							// if (property === 'datatype') {
-							// 	this.props.selectCard.dataval = "";
-							// }
-							this.handleSelectChange(value);
-						}}
-					
-					>
-						{utilService['dataTypeObj']&&utilService['dataTypeObj'].map((c, index) => {
-							return (
-								<Option key={index} value={c.value}>
-									{c.name}
-								</Option>
-							);
-						})}
-					</Select>
-				);
-				break;
-			case 'showtype':
-				result_div = (
-					<Select
-						value={
-							this.props.value ? this.props.value : utilService['showAndReturnType'][0].value
-						}
-						onChange={(value) => {
-							// if (property === 'datatype') {
-							// 	this.props.selectCard.dataval = "";
-							// }
-							this.handleSelectChange(value);
-						}}
-						
-					>
-						{utilService['showAndReturnType']&&utilService['showAndReturnType'].map((c, index) => {
-							return (
-								<Option key={index} value={c.value}>
-									{c.name}
-								</Option>
-							);
-						})}
-					</Select>
-				);
-				break;
-			case 'itemtype':
-				result_div = (
-					<Select
-						value={
-							this.props.value ? this.props.value : utilService['itemtypeObj'][0].value
-						}
-						onChange={(value) => {
-							this.handleSelectChange(value);
-						}}
+export default class BatchSearchTable extends Component {
+    constructor(props) {
+        super(props);
+        this.columns = [];
+        this.state = {
+            wholeColEditStr: ""
+        };
+        _.forEach(batchSearchTableData, (data, index) => {
+            let tmpColData = {
+                title: (
+                    <Popover
+                        overlayClassName="all-apps-popover2333"
+                        getPopupContainer={() => {
+                            return document.querySelector(
+                                ".zonesetting-batch-setting-modal"
+                            );
+                        }}
+                        content={
+                            <EditAllCell
+                                property={data.property}
+                                onChange={this.onAllColCellChange(
+                                    data.property
+                                )}
+                            />
+                        }
+                        placement="bottomLeft"
+                        trigger="click"
+                    >
+                        {data.title} <Icon type="down" />
+                    </Popover>
+                ),
+                dataIndex: data.property,
+                width: data.width
+            };
+            switch (data.type) {
+                case "input":
+                    tmpColData.render = (text, record, index) => {
+                        return (
+                            <EditableCell
+                                value={text}
+                                property={data.property}
+                                onChange={this.onCellChange(
+                                    index,
+                                    data.property
+                                )}
+                            />
+                        );
+                    };
+                    break;
+                case "checkbox":
+                    tmpColData.render = (text, record, index) => {
+                        return (
+                            <EditableCheck
+                                value={text}
+                                property={data.property}
+                                onChange={this.onCellChange(
+                                    index,
+                                    data.property
+                                )}
+                            />
+                        );
+                    };
+                    break;
+                case "select":
+                    tmpColData.render = (text, record, index) => {
+                        return (
+                            <SelectCell
+                                selectValue={text}
+                                property={data.property}
+                                selectObj={data.selectObj}
+                                onChange={this.onCellChange(
+                                    index,
+                                    data.property
+                                )}
+                            />
+                        );
+                    };
+                    break;
+            }
+            this.columns.push(tmpColData);
+        });
+    }
 
-					>
-						{utilService['itemtypeObj']&&utilService['itemtypeObj'].map((c, index) => {
-							return (
-								<Option key={index} value={c.value}>
-									{c.name}
-								</Option>
-							);
-						})}
-					</Select>
-				);
-				break;
-			default:
-				break;
-		}
-		return (
-			result_div
-		);
-	}
+    handleSearch = () => {};
+    handleReset = () => {};
+    // 闭包 只对具体的单元格修改
+    onCellChange = (index, property) => {
+        return value => {
+            let { newSource } = this.props;
+            newSource = _.cloneDeep(newSource);
+            let target = newSource[index];
+            if (target) {
+                target[property] = value;
+                this.props.saveNewSource(newSource);
+            }
+        };
+    };
+    // 闭包 一纵列单元格修改
+    onAllColCellChange = property => {
+        return value => {
+            let { newSource } = this.props;
+            newSource = _.cloneDeep(newSource);
+            _.forEach(newSource, n => {
+                n[property] = value;
+            });
+            this.props.saveNewSource(newSource);
+        };
+    };
+
+    render() {
+        let { newSource } = this.props;
+        _.forEach(newSource, (n, i) => {
+            n.key = i;
+        });
+        const columns = this.columns;
+        return (
+            <Table
+                bordered
+                dataSource={newSource}
+                columns={columns}
+                pagination={false}
+                // scroll={{ x: 6000, y: 400 }}
+            />
+        );
+    }
 }
-
-
-// 可编辑表格input  
-class EditableCell extends React.Component {
-	state = {
-		value: this.props.value,
-	}
-	handleChange = (e) => {
-		const value = e.target.value;
-		this.setState({ value },()=>{this.props.onChange(value)});
-	}
-	handleNumChange = (value) =>{
-		this.setState({ value }, () => { this.props.onChange(value) });
-	}
-	render() {
-		const { value } = this.state;
-		const {type} = this.props;
-		return (
-			type === 'int' ? (<InputNumber size='small' defaultValue={value} min={0} max={9999} onChange={this.handleNumChange} />):
-							(<Input
-								size = 'small'
-								value={value}
-								onChange = {this.handleChange}
-							/>)	
-		);
-	}
-}
-
-// 可编辑表格复选框
-class EditableCheck extends React.Component {
-	state = {
-		value: this.props.value,
-	}
-	handleChange = (value) => {
-		this.setState({ value },()=>{this.props.onChange(value)});
-	}
-	render() {
-		const { value } = this.state;
-		return (
-			<div className="editable-cell">
-				<div className="editable-cell-input-wrapper">
-					<Switch defaultChecked={value}  onChange={this.handleChange}></Switch>
-		    	</div>
-			</div>
-		);
-	}
-}
-
-// 可编辑的表格 
-class BatchSearchTable extends React.Component {
-	constructor(props) {
-		super(props);
-		let {areaList, areaIndex}  = this.props;
-		this.state = {
-			dataSource: areaList[areaIndex],
-		};
-		this.columns = [
-			{
-				title: '序号',
-				dataIndex: 'num',
-				width: 50,
-				fixed: 'left'
-			},
-			{
-				title: '显示名称',
-				dataIndex: 'label',
-				width: 150,
-				fixed: 'left',
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'label')} />
-				),
-			},
-		
-			{
-			title: '编码',
-			dataIndex: 'code', 
-			width: 150,
-			render: (text, record) => (
-				<EditableCell
-					value={text}
-					onChange={this.onCellChange(record.key, 'code')} />
-				),
-			},	
-			{
-				title: '操作符编码',
-				dataIndex: 'opersign',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'opersign')}
-					/>
-				),
-			}, 
-			{
-				title: '操作符名称',
-				dataIndex: 'opersignname',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'opersignname')}
-					/>
-				),
-			}, 
-			{
-				title: '默认取值',
-				dataIndex: 'defaultvalue',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'defaultvalue')}
-					/>
-				),
-			}, 
-			{
-				title: '固定条件',
-				dataIndex: 'isfixedcondition',
-				width: 150,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'isfixedcondition')}
-					/>
-				),
-			}, 
-			{
-				title: '必输条件',
-				dataIndex: 'required',
-				width: 150,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'required')}
-					/>
-				),
-			}, 
-			{
-				title: '可见',
-				dataIndex: 'visible',
-				width: 150,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'visible')}
-					/>
-				),
-			}, 
-			{
-				title: '查询条件',
-				dataIndex: 'isquerycondition',
-				width: 150,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'isquerycondition')}
-					/>
-				),
-			}, 
-			{
-				title: '数据类型',
-				dataIndex: 'datatype',
-				width: 150,
-				render: (text, record) => (
-					<SelectCell
-						value={text}
-						type='datatype'
-						onChange={this.onCellChange(record.key, 'datatype')}
-					/>
-				),
-			}, 
-			{
-				title: '参照名称',
-				dataIndex: 'refname',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'refname')}
-					/>
-				),
-			}, 
-			{
-				title: '参照是否包含下级',
-				dataIndex: 'containlower',
-				width: 200,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'containlower')}
-					/>
-				),
-			}, 
-			{
-				title: '参照是否自动检查',
-				dataIndex: 'ischeck',
-				width: 200,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'ischeck')}
-					/>
-				),
-			}, 
-			{
-				title: '参照是否跨集团',
-				dataIndex: 'isbeyondorg',
-				width: 200,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'isbeyondorg')}
-					/>
-				),
-			}, 
-			{
-				title: '是否使用系统函数',
-				dataIndex: 'usefunc',
-				width: 200,
-				render: (text, record) => (
-					<EditableCheck
-						value={text}
-						onChange={this.onCellChange(record.key, 'usefunc')}
-					/>
-				),
-			}, 
-			{
-				title: '显示类型 ',
-				dataIndex: 'showtype',
-				width: 150,
-				render: (text, record) => (
-					<SelectCell
-						value={text}
-						type='showtype'
-						onChange={this.onCellChange(record.key, 'showtype')}
-					/>
-				),
-			}, 
-			{
-				title: '返回类型',
-				dataIndex: 'returntype',
-				width: 150,
-				render: (text, record) => (
-					<SelectCell
-						value={text}
-						type='showtype'
-						onChange={this.onCellChange(record.key, 'returntype')}
-					/>
-				),
-			},
-			{
-				title: '组件类型',
-				dataIndex: 'itemtype',
-				width: 150,
-				render: (text, record) => {
-					return (
-						<SelectCell
-							value={text}
-							type='itemtype'
-							onChange={this.onCellChange(record.key, 'itemtype')}
-						/>
-					)
-
-				},
-			},  
-			{
-				title: '元数据属性',
-				dataIndex: 'metadataproperty',
-				width: 150,
-				render: (text, record) => {
-					if (!record.metapath) {
-						return (
-							<EditableCell
-								value={text}
-								onChange={this.onCellChange(record.key, 'metadataproperty')}
-							/>
-						)
-					}
-				},
-			}, 
-			{
-				title: '自定义项1',
-				dataIndex: 'define1',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'define1')}
-					/>
-				),
-			},
-			{
-				title: '自定义项2',
-				dataIndex: 'define2',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'define2')}
-					/>
-				),
-			},
-			{
-				title: '自定义项3',
-				dataIndex: 'define3',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'define3')}
-					/>
-				),
-			},
-			{
-				title: '自定义项4',
-				dataIndex: 'define4',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'define4')}
-					/>
-				),
-			},
-			{
-				title: '自定义项5',
-				dataIndex: 'define5',
-				width: 150,
-				render: (text, record) => (
-					<EditableCell
-						value={text}
-						onChange={this.onCellChange(record.key, 'define5')}
-					/>
-				),
-			}];
-	}
-   shouldComponentUpdate(nextProps,nextState){
-      if(_.isEqual(nextState.dataSource , this.state.dataSource)){
-        return false
-	  }
-	  return true;
-  }
-    // 闭包 只对具体的单元格修改 
-	onCellChange = (key, dataIndex) => {
-		return (value) => {
-			const dataSource = _.cloneDeep(this.state.dataSource);
-			const target = dataSource.queryPropertyList.find(item => item.key === key);
-			if (target) {
-				target[dataIndex] = value
-				this.setState({ dataSource }, () => { this.props.setNewList(this.state.dataSource)});
-			}
-		};
-	}
-
-	render() {
-		let { dataSource } = this.state;
-		dataSource && dataSource.queryPropertyList.map((v, i) =>{ v.num = i+1; v.key=i})
-		const columns = this.columns;
-		return (
-				<Table bordered dataSource={dataSource.queryPropertyList} columns={columns} pagination={false} scroll={{ x: 3950, y:400 }} />
-		);
-	}
-}
-
-
-export default connect((state) => ({ 
-    areaList: state.zoneSettingData.areaList,
-}), {
-   // updateAreaList,
-	})(BatchSearchTable);
