@@ -524,7 +524,6 @@ class AppManagement extends Component {
                     <Modal
                         closable={false}
                         title={modalType === "0" ? "应用复制" : "页面复制"}
-                        mask={false}
                         okText={"确定"}
                         cancelText={"取消"}
                         width={modalType === "0" ? 800 : 400}
