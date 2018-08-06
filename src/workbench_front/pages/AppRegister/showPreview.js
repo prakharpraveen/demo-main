@@ -113,6 +113,7 @@ class PreviewModal extends Component {
         console.log(this.props.previewData);
         return (
             <Modal
+                maskClosable={false}
                 closable={false}
                 title="预览区"
                 mask={false}
