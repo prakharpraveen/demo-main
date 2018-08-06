@@ -151,10 +151,12 @@ class MyContent extends Component {
 		let {targetAreaID } = this.state;
 		let {areaList} = this.props;
         areaList = _.cloneDeep(areaList);
-        let targetAreaIndex = -1;
+		let targetAreaIndex = -1;
+		let metaid = '';
         _.forEach(areaList ,(a,i)=>{
             if(targetAreaID === a.pk_area){
-                targetAreaIndex = i;
+				targetAreaIndex = i;
+				metaid = a.metaid;
                 return false;
             }
         })
@@ -162,6 +164,7 @@ class MyContent extends Component {
 
 		_.forEach(areaList[targetAreaIndex].queryPropertyList,(q,i)=>{
 			q.position = i+1;
+			q.classid = metaid;
 		});
         this.props.updateAreaList(areaList)
     };
@@ -211,7 +214,8 @@ class MyContent extends Component {
 					return (
 						<AreaItem
 							areaItem={a}
-                            key={i}
+							key={i}
+							areaListLength={this.props.areaList.length}
                             id={a.pk_area}
 							index={i}
 							areatype = {a.areatype}
@@ -225,7 +229,7 @@ class MyContent extends Component {
 				})}
 
 				<TreeModal
-                    metaTree={this.state.metaTree}
+					metaTree={this.state.metaTree}
                     canSelectTreeNodeList={this.state.canSelectTreeNodeList}
 					modalVisible={this.state.modalVisible}
 					targetAreaID = {this.state.targetAreaID}

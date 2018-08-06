@@ -7,6 +7,16 @@ export const setPropertyValueForItemInItemList = (
         a[property] = value;
     });
 };
+export const getMetaidByAreaid = (areaList, areaid) => {
+    let resultMetaID = '';
+    _.forEach(areaList, a => {
+        if (a.pk_area === areaid) {
+            resultMetaID = a.metaid;
+            return false;
+        }
+    });
+    return resultMetaID;
+};
 export const getDatatypeName = datatype => {
     let name = "";
     for (let i = 0; i < dataTypeObj.length; i++) {
@@ -190,33 +200,23 @@ export const filterItemtypeObj = [
     },
     {
         datatype: "34",
-        itemtypeObj: [
-            { name: "日期时间", value: "datetimepicker" }
-        ]
+        itemtypeObj: [{ name: "日期时间", value: "datetimepicker" }]
     },
     {
         datatype: "36",
-        itemtypeObj: [
-            { name: "时间", value: "timepicker" }
-        ]
+        itemtypeObj: [{ name: "时间", value: "timepicker" }]
     },
     {
         datatype: "37",
-        itemtypeObj: [
-            { name: "开始日期", value: "NCTZDatePickerStart" },
-        ]
+        itemtypeObj: [{ name: "开始日期", value: "NCTZDatePickerStart" }]
     },
     {
         datatype: "38",
-        itemtypeObj: [
-            { name: "结束日期", value: "NCTZDatePickerEnd" }
-        ]
+        itemtypeObj: [{ name: "结束日期", value: "NCTZDatePickerEnd" }]
     },
     {
         datatype: "39",
-        itemtypeObj: [
-            { name: "日期（无时区）", value: "datePickerNoTimeZone" }
-        ]
+        itemtypeObj: [{ name: "日期（无时区）", value: "datePickerNoTimeZone" }]
     },
 
     { datatype: "52", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
@@ -238,7 +238,7 @@ export const filterItemtypeObj = [
             { name: "下拉", value: "select" }
         ]
     },
-    { datatype: "400", itemtypeObj: [{ name: "密码框", value: "password" }] },
+    { datatype: "400", itemtypeObj: [{ name: "密码框", value: "password" }] }
 ];
 //应该设默认值为false的组件类型
 export const shouldSetDefaultValueList = [
