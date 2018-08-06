@@ -226,16 +226,17 @@ class Home extends Component {
                             status: "warning",
                             msg: "工作桌面为空，请配置"
                         });
-                    }
-                    _.forEach(data[0].groups, g => {
-                        g.type = "group";
-                        _.forEach(g.apps, a => {
-                            a.gridx = Number(a.gridx);
-                            a.gridy = Number(a.gridy);
-                            a.height = Number(a.height);
-                            a.width = Number(a.width);
+                    }else{
+                        _.forEach(data[0].groups, g => {
+                            g.type = "group";
+                            _.forEach(g.apps, a => {
+                                a.gridx = Number(a.gridx);
+                                a.gridy = Number(a.gridy);
+                                a.height = Number(a.height);
+                                a.width = Number(a.width);
+                            });
                         });
-                    });
+                    }
                     this.setState({ groups: data[0].groups });
                     this.props.updateGroupList(data[0].groups);
                     this.handleHomeLoad();
@@ -245,6 +246,9 @@ class Home extends Component {
                             status: "warning",
                             msg: "工作桌面为空，请配置"
                         });
+                        this.setState({ groups: [] });
+                        this.props.updateGroupList([]);
+                        this.handleHomeLoad();
                     } else {
                         Notice({ status: "error", msg: data });
                     }

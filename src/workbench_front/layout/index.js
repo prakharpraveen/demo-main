@@ -362,7 +362,6 @@ class Layout extends Component {
     refreshIframe = () => {
         let ifr = document.getElementById("mainiframe");
         if (ifr) {
-            
             let ifrSrc = ifr.src;
             console.log(ifrSrc);
             document.getElementById("mainiframe").src = ifrSrc;
@@ -402,10 +401,13 @@ class Layout extends Component {
     /**
      * 应用关闭事件
      */
-    appClose = ()=>{
+    appClose = () => {
         let { n } = GetQuery(this.props.location.search);
-        window.proxyAction(null,null,`${n}-关闭`)();
-    }
+        if (!n) {
+            n = "首页";
+        }
+        window.proxyAction(null, null, `${n}-关闭`)();
+    };
     componentDidMount() {
         this.handleForewarning();
         this.handleUpdateTitleName();
@@ -415,7 +417,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
-        window.addEventListener('beforeunload',this.appClose);
+        window.addEventListener("beforeunload", this.appClose);
     }
     componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleUpdateTitleName);
@@ -423,7 +425,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
-        window.removeEventListener('beforeunload',this.appClose);
+        window.removeEventListener("beforeunload", this.appClose);
     }
     render() {
         let {
@@ -492,26 +494,6 @@ class Layout extends Component {
                             <span>{nodeName}</span>
                         </div>
                         <div className="nav-right n-right n-v-middle">
-                            <span
-                                className="margin-right-10"
-                                field="spr"
-                                fieldname="录制SPR"
-                                onClick={this.handleSprClick}
-                            >
-                                {sprType ? (
-                                    <Icon
-                                        title="开始录制SPR"
-                                        type="play-circle-o"
-                                        className="iconfont"
-                                    />
-                                ) : (
-                                    <Icon
-                                        title="结束录制SPR"
-                                        type="pause-circle-o"
-                                        className="iconfont"
-                                    />
-                                )}
-                            </span>
                             {this.getSearchDom()}
                             <span className="margin-right-10">
                                 <Popover
@@ -561,11 +543,33 @@ class Layout extends Component {
                         ) : (
                             <Breadcrumb />
                         )}
-                        <BusinessDate
-                            onOk={this.handleDateChange}
-                            date={newDate}
-                        />
-                        {/* <MTZBDate /> */}
+                        <div className="nccwb-header-info-right">
+                            <BusinessDate
+                                onOk={this.handleDateChange}
+                                date={newDate}
+                            />
+                            {/* <MTZBDate /> */}
+                            <span
+                                className="margin-left-6"
+                                field="spr"
+                                fieldname="录制SPR"
+                                onClick={this.handleSprClick}
+                            >
+                                {sprType ? (
+                                    <Icon
+                                        title="开始录制SPR"
+                                        type="play-circle-o"
+                                        className="iconfont"
+                                    />
+                                ) : (
+                                    <Icon
+                                        title="结束录制SPR"
+                                        type="pause-circle-o"
+                                        className="iconfont"
+                                    />
+                                )}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div className="nc-workbench-container">
