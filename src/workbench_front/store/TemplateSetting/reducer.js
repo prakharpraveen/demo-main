@@ -1,92 +1,158 @@
 import * as TemplateSetting from './action-type';
 import renameActionType from 'Store/renameActionType';
-renameActionType(TemplateSetting,'TemplateSetting');
+renameActionType(TemplateSetting, 'TemplateSetting');
 
 let defaultState = {
-	// 树节点对象
-	nodeData: {},
-	// 	节点类型 模块、应用分类、应用
-	optype: '',
-	// 页面当前状态
-	billStatus: {
-		// 是否编辑态
-		isEdit: false,
-		// 是否新增
-		isNew: false
-	},
-	// 页面模板数据
-	pageTemplets:[],
-	// 父节点信息
-	parentData: '',
-	// 应用类型 1 为 小应用 2 为 小部件
-	appType: 2,
-	// 更新树节点
-	updateTreeData: () => {},
-	// 请求树数据
-	reqTreeData: ()=>{},
-	//请求模板树数据
-	reqTemplateTreeData: () =>{},
-	// 添加树节点
-	addTreeData: ()=>{},
-	// 删除树节点
-	delTreeData: ()=>{}
+    // 树数据
+    treeData: [],
+    //页面模板树 数据
+    treeTemBillData: [],
+    //打印模板树 数据
+    treeTemPrintData: [],
+    // 树节点对象
+    nodeData: {},
+    // 树节点信息
+    nodeInfo: {
+        id: '',
+        code: '',
+        name: '',
+        parentId: '',
+        isleaf: false
+    },
+    def1: '',
+    // 应用参数数据
+    appParamVOs: [],
+    // 页面按钮数据
+    appButtonVOs: [],
+    // 页面模板数据
+    pageTemplets: [],
+    // 树展开树节点数组
+    expandedKeys: [ '00' ],
+    // 树选中节点数组
+    selectedKeys: [ '00' ],
+    // 节点类型
+    optype: '',
+    // 页面节点页签激活项
+    pageActiveKey: '1',
+    // 是否是新增
+    isNew: false,
+    // 是否是编辑
+    isEdit: false
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
-	switch (action.type) {
-		case TemplateSetting.CLEARDATA:
-			return { ...state,
-				...defaultState
-			};
-		case TemplateSetting.REQTREEDATA:
-			return { ...state,
-				...{
-					reqTreeData: action.data
-				}
-			};
-		case TemplateSetting.REQTEMPLATETREEDATA:
-			return { ...state,
-				...{
-					reqTemplateTreeData: action.data
-				}
-			};
-		case TemplateSetting.SETNODEDATA:
-			return { ...state,
-				...{
-					nodeData: action.data
-				}
-			};
-		case TemplateSetting.UPDATENODEDATA:
-			return { ...state,
-				...{
-					updateTreeData: action.updateTreeData
-				}
-			};
-		case TemplateSetting.ADDNODEDATA:
-			return { ...state,
-				...{
-					addTreeData: action.addTreeData
-				}
-			};
-		case TemplateSetting.DELNODEDATA:
-			return { ...state,
-				...{
-					delTreeData: action.delTreeData
-				}
-			};
-		case TemplateSetting.OPERATIONTYPE:
-			return { ...state,
-				...{
-					optype: action.optype
-				}
-			};
-		case TemplateSetting.PARENTDATA:
-			return { ...state,
-				...{
-					parentData: action.parentData
-				}
-			};
-		default:
-			return state;
-	}
+    switch (action.type) {
+        case TemplateSetting.CLEARDATA:
+            return {
+                ...state,
+                ...defaultState
+            };
+        case TemplateSetting.SETTREEDATA:
+            return {
+                ...state,
+                ...{
+                    treeData: action.data
+                }
+            };
+        case TemplateSetting.SETTREETEMBILLDATA:
+            return {
+                ...state,
+                ...{
+                    treeTemBillData: action.data
+                }
+            };
+        case TemplateSetting.SETDEF1:
+        return {
+            ...state,
+            ...{
+                def1: action.data
+            }
+        };   
+        case TemplateSetting.SETTREETEMPRINTDATA:
+            return {
+                ...state,
+                ...{
+                    treeTemPrintData: action.data
+                }
+            };
+        case TemplateSetting.SETNODEINFO:
+            return {
+                ...state,
+                ...{
+                    nodeInfo: action.data
+                }
+            };
+        case TemplateSetting.SETNODEDATA:
+            return {
+                ...state,
+                ...{
+                    nodeData: action.data
+                }
+            };
+        case TemplateSetting.APPPARAMDATA:
+            return {
+                ...state,
+                ...{
+                    appParamVOs: action.data
+                }
+            };
+        case TemplateSetting.PAGEBUTTONDATA:
+            return {
+                ...state,
+                ...{
+                    appButtonVOs: action.data
+                }
+            };
+        case TemplateSetting.PAGETEMPLATEDATA:
+            return {
+                ...state,
+                ...{
+                    pageTemplets: action.data
+                }
+            };
+        case TemplateSetting.ISNEW:
+            return {
+                ...state,
+                ...{
+                    isNew: action.data
+                }
+            };
+        case TemplateSetting.ISEDIT:
+            return {
+                ...state,
+                ...{
+                    isEdit: action.data
+                }
+            };
+        case TemplateSetting.EXPANDEDKEYS:
+            return {
+                ...state,
+                ...{
+                    expandedKeys: action.data.concat([ '00' ])
+                }
+            };
+        case TemplateSetting.SELECTEDKEYS:
+            return {
+                ...state,
+                ...{
+                    selectedKeys: action.data
+                }
+            };
+        case TemplateSetting.OPTYPE:
+            return {
+                ...state,
+                ...{
+                    optype: action.data
+                }
+            };
+        case TemplateSetting.PAGEACTIVEKEY:
+            return {
+                ...state,
+                ...{
+                    pageActiveKey: action.data
+                }
+            };
+        default:
+            return state;
+    }
 };

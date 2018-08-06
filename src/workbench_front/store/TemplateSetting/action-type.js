@@ -1,30 +1,34 @@
 // 清空数据
 export const CLEARDATA = 'CLEARDATA';
+// 设置左侧树数据
+export const SETTREEDATA = 'SETTREEDATA';
+//设置页面模板树数据
+export const  SETTREETEMBILLDATA='SETTREETEMBILLDATA';
+//设置打印模板树数据
+export const  SETTREETEMPRINTDATA='SETTREETEMPRINTDATA';
 // 设置树数据
 export const SETNODEDATA = 'SETNODEDATA';
-// 获取树数据
-export const REQTREEDATA = 'REQTREEDATA';
-//获取模板树数据
-export const REQTEMPLATETREEDATA = 'REQTEMPLATETREEDATA';
-// 新增树节点
-export const ADDNODEDATA = 'ADDNODEDATA';
-// 更新树数据
-export const UPDATENODEDATA = 'UPDATENODEDATA';
-// 删除树节点
-export const DELNODEDATA = 'DELNODEDATA';
-// 操作类型
-export const OPERATIONTYPE = 'OPERATIONTYPE';
-// 单据状态
-export const BILLSTATUS = 'BILLSTATUS';
-// 父节点id
-export const PARENTDATA = 'PARENTDATA';
-// 应用类型
-export const APPTYPE = 'APPTYPE';
+// 设置节点信息
+export const SETNODEINFO = 'SETNODEINFO';
 // 应用参数数据
 export const APPPARAMDATA = 'APPPARAMDATA';
 // 页面按钮数据
 export const PAGEBUTTONDATA = 'PAGEBUTTONDATA';
 // 页面模板数据
 export const PAGETEMPLATEDATA = 'PAGETEMPLATEDATA';
-// 应用数据 包括 按钮注册及参数注册
-export const GETFROMDATA = 'GETFROMDATA';
+// 是否是新增
+export const ISNEW = 'ISNEW';
+// 是否是编辑
+export const ISEDIT = 'ISEDIT';
+// 树展开节点key数组
+export const EXPANDEDKEYS = 'EXPANDEDKEYS';
+// 树选中节点key数组
+export const SELECTEDKEYS = 'SELECTEDKEYS';
+// 节点类型
+export const OPTYPE = 'OPTYPE';
+// 页面节点页面
+export const PAGEACTIVEKEY = 'PAGEACTIVEKEY';
+// 四级应用与五级页面的区分setDef1
+export const SETDEF1 = 'SETDEF1';
+
+

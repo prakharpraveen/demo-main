@@ -6,17 +6,38 @@ export const clearData = () => {
 		type: TemplateSetting.CLEARDATA
 	};
 };
-// 获取树数据
-export const reqTreeData = (data)=>{
+// 设置 树 数据
+export const setTreeData = (data)=>{
 	return {
-		type: TemplateSetting.REQTREEDATA,
+		type: TemplateSetting.SETTREEDATA,
 		data
 	}
 }
-//获取模板树数据
-export const reqTemplateTreeData = (data)=>{
+// 设置 页面模板 树 数据
+export const setTreeTemBillData = (data)=>{
 	return {
-		type: TemplateSetting.REQTEMPLATETREEDATA,
+		type: TemplateSetting.SETTREETEMBILLDATA,
+		data
+	}
+}
+// 设置 打印模板 树 数据
+export const setTreeTemPrintData = (data)=>{
+	return {
+		type: TemplateSetting.SETTREETEMPRINTDATA,
+		data
+	}
+}
+// 设置 树 数据
+export const setNodeInfo = (data)=>{
+	return {
+		type: TemplateSetting.SETNODEINFO,
+		data
+	}
+}
+//设置页面与应用区分数据
+export const setDef1 = (data)=>{
+	return {
+		type: TemplateSetting.SETDEF1,
 		data
 	}
 }
@@ -27,38 +48,66 @@ export const setNodeData = (data) => {
 		data
 	};
 };
-// 更新 树节点 数据
-export const updateTreeData = (updateTreeData) => {
+// 设置 页面按钮 数据
+export const setPageButtonData = (data) => {
 	return {
-		type: TemplateSetting.UPDATENODEDATA,
-		updateTreeData
+		type: TemplateSetting.PAGEBUTTONDATA,
+		data
 	};
 };
-// 新增 树节点 数据
-export const addTreeData = (addTreeData) => {
+// 设置 页面模板 数据
+export const setPageTemplateData = (data) => {
 	return {
-		type: TemplateSetting.ADDNODEDATA,
-		addTreeData
+		type: TemplateSetting.PAGETEMPLATEDATA,
+		data
 	};
 };
-// 新增 树节点 数据
-export const delTreeData = (delTreeData) => {
+// 设置 应用参数信息 数据
+export const setAppParamData = (data) => {
 	return {
-		type: TemplateSetting.DELNODEDATA,
-		delTreeData
+		type: TemplateSetting.APPPARAMDATA,
+		data
 	};
 };
-// 操作类型 数据
-export const setOpType = (optype) => {
+// 设置页面是否是新增
+export const setIsNew = (data) => {
 	return {
-		type: TemplateSetting.OPERATIONTYPE,
-		optype: optype
+		type: TemplateSetting.ISNEW,
+		data
 	};
 };
-// 父节点 数据
-export const setParentData = (parentData) => {
+// 设置 页面是否是编辑
+export const setIsEdit = (data) => {
 	return {
-		type: TemplateSetting.PARENTDATA,
-		parentData
+		type: TemplateSetting.ISEDIT,
+		data
+	};
+};
+// 设置 树展开节点key数组
+export const setExpandedKeys = (data) => {
+	return {
+		type: TemplateSetting.EXPANDEDKEYS,
+		data
+	};
+};
+// 设置 树展开节点key数组
+export const setSelectedKeys = (data) => {
+	return {
+		type: TemplateSetting.SELECTEDKEYS,
+		data
+	};
+};
+// 设置 节点类型
+export const setOptype = (data) => {
+	return {
+		type: TemplateSetting.OPTYPE,
+		data
+	};
+};
+// 设置 页面节点页签激活项
+export const setPageActiveKey = (data) => {
+	return {
+		type: TemplateSetting.PAGEACTIVEKEY,
+		data
 	};
 };
