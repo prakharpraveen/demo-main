@@ -12,7 +12,6 @@ import CustomModal from "./customModal";
 import RelateMetaModal from "./relateMetaModal";
 import DefaultValueModal from "./defaultValueModal";
 import { high } from "nc-lightapp-front";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 const { Refer, FormulaEditor } = high;
 const Search = Input.Search;
 //右边栏基本属性、高级属性

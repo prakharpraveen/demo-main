@@ -49,7 +49,9 @@ class TreeModal extends Component {
                 isLeaf,
                 modelname,
                 length,
-                notSearchAreaCode
+                notSearchAreaCode,
+                proid,
+                classid
             } = s.props.dataRef;
             let cardObj = {};
             if (this.props.targetAreaType === "0") {
@@ -149,6 +151,8 @@ class TreeModal extends Component {
             // if (this.props.targetAreaType === "0" && _.includes(utilService.shouldSetDefaultValueList, cardObj.itemtype)) {
             //     cardObj.defaultvalue='false'
             // }
+            //新增了两个属性
+            cardObj.proid = proid;
             cardList.push(cardObj);
         });
         //查询区&非查询区下拉类型需要添加默认dataval

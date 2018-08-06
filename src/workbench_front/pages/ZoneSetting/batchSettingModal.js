@@ -47,7 +47,7 @@ class BatchSettingModal extends Component {
                 onOk={this.onOkDialog}
                 destroyOnClose={true}
                 onCancel={this.showModalHidden}
-                width="100%"
+                width="99%"
                 footer={[
                     <Button
                         key="submit"
