@@ -1,7 +1,4 @@
 .nc-workbench-layout {
-    .iconfont {
-        font-size: 20px;
-    }
     .nc-workbench-top-container {
         width: 100%;
         position: fixed;
@@ -10,6 +7,12 @@
         display: flex;
         flex-direction: column;
         border-bottom: 1px solid #eaeaea;
+        .iconfont {
+            font-size: 20px;
+            &:hover {
+                color: #e14c46;
+            }
+        }
         .nc-workbench-nav {
             display: flex;
             justify-content: space-between;
@@ -41,8 +44,6 @@
                         border-radius: 50%;
                     }
                 }
-            }
-            .nav-middle {
             }
             .nav-right {
                 width: 360px;
@@ -90,15 +91,25 @@
                     font-size: 16px;
                 }
             }
-            .nc-workbench-businessdate {
-                padding: 0 15px;
-                .ant-calendar-picker-input {
-                    width: 115px;
-                    border: none;
-                    cursor: pointer;
-                    &:focus {
-                        box-shadow: none;
+            .nccwb-header-info-right {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 0 20px;
+                .nc-workbench-businessdate {
+                    .ant-calendar-picker-input {
+                        width: 100px;
+                        padding-left: 20px;
+                        border: none;
+                        cursor: pointer;
+                        &:focus {
+                            box-shadow: none;
+                        }
                     }
+                }
+                .iconfont {
+                    font-size: 17px;
+                    cursor: pointer;
                 }
             }
         }

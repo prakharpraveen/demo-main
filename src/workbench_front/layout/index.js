@@ -494,26 +494,6 @@ class Layout extends Component {
                             <span>{nodeName}</span>
                         </div>
                         <div className="nav-right n-right n-v-middle">
-                            <span
-                                className="margin-right-10"
-                                field="spr"
-                                fieldname="录制SPR"
-                                onClick={this.handleSprClick}
-                            >
-                                {sprType ? (
-                                    <Icon
-                                        title="开始录制SPR"
-                                        type="play-circle-o"
-                                        className="iconfont"
-                                    />
-                                ) : (
-                                    <Icon
-                                        title="结束录制SPR"
-                                        type="pause-circle-o"
-                                        className="iconfont"
-                                    />
-                                )}
-                            </span>
                             {this.getSearchDom()}
                             <span className="margin-right-10">
                                 <Popover
@@ -563,11 +543,33 @@ class Layout extends Component {
                         ) : (
                             <Breadcrumb />
                         )}
-                        <BusinessDate
-                            onOk={this.handleDateChange}
-                            date={newDate}
-                        />
-                        {/* <MTZBDate /> */}
+                        <div className="nccwb-header-info-right">
+                            <BusinessDate
+                                onOk={this.handleDateChange}
+                                date={newDate}
+                            />
+                            {/* <MTZBDate /> */}
+                            <span
+                                className="margin-left-6"
+                                field="spr"
+                                fieldname="录制SPR"
+                                onClick={this.handleSprClick}
+                            >
+                                {sprType ? (
+                                    <Icon
+                                        title="开始录制SPR"
+                                        type="play-circle-o"
+                                        className="iconfont"
+                                    />
+                                ) : (
+                                    <Icon
+                                        title="结束录制SPR"
+                                        type="pause-circle-o"
+                                        className="iconfont"
+                                    />
+                                )}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div className="nc-workbench-container">
