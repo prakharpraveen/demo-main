@@ -733,7 +733,7 @@ class AppRegister extends Component {
             let historyNode = treeData.find(
                 item => item.moduleid === nodeInfo.id
             );
-            this.handleTreeNodeSelect(historyNode);
+            this.handleTreeNodeSelect(historyNode,selectedKeys);
         } else {
             setSelectedKeys(["00"]);
             setOptype("");
