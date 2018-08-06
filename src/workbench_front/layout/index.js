@@ -362,7 +362,6 @@ class Layout extends Component {
     refreshIframe = () => {
         let ifr = document.getElementById("mainiframe");
         if (ifr) {
-            
             let ifrSrc = ifr.src;
             console.log(ifrSrc);
             document.getElementById("mainiframe").src = ifrSrc;
@@ -402,10 +401,13 @@ class Layout extends Component {
     /**
      * 应用关闭事件
      */
-    appClose = ()=>{
+    appClose = () => {
         let { n } = GetQuery(this.props.location.search);
-        window.proxyAction(null,null,`${n}-关闭`)();
-    }
+        if (!n) {
+            n = "首页";
+        }
+        window.proxyAction(null, null, `${n}-关闭`)();
+    };
     componentDidMount() {
         this.handleForewarning();
         this.handleUpdateTitleName();
@@ -415,7 +417,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
-        window.addEventListener('beforeunload',this.appClose);
+        window.addEventListener("beforeunload", this.appClose);
     }
     componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleUpdateTitleName);
@@ -423,7 +425,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
-        window.removeEventListener('beforeunload',this.appClose);
+        window.removeEventListener("beforeunload", this.appClose);
     }
     render() {
         let {
