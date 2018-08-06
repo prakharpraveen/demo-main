@@ -31,6 +31,21 @@ class SideDrawer extends Component {
         openPage(uri, false, param);
         this.props.changeDrawer(!isOpen);
     };
+    logout=()=>{
+        Ajax({
+            url: `/nccloud/riart/login/logout.do`,
+            info: {
+                name: "工作桌面",
+                action: "注销"
+            },
+            success: () => {
+                Ajax({
+                    url: `/nccloud/platform/appregister/querypersonsettings.do`
+                });
+                sessionStorage.removeItem("gzip");
+            }
+        });
+    }
     /**
      * 注销操作
      */
@@ -44,19 +59,7 @@ class SideDrawer extends Component {
             okText: "确定",
             cancelText: "取消",
             onOk: () => {
-                Ajax({
-                    url: `/nccloud/riart/login/logout.do`,
-                    info: {
-                        name: "工作桌面",
-                        action: "注销"
-                    },
-                    success: () => {
-                        Ajax({
-                            url: `/nccloud/platform/appregister/querypersonsettings.do`
-                        });
-                        sessionStorage.removeItem("gzip");
-                    }
-                });
+                window.proxyAction(this.logout, this, "注销")();
             }
         });
     };

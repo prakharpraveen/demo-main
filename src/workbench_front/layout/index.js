@@ -399,6 +399,13 @@ class Layout extends Component {
             Forewarning(undefined, "首页");
         }
     };
+    /**
+     * 应用关闭事件
+     */
+    appClose = ()=>{
+        let { n } = GetQuery(this.props.location.search);
+        window.proxyAction(null,null,`${n}-关闭`)();
+    }
     componentDidMount() {
         this.handleForewarning();
         this.handleUpdateTitleName();
@@ -408,6 +415,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
+        window.addEventListener('beforeunload',this.appClose);
     }
     componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleUpdateTitleName);
@@ -415,6 +423,7 @@ class Layout extends Component {
             "visibilitychange",
             this.handleVisibilityChange
         );
+        window.removeEventListener('beforeunload',this.appClose);
     }
     render() {
         let {

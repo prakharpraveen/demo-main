@@ -9,6 +9,7 @@ import * as TemplateDragStore from "./test/reducer";
 import * as ZoneRegister from "./Zone/reducer";
 import * as zoneSettingData from "./ZoneSetting/reducer";
 import * as MenuRegister from "./MenuRegister/reducer";
+import * as TemplateSetting from "./TemplateSetting/reducer";
 import thunk from "redux-thunk";
 
 let store = createStore(
@@ -21,7 +22,8 @@ let store = createStore(
     ...TemplateDragStore,
     ...ZoneRegister,
     ...zoneSettingData,
-    ...MenuRegister
+    ...MenuRegister,
+    ...TemplateSetting
   }),
   {},
   composeWithDevTools(applyMiddleware(thunk))

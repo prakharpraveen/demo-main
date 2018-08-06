@@ -66,7 +66,7 @@ class CheckboxShow extends Component {
         super(props);
     }
     render() {
-        return <div>{this.props.value ? "是" : "否"}</div>;
+        return <div>{this.props.checked ? "是" : "否"}</div>;
     }
 }
 /**
