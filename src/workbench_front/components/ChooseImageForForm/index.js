@@ -161,9 +161,9 @@ class ChooseImageForForm extends Component {
                     </div>
                 )}
                 <Modal
+                    maskClosable={false}
                     closable={false}
                     title={this.props.title}
-                    mask={false}
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}

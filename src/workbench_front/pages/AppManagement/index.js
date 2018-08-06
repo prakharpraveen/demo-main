@@ -357,8 +357,8 @@ class AppManagement extends Component {
             if (value.length > 0) {
                 let expandedKeys = data.map(item => item.moduleid);
                 this.props.setExpandedKeys(expandedKeys);
-            }else{
-                this.props.setExpandedKeys(['00']);
+            } else {
+                this.props.setExpandedKeys(["00"]);
             }
             this.props.setTreeData(data);
         };
@@ -522,6 +522,7 @@ class AppManagement extends Component {
                 <PageLayoutRight>
                     {this.switchFrom()}
                     <Modal
+                        maskClosable={false}
                         closable={false}
                         title={modalType === "0" ? "应用复制" : "页面复制"}
                         okText={"确定"}

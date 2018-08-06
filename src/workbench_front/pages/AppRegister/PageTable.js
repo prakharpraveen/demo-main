@@ -907,11 +907,11 @@ class PageTable extends Component {
                             size="middle"
                         />
                         <Modal
+                            maskClosable={false}
                             closable={false}
                             title="导入页面模板"
                             okText="确定"
                             cancelText="取消"
-                            mask={false}
                             wrapClassName="vertical-center-modal template-code-add"
                             visible={this.state.visible}
                             onOk={this.handleOk}
