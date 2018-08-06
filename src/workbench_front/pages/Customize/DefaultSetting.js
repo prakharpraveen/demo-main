@@ -15,7 +15,6 @@ import ContentLangRef from "Components/Refers/ContentLangRef";
 import DataFormatRef from "Components/Refers/DataFormatRef";
 import Notice from "Components/Notice";
 import Ajax from "Pub/js/ajax";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 class DefaultSetting extends Component {
     constructor(props) {
         super(props);
