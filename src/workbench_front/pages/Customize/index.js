@@ -9,7 +9,6 @@ import { high } from "nc-lightapp-front";
 import Loadable from "react-loadable";
 import Loading from "Components/Loading";
 import Ajax from "Pub/js/ajax";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 import "./index.less";
 const { Refer } = high;
 const DefaultSetting = Loadable({

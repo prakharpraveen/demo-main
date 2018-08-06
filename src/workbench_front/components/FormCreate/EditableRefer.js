@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Tooltip } from "antd";
 import { high } from "nc-lightapp-front";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 const { Refer } = high;
 /**
  * 表单编辑 - Refer类型
