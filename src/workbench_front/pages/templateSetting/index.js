@@ -40,11 +40,11 @@ const { Header, Footer, Sider, Content } = Layout;
 const Btns = [
     {
         name: '修改',
-        type: 'primary'
+        type: ''
     },
     {
         name: '删除',
-        type: 'primary'
+        type: ''
     },
     {
         name: '复制',
@@ -52,11 +52,11 @@ const Btns = [
     },
     {
         name: '分配',
-        type: 'primary'
+        type: ''
     },
     {
         name: '浏览',
-        type: 'primary'
+        type: ''
     }
 ];
 class TemplateSetting extends Component {
@@ -446,7 +446,6 @@ class TemplateSetting extends Component {
             this.reqTreeTemData();
             setExpandedTemKeys(expandedTemKeys);
             setSelectedTemKeys(selectedTemKeys);
-            console.log(selectedTemKeys)
         } else {
             setSelectedKeys([ '00' ]);
             setDef1('');
@@ -885,7 +884,7 @@ class TemplateSetting extends Component {
                             parentIdcon &&
                             parentIdcon !== 'root' && (
                                 <Dropdown overlay={this.menuFun()} trigger={[ 'click' ]}>
-                                    <Button key='' className='margin-left-10' type='primary'>
+                                    <Button key='' className='margin-left-10' type=''>
                                         设置默认模板
                                     </Button>
                                 </Dropdown>
