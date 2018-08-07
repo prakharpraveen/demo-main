@@ -69,7 +69,6 @@ export const setTemplatePk = (data) => {
 		data
 	};
 };
-
 //searchValue
 export const setSearchValue = (data) => {
 	return {
@@ -77,3 +76,18 @@ export const setSearchValue = (data) => {
 		data
 	};
 };
+//setPageCode
+export const setPageCode = (data) => {
+	return {
+		type: TemplateSetting.PAGECODE,
+		data
+	};
+};
+//setAppCode
+export const setAppCode = (data) => {
+	return {
+		type: TemplateSetting.APPCODE,
+		data
+	};
+};
+

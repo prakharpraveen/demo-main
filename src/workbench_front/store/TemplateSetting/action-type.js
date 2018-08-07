@@ -20,6 +20,9 @@ export const EXPANDEDTEMKEYS = 'EXPANDEDTEMKEYS';
 export const TEMPLATEPK = 'TEMPLATEPK';
 // 左侧查询模板数据 searchValue
 export const SEARCHVALUE = 'SEARCHVALUE';
-
+//pageCode,
+export const PAGECODE = 'PAGECODE';
+//appCode
+export const APPCODE = 'APPCODE';
 
 

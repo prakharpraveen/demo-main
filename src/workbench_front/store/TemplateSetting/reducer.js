@@ -23,7 +23,9 @@ let defaultState = {
     selectedTemKeys:[],
     expandedTemKeys:[],
     templatePk:'',
-    searchValue:''
+    searchValue:'',
+    appCode:'',
+    pageCode:''
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
@@ -101,6 +103,20 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     searchValue: action.data
+                }
+        };
+        case TemplateSetting.PAGECODE:
+            return {
+                ...state,
+                ...{
+                    pageCode: action.data
+                }
+        };
+        case TemplateSetting.APPCODE:
+            return {
+                ...state,
+                ...{
+                    appCode: action.data
                 }
         };
         default:
