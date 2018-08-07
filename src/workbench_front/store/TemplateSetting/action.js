@@ -69,3 +69,11 @@ export const setTemplatePk = (data) => {
 		data
 	};
 };
+
+//searchValue
+export const setSearchValue = (data) => {
+	return {
+		type: TemplateSetting.SEARCHVALUE,
+		data
+	};
+};

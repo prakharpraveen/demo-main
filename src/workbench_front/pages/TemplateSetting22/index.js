@@ -10,7 +10,8 @@ import {
     setDef1,
     setSelectedTemKeys,
     setExpandedTemKeys,
-    setTemplatePk
+    setTemplatePk,
+    setSearchValue
 } from 'Store/TemplateSetting/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -61,7 +62,6 @@ class TemplateSetting extends Component {
         console.log(this.urlRequestObj);
         this.state = {
             siderHeight: '280',
-            searchValue: '',
             autoExpandParent: true,
             autoExpandTemParent: true,
             treeTemBillData: [], //单据模板数据
@@ -414,12 +414,35 @@ class TemplateSetting extends Component {
     };
     componentDidMount = () => {
         let { param } = this.state;
-        if (param && param.code && param.pageName === 'equiptool') {
-            this.setState({ searchValue: paramPageCode }, () => {
-                this.handleSearch(paramPageCode, this.handleExpanded);
-            });
+        // if (param && param.code && param.pageName === 'equiptool') {
+        //     this.setState({ searchValue: paramPageCode }, () => {
+        //         this.handleSearch(paramPageCode, this.handleExpanded);
+        //     });
+        // } else {
+        //     this.reqTreeData();
+        // }
+        this.reqTreeData();
+        let {
+            selectedKeys,
+            setSelectedKeys,
+            def1,
+            treeData,
+            expandedKeys,
+            setExpandedKeys
+        } = this.props;
+        if (def1 !== "") {
+            console.log(222);
+            setSelectedKeys(selectedKeys);
+            setDef1(def1);
+            setExpandedKeys(expandedKeys);
+            // let historyNode = treeData.find(
+            //     item => item.moduleid === nodeInfo.id
+            // );
+            // this.handleTreeNodeSelect(historyNode,selectedKeys);
         } else {
-            this.reqTreeData();
+            console.log(111);
+            setSelectedKeys(["00"]);
+            setDef1("");
         }
         //样式处理
         // window.onresize = () => {
@@ -523,16 +546,13 @@ class TemplateSetting extends Component {
     onChange = (e) => {
         const value = e.target.value;
         if (value) {
-            this.setState({ searchValue: value }, () => {
-                this.handleSearch(value, this.handleExpanded);
-            });
+            this.props.setSearchValue(value);
+            this.handleSearch(value, this.handleExpanded);
         } else {
             this.reqTreeData();
             const expandedKeys = [ '00' ];
             this.props.setExpandedKeys(expandedKeys);
-            this.setState({
-                searchValue: ''
-            });
+            this.props.setSearchValue('');
         }
     };
     handleExpanded = (dataList) => {
@@ -700,7 +720,7 @@ class TemplateSetting extends Component {
     };
     //树组件的封装
     treeResAndUser = (data, typeSelect, hideSearch, selectedKeys, expandedKeys, autoExpandParent, classType) => {
-        const { searchValue } = this.state;
+        const { searchValue } = this.props;
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
@@ -1003,6 +1023,7 @@ TemplateSetting.propTypes = {
     setTreeTemBillData: PropTypes.func.isRequired,
     setTreeTemPrintData: PropTypes.func.isRequired,
     setTemplatePk: PropTypes.func.isRequired,
+    setSearchValue:PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
@@ -1010,7 +1031,8 @@ TemplateSetting.propTypes = {
     def1: PropTypes.string.isRequired,
     selectedTemKeys: PropTypes.array.isRequired,
     expandedTemKeys: PropTypes.array.isRequired,
-    templatePk: PropTypes.string.isRequired
+    templatePk: PropTypes.string.isRequired,
+    searchValue:PropTypes.string.isRequired
 };
 export default connect(
     (state) => ({
@@ -1022,7 +1044,8 @@ export default connect(
         def1: state.TemplateSettingData.def1,
         selectedTemKeys: state.TemplateSettingData.selectedTemKeys,
         expandedTemKeys: state.TemplateSettingData.expandedTemKeys,
-        templatePk: state.TemplateSettingData.templatePk
+        templatePk: state.TemplateSettingData.templatePk,
+        searchValue:state.TemplateSettingData.searchValue
     }),
     {
         setTreeData,
@@ -1033,6 +1056,7 @@ export default connect(
         setDef1,
         setSelectedTemKeys,
         setExpandedTemKeys,
-        setTemplatePk
+        setTemplatePk,
+        setSearchValue
     }
 )(TemplateSetting);

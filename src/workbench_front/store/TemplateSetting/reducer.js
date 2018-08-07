@@ -22,7 +22,8 @@ let defaultState = {
     selectedKeys: [ '00' ],
     selectedTemKeys:[],
     expandedTemKeys:[],
-    templatePk:''
+    templatePk:'',
+    searchValue:''
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
@@ -93,6 +94,13 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     templatePk: action.data
+                }
+        };
+        case TemplateSetting.SEARCHVALUE:
+            return {
+                ...state,
+                ...{
+                    searchValue: action.data
                 }
         };
         default:

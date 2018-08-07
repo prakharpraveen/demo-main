@@ -18,5 +18,8 @@ export const SELECTEDTEMKEYS = 'SELECTEDTEMKEYS';
 export const EXPANDEDTEMKEYS = 'EXPANDEDTEMKEYS';
 //右侧模板被选中的  templatePk
 export const TEMPLATEPK = 'TEMPLATEPK';
+// 左侧查询模板数据 searchValue
+export const SEARCHVALUE = 'SEARCHVALUE';
+
 
 
