@@ -51,7 +51,7 @@ class TreeModal extends Component {
                 length,
                 notSearchAreaCode,
                 proid,
-                classid
+                resid
             } = s.props.dataRef;
             let cardObj = {};
             if (this.props.targetAreaType === "0") {
@@ -153,6 +153,7 @@ class TreeModal extends Component {
             // }
             //新增了两个属性
             cardObj.proid = proid;
+            cardObj.resid = resid;
             cardList.push(cardObj);
         });
         //查询区&非查询区下拉类型需要添加默认dataval

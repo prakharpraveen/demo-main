@@ -152,37 +152,7 @@ class MyRightSider extends Component {
                 onChange={e => {
                     this.changeValue(e.target.value, property);
                 }}
-                onBlur={e => {
-                    if (property === "resid") {
-                        //元数据属性多语
-                        const metaid = utilService.getMetaidByAreaid(
-                            this.props.areaList,
-                            this.props.selectCard.areaid
-                        );
-                        Ajax({
-                            url: `/nccloud/platform/templet/queryresdata.do`,
-                            info: {
-                                name: "元数据属性多语",
-                                action: "元数据属性多语"
-                            },
-                            data: {
-                                metaid: metaid,
-                                resid: this.props.selectCard[property]
-                            },
-                            success: res => {
-                                if (res) {
-                                    let { data, success } = res.data;
-                                    if (success && data) {
-                                        this.props.selectCard.label = data;
-                                        this.updateCardInArea();
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        this.updateCardInArea();
-                    }
-                }}
+                onBlur={ e => {this.updateCardInArea(); }}
                 ref={input => (this[`${property}input`] = input)}
                 onPressEnter={e => {
                     this.onPressEnter(e.target.value, property);
