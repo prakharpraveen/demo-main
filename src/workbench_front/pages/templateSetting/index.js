@@ -74,6 +74,7 @@ class TemplateSetting extends Component {
             nodeKey: [],
             alloVisible: false,
             orgidObj: {},
+            searchValues:'',
             parentIdcon: '', //树节点的key
             batchSettingModalVisibel: false, //控制预览摸态框的显隐属性
             isDefaultTem: '',
@@ -553,7 +554,9 @@ class TemplateSetting extends Component {
         const value = e.target.value;
         if (value) {
             this.props.setSearchValue(value);
-            this.handleSearch(value, this.handleExpanded);
+            this.setState({
+                searchValues:value
+            },this.handleSearch(value, this.handleExpanded))
         } else {
             this.reqTreeData();
             const expandedKeys = [ '00' ];
@@ -604,7 +607,12 @@ class TemplateSetting extends Component {
             this.props.setDef1(e.selectedNodes[0].props.refData.def1);
             this.props.setAppCode(e.selectedNodes[0].props.refData.appCode);
             this.props.setPageCode(e.selectedNodes[0].props.refData.code);
-            this.reqTreeTemData();
+            this.setState(
+                {
+                    autoExpandParent: true
+                },
+                this.reqTreeTemData
+            );
         } else {
             this.props.setSelectedKeys(key);
             this.props.setDef1('');
@@ -614,8 +622,9 @@ class TemplateSetting extends Component {
     };
     //请求右侧树数据
     reqTreeTemData = (key) => {
-        console.log(111);
         let { def1, pageCode, appCode } = this.props;
+        console.log(appCode);
+        console.log(pageCode);
         let infoData = {
             pageCode: pageCode,
             appCode: appCode
