@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout } from 'Components/PageLayout';
 import Ajax from 'Pub/js/ajax.js';
-import Item from 'antd/lib/list/Item';
 import Notice from 'Components/Notice';
 import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
 import Svg from 'Components/Svg';
-import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
+// import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { generateData, generateTemData, generateTreeData, generateRoData, deepClone } from './method';
 const Option = Select.Option;
 const confirm = Modal.confirm;
@@ -78,7 +77,6 @@ class AssignComponent extends Component {
             roleSearchValue: '',
             respSearchValue: '',
             autoExpandParent: false,
-            templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
             nodeKey: this.props.nodeKey,
@@ -105,7 +103,6 @@ class AssignComponent extends Component {
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            templatePks: nextProps.templatePks,
             pageCode: nextProps.pageCode,
             def1: nextProps.def1,
             appCode: nextProps.appCode
@@ -127,11 +124,12 @@ class AssignComponent extends Component {
     }
     //已分配用户角色和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let { pageCode, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let { templatePk } = this.props;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
-            templateId: templatePks,
+            templateId: templatePk,
             appCode: appCode
         };
         if (def1 === 'apppage') {
@@ -536,7 +534,8 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let { pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
+        let { templatePk } = this.props;
         if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -562,7 +561,7 @@ class AssignComponent extends Component {
         newTargets = newTargets.substr(0, newTargetsLen - 1);
         let infoData = {
             pageCode: pageCode,
-            templateId: templatePks,
+            templateId: templatePk,
             orgId: orgidObj.refpk,
             appCode: appCode
         };
@@ -622,13 +621,13 @@ class AssignComponent extends Component {
             treeResData,
             allowDataArray,
             treeAllowedData,
-            templatePks,
             nodeKey,
             def1,
             tabActiveKey,
             roleSearchValue,
             respSearchValue
         } = this.state;
+        let { templatePk } = this.props;
         return (
             <Modal
                 closable={false}
@@ -724,4 +723,13 @@ class AssignComponent extends Component {
         );
     }
 }
-export default AssignComponent;
+AssignComponent.propTypes = {
+    templatePk: PropTypes.string.isRequired
+};
+export default connect(
+    (state) => ({
+        templatePk: state.TemplateSettingData.templatePk
+    }),
+    {
+    }
+)(AssignComponent);

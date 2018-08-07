@@ -150,7 +150,7 @@ class MyBtns extends Component {
                 this.saveZoneData(newListData, fromData, 1);
                 break;
             case "下一步":
-                if ((!fromData)||(!zoneDatas)||(zoneDatas.areaList.length===0)) {//
+                if ((!fromData)||(!zoneDatas)) {//
                     Notice({ status: 'warning', msg: '清完善表格和表单信息' });
                     return;
                 }

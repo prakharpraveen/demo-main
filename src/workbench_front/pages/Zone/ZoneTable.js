@@ -9,7 +9,6 @@ import { setNewList } from "Store/Zone/action";
 import Ajax from "Pub/js/ajax";
 import Notice from "Components/Notice";
 import MdDefaultClassEntityRef from "Components/Refers/mdDefaultClassEntityRef";
-import "nc-lightapp-front/dist/platform/nc-lightapp-front/index.css";
 const Option = Select.Option;
 
 // sunlei

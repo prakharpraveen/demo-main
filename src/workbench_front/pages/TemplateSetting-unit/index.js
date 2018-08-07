@@ -925,11 +925,11 @@ class TemplateSetting extends Component {
                         {def1 === 'menuitem' &&
                         treeTemPrintData.length > 0 && (
                             <div>
-                                <label htmlFor=''>模板标题：</label>
+                                <label htmlFor=''>模板编码：</label>
                                 <Input
                                     style={{ width: '80%' }}
                                     value={templateTitleVal}
-                                    placeholder='请输入标题'
+                                    placeholder='请输入编码'
                                     onChange={(e) => {
                                         const templateTitleVal = e.target.value;
                                         this.setState({
