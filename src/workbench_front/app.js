@@ -61,8 +61,8 @@ class App extends Component {
                         window.peData.nodeName = data.menu;
                         // 应用编码
                         window.peData.nodeCode = appcode;
-                        // 用户id
-                        window.peData.userID = window.businessInfo.userId;
+                        // 用户id  由于需要知道具体哪个人所以将userid字段改成userCode 此处需要注意
+                        window.peData.userID = window.businessInfo.userCode;
                         // 项目编码 
                         window.peData.projectCode =
                             window.businessInfo.projectCode;
@@ -135,8 +135,8 @@ class App extends Component {
                         window.peData.nodeName = data.data.menu;
                         // 应用编码
                         window.peData.nodeCode = appcode;
-                        // 用户id
-                        window.peData.userID = window.businessInfo.userId;
+                        // 用户id 由于需要知道具体哪个人所以将userid字段改成userCode 此处需要注意
+                        window.peData.userID = window.businessInfo.userCode;
                         // 项目编码
                         window.peData.projectCode =
                             window.businessInfo.projectCode;
