@@ -43,7 +43,7 @@ const Btns = [
         type: ''
     }
 ];
-class TemplateSetting extends Component {
+class TemplateSettingUnit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -970,4 +970,4 @@ class TemplateSetting extends Component {
         );
     }
 }
-export default TemplateSetting;
+export default TemplateSettingUnit;
