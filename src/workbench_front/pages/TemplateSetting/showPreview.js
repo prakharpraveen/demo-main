@@ -110,7 +110,6 @@ class PreviewModal extends Component {
     }
     render() {
         let { editTable, form, search } = this.props;
-        console.log(this.props.previewData);
         return (
             <Modal
                 closable={false}
