@@ -24,5 +24,9 @@ export const SEARCHVALUE = 'SEARCHVALUE';
 export const PAGECODE = 'PAGECODE';
 //appCode
 export const APPCODE = 'APPCODE';
+//parentIdcon
+export const PARENTIDCON = 'PARENTIDCON';
+//historyDataBool
+export const HISTORYDATABOOL = 'HISTORYDATABOOL';
 
 

@@ -90,4 +90,18 @@ export const setAppCode = (data) => {
 		data
 	};
 };
+// parentIdcon
+export const setParentIdcon = (data) => {
+	return {
+		type: TemplateSetting.PARENTIDCON,
+		data
+	};
+};
+//historyDataBool
+export const setHistoryDataBool = (data) => {
+	return {
+		type: TemplateSetting.HISTORYDATABOOL,
+		data
+	};
+};
 

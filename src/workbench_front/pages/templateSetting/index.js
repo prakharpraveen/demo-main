@@ -13,7 +13,9 @@ import {
     setTemplatePk,
     setSearchValue,
     setPageCode,
-    setAppCode
+    setAppCode,
+    setParentIdcon,
+    setHistoryDataBool
 } from 'Store/TemplateSetting/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -74,8 +76,7 @@ class TemplateSetting extends Component {
             nodeKey: [],
             alloVisible: false,
             orgidObj: {},
-            searchValues:'',
-            parentIdcon: '', //树节点的key
+            searchValues: '',
             batchSettingModalVisibel: false, //控制预览摸态框的显隐属性
             isDefaultTem: '',
             previewPrintContent: '',
@@ -85,8 +86,7 @@ class TemplateSetting extends Component {
     }
     // 按钮显隐性控制
     setBtnsShow = (item) => {
-        let { parentIdcon } = this.state;
-        let { def1 } = this.props;
+        let { def1, parentIdcon } = this.props;
         let { name } = item;
         let isShow = false;
         switch (name) {
@@ -291,7 +291,7 @@ class TemplateSetting extends Component {
                         }
                     });
                 } else {
-                    //openPage(`TemplateSetting`, false, { pk: templateId });
+                    this.props.setHistoryDataBool(true);
                     openPage(`ZoneSetting`, false, {
                         templetid: templatePk,
                         status: 'templateSetting'
@@ -379,8 +379,7 @@ class TemplateSetting extends Component {
      * @param textInfo 请求成功后的提示信息
      */
     setDefaultFun = (url, infoData, textInfo) => {
-        let { pageCode, parentIdcon } = this.state;
-        let { def1 } = this.props;
+        let { def1, parentIdcon } = this.props;
         if (def1 === 'apppage') {
             infoData.templateType = 'bill';
         } else if (def1 === 'menuitem') {
@@ -447,6 +446,7 @@ class TemplateSetting extends Component {
             this.reqTreeTemData();
             setExpandedTemKeys(expandedTemKeys);
             setSelectedTemKeys(selectedTemKeys);
+            console.log(selectedTemKeys)
         } else {
             setSelectedKeys([ '00' ]);
             setDef1('');
@@ -460,8 +460,8 @@ class TemplateSetting extends Component {
     };
     //右侧树组装数据
     restoreTreeTemData = (templateType) => {
-        let { treeTemBillData, treeTemPrintData, parentIdcon } = this.state;
-        let { def1, selectedTemKeys } = this.props;
+        let { treeTemBillData, treeTemPrintData } = this.state;
+        let { def1, selectedTemKeys, parentIdcon, historyDataBool } = this.props;
         let treeData = [];
         let treeInfo;
         let treeTemBillDataArray = this.props.treeTemBillData;
@@ -497,12 +497,14 @@ class TemplateSetting extends Component {
         if (templateType === 'bill') {
             if (def1 === 'apppage') {
                 if (treeData.length > 0) {
-                    let newinitKeyArray = [];
-                    newinitKeyArray.push(treeData[0].key);
-                    this.props.setSelectedTemKeys(newinitKeyArray);
                     this.props.setTemplatePk(treeData[0].pk);
+                    if(!historyDataBool){
+                        let newinitKeyArray = [];
+                        newinitKeyArray.push(treeData[0].key);
+                        this.props.setSelectedTemKeys(newinitKeyArray);
+                        this.props.setParentIdcon(treeData[0].parentId);
+                    }
                     this.setState({
-                        parentIdcon: treeData[0].parentId,
                         templateNameVal: treeData[0].name
                     });
                 }
@@ -514,12 +516,14 @@ class TemplateSetting extends Component {
         } else if (templateType === 'print') {
             if (def1 === 'menuitem') {
                 if (treeData.length > 0) {
-                    let newinitKeyArray = [];
-                    newinitKeyArray.push(treeData[0].key);
-                    this.props.setSelectedTemKeys(newinitKeyArray);
                     this.props.setTemplatePk(treeData[0].pk);
+                    if(!historyDataBool){
+                        let newinitKeyArray = [];
+                        newinitKeyArray.push(treeData[0].key);
+                        this.props.setSelectedTemKeys(newinitKeyArray);
+                        this.props.setParentIdcon(treeData[0].parentId);
+                    }
                     this.setState({
-                        parentIdcon: treeData[0].parentId,
                         templateNameVal: treeData[0].name,
                         templateTitleVal: treeData[0].code
                     });
@@ -554,9 +558,12 @@ class TemplateSetting extends Component {
         const value = e.target.value;
         if (value) {
             this.props.setSearchValue(value);
-            this.setState({
-                searchValues:value
-            },this.handleSearch(value, this.handleExpanded))
+            this.setState(
+                {
+                    searchValues: value
+                },
+                this.handleSearch(value, this.handleExpanded)
+            );
         } else {
             this.reqTreeData();
             const expandedKeys = [ '00' ];
@@ -623,8 +630,6 @@ class TemplateSetting extends Component {
     //请求右侧树数据
     reqTreeTemData = (key) => {
         let { def1, pageCode, appCode } = this.props;
-        console.log(appCode);
-        console.log(pageCode);
         let infoData = {
             pageCode: pageCode,
             appCode: appCode
@@ -664,8 +669,8 @@ class TemplateSetting extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        let { templateNameVal, parentIdcon } = this.state;
-        let { def1 } = this.props;
+        let { templateNameVal } = this.state;
+        let { def1, parentIdcon } = this.props;
         let templateType = '';
         if (def1 === 'apppage') {
             templateType = 'bill';
@@ -680,8 +685,8 @@ class TemplateSetting extends Component {
         if (key.length > 0) {
             this.props.setSelectedTemKeys(key);
             this.props.setTemplatePk(key[0]);
+            this.props.setParentIdcon(e.selectedNodes[0].props.refData.parentId);
             this.setState({
-                parentIdcon: e.selectedNodes[0].props.refData.parentId,
                 templateNameVal: e.selectedNodes[0].props.refData.name,
                 isDefaultTem: e.selectedNodes[0].props.refData.isDefault,
                 templateTitleVal: e.selectedNodes[0].props.refData.code
@@ -689,8 +694,8 @@ class TemplateSetting extends Component {
         } else {
             this.props.setSelectedTemKeys(key);
             this.props.setTemplatePk('');
+            this.props.setParentIdcon('');
             this.setState({
-                parentIdcon: '',
                 templateNameVal: '',
                 isDefaultTem: '',
                 templateTitleVal: ''
@@ -840,7 +845,6 @@ class TemplateSetting extends Component {
             batchSettingModalVisibel,
             nodeKey,
             treeDataArray,
-            parentIdcon,
             autoExpandParent,
             autoExpandTemParent,
             previewPrintContent,
@@ -854,7 +858,8 @@ class TemplateSetting extends Component {
             expandedTemKeys,
             templatePk,
             appCode,
-            pageCode
+            pageCode,
+            parentIdcon
         } = this.props;
         const treeData = [
             {
@@ -1040,6 +1045,10 @@ TemplateSetting.propTypes = {
     setTreeTemPrintData: PropTypes.func.isRequired,
     setTemplatePk: PropTypes.func.isRequired,
     setSearchValue: PropTypes.func.isRequired,
+    setPageCode: PropTypes.func.isRequired,
+    setAppCode: PropTypes.func.isRequired,
+    setParentIdcon: PropTypes.func.isRequired,
+    setHistoryDataBool: PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
@@ -1050,7 +1059,9 @@ TemplateSetting.propTypes = {
     templatePk: PropTypes.string.isRequired,
     searchValue: PropTypes.string.isRequired,
     pageCode: PropTypes.string.isRequired,
-    appCode: PropTypes.string.isRequired
+    appCode: PropTypes.string.isRequired,
+    parentIdcon: PropTypes.string.isRequired,
+    historyDataBool: PropTypes.bool.isRequired
 };
 export default connect(
     (state) => ({
@@ -1065,7 +1076,9 @@ export default connect(
         templatePk: state.TemplateSettingData.templatePk,
         searchValue: state.TemplateSettingData.searchValue,
         pageCode: state.TemplateSettingData.pageCode,
-        appCode: state.TemplateSettingData.appCode
+        appCode: state.TemplateSettingData.appCode,
+        parentIdcon: state.TemplateSettingData.parentIdcon,
+        historyDataBool: state.TemplateSettingData.historyDataBool
     }),
     {
         setTreeData,
@@ -1079,6 +1092,8 @@ export default connect(
         setTemplatePk,
         setSearchValue,
         setPageCode,
-        setAppCode
+        setAppCode,
+        setParentIdcon,
+        setHistoryDataBool
     }
 )(TemplateSetting);
