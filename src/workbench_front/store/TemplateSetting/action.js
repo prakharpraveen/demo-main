@@ -64,7 +64,6 @@ export const setSelectedTemKeys = (data) => {
 };
 //TEMPLATEPK
 export const setTemplatePk = (data) => {
-	console.log(data);
 	return {
 		type: TemplateSetting.TEMPLATEPK,
 		data

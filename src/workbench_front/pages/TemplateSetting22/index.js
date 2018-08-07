@@ -919,60 +919,64 @@ class TemplateSetting extends Component {
                         setModalVisibel={this.setModalVisibel}
                     />
                 )}
-                <Modal
-                    closable={false}
-                    title='请录入正确的模板名称和编码'
-                    visible={visible}
-                    onOk={this.handleOk}
-                    okText={'确认'}
-                    cancelText={'取消'}
-                    onCancel={this.handleCancel}
-                >
-                    <div className='copyTemplate'>
-                        <div>
-                            <label htmlFor=''>模板名称：</label>
-                            <Input
-                                value={templateNameVal}
-                                style={{ width: '80%' }}
-                                placeholder='请输入名称'
-                                onChange={(e) => {
-                                    const templateNameVal = e.target.value;
-                                    this.setState({
-                                        templateNameVal
-                                    });
-                                }}
-                            />
-                        </div>
-                        {def1 == 'menuitem' &&
-                        treeTemPrintData.length > 0 && (
+                {
+                    visible&&(<Modal
+                        closable={false}
+                        title='请录入正确的模板名称和编码'
+                        visible={visible}
+                        onOk={this.handleOk}
+                        okText={'确认'}
+                        cancelText={'取消'}
+                        onCancel={this.handleCancel}
+                    >
+                        <div className='copyTemplate'>
                             <div>
-                                <label htmlFor=''>模板编码：</label>
+                                <label htmlFor=''>模板名称：</label>
                                 <Input
+                                    value={templateNameVal}
                                     style={{ width: '80%' }}
-                                    value={templateTitleVal}
-                                    placeholder='请输入编码'
+                                    placeholder='请输入名称'
                                     onChange={(e) => {
-                                        const templateTitleVal = e.target.value;
+                                        const templateNameVal = e.target.value;
                                         this.setState({
-                                            templateTitleVal
+                                            templateNameVal
                                         });
                                     }}
                                 />
                             </div>
-                        )}
-                    </div>
-                </Modal>
-                <Modal
-                    closable={false}
-                    title='打印模板预览'
-                    okText={'确认'}
-                    cancelText={'取消'}
-                    visible={previewPrintVisible}
-                    onCancel={this.hideModal}
-                    footer={null}
-                >
-                    <div className='printContent' />
-                </Modal>
+                            {def1 == 'menuitem' &&
+                            treeTemPrintData.length > 0 && (
+                                <div>
+                                    <label htmlFor=''>模板编码：</label>
+                                    <Input
+                                        style={{ width: '80%' }}
+                                        value={templateTitleVal}
+                                        placeholder='请输入编码'
+                                        onChange={(e) => {
+                                            const templateTitleVal = e.target.value;
+                                            this.setState({
+                                                templateTitleVal
+                                            });
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </Modal>)
+                }
+                {
+                    previewPrintVisible&&(<Modal
+                        closable={false}
+                        title='打印模板预览'
+                        okText={'确认'}
+                        cancelText={'取消'}
+                        visible={previewPrintVisible}
+                        onCancel={this.hideModal}
+                        footer={null}
+                    >
+                        <div className='printContent' />
+                    </Modal>)
+                }
                 {alloVisible && (
                     <AssignComponent
                         templatePk={templatePk}

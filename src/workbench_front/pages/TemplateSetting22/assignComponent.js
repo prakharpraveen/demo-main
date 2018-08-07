@@ -7,7 +7,6 @@ import Ajax from 'Pub/js/ajax.js';
 import Notice from 'Components/Notice';
 import BusinessUnitGroupTreeRef from 'Components/Refers/BusinessUnitGroupTreeRef';
 import Svg from 'Components/Svg';
-// import 'nc-lightapp-front/dist/platform/nc-lightapp-front/index.css';
 import { generateData, generateTemData, generateTreeData, generateRoData, deepClone } from './method';
 const Option = Select.Option;
 const confirm = Modal.confirm;
