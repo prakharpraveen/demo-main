@@ -48,17 +48,17 @@
             .nav-right {
                 width: 360px;
                 padding: 0 15px;
+                .ant-select-auto-complete.ant-select .ant-input:focus,
+                .ant-select-auto-complete.ant-select .ant-input:hover {
+                    border-color: #888888;
+                    box-shadow: none;
+                }
                 .autocomplete {
                     input {
+                        border-radius: 0;
                         border-top: none;
                         border-right: none;
                         border-left: none;
-                    }
-                    input:hover {
-                        box-shadow: none;
-                    }
-                    input:focus {
-                        box-shadow: none;
                     }
                 }
             }
