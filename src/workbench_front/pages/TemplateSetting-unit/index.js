@@ -14,8 +14,7 @@ import {
     setSearchValue,
     setPageCode,
     setAppCode,
-    setParentIdcon,
-    setHistoryDataBool
+    setParentIdcon
 } from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -41,27 +40,27 @@ const Btns = [
     {
         name: '修改',
         type: '',
-        code:'edit'
+        code: 'edit'
     },
     {
         name: '删除',
         type: '',
-        code:'delete'
+        code: 'delete'
     },
     {
         name: '复制',
         type: 'primary',
-        code:'copy'
+        code: 'copy'
     },
     {
         name: '分配',
         type: '',
-        code:'assign'
+        code: 'assign'
     },
     {
         name: '浏览',
         type: '',
-        code:'browse'
+        code: 'browse'
     }
 ];
 class TemplateSettingUnit extends Component {
@@ -162,7 +161,7 @@ class TemplateSettingUnit extends Component {
     };
     //生成按钮方法
     creatBtn = (btnObj) => {
-        let { isShow, type, code } = btnObj;
+        let { isShow, type, code, name } = btnObj;
         if (isShow) {
             return (
                 <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, code)}>
@@ -209,7 +208,9 @@ class TemplateSettingUnit extends Component {
             success: ({ data }) => {
                 if (data.success) {
                     Notice({ status: 'success', msg: '复制成功' });
-                    this.reqTreeTemData();
+                    this.props.setSelectedTemKeys([ data.data ]);
+                    this.props.setParentIdcon(data.data);
+                    this.reqTreeTemData('copy');
                     this.setState({
                         visible: false
                     });
@@ -269,7 +270,6 @@ class TemplateSettingUnit extends Component {
                         }
                     });
                 } else {
-                    this.props.setHistoryDataBool(true);
                     openPage(`ZoneSetting`, false, {
                         templetid: templatePk,
                         status: 'templateSetting-unit'
@@ -356,7 +356,7 @@ class TemplateSettingUnit extends Component {
             setExpandedKeys(expandedKeys);
             setAppCode(appCode);
             setPageCode(pageCode);
-            this.reqTreeTemData();
+            this.reqTreeTemData('historyData');
             setExpandedTemKeys(expandedTemKeys);
             setSelectedTemKeys(selectedTemKeys);
         } else {
@@ -370,9 +370,9 @@ class TemplateSettingUnit extends Component {
         // };
     };
     //右侧树组装数据
-    restoreTreeTemData = (templateType) => {
-        let { treeTemBillData, treeTemPrintData  } = this.state;
-        let { selectedKeys, def1, parentIdcon, historyDataBool } = this.props;
+    restoreTreeTemData = (templateType, eventType) => {
+        let { treeTemBillData, treeTemPrintData } = this.state;
+        let { selectedKeys, def1, parentIdcon } = this.props;
         let treeTemBillDataArray = this.props.treeTemBillData;
         let treeTemPrintDataArray = this.props.treeTemPrintData;
         let treeData = [];
@@ -430,16 +430,16 @@ class TemplateSettingUnit extends Component {
         if (templateType === 'bill') {
             if (def1 === 'apppage') {
                 if (treeData.length > 0) {
-                    this.props.setTemplatePk(treeData[0].pk);
-                    if(!historyDataBool){
+                    if (!eventType) {
                         let newinitKeyArray = [];
                         newinitKeyArray.push(treeData[0].key);
                         this.props.setSelectedTemKeys(newinitKeyArray);
                         this.props.setParentIdcon(treeData[0].parentId);
+                        this.props.setTemplatePk(treeData[0].pk);
+                        this.setState({
+                            templateNameVal: treeData[0].name
+                        });
                     }
-                    this.setState({
-                        templateNameVal: treeData[0].name
-                    });
                 }
             }
             treeTemBillData = treeData;
@@ -449,16 +449,17 @@ class TemplateSettingUnit extends Component {
         } else if (templateType === 'print') {
             if (def1 === 'menuitem') {
                 if (treeData.length > 0) {
-                    this.props.setTemplatePk(treeData[0].pk);
-                    if(!historyDataBool){
+                    if (!eventType) {
                         let newinitKeyArray = [];
                         newinitKeyArray.push(treeData[0].key);
                         this.props.setSelectedTemKeys(newinitKeyArray);
                         this.props.setParentIdcon(treeData[0].parentId);
+                        this.props.setTemplatePk(treeData[0].pk);
+                        this.setState({
+                            templateNameVal: treeData[0].name,
+                            templateTitleVal: treeData[0].code
+                        });
                     }
-                    this.setState({
-                        templateNameVal: treeData[0].name
-                    });
                 }
             }
             treeTemPrintData = treeData;
@@ -511,9 +512,9 @@ class TemplateSettingUnit extends Component {
         }
     };
     //请求右侧树数据
-    reqTreeTemData = (key) => {
+    reqTreeTemData = (eventType) => {
         let { orgidObj } = this.state;
-        const { pageCode, appCode,def1 }=this.props;
+        const { pageCode, appCode, def1 } = this.props;
         let infoData = {
             pageCode: pageCode,
             appCode: appCode,
@@ -522,19 +523,19 @@ class TemplateSettingUnit extends Component {
         if (!infoData.pageCode) {
             return;
         }
-        if(def1==='apppage'){
+        if (def1 === 'apppage') {
             infoData.templateType = 'bill';
-            this.reqTreeTemAjax(infoData, 'bill');
-        }else if(def1==='menuitem'){
+            this.reqTreeTemAjax(infoData, 'bill', eventType);
+        } else if (def1 === 'menuitem') {
             if (infoData.pageCode) {
                 delete infoData.pageCode;
             }
             infoData.templateType = 'print';
-            this.reqTreeTemAjax(infoData, 'print');
+            this.reqTreeTemAjax(infoData, 'print', eventType);
         }
     };
     //请求右侧树数据ajax方法封装
-    reqTreeTemAjax = (infoData, templateType) => {
+    reqTreeTemAjax = (infoData, templateType, eventType) => {
         Ajax({
             url: `/nccloud/platform/template/getTemplatesOfPage.do`,
             data: infoData,
@@ -546,10 +547,10 @@ class TemplateSettingUnit extends Component {
                 if (data.success) {
                     if (templateType === 'bill') {
                         this.props.setTreeTemBillData(data.data);
-                        this.restoreTreeTemData(templateType);
+                        this.restoreTreeTemData(templateType, eventType);
                     } else if (templateType === 'print') {
                         this.props.setTreeTemPrintData(data.data);
-                        this.restoreTreeTemData(templateType);
+                        this.restoreTreeTemData(templateType, eventType);
                     }
                 }
             }
@@ -557,7 +558,7 @@ class TemplateSettingUnit extends Component {
     };
     //单据模板树的onSelect事件
     onTemSelect = (key, e) => {
-        const {def1}=this.props;
+        const { def1 } = this.props;
         let templateType = '';
         if (def1 === 'apppage') {
             templateType = 'bill';
@@ -816,7 +817,16 @@ class TemplateSettingUnit extends Component {
             previewPrintContent,
             previewPrintVisible
         } = this.state;
-        const { selectedKeys, expandedKeys, def1, selectedTemKeys, expandedTemKeys, templatePk, pageCode, appCode } = this.props;
+        const {
+            selectedKeys,
+            expandedKeys,
+            def1,
+            selectedTemKeys,
+            expandedTemKeys,
+            templatePk,
+            pageCode,
+            appCode
+        } = this.props;
         const leftTreeData = [
             {
                 code: '00',
@@ -1000,7 +1010,6 @@ TemplateSettingUnit.propTypes = {
     setPageCode: PropTypes.func.isRequired,
     setAppCode: PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
-    setHistoryDataBool: PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
@@ -1012,8 +1021,7 @@ TemplateSettingUnit.propTypes = {
     searchValue: PropTypes.string.isRequired,
     pageCode: PropTypes.string.isRequired,
     appCode: PropTypes.string.isRequired,
-    parentIdcon: PropTypes.string.isRequired,
-    historyDataBool: PropTypes.bool.isRequired
+    parentIdcon: PropTypes.string.isRequired
 };
 export default connect(
     (state) => ({
@@ -1029,8 +1037,7 @@ export default connect(
         searchValue: state.TemplateSettingUnitData.searchValue,
         pageCode: state.TemplateSettingUnitData.pageCode,
         appCode: state.TemplateSettingUnitData.appCode,
-        parentIdcon: state.TemplateSettingUnitData.parentIdcon,
-        historyDataBool: state.TemplateSettingUnitData.historyDataBool
+        parentIdcon: state.TemplateSettingUnitData.parentIdcon
     }),
     {
         setTreeData,
@@ -1045,7 +1052,6 @@ export default connect(
         setSearchValue,
         setPageCode,
         setAppCode,
-        setParentIdcon,
-        setHistoryDataBool
+        setParentIdcon
     }
 )(TemplateSettingUnit);

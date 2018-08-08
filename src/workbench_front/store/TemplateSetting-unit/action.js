@@ -97,11 +97,4 @@ export const setParentIdcon = (data) => {
 		data
 	};
 };
-//historyDataBool
-export const setHistoryDataBool = (data) => {
-	return {
-		type: TemplateSettingUnit.HISTORYDATABOOL,
-		data
-	};
-};
 
