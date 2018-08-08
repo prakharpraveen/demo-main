@@ -130,7 +130,16 @@ class App extends Component {
                         appcode
                     },
                     success: ({ data }) => {
-                        // if (data.data && data.data.is_haspower) {
+                        if (data.data && !data.data.is_haspower) {
+                            if (type === "tab") {
+                                win.close();
+                            }
+                            Notice({
+                                status: "error",
+                                msg: data.hint_message
+                            });
+                            return;
+                        }
                         // 应用菜单名
                         window.peData.nodeName = data.data.menu;
                         // 应用编码
