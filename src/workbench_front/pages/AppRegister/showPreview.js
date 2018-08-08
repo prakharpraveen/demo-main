@@ -120,7 +120,7 @@ class PreviewModal extends Component {
                 visible={this.props.batchSettingModalVisibel}
                 onOk={this.onOkDialog}
                 onCancel={this.showModalHidden}
-                width="100%"
+                width="95%"
                 footer={[
                     <Button
                         key="submit"
