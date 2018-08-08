@@ -427,14 +427,14 @@ class PageTable extends Component {
                 action: "设置默认模板"
             },
             data: {
-                pageid: record.pageid,
+                appcode: record.appcode,
+                pagecode: record.pagecode,
                 templetid: record.pk_page_templet
             },
-            success: res => {
-                let { success, data } = res.data;
-                if (success && data) {
+            success: ({ data: { data } }) => {
+                if (data) {
                     let newPageTemplets = this.props.pageTemplets.map(
-                        (item, index) => {
+                        (item) => {
                             item.isdefault = false;
                             if (
                                 item.pk_page_templet === record.pk_page_templet
@@ -446,8 +446,6 @@ class PageTable extends Component {
                     );
                     this.props.setPageTemplateData(newPageTemplets);
                     Notice({ status: "success", msg: data });
-                } else {
-                    Notice({ status: "error", msg: data.data.true });
                 }
             }
         });
