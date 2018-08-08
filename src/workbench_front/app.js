@@ -62,10 +62,10 @@ class App extends Component {
                         // 应用编码
                         window.peData.nodeCode = appcode;
                         // 用户id  由于需要知道具体哪个人所以将userid字段改成userCode 此处需要注意
-                        window.peData.userID = window.businessInfo.userCode;
+                        window.peData.userID = window.GETBUSINESSINFO().userCode;
                         // 项目编码 
                         window.peData.projectCode =
-                            window.businessInfo.projectCode;
+                            window.GETBUSINESSINFO().projectCode;
                         // 打开应用
                         proxyAction(openApp, this, "打开应用")(
                             win,
@@ -136,10 +136,10 @@ class App extends Component {
                         // 应用编码
                         window.peData.nodeCode = appcode;
                         // 用户id 由于需要知道具体哪个人所以将userid字段改成userCode 此处需要注意
-                        window.peData.userID = window.businessInfo.userCode;
+                        window.peData.userID = window.GETBUSINESSINFO().userCode;
                         // 项目编码
                         window.peData.projectCode =
-                            window.businessInfo.projectCode;
+                            window.GETBUSINESSINFO().projectCode;
                         /**
                          * 校验回调
                          * @param {Object} win - 窗口对象

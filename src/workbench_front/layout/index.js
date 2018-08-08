@@ -82,7 +82,7 @@ class Layout extends Component {
                     newDate = moment(newDate).format("YYYY-MM-DD hh:mm:ss");
                     this.setState({ newDate }, () => {
                         this.businessInfoSetting({
-                            ...window.businessInfo,
+                            ...window.GETBUSINESSINFO(),
                             businessDate: newDate
                         });
                     });
@@ -295,7 +295,7 @@ class Layout extends Component {
                             selectedKey
                         },
                         () => {
-                            let busubessInfo = {
+                            let businessInfoData = {
                                 businessDate: bizDateTime,
                                 userId: userId,
                                 userName: userName,
@@ -304,7 +304,7 @@ class Layout extends Component {
                                 userCode: userCode,
                                 projectCode: projectCode
                             };
-                            this.businessInfoSetting(busubessInfo);
+                            this.businessInfoSetting(businessInfoData);
                         }
                     );
                 }
@@ -320,6 +320,7 @@ class Layout extends Component {
      * @param {String} groupId 集团id
      * @param {String} groupName 集团名称
      * @param {String} userCode 用户编码
+     * @param {String} projectCode 项目编码
      */
     businessInfoSetting = ({
         businessDate,
@@ -330,17 +331,19 @@ class Layout extends Component {
         userCode,
         projectCode
     }) => {
-        if (window.businessInfo && window.businessInfo.groupId !== groupId) {
+        if (window.GETBUSINESSINFO && window.GETBUSINESSINFO().groupId !== groupId) {
             this.refreshIframe();
         }
-        window.businessInfo = {
-            businessDate,
-            userId,
-            userName,
-            groupId,
-            groupName,
-            userCode,
-            projectCode
+        window.GETBUSINESSINFO = () => {
+            return {
+                businessDate,
+                userId,
+                userName,
+                groupId,
+                groupName,
+                userCode,
+                projectCode
+            };
         };
     };
     /**
