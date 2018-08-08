@@ -26,8 +26,7 @@ let defaultState = {
     searchValue:'',
     appCode:'',
     pageCode:'',
-    parentIdcon:'',
-    historyDataBool:false
+    parentIdcon:''
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
@@ -126,13 +125,6 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     parentIdcon: action.data
-                }
-        };
-        case TemplateSetting.HISTORYDATABOOL:
-            return {
-                ...state,
-                ...{
-                    historyDataBool: action.data
                 }
         };
         default:
