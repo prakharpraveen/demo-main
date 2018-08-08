@@ -715,7 +715,7 @@ AssignComponent.propTypes = {
 };
 export default connect(
     (state) => ({
-        templatePk: state.TemplateSettingData.templatePk
+        templatePk: state.TemplateSettingUnitData.templatePk
     }),
     {
     }
