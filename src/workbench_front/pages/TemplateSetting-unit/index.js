@@ -40,23 +40,28 @@ const { Header, Footer, Sider, Content } = Layout;
 const Btns = [
     {
         name: '修改',
-        type: ''
+        type: '',
+        code:'edit'
     },
     {
         name: '删除',
-        type: ''
+        type: '',
+        code:'delete'
     },
     {
         name: '复制',
-        type: 'primary'
+        type: 'primary',
+        code:'copy'
     },
     {
         name: '分配',
-        type: ''
+        type: '',
+        code:'assign'
     },
     {
         name: '浏览',
-        type: ''
+        type: '',
+        code:'browse'
     }
 ];
 class TemplateSettingUnit extends Component {
@@ -92,10 +97,10 @@ class TemplateSettingUnit extends Component {
     setBtnsShow = (item) => {
         let { templateType } = this.state;
         const { def1, parentIdcon } = this.props;
-        let { name } = item;
+        let { code } = item;
         let isShow = false;
-        switch (name) {
-            case '修改':
+        switch (code) {
+            case 'edit':
                 if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
@@ -106,7 +111,7 @@ class TemplateSettingUnit extends Component {
                     }
                 }
                 break;
-            case '删除':
+            case 'delete':
                 if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
@@ -117,7 +122,7 @@ class TemplateSettingUnit extends Component {
                     }
                 }
                 break;
-            case '复制':
+            case 'copy':
                 if (parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
@@ -128,7 +133,7 @@ class TemplateSettingUnit extends Component {
                     }
                 }
                 break;
-            case '分配':
+            case 'assign':
                 if (parentIdcon === 'root' || parentIdcon === 'groupRoot' || templateType === 'group') {
                     isShow = false;
                 } else {
@@ -139,7 +144,7 @@ class TemplateSettingUnit extends Component {
                     }
                 }
                 break;
-            case '浏览':
+            case 'browse':
                 if (parentIdcon === 'groupRoot') {
                     isShow = false;
                 } else {
@@ -157,10 +162,10 @@ class TemplateSettingUnit extends Component {
     };
     //生成按钮方法
     creatBtn = (btnObj) => {
-        let { name, isShow, type } = btnObj;
+        let { isShow, type, code } = btnObj;
         if (isShow) {
             return (
-                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, name)}>
+                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, code)}>
                     {name}
                 </Button>
             );
@@ -219,7 +224,7 @@ class TemplateSettingUnit extends Component {
         });
     };
     //按钮事件的触发
-    handleClick = (btnName) => {
+    handleClick = (code) => {
         let { templateNameVal, orgidObj } = this.state;
         const { def1, templatePk, appCode, pageCode } = this.props;
         let infoData = {
@@ -233,13 +238,13 @@ class TemplateSettingUnit extends Component {
             Notice({ status: 'warning', msg: '请选择模板数据' });
             return;
         }
-        switch (btnName) {
-            case '复制':
+        switch (code) {
+            case 'copy':
                 this.setState({
                     visible: true
                 });
                 break;
-            case '修改':
+            case 'edit':
                 if (def1 === 'menuitem') {
                     Ajax({
                         loading: true,
@@ -271,7 +276,7 @@ class TemplateSettingUnit extends Component {
                     });
                 }
                 break;
-            case '删除':
+            case 'delete':
                 let url;
                 let _this = this;
                 if (def1 === 'menuitem') {
@@ -309,12 +314,12 @@ class TemplateSettingUnit extends Component {
                     onCancel() {}
                 });
                 break;
-            case '分配':
+            case 'assign':
                 this.setState({
                     alloVisible: true
                 });
                 break;
-            case '浏览':
+            case 'browse':
                 if (def1 === 'menuitem') {
                     this.showModal();
                 } else {

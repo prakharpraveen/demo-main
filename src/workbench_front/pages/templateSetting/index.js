@@ -61,7 +61,7 @@ const Btns = [
     {
         name: '浏览',
         type: '',
-        code:''
+        code:'browse'
     }
 ];
 class TemplateSetting extends Component {
@@ -92,10 +92,10 @@ class TemplateSetting extends Component {
     // 按钮显隐性控制
     setBtnsShow = (item) => {
         let { def1, parentIdcon } = this.props;
-        let { name } = item;
+        let { code } = item;
         let isShow = false;
-        switch (name) {
-            case '修改':
+        switch (code) {
+            case 'edit':
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
@@ -106,7 +106,7 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '删除':
+            case 'delete':
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
@@ -117,14 +117,14 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '复制':
+            case 'copy':
                 if (parentIdcon) {
                     isShow = true;
                 } else {
                     isShow = false;
                 }
                 break;
-            case '分配':
+            case 'assign':
                 if (parentIdcon === 'root') {
                     isShow = false;
                 } else {
@@ -135,7 +135,7 @@ class TemplateSetting extends Component {
                     }
                 }
                 break;
-            case '浏览':
+            case 'browse':
                 if (parentIdcon) {
                     isShow = true;
                 } else {
@@ -149,10 +149,10 @@ class TemplateSetting extends Component {
     };
     //生成按钮方法
     creatBtn = (btnObj) => {
-        let { name, isShow, type } = btnObj;
+        let { name, isShow, type, code } = btnObj;
         if (isShow) {
             return (
-                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, name)}>
+                <Button key={name} className='margin-left-6' type={type} onClick={this.handleClick.bind(this, code)}>
                     {name}
                 </Button>
             );
@@ -217,11 +217,11 @@ class TemplateSetting extends Component {
         }
         return (
             <Menu onClick={this.settingClick.bind(this)}>
-                <Menu.Item key='设置默认'>
+                <Menu.Item key='setDefault'>
                     <button disabled={isButton}>设置默认</button>
                 </Menu.Item>
                 <Menu.Divider />
-                <Menu.Item key='取消默认'>
+                <Menu.Item key='cancelDefault'>
                     <button disabled={!isButton}>取消默认</button>
                 </Menu.Item>
             </Menu>
@@ -243,11 +243,11 @@ class TemplateSetting extends Component {
         }
         let url;
         switch (btnName) {
-            case '设置默认':
+            case 'setDefault':
                 url = '/nccloud/platform/template/setDefaultTemplate.do';
                 this.setDefaultFun(url, infoDataSet, '设置默认');
                 break;
-            case '取消默认':
+            case 'cancelDefault':
                 url = '/nccloud/platform/template/cancelDefaultTemplate.do';
                 this.setDefaultFun(url, infoDataSet, '取消默认');
                 break;
@@ -256,7 +256,7 @@ class TemplateSetting extends Component {
         }
     };
     //按钮事件的触发
-    handleClick = (btnName) => {
+    handleClick = (code) => {
         let { def1, templatePk, pageCode, appCode } = this.props;
         let infoData = {
             templateId: templatePk
@@ -265,13 +265,13 @@ class TemplateSetting extends Component {
             Notice({ status: 'warning', msg: '请选择模板数据' });
             return;
         }
-        switch (btnName) {
-            case '复制':
+        switch (code) {
+            case 'copy':
                 this.setState({
                     visible: true
                 });
                 break;
-            case '修改':
+            case 'edit':
                 if (def1 === 'menuitem') {
                     Ajax({
                         loading: true,
@@ -303,7 +303,7 @@ class TemplateSetting extends Component {
                     });
                 }
                 break;
-            case '删除':
+            case 'delete':
                 let url;
                 if (def1 === 'menuitem') {
                     url = `/nccloud/platform/template/deletePrintTemplate.do`;
@@ -340,12 +340,12 @@ class TemplateSetting extends Component {
                     onCancel() {}
                 });
                 break;
-            case '分配':
+            case 'assign':
                 this.setState({
                     alloVisible: true
                 });
                 break;
-            case '浏览':
+            case 'browse':
                 if (def1 === 'menuitem') {
                     this.showModal();
                 } else {
