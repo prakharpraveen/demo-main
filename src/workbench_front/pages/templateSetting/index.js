@@ -594,14 +594,8 @@ class TemplateSetting extends Component {
             success: (res) => {
                 let { success, data } = res.data;
                 if (success && data) {
-                    this.setState(
-                        {
-                            treeDataArray: data
-                        },
-                        () => {
-                            callback(data);
-                        }
-                    );
+                    this.props.setTreeData(data);
+                    callback(data);
                 }
             }
         });
@@ -843,7 +837,6 @@ class TemplateSetting extends Component {
             alloVisible,
             batchSettingModalVisibel,
             nodeKey,
-            treeDataArray,
             autoExpandParent,
             autoExpandTemParent,
             previewPrintContent,

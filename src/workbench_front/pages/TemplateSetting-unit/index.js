@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+    setTreeData,
+    setTreeTemBillData,
+    setTreeTemPrintData,
+    setExpandedKeys,
+    setSelectedKeys,
+    setDef1,
+    setSelectedTemKeys,
+    setExpandedTemKeys,
+    setTemplatePk,
+    setSearchValue,
+    setPageCode,
+    setAppCode,
+    setParentIdcon,
+    setHistoryDataBool
+} from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
 import { createTree } from 'Pub/js/createTree';
@@ -970,4 +986,67 @@ class TemplateSettingUnit extends Component {
         );
     }
 }
-export default TemplateSettingUnit;
+TemplateSettingUnit.propTypes = {
+    treeData: PropTypes.array.isRequired,
+    setTreeData: PropTypes.func.isRequired,
+    setExpandedKeys: PropTypes.func.isRequired,
+    setSelectedKeys: PropTypes.func.isRequired,
+    setDef1: PropTypes.func.isRequired,
+    setSelectedTemKeys: PropTypes.func.isRequired,
+    setExpandedTemKeys: PropTypes.func.isRequired,
+    setTreeTemBillData: PropTypes.func.isRequired,
+    setTreeTemPrintData: PropTypes.func.isRequired,
+    setTemplatePk: PropTypes.func.isRequired,
+    setSearchValue: PropTypes.func.isRequired,
+    setPageCode: PropTypes.func.isRequired,
+    setAppCode: PropTypes.func.isRequired,
+    setParentIdcon: PropTypes.func.isRequired,
+    setHistoryDataBool: PropTypes.func.isRequired,
+    selectedKeys: PropTypes.array.isRequired,
+    expandedKeys: PropTypes.array.isRequired,
+    treeTemBillData: PropTypes.array.isRequired,
+    treeTemPrintData: PropTypes.array.isRequired,
+    def1: PropTypes.string.isRequired,
+    selectedTemKeys: PropTypes.array.isRequired,
+    expandedTemKeys: PropTypes.array.isRequired,
+    templatePk: PropTypes.string.isRequired,
+    searchValue: PropTypes.string.isRequired,
+    pageCode: PropTypes.string.isRequired,
+    appCode: PropTypes.string.isRequired,
+    parentIdcon: PropTypes.string.isRequired,
+    historyDataBool: PropTypes.bool.isRequired
+};
+export default connect(
+    (state) => ({
+        treeData: state.TemplateSettingUnitData.treeData,
+        treeTemBillData: state.TemplateSettingUnitData.treeTemBillData,
+        treeTemPrintData: state.TemplateSettingUnitData.treeTemPrintData,
+        selectedKeys: state.TemplateSettingUnitData.selectedKeys,
+        expandedKeys: state.TemplateSettingUnitData.expandedKeys,
+        def1: state.TemplateSettingUnitData.def1,
+        selectedTemKeys: state.TemplateSettingUnitData.selectedTemKeys,
+        expandedTemKeys: state.TemplateSettingUnitData.expandedTemKeys,
+        templatePk: state.TemplateSettingUnitData.templatePk,
+        searchValue: state.TemplateSettingUnitData.searchValue,
+        pageCode: state.TemplateSettingUnitData.pageCode,
+        appCode: state.TemplateSettingUnitData.appCode,
+        parentIdcon: state.TemplateSettingUnitData.parentIdcon,
+        historyDataBool: state.TemplateSettingUnitData.historyDataBool
+    }),
+    {
+        setTreeData,
+        setTreeTemBillData,
+        setTreeTemPrintData,
+        setExpandedKeys,
+        setSelectedKeys,
+        setDef1,
+        setSelectedTemKeys,
+        setExpandedTemKeys,
+        setTemplatePk,
+        setSearchValue,
+        setPageCode,
+        setAppCode,
+        setParentIdcon,
+        setHistoryDataBool
+    }
+)(TemplateSettingUnit);
