@@ -85,7 +85,7 @@ class AssignComponent extends Component {
             org_df_biz: {
                 refcode: '',
                 refname: window.GETBUSINESSINFO().groupName,
-                refpk: window.GETBUSINESSINFO().groupId //groupName
+                refpk: window.GETBUSINESSINFO().groupId
             },
             dataRoKey: '',
             dataRoObj: {},
