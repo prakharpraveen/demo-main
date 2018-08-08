@@ -97,3 +97,17 @@ export const setParentIdcon = (data) => {
 		data
 	};
 }
+//setTemplateNameVal
+export const setTemplateNameVal = (data) => {
+	return {
+		type: TemplateSetting.TEMPLATENAMEVAL,
+		data
+	};
+}
+//setTemplateTitleVal
+export const setTemplateTitleVal = (data) => {
+	return {
+		type: TemplateSetting.TEMPLATETITLEVAL,
+		data
+	};
+}

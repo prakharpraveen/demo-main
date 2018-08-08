@@ -20,13 +20,15 @@ let defaultState = {
     expandedKeys: [ '00' ],
     // 树选中节点数组
     selectedKeys: [ '00' ],
-    selectedTemKeys:[],
-    expandedTemKeys:[],
-    templatePk:'',
-    searchValue:'',
-    appCode:'',
-    pageCode:'',
-    parentIdcon:''
+    selectedTemKeys: [],
+    expandedTemKeys: [],
+    templatePk: '',
+    searchValue: '',
+    appCode: '',
+    pageCode: '',
+    parentIdcon: '',
+    templateNameVal:'',
+    templateTitleVal:''
 };
 // 首页表单数据
 export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
@@ -38,18 +40,18 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
             };
         case TemplateSettingUnit.SELECTEDTEMKEYS:
             return {
-              ...state,
-              ...{
-                selectedTemKeys: action.data
-              }
+                ...state,
+                ...{
+                    selectedTemKeys: action.data
+                }
             };
         case TemplateSettingUnit.EXPANDEDTEMKEYS:
-          return {
-            ...state,
-            ...{
-              expandedTemKeys: action.data
-          }
-        };
+            return {
+                ...state,
+                ...{
+                    expandedTemKeys: action.data
+                }
+            };
         case TemplateSettingUnit.SETTREEDATA:
             return {
                 ...state,
@@ -65,12 +67,12 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                 }
             };
         case TemplateSettingUnit.SETDEF1:
-        return {
-            ...state,
-            ...{
-                def1: action.data
-            }
-        };   
+            return {
+                ...state,
+                ...{
+                    def1: action.data
+                }
+            };
         case TemplateSettingUnit.SETTREETEMPRINTDATA:
             return {
                 ...state,
@@ -98,35 +100,49 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                 ...{
                     templatePk: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.SEARCHVALUE:
             return {
                 ...state,
                 ...{
                     searchValue: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.PAGECODE:
             return {
                 ...state,
                 ...{
                     pageCode: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.APPCODE:
             return {
                 ...state,
                 ...{
                     appCode: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.PARENTIDCON:
             return {
                 ...state,
                 ...{
                     parentIdcon: action.data
                 }
-        };
+            };
+        case TemplateSettingUnit.TEMPLATENAMEVAL:
+            return {
+                ...state,
+                ...{
+                    templateNameVal: action.data
+                }
+            };
+        case TemplateSettingUnit.TEMPLATETITLEVAL:
+            return {
+                ...state,
+                ...{
+                    templateTitleVal: action.data
+                }
+            };
         default:
             return state;
     }

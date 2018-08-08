@@ -14,7 +14,9 @@ import {
     setSearchValue,
     setPageCode,
     setAppCode,
-    setParentIdcon
+    setParentIdcon,
+    setTemplateNameVal,
+    setTemplateTitleVal
 } from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -69,14 +71,12 @@ class TemplateSettingUnit extends Component {
         this.state = {
             siderHeight: '280',
             treeData: [],
-            searchValues: '',
             autoExpandParent: true,
             autoExpandTemParent: true,
             treeTemBillData: [], //单据模板数据
             treeTemPrintData: [],
             treePrintTemData: [],
             visible: false,
-            templateNameVal: '',
             nodeKey: '',
             alloVisible: false,
             org_df_biz: {
@@ -172,8 +172,8 @@ class TemplateSettingUnit extends Component {
     };
     //保存
     handleOk = (e) => {
-        let { templateNameVal, templateTitleVal, orgidObj } = this.state;
-        const { def1, templatePk, pageCode, appCode } = this.props;
+        let { orgidObj } = this.state;
+        const { def1, templatePk, pageCode, appCode, templateNameVal, templateTitleVal } = this.props;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板标题' });
             return;
@@ -210,6 +210,10 @@ class TemplateSettingUnit extends Component {
                     Notice({ status: 'success', msg: '复制成功' });
                     this.props.setSelectedTemKeys([ data.data ]);
                     this.props.setParentIdcon(data.data);
+                    this.props.setTemplateNameVal(data.data.name);
+                    if(def1 === 'menuitem'){
+                        this.props.setTemplateTitleVal(data.data.code);  
+                    }
                     this.reqTreeTemData('copy');
                     this.setState({
                         visible: false
@@ -226,7 +230,7 @@ class TemplateSettingUnit extends Component {
     };
     //按钮事件的触发
     handleClick = (code) => {
-        let { templateNameVal, orgidObj } = this.state;
+        let { orgidObj } = this.state;
         const { def1, templatePk, appCode, pageCode } = this.props;
         let infoData = {
             templateId: templatePk
@@ -436,9 +440,7 @@ class TemplateSettingUnit extends Component {
                         this.props.setSelectedTemKeys(newinitKeyArray);
                         this.props.setParentIdcon(treeData[0].parentId);
                         this.props.setTemplatePk(treeData[0].pk);
-                        this.setState({
-                            templateNameVal: treeData[0].name
-                        });
+                        this.props.setTemplateNameVal(treeData[0].name);
                     }
                 }
             }
@@ -455,10 +457,8 @@ class TemplateSettingUnit extends Component {
                         this.props.setSelectedTemKeys(newinitKeyArray);
                         this.props.setParentIdcon(treeData[0].parentId);
                         this.props.setTemplatePk(treeData[0].pk);
-                        this.setState({
-                            templateNameVal: treeData[0].name,
-                            templateTitleVal: treeData[0].code
-                        });
+                        this.props.setTemplateNameVal(treeData[0].name);
+                        this.props.setTemplateTitleVal(treeData[0].code);
                     }
                 }
             }
@@ -574,18 +574,18 @@ class TemplateSettingUnit extends Component {
             this.props.setSelectedTemKeys(key);
             this.props.setTemplatePk(e.selectedNodes[0].props.refData.templateId);
             this.props.setParentIdcon(e.selectedNodes[0].props.refData.parentId);
+            this.props.setTemplateNameVal(e.selectedNodes[0].props.refData.name);
+            this.props.setTemplateTitleVal(e.selectedNodes[0].props.refData.code);
             this.setState({
-                templateNameVal: e.selectedNodes[0].props.refData.name,
-                templateTitleVal: e.selectedNodes[0].props.refData.code,
                 templateType: e.selectedNodes[0].props.refData.type
             });
         } else {
             this.props.setSelectedTemKeys(key);
             this.props.setTemplatePk('');
             this.props.setParentIdcon('');
+            this.props.setTemplateNameVal('');
+            this.props.setTemplateTitleVal('');
             this.setState({
-                templateNameVal: '',
-                templateTitleVal: '',
                 templateType: ''
             });
         }
@@ -625,9 +625,7 @@ class TemplateSettingUnit extends Component {
         const value = e.target.value;
         if (value) {
             this.props.setSearchValue(value);
-            this.setState({ searchValues: value }, () => {
-                this.handleSearch(value, this.handleExpanded);
-            });
+            this.handleSearch(value, this.handleExpanded);
         } else {
             this.reqTreeData();
             const expandedKeys = [ '00' ];
@@ -804,13 +802,11 @@ class TemplateSettingUnit extends Component {
             treeData,
             treeTemBillData,
             treeTemPrintData,
-            templateNameVal,
             visible,
             alloVisible,
             org_df_biz,
             batchSettingModalVisibel,
             nodeKey,
-            templateTitleVal,
             autoExpandParent,
             autoExpandTemParent,
             orgidObj,
@@ -825,7 +821,9 @@ class TemplateSettingUnit extends Component {
             expandedTemKeys,
             templatePk,
             pageCode,
-            appCode
+            appCode,
+            templateNameVal,
+            templateTitleVal
         } = this.props;
         const leftTreeData = [
             {
@@ -942,9 +940,7 @@ class TemplateSettingUnit extends Component {
                                     placeholder='请输入名称'
                                     onChange={(e) => {
                                         const templateNameVal = e.target.value;
-                                        this.setState({
-                                            templateNameVal
-                                        });
+                                        this.props.setTemplateNameVal(templateNameVal)
                                     }}
                                 />
                             </div>
@@ -958,9 +954,7 @@ class TemplateSettingUnit extends Component {
                                         placeholder='请输入编码'
                                         onChange={(e) => {
                                             const templateTitleVal = e.target.value;
-                                            this.setState({
-                                                templateTitleVal
-                                            });
+                                            this.props.setTemplateTitleVal(templateTitleVal)
                                         }}
                                     />
                                 </div>
@@ -1007,6 +1001,8 @@ TemplateSettingUnit.propTypes = {
     setTreeTemPrintData: PropTypes.func.isRequired,
     setTemplatePk: PropTypes.func.isRequired,
     setSearchValue: PropTypes.func.isRequired,
+    setTemplateNameVal: PropTypes.func.isRequired,
+    setTemplateTitleVal: PropTypes.func.isRequired,
     setPageCode: PropTypes.func.isRequired,
     setAppCode: PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
@@ -1021,7 +1017,9 @@ TemplateSettingUnit.propTypes = {
     searchValue: PropTypes.string.isRequired,
     pageCode: PropTypes.string.isRequired,
     appCode: PropTypes.string.isRequired,
-    parentIdcon: PropTypes.string.isRequired
+    parentIdcon: PropTypes.string.isRequired,
+    templateTitleVal: PropTypes.string.isRequired,
+    templateNameVal: PropTypes.string.isRequired
 };
 export default connect(
     (state) => ({
@@ -1037,7 +1035,9 @@ export default connect(
         searchValue: state.TemplateSettingUnitData.searchValue,
         pageCode: state.TemplateSettingUnitData.pageCode,
         appCode: state.TemplateSettingUnitData.appCode,
-        parentIdcon: state.TemplateSettingUnitData.parentIdcon
+        parentIdcon: state.TemplateSettingUnitData.parentIdcon,
+        TemplateNameVal: state.TemplateSettingUnitData.TemplateNameVal,
+        TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal
     }),
     {
         setTreeData,
@@ -1052,6 +1052,8 @@ export default connect(
         setSearchValue,
         setPageCode,
         setAppCode,
-        setParentIdcon
+        setParentIdcon,
+        setTemplateNameVal,
+        setTemplateTitleVal
     }
 )(TemplateSettingUnit);

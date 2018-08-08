@@ -26,5 +26,9 @@ export const PAGECODE = 'PAGECODE';
 export const APPCODE = 'APPCODE';
 //parentIdcon
 export const PARENTIDCON = 'PARENTIDCON'
+//setTemplateNameVal,
+export const TEMPLATENAMEVAL = 'TEMPLATENAMEVAL';
+//setTemplateTitleVal
+export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
 
 

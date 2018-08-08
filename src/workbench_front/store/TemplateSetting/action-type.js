@@ -26,7 +26,9 @@ export const PAGECODE = 'PAGECODE';
 export const APPCODE = 'APPCODE';
 //parentIdcon
 export const PARENTIDCON = 'PARENTIDCON';
-//historyDataBool
-export const HISTORYDATABOOL = 'HISTORYDATABOOL';
+//setTemplateNameVal,
+export const TEMPLATENAMEVAL = 'TEMPLATENAMEVAL';
+//setTemplateTitleVal
+export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
 
 
