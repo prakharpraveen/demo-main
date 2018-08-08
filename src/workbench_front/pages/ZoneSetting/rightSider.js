@@ -26,10 +26,10 @@ function Formula({ setName, setExplain, name }) {
                         propertyList.map((v, i) => {
                             return (
                                 <li
-                                    onDoubleClick={() => {
+									onClick={() => {
                                         setExplain(`${name.code}.${v.code}`);
                                     }}
-                                    onClick={() => {
+                                    onDoubleClick={() => {
                                         setName(`${name.code}.${v.code}`);
                                     }}
                                     key={i}
@@ -316,8 +316,8 @@ class MyRightSider extends Component {
                     <ul className="basic-property">
                         <li>显示名称</li>
                         <li>{this.getMyInput("显示名称", "label")}</li>
-                        <li>多语</li>
-                        <li>{this.getMyInput("多语", "resid")}</li>
+                        <li>多语字段</li>
+                        <li>{this.getMyInput("多语字段", "resid")}</li>
                         <li>数据类型</li>
                         {/* 元数据，禁止设置datatype属性，除了56自定义项*/}
                         {(() => {
@@ -482,8 +482,8 @@ class MyRightSider extends Component {
                     <ul className="basic-property">
                         <li>显示名称</li>
                         <li>{this.getMyInput("显示名称", "label")}</li>
-						<li>多语</li>
-                        <li>{this.getMyInput("多语", "resid")}</li>
+						<li>多语字段</li>
+                        <li>{this.getMyInput("多语字段", "resid")}</li>
                         <li>非元数据条件</li>
                         <li>{this.getMyCheckbox("isnotmeta")}</li>
                         <li>使用</li>
@@ -642,8 +642,8 @@ class MyRightSider extends Component {
                     <ul className="basic-property">
                         <li>显示名称</li>
                         <li>{this.getMyInput("显示名称", "label")}</li>
-						<li>多语</li>
-                        <li>{this.getMyInput("多语", "resid")}</li>
+						<li>多语字段</li>
+                        <li>{this.getMyInput("多语字段", "resid")}</li>
                         <li>编码</li>
                         <li>{this.getMyInput("编码", "code")}</li>
                         {(() => {

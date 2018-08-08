@@ -6,17 +6,10 @@ const Option = Select.Option;
 export class EditableCell extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: this.props.value };
     }
     handleChange = e => {
         const value = e.target.value;
-        this.setState({ value });
-    };
-    updateCellInTable = () => {
-        this.props.onChange(this.state.value);
-    };
-    onPressEnter = () => {
-        this[`input`].blur();
+        this.props.updateValue(value);
     };
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},
@@ -24,25 +17,17 @@ export class EditableCell extends React.Component {
         if (this.props.value !== nextProps.value) {
             return true;
         }
-        if (this.state.value !== nextState.value) {
-            return true;
-        }
         return false;
     }
     render() {
-        const { value } = this.state;
+        const { value } = this.props;
         return (
             <Input
                 size="small"
+                style={{ width: 100 }}
                 value={value}
                 onChange={this.handleChange}
-                onBlur={e => {
-                    this.updateCellInTable();
-                }}
                 ref={input => (this[`input`] = input)}
-                onPressEnter={e => {
-                    this.onPressEnter(e.target.value);
-                }}
             />
         );
     }
@@ -51,22 +36,29 @@ export class EditableCell extends React.Component {
 export class EditAllCell extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            inputValue:''
+        }
     }
     handleClick = e => {
-        this.props.onChange("6666");
+        this.props.onChange(this.state.inputValue);
+        this.props.hidePopover();
     };
+    close = () => {
+        this.props.hidePopover();
+    };
+    changeValue = (e)=>{
+        this.setState({inputValue:e.target.value})
+    }
     render() {
         return (
             <div className="custom-filter-dropdown">
-            <Input size="small" ref={`customInput`} />
-            <Button
-                type="primary"
-                onClick={this.handleClick}
-            >
-                确定
-            </Button>
-            <Button>取消</Button>
-        </div>
+                <Input value={this.state.inputValue} size="small" ref={`customInput`} onChange={this.changeValue}/>
+                <Button type="primary" onClick={this.handleClick}>
+                    确定
+                </Button>
+                <Button onClick={this.close}>取消</Button>
+            </div>
         );
     }
 }
@@ -78,6 +70,14 @@ export class EditableCheck extends React.Component {
     handleChange = e => {
         this.props.onChange(e.target.checked);
     };
+    shouldComponentUpdate(nextProps, nextState) {
+        const thisProps = this.props || {},
+            thisState = this.state || {};
+        if (this.props.value !== nextProps.value) {
+            return true;
+        }
+        return false;
+    }
     render() {
         const { value } = this.props;
         return (
@@ -93,6 +93,14 @@ export class SelectCell extends Component {
     handleSelectChange = value => {
         this.props.onChange(value);
     };
+    shouldComponentUpdate(nextProps, nextState) {
+        const thisProps = this.props || {},
+            thisState = this.state || {};
+        if (this.props.selectValue !== nextProps.selectValue) {
+            return true;
+        }
+        return false;
+    }
     render() {
         const { selectValue, selectObj, property } = this.props;
         return (
@@ -103,7 +111,7 @@ export class SelectCell extends Component {
                 onChange={value => {
                     this.handleSelectChange(value);
                 }}
-                style={{ width: 176 }}
+                style={{ width: 100 }}
                 size={"small"}
             >
                 {(() => {
