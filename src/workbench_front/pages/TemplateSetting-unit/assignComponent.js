@@ -78,7 +78,6 @@ class AssignComponent extends Component {
             respSearchValue: '',
             roleSearchValue: '',
             autoExpandParent: true,
-            templatePks: this.props.templatePks,
             pageCode: this.props.pageCode,
             appCode: this.props.appCode,
             nodeKey: this.props.nodeKey,
@@ -100,7 +99,6 @@ class AssignComponent extends Component {
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            templatePks: nextProps.templatePks,
             pageCode: nextProps.pageCode,
             def1: nextProps.def1,
             appCode: nextProps.appCode
@@ -114,11 +112,12 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, templatePks, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
+        let { pageCode, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
+        const { templatePk } = this.props;
         let infoData = {
             pageCode: pageCode,
             orgId: org_df_biz.refpk,
-            templateId: templatePks,
+            templateId: templatePk,
             appCode: appCode
         };
         if (def1 === 'apppage') {
@@ -524,7 +523,8 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { templatePks, pageCode, treeAllowedData, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
+        let { pageCode, treeAllowedData, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
+        const { templatePk } = this.props;
         if (!org_df_biz.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -550,7 +550,7 @@ class AssignComponent extends Component {
         newTargets = newTargets.substr(0, newTargetsLen - 1);
         let infoData = {
             pageCode: pageCode,
-            templateId: templatePks,
+            templateId: templatePk,
             orgId: org_df_biz.refpk,
             appCode: appCode
         };
@@ -610,7 +610,6 @@ class AssignComponent extends Component {
             treeRoVisible,
             allowDataArray,
             treeAllowedData,
-            templatePks,
             nodeKey,
             org_df_biz,
             def1,
@@ -711,4 +710,13 @@ class AssignComponent extends Component {
         );
     }
 }
-export default AssignComponent;
+AssignComponent.propTypes = {
+    templatePk: PropTypes.string.isRequired
+};
+export default connect(
+    (state) => ({
+        templatePk: state.TemplateSettingData.templatePk
+    }),
+    {
+    }
+)(AssignComponent);

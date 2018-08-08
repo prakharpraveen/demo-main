@@ -83,10 +83,9 @@ class AssignComponent extends Component {
             treeRoData: [],
             treeResData: [],
             org_df_biz: {
-                // 默认业务单元
                 refcode: '',
-                refname: window.businessInfo.groupName,
-                refpk: window.businessInfo.groupId //groupName
+                refname: window.GETBUSINESSINFO().groupName,
+                refpk: window.GETBUSINESSINFO().groupId //groupName
             },
             dataRoKey: '',
             dataRoObj: {},
