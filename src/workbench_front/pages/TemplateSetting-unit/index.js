@@ -508,7 +508,7 @@ class TemplateSettingUnit extends Component {
     //请求右侧树数据
     reqTreeTemData = (key) => {
         let { orgidObj } = this.state;
-        const { pageCode, appCode }=this.props;
+        const { pageCode, appCode,def1 }=this.props;
         let infoData = {
             pageCode: pageCode,
             appCode: appCode,
@@ -517,13 +517,16 @@ class TemplateSettingUnit extends Component {
         if (!infoData.pageCode) {
             return;
         }
-        infoData.templateType = 'bill';
-        this.reqTreeTemAjax(infoData, 'bill');
-        if (infoData.pageCode) {
-            delete infoData.pageCode;
+        if(def1==='apppage'){
+            infoData.templateType = 'bill';
+            this.reqTreeTemAjax(infoData, 'bill');
+        }else if(def1==='menuitem'){
+            if (infoData.pageCode) {
+                delete infoData.pageCode;
+            }
+            infoData.templateType = 'print';
+            this.reqTreeTemAjax(infoData, 'print');
         }
-        infoData.templateType = 'print';
-        this.reqTreeTemAjax(infoData, 'print');
     };
     //请求右侧树数据ajax方法封装
     reqTreeTemAjax = (infoData, templateType) => {

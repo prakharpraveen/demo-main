@@ -40,23 +40,28 @@ const { Header, Footer, Sider, Content } = Layout;
 const Btns = [
     {
         name: '修改',
-        type: ''
+        type: '',
+        code:'edit'
     },
     {
         name: '删除',
-        type: ''
+        type: '',
+        code:'delete'
     },
     {
         name: '复制',
-        type: 'primary'
+        type: 'primary',
+        code:'copy'
     },
     {
         name: '分配',
-        type: ''
+        type: '',
+        code:'assign'
     },
     {
         name: '浏览',
-        type: ''
+        type: '',
+        code:''
     }
 ];
 class TemplateSetting extends Component {
@@ -630,13 +635,16 @@ class TemplateSetting extends Component {
         if (!infoData.pageCode) {
             return;
         }
-        infoData.templateType = 'bill';
-        this.reqTreeTemAjax(infoData, 'bill');
-        if (infoData.pageCode) {
-            delete infoData.pageCode;
+        if(def1==='apppage'){
+            infoData.templateType = 'bill';
+            this.reqTreeTemAjax(infoData, 'bill');
+        }else if(def1==='menuitem'){
+            if (infoData.pageCode) {
+                delete infoData.pageCode;
+            }
+            infoData.templateType = 'print';
+            this.reqTreeTemAjax(infoData, 'print');
         }
-        infoData.templateType = 'print';
-        this.reqTreeTemAjax(infoData, 'print');
     };
     //请求右侧树数据ajax方法封装
     reqTreeTemAjax = (infoData, templateType) => {
