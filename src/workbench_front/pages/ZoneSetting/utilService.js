@@ -8,7 +8,7 @@ export const setPropertyValueForItemInItemList = (
     });
 };
 export const getMetaidByAreaid = (areaList, areaid) => {
-    let resultMetaID = '';
+    let resultMetaID = "";
     _.forEach(areaList, a => {
         if (a.pk_area === areaid) {
             resultMetaID = a.metaid;
@@ -295,3 +295,343 @@ export function createScript(src) {
             };
     }
 }
+//查询区批量设置字典
+export const batchSearchData = [
+    {
+        title: "显示名称",
+        property: "label",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "非元数据条件",
+        property: "isnotmeta",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "使用",
+        property: "isuse",
+        type: "checkbox",
+        width: 100
+    },
+    {
+        title: "编码",
+        property: "code",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "操作符编码",
+        property: "opersign",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "操作符名称",
+        property: "opersignname",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "不可修改",
+        property: "disabled",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "默认显示",
+        property: "visible",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "默认显示字段排序",
+        property: "visibleposition",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "多选",
+        property: "ismultiselectedenabled",
+        type: "checkbox",
+        width: 100
+    },
+    {
+        title: "固定条件",
+        property: "isfixedcondition",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "必输条件",
+        property: "required",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "查询条件",
+        property: "isquerycondition",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "参照名称",
+        property: "refname",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "参照包含下级",
+        property: "containlower",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "参照自动检查",
+        property: "ischeck",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "参照跨集团",
+        property: "isbeyondorg",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "使用系统函数",
+        property: "usefunc",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "显示类型",
+        property: "showtype",
+        type: "select",
+        width: 150,
+        selectObj: showType
+    },
+    {
+        title: "返回类型",
+        property: "returntype",
+        type: "select",
+        width: 150,
+        selectObj: returnType
+    },
+    // {
+    //     title: "组件类型",
+    //     property: "itemtype",
+    //     type: "select",
+    //     width: 50,
+    //     selectObj: utilService.getItemtypeObjByDatatype(selectCard.datatype)
+    // },
+    {
+        title: "自定义1",
+        property: "define1",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义2",
+        property: "define2",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义3",
+        property: "define3",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义4",
+        property: "define4",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义5",
+        property: "define5",
+        type: "input",
+        width: 150,
+    }
+];
+//表单批量设置字典
+export const batchFormData = [
+    {
+        title: "显示名称",
+        property: "label",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "编码",
+        property: "code",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "占用列数",
+        property: "colnum",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "最大长度",
+        property: "maxlength",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "可修订",
+        property: "isrevise",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "另起一行",
+        property: "isnextrow",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "可见",
+        property: "visible",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "必输项",
+        property: "required",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "不可修改",
+        property: "disabled",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "默认系统变量",
+        property: "defaultvar",
+        type: "select",
+        width: 150,
+        selectObj: defaultvarObj
+    },
+    {
+        title: "显示颜色",
+        property: "color",
+        type: "select",
+        width: 150,
+        selectObj: colorObj
+    },
+    {
+        title: "自定义1",
+        property: "define1",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义2",
+        property: "define2",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义3",
+        property: "define3",
+        type: "input",
+        width: 150,
+    }
+];
+//表格批量设置字典
+export const batchTableData = [
+    {
+        title: "显示名称",
+        property: "label",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "编码",
+        property: "code",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "组件长度",
+        property: "width",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "最大长度",
+        property: "maxlength",
+        type: "input",
+        width: 150
+    },
+    {
+        title: "可修订",
+        property: "isrevise",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "合计",
+        property: "istotal",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "可见",
+        property: "visible",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "必输项",
+        property: "required",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "不可修改",
+        property: "disabled",
+        type: "checkbox",
+        width: 150
+    },
+    {
+        title: "默认系统变量",
+        property: "defaultvar",
+        type: "select",
+        width: 150,
+        selectObj: defaultvarObj
+    },
+    {
+        title: "显示颜色",
+        property: "color",
+        type: "select",
+        width: 150,
+        selectObj: colorObj
+    },
+    {
+        title: "自定义1",
+        property: "define1",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义2",
+        property: "define2",
+        type: "input",
+        width: 150,
+    },
+    {
+        title: "自定义3",
+        property: "define3",
+        type: "input",
+        width: 150,
+    }
+];

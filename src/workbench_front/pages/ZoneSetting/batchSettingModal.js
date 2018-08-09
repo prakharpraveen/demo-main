@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Modal, Button } from "antd";
 import { updateAreaList } from "Store/ZoneSetting/action";
-import BatchSearchTable from "./batchSearchTable";
-// import BatchNoSearchTable from "./batchNoSearchTable";
+import BatchTable from "./batchTable";
 //批量设置模态框
 class BatchSettingModal extends Component {
     constructor(props) {
@@ -61,18 +60,11 @@ class BatchSettingModal extends Component {
                     </Button>
                 ]}
             >
-                {areaList[areaIndex].areatype === "0" ? (
-                    <BatchSearchTable
-                        newSource={newSource}
-                        saveNewSource={this.saveNewSource}
-                    />
-                ) : (
-                    // <BatchNoSearchTable
-                    //     areatype={newSource.areatype}
-                    //     saveNewSource={this.saveState}
-                    // />
-                    <div>222</div>
-                )}
+                <BatchTable
+                    newSource={newSource}
+                    areatype={areaList[areaIndex].areatype}
+                    saveNewSource={this.saveNewSource}
+                />
             </Modal>
         );
     }
