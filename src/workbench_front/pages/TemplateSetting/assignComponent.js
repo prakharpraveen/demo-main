@@ -82,18 +82,17 @@ class AssignComponent extends Component {
             nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
-            org_df_biz: {
-                refcode: '',
-                refname: window.GETBUSINESSINFO().groupName,
-                refpk: window.GETBUSINESSINFO().groupId
-            },
             dataRoKey: '',
             dataRoObj: {},
             roleUserDatas: {},
             allowDataArray: [],
             treeAllowedData: [],
             allowedTreeKey: '',
-            orgidObj: {},
+            orgidObj: {
+                refcode: '',
+                refname: window.GETBUSINESSINFO().groupName,
+                refpk: window.GETBUSINESSINFO().groupId
+            },
             treeRoDataObj: {},
             tabActiveKey: '1',
             def1: this.props.def1
@@ -107,17 +106,9 @@ class AssignComponent extends Component {
         });
     }
     componentDidMount() {
-        let { orgidObj, org_df_biz } = this.state;
-        if (org_df_biz.refpk) {
-            orgidObj['refpk'] = org_df_biz.refpk;
-            this.setState(
-                {
-                    orgidObj
-                },
-                () => {
-                    this.reqRoTreeData();
-                }
-            );
+        let { orgidObj } = this.state;
+        if (orgidObj.refpk) {
+            this.reqRoTreeData();
         }
     }
     //已分配用户角色和职责的数据请求
@@ -598,14 +589,12 @@ class AssignComponent extends Component {
     handdleRefChange = (value) => {
         let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
-        orgidObj = {};
         orgidObj['refname'] = refname;
         orgidObj['refcode'] = refcode;
         orgidObj['refpk'] = refpk;
         this.setState(
             {
-                orgidObj,
-                org_df_biz: value
+                orgidObj
             },
             this.reqRoTreeData
         );
@@ -614,7 +603,7 @@ class AssignComponent extends Component {
         const {
             alloVisible,
             pageCode,
-            org_df_biz,
+            orgidObj,
             treeRoData,
             treeResData,
             allowDataArray,
@@ -702,7 +691,7 @@ class AssignComponent extends Component {
                             <div className='allocation-treeContainer'>
                                 <div className='allocation-select'>
                                     <BusinessUnitGroupTreeRef
-                                        value={org_df_biz}
+                                        value={orgidObj}
                                         placeholder={'默认业务单元'}
                                         onChange={(value) => {
                                             this.handdleRefChange(value);

@@ -589,7 +589,6 @@ class AssignComponent extends Component {
     handdleRefChange = (value) => {
         let { org_df_biz } = this.state;
         let { refname, refcode, refpk } = value;
-        org_df_biz = {};
         org_df_biz['refname'] = refname;
         org_df_biz['refcode'] = refcode;
         org_df_biz['refpk'] = refpk;
