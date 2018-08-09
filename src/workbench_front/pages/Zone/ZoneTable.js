@@ -808,23 +808,7 @@ class ZoneTable extends Component {
         this.setState({
             dataSource: sortData
         });
-        this.props.setNewList(sortData);
-        // Ajax({
-        //     url: `/nccloud/platform/appregister/orderbuttons.do`,
-        //     info: {
-        //         name: "页面按钮",
-        //         action: "排序"
-        //     },
-        //     data: sortData,
-        //     success: ({ data }) => {
-        //         if (data.success && data.data) {
-        //             //this.props.setPageButtonData(sortData);
-        //             this.props.setNewList(this.state.dataSource);
-        //         } else {
-        //             Notice({ status: "error", msg: data.data.true });
-        //         }
-        //     }
-        // });
+        this.props.setNewList(sortData)
     };
     render() {
         let { dataSource, visible, areaCode, areaName, areaPk } = this.state;
@@ -855,6 +839,7 @@ class ZoneTable extends Component {
                     })}
                     columns={columns}
                     pagination={false}
+                    className='setTemplateTable'
                     components={this.components}
                     onRow={(record, index) => ({
                         index,
