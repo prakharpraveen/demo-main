@@ -63,9 +63,9 @@ const Ajax = ({
         transformResponse: [
             function(data, headers) {
                 if (headers.contentpath) {
-                    if (headers.REDIRECTSTATUS) {
+                    if (headers.redirect === "REDIRECT") {
                         SpecialTip(
-                            headers.REDIRECTSTATUS,
+                            headers.redirectstatus,
                             exitPage,
                             headers.contentpath
                         );
@@ -215,24 +215,14 @@ const Ajax = ({
  * @param {String} paramData 参数数据
  */
 const SpecialTip = (status, callback, paramData) => {
-    let i = 5;
-    const modal = Modal.warning({
+    Modal.warning({
         title: "退出警告！",
-        content: switchStatus(status + ""),
-        okText: `确定(${i}s)`,
-        onOk:()=>{
+        content: switchStatus(status),
+        okText: `确定`,
+        onOk: () => {
             callback(paramData);
         }
     });
-    let timmer = self.setInterval("num()", 1000);
-    function num() {
-        if (i === 0) {
-            window.clearInterval(timmer);
-            modal.destroy();
-            callback(paramData);
-        }
-        i--;
-    }
 };
 /**
  * 状态选择
