@@ -16,7 +16,8 @@ import {
     setAppCode,
     setParentIdcon,
     setTemplateNameVal,
-    setTemplateTitleVal
+    setTemplateTitleVal,
+    setOrgidObj
 } from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -79,13 +80,6 @@ class TemplateSettingUnit extends Component {
             visible: false,
             nodeKey: '',
             alloVisible: false,
-            org_df_biz: {
-                // 默认业务单元
-                refcode: '',
-                refname: '',
-                refpk: ''
-            },
-            orgidObj: {},
             templateType: '',
             previewPrintVisible: false,
             previewPrintContent: '',
@@ -172,8 +166,7 @@ class TemplateSettingUnit extends Component {
     };
     //保存
     handleOk = (e) => {
-        let { orgidObj } = this.state;
-        const { def1, templatePk, pageCode, appCode, templateNameVal, templateTitleVal } = this.props;
+        const { orgidObj, def1, templatePk, pageCode, appCode, templateNameVal, templateTitleVal } = this.props;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板标题' });
             return;
@@ -211,8 +204,8 @@ class TemplateSettingUnit extends Component {
                     this.props.setSelectedTemKeys([ data.data ]);
                     this.props.setParentIdcon(data.data);
                     this.props.setTemplateNameVal(data.data.name);
-                    if(def1 === 'menuitem'){
-                        this.props.setTemplateTitleVal(data.data.code);  
+                    if (def1 === 'menuitem') {
+                        this.props.setTemplateTitleVal(data.data.code);
                     }
                     this.reqTreeTemData('copy');
                     this.setState({
@@ -230,8 +223,7 @@ class TemplateSettingUnit extends Component {
     };
     //按钮事件的触发
     handleClick = (code) => {
-        let { orgidObj } = this.state;
-        const { def1, templatePk, appCode, pageCode } = this.props;
+        const { def1, templatePk, appCode, pageCode, orgidObj } = this.props;
         let infoData = {
             templateId: templatePk
         };
@@ -488,7 +480,7 @@ class TemplateSettingUnit extends Component {
     };
     //加载右侧模板数据
     onSelectQuery = (key, e) => {
-        const { orgidObj } = this.state;
+        const { orgidObj } = this.props;
         if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '请选中业务单元' });
             return;
@@ -513,8 +505,7 @@ class TemplateSettingUnit extends Component {
     };
     //请求右侧树数据
     reqTreeTemData = (eventType) => {
-        let { orgidObj } = this.state;
-        const { pageCode, appCode, def1 } = this.props;
+        const { pageCode, appCode, def1, orgidObj } = this.props;
         let infoData = {
             pageCode: pageCode,
             appCode: appCode,
@@ -760,16 +751,12 @@ class TemplateSettingUnit extends Component {
     };
     //参照的回调函数
     handdleRefChange = (value) => {
-        let { orgidObj } = this.state;
         let { refname, refcode, refpk } = value;
-        orgidObj = {};
+        let orgidObj = {};
         orgidObj['refname'] = refname;
         orgidObj['refcode'] = refcode;
         orgidObj['refpk'] = refpk;
-        this.setState({
-            orgidObj,
-            org_df_biz: value
-        });
+        this.props.setOrgidObj(orgidObj);
     };
     showModal = () => {
         this.setState({ previewPrintVisible: true }, () => {
@@ -804,12 +791,10 @@ class TemplateSettingUnit extends Component {
             treeTemPrintData,
             visible,
             alloVisible,
-            org_df_biz,
             batchSettingModalVisibel,
             nodeKey,
             autoExpandParent,
             autoExpandTemParent,
-            orgidObj,
             previewPrintContent,
             previewPrintVisible
         } = this.state;
@@ -823,7 +808,8 @@ class TemplateSettingUnit extends Component {
             pageCode,
             appCode,
             templateNameVal,
-            templateTitleVal
+            templateTitleVal,
+            orgidObj
         } = this.props;
         const leftTreeData = [
             {
@@ -839,7 +825,7 @@ class TemplateSettingUnit extends Component {
                 header={
                     <PageLayoutHeader>
                         <BusinessUnitTreeRefUnit
-                            value={org_df_biz}
+                            value={orgidObj}
                             placeholder={'默认业务单元'}
                             onChange={(value) => {
                                 this.handdleRefChange(value);
@@ -940,7 +926,7 @@ class TemplateSettingUnit extends Component {
                                     placeholder='请输入名称'
                                     onChange={(e) => {
                                         const templateNameVal = e.target.value;
-                                        this.props.setTemplateNameVal(templateNameVal)
+                                        this.props.setTemplateNameVal(templateNameVal);
                                     }}
                                 />
                             </div>
@@ -954,7 +940,7 @@ class TemplateSettingUnit extends Component {
                                         placeholder='请输入编码'
                                         onChange={(e) => {
                                             const templateTitleVal = e.target.value;
-                                            this.props.setTemplateTitleVal(templateTitleVal)
+                                            this.props.setTemplateTitleVal(templateTitleVal);
                                         }}
                                     />
                                 </div>
@@ -1006,6 +992,7 @@ TemplateSettingUnit.propTypes = {
     setPageCode: PropTypes.func.isRequired,
     setAppCode: PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
+    setOrgidObj: PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
@@ -1019,7 +1006,8 @@ TemplateSettingUnit.propTypes = {
     appCode: PropTypes.string.isRequired,
     parentIdcon: PropTypes.string.isRequired,
     templateTitleVal: PropTypes.string.isRequired,
-    templateNameVal: PropTypes.string.isRequired
+    templateNameVal: PropTypes.string.isRequired,
+    orgidObj:PropTypes.object.isRequired
 };
 export default connect(
     (state) => ({
@@ -1037,7 +1025,8 @@ export default connect(
         appCode: state.TemplateSettingUnitData.appCode,
         parentIdcon: state.TemplateSettingUnitData.parentIdcon,
         TemplateNameVal: state.TemplateSettingUnitData.TemplateNameVal,
-        TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal
+        TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal,
+        orgidObj: state.TemplateSettingUnitData.orgidObj
     }),
     {
         setTreeData,
@@ -1054,6 +1043,7 @@ export default connect(
         setAppCode,
         setParentIdcon,
         setTemplateNameVal,
-        setTemplateTitleVal
+        setTemplateTitleVal,
+        setOrgidObj
     }
 )(TemplateSettingUnit);

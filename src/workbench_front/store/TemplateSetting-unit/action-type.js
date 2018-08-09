@@ -30,5 +30,7 @@ export const PARENTIDCON = 'PARENTIDCON'
 export const TEMPLATENAMEVAL = 'TEMPLATENAMEVAL';
 //setTemplateTitleVal
 export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
+//setOrgidObj
+export const ORGIDOBJ = 'ORGIDOBJ';
 
 

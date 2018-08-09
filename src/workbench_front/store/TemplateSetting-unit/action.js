@@ -111,4 +111,11 @@ export const setTemplateTitleVal = (data) => {
 		data
 	};
 }
+//setOrgidObj
+export const setOrgidObj = (data) => {
+	return {
+		type: TemplateSettingUnit.ORGIDOBJ,
+		data
+	};
+}
 

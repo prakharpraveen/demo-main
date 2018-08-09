@@ -28,7 +28,12 @@ let defaultState = {
     pageCode: '',
     parentIdcon: '',
     templateNameVal:'',
-    templateTitleVal:''
+    templateTitleVal:'',
+    orgidObj: {// 默认业务单元
+        refcode: '',
+        refname: '',
+        refpk: ''
+    },
 };
 // 首页表单数据
 export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
@@ -143,6 +148,13 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                     templateTitleVal: action.data
                 }
             };
+        case TemplateSettingUnit.ORGIDOBJ:
+            return {
+                ...state,
+                ...{
+                    orgidObj: action.data
+                }
+        };
         default:
             return state;
     }
