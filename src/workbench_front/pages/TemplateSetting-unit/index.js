@@ -329,7 +329,6 @@ class TemplateSettingUnit extends Component {
         }
     };
     componentDidMount = () => {
-        this.reqTreeData();
         let {
             selectedKeys,
             setSelectedKeys,
@@ -344,9 +343,15 @@ class TemplateSettingUnit extends Component {
             expandedTemKeys,
             setExpandedTemKeys,
             selectedTemKeys,
-            setSelectedTemKeys
+            setSelectedTemKeys,
+            searchValue
         } = this.props;
         if (def1 !== '') {
+            if(searchValue){
+                this.handleSearch(searchValue, this.handleExpanded);
+            }else{
+                this.reqTreeData();
+            }
             setSelectedKeys(selectedKeys);
             setDef1(def1);
             setExpandedKeys(expandedKeys);
@@ -356,6 +361,7 @@ class TemplateSettingUnit extends Component {
             setExpandedTemKeys(expandedTemKeys);
             setSelectedTemKeys(selectedTemKeys);
         } else {
+            this.reqTreeData();
             setSelectedKeys([ '00' ]);
             setDef1('');
         }
