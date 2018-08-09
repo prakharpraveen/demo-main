@@ -32,5 +32,7 @@ export const TEMPLATENAMEVAL = 'TEMPLATENAMEVAL';
 export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
 //setOrgidObj
 export const ORGIDOBJ = 'ORGIDOBJ';
+//setNodeKey
+export const NODEKEY = 'NODEKEY';
 
 

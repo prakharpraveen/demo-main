@@ -76,9 +76,6 @@ class AssignComponent extends Component {
             roleSearchValue: '',
             respSearchValue: '',
             autoExpandParent: false,
-            pageCode: this.props.pageCode,
-            appCode: this.props.appCode,
-            nodeKey: this.props.nodeKey,
             nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
@@ -94,17 +91,10 @@ class AssignComponent extends Component {
                 refpk: window.GETBUSINESSINFO().groupId
             },
             treeRoDataObj: {},
-            tabActiveKey: '1',
-            def1: this.props.def1
+            tabActiveKey: '1'
         };
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            pageCode: nextProps.pageCode,
-            def1: nextProps.def1,
-            appCode: nextProps.appCode
-        });
-    }
+    componentWillReceiveProps(nextProps) {}
     componentDidMount() {
         let { orgidObj } = this.state;
         if (orgidObj.refpk) {
@@ -113,8 +103,8 @@ class AssignComponent extends Component {
     }
     //已分配用户角色和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, orgidObj, def1, appCode, nodeKeyValue } = this.state;
-        let { templatePk } = this.props;
+        let { orgidObj, nodeKeyValue } = this.state;
+        let { templatePk, pageCode, appCode, def1 } = this.props;
         let infoData = {
             pageCode: pageCode,
             orgId: orgidObj.refpk,
@@ -523,8 +513,8 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { pageCode, treeAllowedData, orgidObj, def1, appCode, nodeKeyValue } = this.state;
-        let { templatePk } = this.props;
+        let { treeAllowedData, orgidObj, nodeKeyValue } = this.state;
+        let { templatePk, appCode, pageCode, def1 } = this.props;
         if (!orgidObj.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -602,19 +592,16 @@ class AssignComponent extends Component {
     render() {
         const {
             alloVisible,
-            pageCode,
             orgidObj,
             treeRoData,
             treeResData,
             allowDataArray,
             treeAllowedData,
-            nodeKey,
-            def1,
             tabActiveKey,
             roleSearchValue,
             respSearchValue
         } = this.state;
-        let { templatePk } = this.props;
+        let { templatePk, pageCode, def1, nodeKey } = this.props;
         return (
             <Modal
                 closable={false}
@@ -715,8 +702,11 @@ AssignComponent.propTypes = {
 };
 export default connect(
     (state) => ({
-        templatePk: state.TemplateSettingData.templatePk
+        templatePk: state.TemplateSettingData.templatePk,
+        pageCode: state.TemplateSettingData.pageCode,
+        appCode: state.TemplateSettingData.appCode,
+        def1: state.TemplateSettingData.def1,
+        nodeKey:state.TemplateSettingData.nodeKey
     }),
-    {
-    }
+    {}
 )(AssignComponent);

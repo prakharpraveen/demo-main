@@ -111,3 +111,10 @@ export const setTemplateTitleVal = (data) => {
 		data
 	};
 }
+//setNodeKey
+export const setNodeKey = (data) => {
+	return {
+		type: TemplateSetting.NODEKEY,
+		data
+	};
+}

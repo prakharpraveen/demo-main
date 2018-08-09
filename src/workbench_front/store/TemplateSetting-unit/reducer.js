@@ -34,6 +34,7 @@ let defaultState = {
         refname: '',
         refpk: ''
     },
+    nodeKey:[]
 };
 // 首页表单数据
 export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
@@ -153,6 +154,13 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     orgidObj: action.data
+                }
+        };
+        case TemplateSettingUnit.NODEKEY:
+            return {
+                ...state,
+                ...{
+                    nodeKey: action.data
                 }
         };
         default:

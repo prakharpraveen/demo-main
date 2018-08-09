@@ -118,4 +118,11 @@ export const setOrgidObj = (data) => {
 		data
 	};
 }
+//setNodeKey
+export const setNodeKey = (data) => {
+	return {
+		type: TemplateSettingUnit.NODEKEY,
+		data
+	};
+}
 

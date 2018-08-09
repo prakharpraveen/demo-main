@@ -17,7 +17,8 @@ import {
     setParentIdcon,
     setTemplateNameVal,
     setTemplateTitleVal,
-    setOrgidObj
+    setOrgidObj,
+    setNodeKey
 } from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -78,7 +79,6 @@ class TemplateSettingUnit extends Component {
             treeTemPrintData: [],
             treePrintTemData: [],
             visible: false,
-            nodeKey: '',
             alloVisible: false,
             templateType: '',
             previewPrintVisible: false,
@@ -562,9 +562,7 @@ class TemplateSettingUnit extends Component {
         } else if (def1 === 'menuitem') {
             templateType = 'print';
             if (key.length > 0) {
-                this.setState({
-                    nodeKey: e.selectedNodes[0].props.refData.nodeKey
-                });
+                this.props.setNodeKey(e.selectedNodes[0].props.refData.nodeKey);
             }
         }
         if (key.length > 0) {
@@ -798,7 +796,6 @@ class TemplateSettingUnit extends Component {
             visible,
             alloVisible,
             batchSettingModalVisibel,
-            nodeKey,
             autoExpandParent,
             autoExpandTemParent,
             previewPrintContent,
@@ -815,7 +812,8 @@ class TemplateSettingUnit extends Component {
             appCode,
             templateNameVal,
             templateTitleVal,
-            orgidObj
+            orgidObj,
+            nodeKey
         } = this.props;
         const leftTreeData = [
             {
@@ -1013,7 +1011,8 @@ TemplateSettingUnit.propTypes = {
     parentIdcon: PropTypes.string.isRequired,
     templateTitleVal: PropTypes.string.isRequired,
     templateNameVal: PropTypes.string.isRequired,
-    orgidObj:PropTypes.object.isRequired
+    orgidObj:PropTypes.object.isRequired,
+    nodeKey:PropTypes.array.isRequired
 };
 export default connect(
     (state) => ({
@@ -1032,7 +1031,8 @@ export default connect(
         parentIdcon: state.TemplateSettingUnitData.parentIdcon,
         TemplateNameVal: state.TemplateSettingUnitData.TemplateNameVal,
         TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal,
-        orgidObj: state.TemplateSettingUnitData.orgidObj
+        orgidObj: state.TemplateSettingUnitData.orgidObj,
+        nodeKey: state.TemplateSettingUnitData.nodeKey
     }),
     {
         setTreeData,
@@ -1050,6 +1050,7 @@ export default connect(
         setParentIdcon,
         setTemplateNameVal,
         setTemplateTitleVal,
-        setOrgidObj
+        setOrgidObj,
+        setNodeKey
     }
 )(TemplateSettingUnit);

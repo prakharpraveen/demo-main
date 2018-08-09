@@ -28,7 +28,8 @@ let defaultState = {
     pageCode:'',
     parentIdcon:'',
     templateNameVal:'',
-    templateTitleVal:''
+    templateTitleVal:'',
+    nodeKey:[]
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
@@ -141,6 +142,13 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     templateTitleVal: action.data
+                }
+        };
+        case TemplateSetting.NODEKEY:
+            return {
+                ...state,
+                ...{
+                    nodeKey: action.data
                 }
         };
         default:

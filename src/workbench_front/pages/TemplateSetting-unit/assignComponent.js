@@ -78,9 +78,6 @@ class AssignComponent extends Component {
             respSearchValue: '',
             roleSearchValue: '',
             autoExpandParent: true,
-            pageCode: this.props.pageCode,
-            appCode: this.props.appCode,
-            nodeKey: this.props.nodeKey,
             nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
@@ -93,16 +90,10 @@ class AssignComponent extends Component {
             treeAllowedData: [],
             allowedTreeKey: '',
             treeRoDataObj: {},
-            def1: this.props.def1,
             tabActiveKey: '1'
         };
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            pageCode: nextProps.pageCode,
-            def1: nextProps.def1,
-            appCode: nextProps.appCode
-        });
     }
     componentDidMount() {
         let { org_df_biz } = this.state;
@@ -112,8 +103,8 @@ class AssignComponent extends Component {
     }
     //已分配用户和职责的数据请求
     reqAllowTreeData = () => {
-        let { pageCode, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
-        const { templatePk } = this.props;
+        let { org_df_biz, nodeKeyValue } = this.state;
+        const { templatePk, def1, pageCode, appCode } = this.props;
         let infoData = {
             pageCode: pageCode,
             orgId: org_df_biz.refpk,
@@ -523,8 +514,8 @@ class AssignComponent extends Component {
     };
     //模态框确定按钮方法
     handleAlloOk = () => {
-        let { pageCode, treeAllowedData, org_df_biz, def1, appCode, nodeKeyValue } = this.state;
-        const { templatePk } = this.props;
+        let { treeAllowedData, org_df_biz, nodeKeyValue } = this.state;
+        const { templatePk, def1, pageCode, appCode } = this.props;
         if (!org_df_biz.refpk) {
             Notice({ status: 'warning', msg: '业务单元信息为空' });
             return;
@@ -603,19 +594,17 @@ class AssignComponent extends Component {
     render() {
         const {
             alloVisible,
-            pageCode,
             treeRoData,
             treeResData,
             treeRoVisible,
             allowDataArray,
             treeAllowedData,
-            nodeKey,
             org_df_biz,
-            def1,
             tabActiveKey,
             roleSearchValue,
             respSearchValue
         } = this.state;
+        const { def1, nodeKey, pageCode, appCode } = this.props;
         return (
             <Modal
                 closable={false}
@@ -714,8 +703,11 @@ AssignComponent.propTypes = {
 };
 export default connect(
     (state) => ({
-        templatePk: state.TemplateSettingUnitData.templatePk
+        templatePk: state.TemplateSettingUnitData.templatePk,
+        def1: state.TemplateSettingUnitData.def1,
+        nodeKey: state.TemplateSettingUnitData.nodeKey,
+        appCode: state.TemplateSettingUnitData.appCode,
+        pageCode: state.TemplateSettingUnitData.pageCode
     }),
-    {
-    }
+    {}
 )(AssignComponent);
