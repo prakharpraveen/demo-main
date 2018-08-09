@@ -363,7 +363,7 @@ class AssignComponent extends Component {
     };
     //树的展开
     onExpand = (expandedKeys) => {
-        this.setState({ expandedKeys, autoExpandParent: true });
+        this.setState({ expandedKeys, autoExpandParent: false });
     };
     //树的搜索
     onSearch = (e) => {

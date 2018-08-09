@@ -666,7 +666,7 @@ class TemplateSettingUnit extends Component {
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
-                let text = `${code} ${name}`;
+                let text = `${name} ${code}`;
                 if (code === '00') {
                     text = `${name}`;
                 }

@@ -739,7 +739,7 @@ class TemplateSetting extends Component {
                 if (code === '00') {
                     text = `${name}`;
                 }
-                let text = `${code} ${name}`;
+                let text = `${name} ${code}`;
                 const index = text.indexOf(searchValue);
                 const beforeStr = text.substr(0, index);
                 const afterStr = text.substr(index + searchValue.length);
