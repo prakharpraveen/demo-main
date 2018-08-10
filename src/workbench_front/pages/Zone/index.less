@@ -127,19 +127,35 @@ body {
         .ant-table-tbody > tr,
         .ant-table-thead > tr {
             height: 40px;
-            span{
-                font-size:13px;
-                color:#666;
-                font-family:'PingFangHK-Regular';
-           }
-            th {
-               padding:10px 8px;
+            span {
+                font-size: 13px;
+                color: #666;
+                font-family: 'PingFangHK-Regular';
             }
-            td{ 
-                padding:0px;
+            th {
+                padding: 10px 8px;
+            }
+            th:nth-last-child(1){
+                padding: 10px 9px 10px 30px;
+            }
+            td {
+                padding: 0px;
                 box-sizing: border-box;
-                padding-top: 8px;
-                padding-left:8px;
+                padding-top: 4px;
+                padding-left: 8px;
+            }
+            .editable-cell-input-wrapper,
+            .editable-cell-text-wrapper {
+                padding-right: 0;
+            }
+            .operationArea {
+                padding: 0 20px;
+                .copyBtn {
+                    float:left;
+                }
+                .deleteBtn {
+                    float:right;
+                }
             }
         }
     }
