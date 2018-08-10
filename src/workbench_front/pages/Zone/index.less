@@ -150,12 +150,10 @@ body {
             }
             .operationArea {
                 padding: 0 20px;
-                .copyBtn {
-                    float:left;
-                }
-                .deleteBtn {
-                    float:right;
-                }
+                display: -webkit-flex; /* Safari */
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content:space-between;
             }
         }
     }

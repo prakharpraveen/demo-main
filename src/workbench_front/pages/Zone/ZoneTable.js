@@ -193,7 +193,7 @@ class EditableSelect extends Component {
                             showSearch
                             optionFilterProp='children'
                             value={value}
-                            style={{ width: '80%' }}
+                            style={{ width: '100%' }}
                             onChange={(selected) => this.handleChange(selected)}
                             filterOption={(input, option) =>
                                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -417,14 +417,14 @@ class ZoneTable extends Component {
                 title: '区域编码',
                 className: 'required-tableCell',
                 dataIndex: 'code',
-                width: '15%',
+                width: '10%',
                 render: (text, record) => <EditableCell value={text} onChange={this.onCellChange(record.key, 'code')} />
             },
             {
                 title: '区域名称',
                 className: 'required-tableCell',
                 dataIndex: 'name',
-                width: '15%',
+                width: '10%',
                 render: (text, record) => <EditableCell value={text} onChange={this.onCellChange(record.key, 'name')} />
             },
             {
@@ -437,6 +437,12 @@ class ZoneTable extends Component {
                     }
                     return <EditableSelect value={text} onChange={this.onCellChange(record.key, 'areatype')} />;
                 }
+            },
+            {
+                title: '区域描述',
+                dataIndex: 'areadesc',
+                width: '10%',
+                render: (text, record) => <EditableCell value={text} onChange={this.onCellChange(record.key, 'areadesc')} />
             },
             {
                 title: '关联区域编码',
@@ -482,9 +488,6 @@ class ZoneTable extends Component {
                 dataIndex: 'metaname',
                 width: '15%',
                 render: (text, record) => {
-                    // if (record.pk_area) {
-                    //     return <span>{switchType(record)}</span>;
-                    // }
                     return <EditableRefer value={record} onChange={this.onCellChange(record.key, 'metaname')} />;
                 }
             },
@@ -495,11 +498,15 @@ class ZoneTable extends Component {
                 render: (text, record) => {
                     return this.state.dataSource.length ? (
                         <div className='operationArea'>
-                            {record.pk_area?(<span className='copyBtn'>
-                                <a href='javascript:;' onClick={() => this.copyRow(record)}>
-                                    复制
-                                </a>
-                            </span>):''}
+                            {record.pk_area ? (
+                                <span className='copyBtn'>
+                                    <a href='javascript:;' onClick={() => this.copyRow(record)}>
+                                        复制
+                                    </a>
+                                </span>
+                            ) : (
+                                ''
+                            )}
                             <span className='deleteBtn'>
                                 <Popconfirm
                                     title='确认是否删除?'
@@ -531,6 +538,9 @@ class ZoneTable extends Component {
             this.props.setNewList(nextProps.zoneDatas.areaList);
         }
     }
+    componentDidMount = () => {
+        this.handleAdd();
+    };
     //复制行
     copyRow(record) {
         let { oldData } = this.state;
