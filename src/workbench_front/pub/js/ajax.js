@@ -45,6 +45,10 @@ const Ajax = ({
         document.body.appendChild(div);
         ReactDOM.render(<Loading />, div);
     }
+    /**
+     * 开启报错提示
+     */
+    let flag = true;
     Axios({
         url,
         data,
@@ -64,6 +68,7 @@ const Ajax = ({
             function(data, headers) {
                 if (headers.contentpath) {
                     if (headers.redirect === "REDIRECT") {
+                        flag = false;
                         SpecialTip(
                             headers.redirectstatus,
                             exitPage,
@@ -104,7 +109,9 @@ const Ajax = ({
             }
         })
         .catch(error => {
-            Notice({ status: "error", msg: error.message });
+            if (flag) {
+                Notice({ status: "error", msg: error.message });
+            }
         });
     /**
      * 是否是未压缩的请求
