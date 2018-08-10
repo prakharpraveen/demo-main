@@ -79,7 +79,6 @@ class AssignComponent extends Component {
             nodeKeyValue: '',
             treeRoData: [],
             treeResData: [],
-            dataRoKey: '',
             dataRoObj: {},
             roleUserDatas: {},
             allowDataArray: [],
@@ -221,34 +220,32 @@ class AssignComponent extends Component {
     };
     //用户和角色的树点击方法
     selectRoFun = (key, e) => {
+        let dataRoObj = {};
         if (key.length > 0) {
+            dataRoObj.code = e.selectedNodes[0].props.refData.code;
+            dataRoObj.name = e.selectedNodes[0].props.refData.name;
+            dataRoObj.id = e.selectedNodes[0].props.refData.id;
+            dataRoObj.text = e.selectedNodes[0].props.refData.text;
             this.setState(
                 {
                     selectedKeys: key,
-                    dataRoKey: key[0]
+                    dataRoObj
                 },
                 this.lookDataFun
             );
         } else {
             this.setState({
                 selectedKeys: key,
-                dataRoKey: ''
+                dataRoObj
             });
         }
     };
     //在角色和职责树中找到当前选中树数据
     lookDataFun = () => {
-        let { dataRoKey, dataRoObj, roleUserDatas } = this.state;
-        if (!dataRoKey) {
-            Notice({ status: 'warning', msg: '请选中信息' });
-            return;
-        }
+        let { dataRoObj, roleUserDatas } = this.state;
         for (let key in roleUserDatas) {
             roleUserDatas[key].map((item, index) => {
-                if (item.id === dataRoKey) {
-                    dataRoObj.id = item.id;
-                    dataRoObj.name = item.name;
-                    dataRoObj.code = item.code;
+                if (item.id === dataRoObj.id) {
                     if (key === 'users') {
                         dataRoObj.type = 'user';
                     } else if (key === 'roles') {
@@ -266,29 +263,17 @@ class AssignComponent extends Component {
     //分配和取消分配方法
     allowClick = (name) => {
         let { dataRoObj, allowDataArray, treeAllowedData, allowedTreeKey } = this.state;
-        let allowDataObj = {};
         switch (name) {
             case 'allowRole':
-                let indexNum = '-1';
-                if (allowDataArray && allowDataArray.length > 0) {
-                    for (let i = 0; i < allowDataArray.length; i++) {
-                        if (allowDataArray[i].id === dataRoObj.id) {
-                            indexNum = 1;
-                        }
-                    }
+                if (!dataRoObj.id) {
+                    Notice({ status: 'warning', msg: '请选中信息' });
+                    return;
                 }
-                if (Number(indexNum) <= 0) {
-                    allowDataObj.id = dataRoObj.id;
-                    allowDataObj.name = dataRoObj.name;
-                    allowDataObj.code = dataRoObj.code;
-                    allowDataObj.type = dataRoObj.type;
-                    allowDataArray.push(allowDataObj);
+                const filterData = allowDataArray.find((item) => item.id === dataRoObj.id);
+                if (!filterData) {
+                    allowDataArray.push(dataRoObj);
+                    treeAllowedData = generateTreeData(allowDataArray);
                 }
-                allowDataArray.map((item) => {
-                    item.text = item.name + item.code;
-                    item.key = item.id;
-                });
-                treeAllowedData = generateTreeData(allowDataArray);
                 break;
             case 'allowRoleCancel':
                 if (!allowedTreeKey) {
@@ -317,11 +302,11 @@ class AssignComponent extends Component {
         });
     };
     //已分配树节点的选中方法
-    onSelectedAllow = (key) => {
+    onSelectedAllow = (key, e) => {
         if (key.length > 0) {
             this.setState({
                 selectedKeys: key,
-                allowedTreeKey: key[0]
+                allowedTreeKey: e.selectedNodes[0].props.refData.id
             });
         } else {
             this.setState({
@@ -706,7 +691,7 @@ export default connect(
         pageCode: state.TemplateSettingData.pageCode,
         appCode: state.TemplateSettingData.appCode,
         def1: state.TemplateSettingData.def1,
-        nodeKey:state.TemplateSettingData.nodeKey
+        nodeKey: state.TemplateSettingData.nodeKey
     }),
     {}
 )(AssignComponent);

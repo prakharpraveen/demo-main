@@ -82,7 +82,6 @@ class AssignComponent extends Component {
             treeRoData: [],
             treeResData: [],
             treeRoVisible: true,
-            dataRoKey: '',
             dataRoObj: {},
             roleUserDatas: {},
             allowDataArray: [],
@@ -93,8 +92,7 @@ class AssignComponent extends Component {
             tabActiveKey: '1'
         };
     }
-    componentWillReceiveProps(nextProps) {
-    }
+    componentWillReceiveProps(nextProps) {}
     componentDidMount() {
         let { org_df_biz } = this.state;
         if (org_df_biz.refpk) {
@@ -221,34 +219,32 @@ class AssignComponent extends Component {
     };
     //用户和角色的树点击方法
     selectRoFun = (key, e) => {
+        let dataRoObj = {};
         if (key.length > 0) {
+            dataRoObj.code = e.selectedNodes[0].props.refData.code;
+            dataRoObj.name = e.selectedNodes[0].props.refData.name;
+            dataRoObj.id = e.selectedNodes[0].props.refData.id;
+            dataRoObj.text = e.selectedNodes[0].props.refData.text;
             this.setState(
                 {
                     selectedKeys: key,
-                    dataRoKey: key[0]
+                    dataRoObj
                 },
                 this.lookDataFun
             );
         } else {
             this.setState({
                 selectedKeys: key,
-                dataRoKey: ''
+                dataRoObj
             });
         }
     };
     //在角色和职责树中找到当前选中树数据
     lookDataFun = () => {
-        let { dataRoKey, dataRoObj, roleUserDatas } = this.state;
-        if (!dataRoKey) {
-            Notice({ status: 'warning', msg: '请选中信息' });
-            return;
-        }
+        let { dataRoObj, roleUserDatas } = this.state;
         for (let key in roleUserDatas) {
             roleUserDatas[key].map((item, index) => {
-                if (item.id === dataRoKey) {
-                    dataRoObj.id = item.id;
-                    dataRoObj.name = item.name;
-                    dataRoObj.code = item.code;
+                if (item.id === dataRoObj.id) {
                     if (key === 'users') {
                         dataRoObj.type = 'user';
                     } else if (key === 'roles') {
@@ -266,29 +262,17 @@ class AssignComponent extends Component {
     //分配和取消分配方法
     allowClick = (name) => {
         let { dataRoObj, allowDataArray, treeAllowedData, allowedTreeKey } = this.state;
-        let allowDataObj = {};
         switch (name) {
             case 'allowRole':
-                let indexNum = '-1';
-                if (allowDataArray && allowDataArray.length > 0) {
-                    for (let i = 0; i < allowDataArray.length; i++) {
-                        if (allowDataArray[i].id === dataRoObj.id) {
-                            indexNum = 1;
-                        }
-                    }
+                if (!dataRoObj.id) {
+                    Notice({ status: 'warning', msg: '请选中信息' });
+                    return;
                 }
-                if (Number(indexNum) <= 0) {
-                    allowDataObj.id = dataRoObj.id;
-                    allowDataObj.name = dataRoObj.name;
-                    allowDataObj.code = dataRoObj.code;
-                    allowDataObj.type = dataRoObj.type;
-                    allowDataArray.push(allowDataObj);
+                const filterData = allowDataArray.find((item) => item.id === dataRoObj.id);
+                if (!filterData) {
+                    allowDataArray.push(dataRoObj);
+                    treeAllowedData = generateTreeData(allowDataArray);
                 }
-                allowDataArray.map((item) => {
-                    item.text = item.name + item.code;
-                    item.key = item.id;
-                });
-                treeAllowedData = generateTreeData(allowDataArray);
                 break;
             case 'allowRoleCancel':
                 if (!allowedTreeKey) {
@@ -317,11 +301,11 @@ class AssignComponent extends Component {
         });
     };
     //已分配树节点的选中方法
-    onSelectedAllow = (key) => {
+    onSelectedAllow = (key, e) => {
         if (key.length > 0) {
             this.setState({
                 selectedKeys: key,
-                allowedTreeKey: key[0]
+                allowedTreeKey: e.selectedNodes[0].props.refData.id
             });
         } else {
             this.setState({
@@ -457,11 +441,12 @@ class AssignComponent extends Component {
                     title = text;
                 }
 
-                if (children && children.length > 0) {
+                if (item.children && item.children.length > 0) {
                     return (
                         <TreeNode
                             key={key}
                             title={title}
+                            refData={item}
                             icon={
                                 <Svg
                                     width={15}
@@ -476,12 +461,11 @@ class AssignComponent extends Component {
                                 />
                             }
                         >
-                            {' '}
-                            {loop(children)}{' '}
+                            {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode icon={<span className='tree-dot' />} key={key} title={title} />;
+                return <TreeNode icon={<span className='tree-dot' />} key={key} title={title} refData={item} />;
             });
         };
         return (
