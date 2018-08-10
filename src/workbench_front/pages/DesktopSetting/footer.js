@@ -10,7 +10,7 @@ import * as utilService from "./utilService";
 import Notice from "Components/Notice";
 import { withRouter } from "react-router-dom";
 const RadioGroup = Radio.Group;
-
+//footer
 class MyFooter extends Component {
     constructor(props) {
         super(props);
