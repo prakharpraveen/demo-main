@@ -109,10 +109,11 @@ class App extends Component {
          * 调用此方法去修改URL地址时需要encodeURIComponent两次
          * 获取URL参数时需要decodeURIComponent两次
          * @param {String|undefined|null} appcode - 应用编码 值为""/undefined/null 则不会校验权限  需要工作台容器
+         * @param {String|undefined|null} pagecode - 页面编码编码 值为""/undefined/null 则返回应用默认页面
          * @param {Function} callback - 检查之后的回调
          * @param {String} tab - 新页签
          */
-        window.openCheck = (appcode, callback, type) => {
+        window.openCheck = (appcode,pagecode, callback, type) => {
             let win = window;
             // 新页签跳转
             if (type === "tab") {
@@ -127,7 +128,8 @@ class App extends Component {
                         action: "权限校验"
                     },
                     data: {
-                        appcode
+                        appcode,
+                        pagecode
                     },
                     success: ({ data }) => {
                         if (data.data && !data.data.is_haspower) {
