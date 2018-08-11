@@ -104,6 +104,7 @@ class App extends Component {
                 this.openNewApp(appOption, type, query);
             }
         };
+        
         /**
          * 跳转检查
          * 调用此方法去修改URL地址时需要encodeURIComponent两次
