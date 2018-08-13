@@ -12,7 +12,7 @@ import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
 import { Forewarning } from "Components/Forewarning";
-import BusinessDate from "./BusinessDate";
+// import BusinessDate from "./BusinessDate";
 import MTZBDate from "./MTZBDate";
 import { sprLog } from "./spr";
 import UserLogo from "Assets/images/userLogo.jpg";
@@ -559,10 +559,10 @@ class Layout extends Component {
                             <Breadcrumb />
                         )}
                         <div className="nccwb-header-info-right">
-                            <BusinessDate
+                            {/* <BusinessDate
                                 onOk={this.handleDateChange}
                                 date={newDate}
-                            />
+                            /> */}
                             <MTZBDate
                                 onOk={this.handleDateChange}
                                 date={newDate}
@@ -574,16 +574,14 @@ class Layout extends Component {
                                 onClick={this.handleSprClick}
                             >
                                 {sprType ? (
-                                    <Icon
+                                    <i
                                         title="开始录制SPR"
-                                        type="play-circle-o"
-                                        className="iconfont"
+                                        className="iconfont icon-kaishi1"
                                     />
                                 ) : (
-                                    <Icon
+                                    <i
                                         title="结束录制SPR"
-                                        type="pause-circle-o"
-                                        className="iconfont"
+                                        className="iconfont icon-zanting"
                                     />
                                 )}
                             </span>
