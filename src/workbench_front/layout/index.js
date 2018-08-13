@@ -12,8 +12,8 @@ import Breadcrumb from "Components/Breadcrumb";
 // 工作桌面单页通用布局
 import TabsLink from "Components/TabsLink";
 import { Forewarning } from "Components/Forewarning";
-// import BusinessDate from "./BusinessDate";
-import MTZBDate from "./MTZBDate";
+import BusinessDate from "./BusinessDate";
+// import MTZBDate from "./MTZBDate";
 // import { sprLog } from "./spr";
 import RecordSPR from "./RecordSPR";
 import UserLogo from "Assets/images/userLogo.jpg";
@@ -560,14 +560,14 @@ class Layout extends Component {
                             <Breadcrumb />
                         )}
                         <div className="nccwb-header-info-right">
-                            {/* <BusinessDate
-                                onOk={this.handleDateChange}
-                                date={newDate}
-                            /> */}
-                            <MTZBDate
+                            <BusinessDate
                                 onOk={this.handleDateChange}
                                 date={newDate}
                             />
+                            {/* <MTZBDate
+                                onOk={this.handleDateChange}
+                                date={newDate}
+                            /> */}
                             <RecordSPR />
                         </div>
                     </div>

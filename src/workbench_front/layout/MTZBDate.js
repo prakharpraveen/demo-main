@@ -132,6 +132,7 @@ class MTZBDate extends Component {
                     onPanelChange={this.handlePanelChange}
                     autofocus={false}
                     showClear={false}
+                    renderIcon={()=><i className={`iconfront ${flag?"icon-rili-jin":"icon-rili"}`} />}
                 />
                 {!flag ? <span className="business-date-flag">!</span> : ""}
                 <Tooltip placement="bottom" title={busunessTitle}>
