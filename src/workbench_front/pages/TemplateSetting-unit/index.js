@@ -201,9 +201,10 @@ class TemplateSettingUnit extends Component {
             success: ({ data }) => {
                 if (data.success) {
                     Notice({ status: 'success', msg: '复制成功' });
-                    this.props.setSelectedTemKeys([ data.data ]);
-                    this.props.setParentIdcon(data.data);
+                    this.props.setSelectedTemKeys([ data.data.id ]);
+                    this.props.setParentIdcon(data.data.id);
                     this.props.setTemplateNameVal(data.data.name);
+                    this.props.setTemplatePk(data.data.id);
                     if (def1 === 'menuitem') {
                         this.props.setTemplateTitleVal(data.data.code);
                     }

@@ -194,6 +194,7 @@ class TemplateSetting extends Component {
                     this.props.setSelectedTemKeys([ data.data.id ]);
                     this.props.setParentIdcon(data.data.id);
                     this.props.setTemplateNameVal(data.data.name);
+                    this.props.setTemplatePk(data.data.id);
                     if (def1 === 'menuitem') {
                         this.props.setTemplateTitleVal(data.data.code);
                     }
