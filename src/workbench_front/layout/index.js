@@ -35,7 +35,8 @@ class Layout extends Component {
             currentData: [],
             selectedKey: "",
             newDate: moment().format("YYYY-MM-DD hh:mm:ss"),
-            allAppsVisible: false
+            allAppsVisible: false,
+            searchValue: ""
         };
     }
     /**
@@ -144,6 +145,9 @@ class Layout extends Component {
                 targetApp = d;
             }
         });
+        this.setState({
+            searchValue: targetApp.text
+        });
         window.openNew(targetApp);
     };
     /**
@@ -212,8 +216,13 @@ class Layout extends Component {
                         dropdownClassName={"field_global-search"}
                         style={{ width: 200, height: 30 }}
                         onSelect={this.onSelect}
-                        onSearch={this.handleSearch}
+                        onSearch={value => {
+                            this.handleSearch(value);
+                        }}
                         placeholder="请输入应用名称"
+                        onFocus={() => {
+                            this.handleSearch(this.state.searchValue);
+                        }}
                     />
                     <i
                         field="search"
