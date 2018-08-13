@@ -112,6 +112,7 @@ class PreviewModal extends Component {
         let { editTable, form, search } = this.props;
         return (
             <Modal
+                mask={true}
                 title="预览区"
                 mask={false}
                 visible={this.props.batchSettingModalVisibel}
