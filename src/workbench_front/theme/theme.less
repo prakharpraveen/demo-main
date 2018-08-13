@@ -123,7 +123,25 @@ body {
     .ant-select-dropdown-menu-item-selected:hover {
         background-color: #f3f3f3;
     }
-
+    .ant-table {
+        .ant-table-thead {
+            th {
+                padding: 6px 8px;
+            }
+        }
+        .ant-table-tbody {
+            td {
+                padding: 8px 8px;
+            }
+        }
+    }
+    .ant-table-thead > tr > th {
+        background: #f3f3f3;
+        color: #111111;
+        span{
+            font-size: 13px;
+        }
+    }
     .ant-table-tbody > tr.ant-table-row-hover > td,
     .ant-table-tbody > tr:hover > td,
     .ant-table-thead > tr.ant-table-row-hover > td,
@@ -451,6 +469,6 @@ body {
         }
     }
 }
-.ant-confirm-body .ant-confirm-title{
+.ant-confirm-body .ant-confirm-title {
     display: inline-block;
 }
