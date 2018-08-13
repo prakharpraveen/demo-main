@@ -27,14 +27,16 @@ let defaultState = {
     appCode: '',
     pageCode: '',
     parentIdcon: '',
-    templateNameVal:'',
-    templateTitleVal:'',
-    orgidObj: {// 默认业务单元
+    templateNameVal: '',
+    templateTitleVal: '',
+    orgidObj: {
+        // 默认业务单元
         refcode: '',
         refname: '',
         refpk: ''
     },
-    nodeKey:[]
+    nodeKey: [],
+    copyId:''
 };
 // 首页表单数据
 export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
@@ -155,21 +157,21 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                 ...{
                     orgidObj: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.NODEKEY:
             return {
                 ...state,
                 ...{
                     nodeKey: action.data
                 }
-        };
+            };
         case TemplateSettingUnit.COPYID:
             return {
                 ...state,
                 ...{
                     copyId: action.data
                 }
-        };
+            };
         default:
             return state;
     }

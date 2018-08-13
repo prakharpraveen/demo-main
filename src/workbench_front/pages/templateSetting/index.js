@@ -901,6 +901,7 @@ class TemplateSetting extends Component {
             templateTitleVal,
             nodeKey
         } = this.props;
+        console.log(this.props);
         const treeData = [
             {
                 code: '00',

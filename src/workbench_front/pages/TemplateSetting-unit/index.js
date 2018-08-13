@@ -859,7 +859,7 @@ class TemplateSettingUnit extends Component {
             orgidObj,
             nodeKey
         } = this.props;
-        console.log(templateNameVal);
+        console.log(this.props);
         const leftTreeData = [
             {
                 code: '00',
