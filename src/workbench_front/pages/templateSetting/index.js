@@ -1002,6 +1002,7 @@ class TemplateSetting extends Component {
                 )}
                 {visible && (
                     <Modal
+                        mask={true}
                         closable={false}
                         title='请录入正确的模板名称和编码'
                         visible={visible}
