@@ -166,7 +166,22 @@ class TemplateSettingUnit extends Component {
     };
     //保存
     handleOk = (e) => {
-        const { orgidObj, def1, templatePk, pageCode, appCode, templateNameVal, templateTitleVal } = this.props;
+        const {
+            orgidObj,
+            def1,
+            templatePk,
+            pageCode,
+            appCode,
+            templateNameVal,
+            templateTitleVal,
+            expandedTemKeys,
+            setSelectedTemKeys,
+            setParentIdcon,
+            setTemplateNameVal,
+            setTemplatePk,
+            setExpandedTemKeys,
+            setTemplateTitleVal
+        } = this.props;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板标题' });
             return;
@@ -201,16 +216,19 @@ class TemplateSettingUnit extends Component {
             success: ({ data }) => {
                 if (data.success) {
                     Notice({ status: 'success', msg: '复制成功' });
-                    this.props.setSelectedTemKeys([ data.data.id ]);
-                    this.props.setParentIdcon(data.data.id);
-                    this.props.setTemplateNameVal(data.data.name);
-                    this.props.setTemplatePk(data.data.id);
+                    setSelectedTemKeys([ data.data.id ]);
+                    setParentIdcon(data.data.id);
+                    setTemplateNameVal(data.data.name);
+                    setTemplatePk(data.data.id);
+                    let array = [ ...expandedTemKeys, data.data.id ];
+                    setExpandedTemKeys(array);
                     if (def1 === 'menuitem') {
-                        this.props.setTemplateTitleVal(data.data.code);
+                        setTemplateTitleVal(data.data.code);
                     }
                     this.reqTreeTemData('copy');
                     this.setState({
-                        visible: false
+                        visible: false,
+                        autoExpandTemParent:true
                     });
                 }
             }
@@ -348,9 +366,9 @@ class TemplateSettingUnit extends Component {
             searchValue
         } = this.props;
         if (def1 !== '') {
-            if(searchValue){
+            if (searchValue) {
                 this.handleSearch(searchValue, this.handleExpanded);
-            }else{
+            } else {
                 this.reqTreeData();
             }
             setSelectedKeys(selectedKeys);
@@ -665,7 +683,7 @@ class TemplateSettingUnit extends Component {
         const loop = (data) => {
             return data.map((item) => {
                 let { code, name, pk } = item;
-                let text = `${name} ${code}`;
+                let text = `${code} ${name}`;
                 if (code === '00') {
                     text = `${name}`;
                 }
@@ -692,8 +710,8 @@ class TemplateSettingUnit extends Component {
                             refData={item}
                             icon={
                                 <Svg
-                                    width={15}
-                                    height={13}
+                                    width={16}
+                                    height={16}
                                     xlinkHref={
                                         expandedKeys.indexOf(item.pk) === -1 ? (
                                             '#icon-wenjianjia'
@@ -925,18 +943,6 @@ class TemplateSettingUnit extends Component {
                         cancelText={'取消'}
                     >
                         <div className='copyTemplate'>
-                            <div>
-                                <label htmlFor=''>模板名称：</label>
-                                <Input
-                                    value={templateNameVal}
-                                    style={{ width: '80%' }}
-                                    placeholder='请输入名称'
-                                    onChange={(e) => {
-                                        const templateNameVal = e.target.value;
-                                        this.props.setTemplateNameVal(templateNameVal);
-                                    }}
-                                />
-                            </div>
                             {def1 === 'menuitem' &&
                             treeTemPrintData.length > 0 && (
                                 <div>
@@ -952,6 +958,18 @@ class TemplateSettingUnit extends Component {
                                     />
                                 </div>
                             )}
+                            <div>
+                                <label htmlFor=''>模板名称：</label>
+                                <Input
+                                    value={templateNameVal}
+                                    style={{ width: '80%' }}
+                                    placeholder='请输入名称'
+                                    onChange={(e) => {
+                                        const templateNameVal = e.target.value;
+                                        this.props.setTemplateNameVal(templateNameVal);
+                                    }}
+                                />
+                            </div>
                         </div>
                     </Modal>
                 )}
@@ -1014,8 +1032,8 @@ TemplateSettingUnit.propTypes = {
     parentIdcon: PropTypes.string.isRequired,
     templateTitleVal: PropTypes.string.isRequired,
     templateNameVal: PropTypes.string.isRequired,
-    orgidObj:PropTypes.object.isRequired,
-    nodeKey:PropTypes.array.isRequired
+    orgidObj: PropTypes.object.isRequired,
+    nodeKey: PropTypes.array.isRequired
 };
 export default connect(
     (state) => ({

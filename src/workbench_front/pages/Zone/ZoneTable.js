@@ -442,7 +442,9 @@ class ZoneTable extends Component {
                 title: '区域描述',
                 dataIndex: 'areadesc',
                 width: '10%',
-                render: (text, record) => <EditableCell value={text} onChange={this.onCellChange(record.key, 'areadesc')} />
+                render: (text, record) => (
+                    <EditableCell value={text} onChange={this.onCellChange(record.key, 'areadesc')} />
+                )
             },
             {
                 title: '关联区域编码',
@@ -782,6 +784,19 @@ class ZoneTable extends Component {
                     onCancel={this.handleCancel}
                 >
                     <div className='areaName-item'>
+                        <label htmlFor=''>区域编码：</label>
+                        <Input
+                            placeholder='区域编码：'
+                            value={areaCode}
+                            onChange={(e) => {
+                                const areaCode = e.target.value;
+                                this.setState({
+                                    areaCode
+                                });
+                            }}
+                        />
+                    </div>
+                    <div className='areaCode-item'>
                         <label htmlFor=''>区域名称：</label>
                         <Input
                             placeholder='区域名称：'
@@ -790,19 +805,6 @@ class ZoneTable extends Component {
                                 const areaName = e.target.value;
                                 this.setState({
                                     areaName
-                                });
-                            }}
-                        />
-                    </div>
-                    <div className='areaCode-item'>
-                        <label htmlFor=''>区域编码：</label>
-                        <Input
-                            placeholder='区域名称：'
-                            value={areaCode}
-                            onChange={(e) => {
-                                const areaCode = e.target.value;
-                                this.setState({
-                                    areaCode
                                 });
                             }}
                         />

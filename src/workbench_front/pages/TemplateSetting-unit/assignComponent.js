@@ -449,8 +449,8 @@ class AssignComponent extends Component {
                             refData={item}
                             icon={
                                 <Svg
-                                    width={15}
-                                    height={13}
+                                    width={16}
+                                    height={16}
                                     xlinkHref={
                                         expandedKeys.indexOf(item.pk) === -1 ? (
                                             '#icon-wenjianjia'
