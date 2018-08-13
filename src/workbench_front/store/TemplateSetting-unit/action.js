@@ -125,4 +125,11 @@ export const setNodeKey = (data) => {
 		data
 	};
 }
+//setCopyId
+export const setCopyId = (data) => {
+	return {
+		type: TemplateSettingUnit.COPYID,
+		data
+	};
+}
 

@@ -34,5 +34,7 @@ export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
 export const ORGIDOBJ = 'ORGIDOBJ';
 //setNodeKey
 export const NODEKEY = 'NODEKEY';
+//setCopyId
+export const COPYID = 'COPYID';
 
 

@@ -17,7 +17,8 @@ import {
     setParentIdcon,
     setTemplateNameVal,
     setTemplateTitleVal,
-    setNodeKey
+    setNodeKey,
+    setCopyId
 } from 'Store/TemplateSetting/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -171,7 +172,8 @@ class TemplateSetting extends Component {
             setTemplateNameVal,
             setTemplatePk,
             setExpandedTemKeys,
-            setTemplateTitleVal
+            setTemplateTitleVal,
+            setCopyId
         } = this.props;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板名称' });
@@ -209,8 +211,7 @@ class TemplateSetting extends Component {
                     setParentIdcon(data.data.id);
                     setTemplateNameVal(data.data.name);
                     setTemplatePk(data.data.id);
-                    let array = [ ...expandedTemKeys, data.data.id ];
-                    setExpandedTemKeys(array);
+                    setCopyId(data.data.id);
                     if (def1 === 'menuitem') {
                         setTemplateTitleVal(data.data.code);
                     }
@@ -490,7 +491,7 @@ class TemplateSetting extends Component {
     //右侧树组装数据
     restoreTreeTemData = (templateType, eventType) => {
         let { treeTemBillData, treeTemPrintData } = this.state;
-        let { def1, selectedTemKeys, parentIdcon } = this.props;
+        let { def1, selectedTemKeys, parentIdcon, expandedTemKeys, copyId } = this.props;
         let treeData = [];
         let treeInfo;
         let treeTemBillDataArray = this.props.treeTemBillData;
@@ -533,6 +534,17 @@ class TemplateSetting extends Component {
                         this.props.setParentIdcon(treeData[0].parentId);
                         this.props.setTemplatePk(treeData[0].pk);
                         this.props.setTemplateNameVal(treeData[0].name);
+                    } else if (eventType && eventType === 'copy') {
+                        treeData.map((item) => {
+                            if (item.children && item.children.length > 0) {
+                                item.children.map((ele) => {
+                                    if (copyId === ele.key) {
+                                        let array = [ ...expandedTemKeys, ele.parentId ];
+                                        this.props.setExpandedTemKeys(array);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -551,6 +563,17 @@ class TemplateSetting extends Component {
                         this.props.setParentIdcon(treeData[0].parentId);
                         this.props.setTemplateNameVal(treeData[0].name);
                         this.props.setTemplateTitleVal(treeData[0].code);
+                    } else if (eventType && eventType === 'copy') {
+                        treeData.map((item) => {
+                            if (item.children && item.children.length > 0) {
+                                item.children.map((ele) => {
+                                    if (copyId === ele.key) {
+                                        let array = [ ...expandedTemKeys, ele.parentId ];
+                                        this.props.setExpandedTemKeys(array);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -1060,6 +1083,7 @@ TemplateSetting.propTypes = {
     setSearchValue: PropTypes.func.isRequired,
     setPageCode: PropTypes.func.isRequired,
     setAppCode: PropTypes.func.isRequired,
+    setCopyId:PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
     setNodeKey: PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
@@ -1076,7 +1100,8 @@ TemplateSetting.propTypes = {
     parentIdcon: PropTypes.string.isRequired,
     templateNameVal: PropTypes.string.isRequired,
     templateTitleVal: PropTypes.string.isRequired,
-    nodeKey: PropTypes.array.isRequired
+    nodeKey: PropTypes.array.isRequired,
+    copyId:PropTypes.string.isRequired
 };
 export default connect(
     (state) => ({
@@ -1095,7 +1120,8 @@ export default connect(
         parentIdcon: state.TemplateSettingData.parentIdcon,
         templateNameVal: state.TemplateSettingData.templateNameVal,
         templateTitleVal: state.TemplateSettingData.templateTitleVal,
-        nodeKey: state.TemplateSettingData.nodeKey
+        nodeKey: state.TemplateSettingData.nodeKey,
+        copyId:state.TemplateSettingData.copyId
     }),
     {
         setTreeData,
@@ -1113,6 +1139,7 @@ export default connect(
         setParentIdcon,
         setTemplateNameVal,
         setTemplateTitleVal,
-        setNodeKey
+        setNodeKey,
+        setCopyId
     }
 )(TemplateSetting);

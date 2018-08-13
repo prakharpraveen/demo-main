@@ -32,5 +32,6 @@ export const TEMPLATENAMEVAL = 'TEMPLATENAMEVAL';
 export const TEMPLATETITLEVAL = 'TEMPLATETITLEVAL';
 //setNodeKey
 export const NODEKEY = 'NODEKEY';
-
+//setCopyId
+export const COPYID = 'COPYID';
 
