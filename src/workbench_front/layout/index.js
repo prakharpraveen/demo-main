@@ -13,7 +13,7 @@ import Breadcrumb from "Components/Breadcrumb";
 import TabsLink from "Components/TabsLink";
 import { Forewarning } from "Components/Forewarning";
 import BusinessDate from "./BusinessDate";
-// import MTZBDate from "./MTZBDate";
+import MTZBDate from "./MTZBDate";
 import { sprLog } from "./spr";
 import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
@@ -331,7 +331,10 @@ class Layout extends Component {
         userCode,
         projectCode
     }) => {
-        if (window.GETBUSINESSINFO && window.GETBUSINESSINFO().groupId !== groupId) {
+        if (
+            window.GETBUSINESSINFO &&
+            window.GETBUSINESSINFO().groupId !== groupId
+        ) {
             this.refreshIframe();
         }
         window.GETBUSINESSINFO = () => {
@@ -551,7 +554,10 @@ class Layout extends Component {
                                 onOk={this.handleDateChange}
                                 date={newDate}
                             />
-                            {/* <MTZBDate /> */}
+                            <MTZBDate
+                                onOk={this.handleDateChange}
+                                date={newDate}
+                            />
                             <span
                                 className="margin-left-6"
                                 field="spr"
