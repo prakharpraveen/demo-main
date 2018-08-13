@@ -202,7 +202,7 @@ class MySider extends Component {
 				<div className='sider-search'>
 					<Cascader
 						className='search-cascader'
-						style={{ width: '230px' }}
+						style={{ width: '230px', }}
 						allowClear={false}
 						defaultValue={this.state.defaultValue}
 						value={this.state.domainModuleSelect}
@@ -374,7 +374,7 @@ class MySider extends Component {
 				<div className='sider-content'>
 					{this.getSearchDom()}
 					<div className='add-item'>
-						<span>选择下方应用拖拽至右侧分组</span>
+						<span>*提示 : 请选择下方应用拖拽至右侧</span>
 						<Dropdown trigger={[ 'hover' ]} overlay={this.allShowOrHideMenu} placement='bottomCenter'>
 							<Icon type='menu-unfold' />
 						</Dropdown>

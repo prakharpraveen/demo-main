@@ -6,6 +6,8 @@ import { compactLayoutHorizontal } from './compact.js';
 import { updateShadowCard, updateGroupList } from 'Store/test/action';
 import * as utilService from './utilService';
 import _ from 'lodash';
+import background_card from 'Assets/images/background_card.png'
+import { isAbsolute } from 'path';
 const noteSource = {
 	//开始拖拽，设置isShadow属性，shadowCard对象，更新groups
 	beginDrag(props, monitor, component) {
@@ -113,7 +115,17 @@ class Item extends Component {
 					}}
 				>
 					<div style={{ paddingLeft: '10px' }}>{name}</div>
-					<div />
+					<div style={{ left: '24px',position: 'relative',bottom: '11px' }}>
+						<img 
+							field='logo'
+							fieldname='标识'
+							src={background_card}
+							alt='logo'
+							width='107'
+							height='113'
+							style={{ position: 'absolute',zIndex: '-1'}}
+						/>
+					</div>
 					<div className='card-footer'>
 						<Checkbox checked={isChecked} onChange={this.onCheckboxChange} />
 						<Icon type='delete' className='card-delete' onClick={this.deleteCard} />

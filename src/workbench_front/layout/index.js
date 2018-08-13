@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Select, AutoComplete, Icon, Popover } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { GetQuery } from "Pub/js/utils";
+import { GetQuery, DeferFn } from "Pub/js/utils";
 import { withRouter } from "react-router-dom";
 import { changeDrawer, setAccountInfo } from "Store/appStore/action";
 import AllApps from "Pages/AllApps/index";
@@ -14,7 +14,8 @@ import TabsLink from "Components/TabsLink";
 import { Forewarning } from "Components/Forewarning";
 // import BusinessDate from "./BusinessDate";
 import MTZBDate from "./MTZBDate";
-import { sprLog } from "./spr";
+// import { sprLog } from "./spr";
+import RecordSPR from "./RecordSPR";
 import UserLogo from "Assets/images/userLogo.jpg";
 import "./index.less";
 import Ajax from "Pub/js/ajax";
@@ -29,7 +30,6 @@ class Layout extends Component {
         this.state = {
             nodeName: "首页",
             isShowSearch: false,
-            sprType: true,
             dataSource: [],
             // 所属集团
             currentData: [],
@@ -157,45 +157,42 @@ class Layout extends Component {
         if (value === "") {
             return;
         }
-        if (!resizeWaiter) {
-            resizeWaiter = true;
-            setTimeout(() => {
-                resizeWaiter = false;
-                Ajax({
-                    url: `/nccloud/platform/appregister/searchmenuitem.do`,
-                    info: {
-                        name: "应用搜索",
-                        action: "模糊搜索应用"
-                    },
-                    data: {
-                        search_content: value,
-                        apptype: "1"
-                    },
-                    success: res => {
-                        const { data, success } = res.data;
-                        if (
-                            success &&
-                            data &&
-                            data.children &&
-                            data.children.length > 0
-                        ) {
-                            const dataSource = [];
-                            data.children.map(c => {
-                                dataSource.push({
-                                    value: c.value,
-                                    text: c.label,
-                                    code: c.code,
-                                    appcode: c.appcode,
-                                    label: c.label,
-                                    appid: c.appid
-                                });
+        let fn = () => {
+            Ajax({
+                url: `/nccloud/platform/appregister/searchmenuitem.do`,
+                info: {
+                    name: "应用搜索",
+                    action: "模糊搜索应用"
+                },
+                data: {
+                    search_content: value,
+                    apptype: "1"
+                },
+                success: res => {
+                    const { data, success } = res.data;
+                    if (
+                        success &&
+                        data &&
+                        data.children &&
+                        data.children.length > 0
+                    ) {
+                        const dataSource = [];
+                        data.children.map(c => {
+                            dataSource.push({
+                                value: c.value,
+                                text: c.label,
+                                code: c.code,
+                                appcode: c.appcode,
+                                label: c.label,
+                                appid: c.appid
                             });
-                            this.setState({ dataSource });
-                        }
+                        });
+                        this.setState({ dataSource });
                     }
-                });
-            }, 100);
-        }
+                }
+            });
+        };
+        DeferFn.call(this, fn);
     };
     /**
      * 创建搜索全部应用
@@ -567,24 +564,7 @@ class Layout extends Component {
                                 onOk={this.handleDateChange}
                                 date={newDate}
                             />
-                            <span
-                                className="margin-left-6"
-                                field="spr"
-                                fieldname="录制SPR"
-                                onClick={this.handleSprClick}
-                            >
-                                {sprType ? (
-                                    <i
-                                        title="开始录制SPR"
-                                        className="iconfont icon-kaishi1"
-                                    />
-                                ) : (
-                                    <i
-                                        title="结束录制SPR"
-                                        className="iconfont icon-zanting"
-                                    />
-                                )}
-                            </span>
+                            <RecordSPR />
                         </div>
                     </div>
                 </div>
