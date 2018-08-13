@@ -2,7 +2,8 @@ import { Component } from "react";
 import { base } from "nc-lightapp-front";
 import moment from "moment";
 import { Tooltip } from "antd";
-const NCTZDatePickClientTime = base.NCTZDatePickClientTime;
+import './MTZBDate.less';
+const NCTZDatePickClientHourTime = base.NCTZDatePickClientHourTime;
 const format = "YYYY-MM-DD";
 const dateInputPlaceholder = "选择日期";
 class MTZBDate extends Component {
@@ -71,6 +72,11 @@ class MTZBDate extends Component {
             isOpen: true
         });
     };
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.date !== this.state.date) {
+            this.setState({ value: nextProps.date });
+        }
+    }
     render() {
         console.log(this.state.value);
         const ExtraFooter = (
@@ -108,8 +114,8 @@ class MTZBDate extends Component {
                         : "nc-workbench-businessdate unbusinessdate"
                 }
             >
-                <NCTZDatePickClientTime
-                    dropdownClassName={
+                <NCTZDatePickClientHourTime
+                    className={
                         "field_business-date nc-workbench-businessdate-dropdown"
                     }
                     format={format}
@@ -119,6 +125,8 @@ class MTZBDate extends Component {
                     value={this.state.value}
                     placeholder={dateInputPlaceholder}
                     showToday={false}
+                    showOk={false}
+                    showTime={false}
                     renderFooter={() => ExtraFooter}
                     onOpenChange={this.handleOpenChange}
                     onPanelChange={this.handlePanelChange}
