@@ -163,6 +163,13 @@ export const TemplateSettingUnitData = (state = defaultState, action = {}) => {
                     nodeKey: action.data
                 }
         };
+        case TemplateSettingUnit.COPYID:
+            return {
+                ...state,
+                ...{
+                    copyId: action.data
+                }
+        };
         default:
             return state;
     }

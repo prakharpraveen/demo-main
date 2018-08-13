@@ -29,7 +29,8 @@ let defaultState = {
     parentIdcon:'',
     templateNameVal:'',
     templateTitleVal:'',
-    nodeKey:[]
+    nodeKey:[],
+    copyId:''
 };
 // 首页表单数据
 export const TemplateSettingData = (state = defaultState, action = {}) => {
@@ -149,6 +150,13 @@ export const TemplateSettingData = (state = defaultState, action = {}) => {
                 ...state,
                 ...{
                     nodeKey: action.data
+                }
+        };
+        case TemplateSetting.COPYID:
+            return {
+                ...state,
+                ...{
+                    copyId: action.data
                 }
         };
         default:

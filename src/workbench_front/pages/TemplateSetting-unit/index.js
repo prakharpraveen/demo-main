@@ -18,7 +18,8 @@ import {
     setTemplateNameVal,
     setTemplateTitleVal,
     setOrgidObj,
-    setNodeKey
+    setNodeKey,
+    setCopyId
 } from 'Store/TemplateSetting-unit/action';
 import { Button, Layout, Modal, Tree, Input, Select, Menu, Dropdown, Icon, Tabs } from 'antd';
 import { PageLayout, PageLayoutHeader, PageLayoutLeft, PageLayoutRight } from 'Components/PageLayout';
@@ -180,7 +181,8 @@ class TemplateSettingUnit extends Component {
             setTemplateNameVal,
             setTemplatePk,
             setExpandedTemKeys,
-            setTemplateTitleVal
+            setTemplateTitleVal,
+            setCopyId
         } = this.props;
         if (!templateNameVal) {
             Notice({ status: 'warning', msg: '请输入模板标题' });
@@ -220,8 +222,7 @@ class TemplateSettingUnit extends Component {
                     setParentIdcon(data.data.id);
                     setTemplateNameVal(data.data.name);
                     setTemplatePk(data.data.id);
-                    let array = [ ...expandedTemKeys, data.data.id ];
-                    setExpandedTemKeys(array);
+                    setCopyId(data.data.id);
                     if (def1 === 'menuitem') {
                         setTemplateTitleVal(data.data.code);
                     }
@@ -393,7 +394,7 @@ class TemplateSettingUnit extends Component {
     //右侧树组装数据
     restoreTreeTemData = (templateType, eventType) => {
         let { treeTemBillData, treeTemPrintData } = this.state;
-        let { selectedKeys, def1, parentIdcon } = this.props;
+        let { selectedKeys, def1, parentIdcon, copyId } = this.props;
         let treeTemBillDataArray = this.props.treeTemBillData;
         let treeTemPrintDataArray = this.props.treeTemPrintData;
         let treeData = [];
@@ -458,6 +459,17 @@ class TemplateSettingUnit extends Component {
                         this.props.setParentIdcon(treeData[0].parentId);
                         this.props.setTemplatePk(treeData[0].pk);
                         this.props.setTemplateNameVal(treeData[0].name);
+                    }else if (eventType && eventType === 'copy') {
+                        treeData.map((item) => {
+                            if (item.children && item.children.length > 0) {
+                                item.children.map((ele) => {
+                                    if (copyId === ele.key) {
+                                        let array = [ ...expandedTemKeys, ele.parentId ];
+                                        this.props.setExpandedTemKeys(array);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -476,6 +488,17 @@ class TemplateSettingUnit extends Component {
                         this.props.setTemplatePk(treeData[0].pk);
                         this.props.setTemplateNameVal(treeData[0].name);
                         this.props.setTemplateTitleVal(treeData[0].code);
+                    }else if (eventType && eventType === 'copy') {
+                        treeData.map((item) => {
+                            if (item.children && item.children.length > 0) {
+                                item.children.map((ele) => {
+                                    if (copyId === ele.key) {
+                                        let array = [ ...expandedTemKeys, ele.parentId ];
+                                        this.props.setExpandedTemKeys(array);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -847,13 +870,16 @@ class TemplateSettingUnit extends Component {
                 className='nc-workbench-templateSetting'
                 header={
                     <PageLayoutHeader>
-                        <BusinessUnitTreeRefUnit
-                            value={orgidObj}
-                            placeholder={'默认业务单元'}
-                            onChange={(value) => {
-                                this.handdleRefChange(value);
-                            }}
-                        />
+                        <div className='header-title'>
+                            <p>模板设置-业务单元</p>
+                            <BusinessUnitTreeRefUnit
+                                value={orgidObj}
+                                placeholder={'默认业务单元'}
+                                onChange={(value) => {
+                                    this.handdleRefChange(value);
+                                }}
+                            />
+                        </div>
                         <div className='buttons-component'>
                             {(treeTemBillData.length > 0 || treeTemPrintData.length > 0) &&
                                 Btns.map((item, index) => {
@@ -1018,6 +1044,7 @@ TemplateSettingUnit.propTypes = {
     setAppCode: PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
     setOrgidObj: PropTypes.func.isRequired,
+    setCopyId:PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
@@ -1033,7 +1060,8 @@ TemplateSettingUnit.propTypes = {
     templateTitleVal: PropTypes.string.isRequired,
     templateNameVal: PropTypes.string.isRequired,
     orgidObj: PropTypes.object.isRequired,
-    nodeKey: PropTypes.array.isRequired
+    nodeKey: PropTypes.array.isRequired,
+    copyId:PropTypes.string.isRequired
 };
 export default connect(
     (state) => ({
@@ -1053,7 +1081,8 @@ export default connect(
         TemplateNameVal: state.TemplateSettingUnitData.TemplateNameVal,
         TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal,
         orgidObj: state.TemplateSettingUnitData.orgidObj,
-        nodeKey: state.TemplateSettingUnitData.nodeKey
+        nodeKey: state.TemplateSettingUnitData.nodeKey,
+        copyId:state.TemplateSettingUnitData.copyId
     }),
     {
         setTreeData,
@@ -1072,6 +1101,7 @@ export default connect(
         setTemplateNameVal,
         setTemplateTitleVal,
         setOrgidObj,
-        setNodeKey
+        setNodeKey,
+        setCopyId
     }
 )(TemplateSettingUnit);
