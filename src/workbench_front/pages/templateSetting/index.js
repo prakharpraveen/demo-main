@@ -197,32 +197,34 @@ class TemplateSetting extends Component {
             infoData.templateCode = templateTitleVal;
             url = `/nccloud/platform/template/copyPrintTemplate.do`;
         }
-        Ajax({
-            url: url,
-            data: infoData,
-            info: {
-                name: '模板设置',
-                action: '模板复制'
-            },
-            success: ({ data }) => {
-                if (data.success) {
-                    Notice({ status: 'success', msg: '复制成功' });
-                    setSelectedTemKeys([ data.data.id ]);
-                    setParentIdcon(data.data.id);
-                    setTemplateNameVal(data.data.name);
-                    setTemplatePk(data.data.id);
-                    setCopyId(data.data.id);
-                    if (def1 === 'menuitem') {
-                        setTemplateTitleVal(data.data.code);
+        setTimeout(()=>{
+            Ajax({
+                url: url,
+                data: infoData,
+                info: {
+                    name: '模板设置',
+                    action: '模板复制'
+                },
+                success: ({ data }) => {
+                    if (data.success) {
+                        Notice({ status: 'success', msg: '复制成功' });
+                        setSelectedTemKeys([ data.data.id ]);
+                        setParentIdcon(data.data.id);
+                        setTemplateNameVal(data.data.name);
+                        setTemplatePk(data.data.id);
+                        setCopyId(data.data.id);
+                        if (def1 === 'menuitem') {
+                            setTemplateTitleVal(data.data.code);
+                        }
+                        this.reqTreeTemData('copy');
+                        this.setState({
+                            visible: false,
+                            autoExpandTemParent: true
+                        });
                     }
-                    this.reqTreeTemData('copy');
-                    this.setState({
-                        visible: false,
-                        autoExpandTemParent: true
-                    });
                 }
-            }
-        });
+            });
+        },1000)
     };
     //取消
     handleCancel = (e) => {
@@ -1087,6 +1089,7 @@ TemplateSetting.propTypes = {
     setCopyId:PropTypes.func.isRequired,
     setParentIdcon: PropTypes.func.isRequired,
     setNodeKey: PropTypes.func.isRequired,
+    setTemplateNameVal:PropTypes.func.isRequired,
     selectedKeys: PropTypes.array.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     treeTemBillData: PropTypes.array.isRequired,
