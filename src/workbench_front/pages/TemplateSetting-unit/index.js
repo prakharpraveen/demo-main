@@ -859,7 +859,6 @@ class TemplateSettingUnit extends Component {
             orgidObj,
             nodeKey
         } = this.props;
-        console.log(this.props);
         const leftTreeData = [
             {
                 code: '00',
@@ -1081,8 +1080,8 @@ export default connect(
         pageCode: state.TemplateSettingUnitData.pageCode,
         appCode: state.TemplateSettingUnitData.appCode,
         parentIdcon: state.TemplateSettingUnitData.parentIdcon,
-        TemplateNameVal: state.TemplateSettingUnitData.TemplateNameVal,
-        TemplateTitleVal: state.TemplateSettingUnitData.TemplateTitleVal,
+        templateNameVal: state.TemplateSettingUnitData.templateNameVal,
+        templateTitleVal: state.TemplateSettingUnitData.templateNameVal,
         orgidObj: state.TemplateSettingUnitData.orgidObj,
         nodeKey: state.TemplateSettingUnitData.nodeKey,
         copyId:state.TemplateSettingUnitData.copyId
