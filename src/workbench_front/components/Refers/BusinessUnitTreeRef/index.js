@@ -12,7 +12,7 @@ export default function(props = {}) {
         refCode: "uapbd.refer.org.BusinessUnitTreeRef",
         rootNode: { refname: "业务单元", refpk: "root" },
         placeholder: "业务单元",
-        queryTreeUrl: "/nccloud/uapbd/ref/businessunit.do",
+        queryTreeUrl: "nccloud/uapbd/org/BusinessUnitTreeRef.do",
         treeConfig: { name: ["编码", "名称"], code: ["refcode", "refname"] },
         isMultiSelectedEnabled: false,
         queryCondition: () => {
