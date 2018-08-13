@@ -901,7 +901,9 @@ class TemplateSettingUnit extends Component {
                             <p className='noDataTip'>该页面无打印模板</p>
                         </div>
                     ) : (
-                        ''
+                        <div className='noData'>
+                            <p className='noDataTip'>请选择应用、页面查看数据</p>
+                        </div>
                     )}
                 </PageLayoutRight>
                 {batchSettingModalVisibel && (
