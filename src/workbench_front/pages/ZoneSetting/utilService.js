@@ -153,6 +153,7 @@ export const dataTypeObj = [
     { name: "小数", value: "2" },
     { name: "整数", value: "4" },
     { name: "大文本", value: "30" },
+    { name: "小数", value: "31" },
     { name: "逻辑", value: "32" },
     { name: "日期", value: "33" },
     { name: "日期时间", value: "34" },
@@ -179,6 +180,7 @@ export const filterItemtypeObj = [
     { datatype: "2", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
     { datatype: "4", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
     { datatype: "30", itemtypeObj: [{ name: "多行文本", value: "textarea" }] },
+    { datatype: "31", itemtypeObj: [{ name: "数值输入框", value: "number" }] },
     {
         datatype: "32",
         itemtypeObj: [
