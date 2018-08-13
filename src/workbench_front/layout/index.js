@@ -481,7 +481,11 @@ class Layout extends Component {
                                     alt="logo"
                                 />
                             </div>
-                            <div field="group-switch" fieldname="集团切换">
+                            <div
+                                field="group-switch"
+                                fieldname="集团切换"
+                                className="nc-workbench-group-switch"
+                            >
                                 <Select
                                     dropdownClassName="field_group-switch"
                                     value={selectedKey}
