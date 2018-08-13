@@ -598,7 +598,7 @@ class MenuItem extends Component {
                     <PageLayoutHeader>
                         <div>
                             <i
-                                className="iconfont icon-cela"
+                                className="iconfont icon-fanhuishangyiji"
                                 onClick={this.pageBack}
                             />
                             {mn}

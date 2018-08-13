@@ -153,7 +153,7 @@ class UserInfo extends Component {
                 <div className="workbench-userinfo">
                     <div className="userinfo-header">
                         <div className="back" onClick={this.handleBackClick}>
-                            <i className="iconfont icon-cela" />
+                            <i className="iconfont icon-fanhuishangyiji" />
                         </div>
                     </div>
                     <InfoForm
